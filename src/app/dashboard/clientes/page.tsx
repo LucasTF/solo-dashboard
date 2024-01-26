@@ -52,7 +52,7 @@ export default function Dashboard() {
           </DataTable>
         </div>
 
-        <Pagination />
+        <Pagination numOfRows={clients.length} rowsPerPage={1} />
 
         <div className="flex flex-row-reverse">
           <button
