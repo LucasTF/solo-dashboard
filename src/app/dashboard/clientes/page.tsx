@@ -64,6 +64,12 @@ export default function Dashboard() {
       email: "lucas.htferreira@outlook.com",
       phone: "11941410495",
     },
+    {
+      id: 11,
+      name: "Lucas",
+      email: "lucas.htferreira@outlook.com",
+      phone: "11941410495",
+    },
   ];
 
   const columnNames = ["Id", "Nome", "Email", "Telefone"];
@@ -80,15 +86,7 @@ export default function Dashboard() {
           {clients.length} resultado(s) encontrados.
         </p>
 
-        <div className="overflow-x-auto">
-          <DataTable columns={columnNames}>
-            {clients.map((client, index) => (
-              <TableRow key={index} content={client} />
-            ))}
-          </DataTable>
-        </div>
-
-        <Pagination numOfRows={clients.length} rowsPerPage={1} />
+        <DataTable columns={columnNames} content={clients} />
 
         <div className="flex flex-row-reverse">
           <button
