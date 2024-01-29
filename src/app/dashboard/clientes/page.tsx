@@ -81,9 +81,11 @@ export default function Dashboard() {
       <h1 className="font-bold text-4xl w-11/12 lg:w-4/5 mx-auto mb-8 text-white">
         Clientes
       </h1>
+
       <section className="p-8 bg-slate-200 w-11/12 lg:w-4/5 mx-auto rounded-md shadow-lg">
         <header className="flex gap-4">
           <SearchBar />
+
           <button
             type="button"
             className="py-2 px-4 rounded-md shadow-md ease-in-out duration-300 hover:bg-sky-800 hover:text-white"
