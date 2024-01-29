@@ -32,8 +32,9 @@ const Pagination = ({ numOfRows, rowsPerPage }: PaginationProps) => {
       else
         pagArr = [pageNum - 2, pageNum - 1, pageNum, pageNum + 1, pageNum + 2];
 
-      paginationLinks = pagArr.map((p) => (
+      paginationLinks = pagArr.map((p, index) => (
         <Link
+          key={index}
           href={pathname + `?page=${p}`}
           className={
             "py-2 px-4 rounded-md shadow-md " +
@@ -51,6 +52,7 @@ const Pagination = ({ numOfRows, rowsPerPage }: PaginationProps) => {
       paginationLinks = Array.from({ length: totalPages }).map((_, index) => {
         return (
           <Link
+            key={index}
             href={pathname + `?page=${index + 1}`}
             className={
               "py-2 px-4 rounded-md shadow-md " +

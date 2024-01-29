@@ -14,7 +14,7 @@ const Header = () => {
           href="/dashboard/clientes"
           className={
             pathname.startsWith("/dashboard/clientes")
-              ? "font-bold text-orange-500"
+              ? "font-bold text-sky-800"
               : ""
           }
         >

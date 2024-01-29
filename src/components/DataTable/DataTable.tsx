@@ -2,12 +2,11 @@
 
 import React from "react";
 import Pagination from "../Pagination/Pagination";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 type DataTableProps = {
   columns: string[];
   content: Object[];
-  rowsPerPage?: number;
 };
 
 export function TableHead({ columns }: { columns: string[] }) {
@@ -43,32 +42,71 @@ export function TableRow({ rowContent }: { rowContent: Object }) {
   );
 }
 
-export function DataTable({
-  columns,
-  content,
-  rowsPerPage = 5,
-}: DataTableProps) {
+export function DataTable({ columns, content }: DataTableProps) {
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
-  const page = searchParams.get("page") || "1";
+  const page = Number(searchParams.get("page") || "1");
+  const rowsPerPage = Number(searchParams.get("numRows") || "5");
+
+  const rowsPerPageHandler = (numRows: number) => {
+    let newPath = pathname + "?";
+    searchParams.forEach((value, key) => {
+      if (key === "numRows") newPath = newPath + "numRows=" + numRows;
+      else newPath = newPath + `${key}=${value}`;
+      newPath = newPath + "&";
+    });
+    if (!searchParams.has("numRows")) newPath = newPath + "numRows=" + numRows;
+    router.push(newPath);
+  };
 
   return (
     <>
+      <header className="my-4 flex justify-between">
+        <p className="font-bold">{content.length} resultado(s) encontrados.</p>
+
+        <div>
+          <p>
+            Mostrar&nbsp;
+            <span
+              className={rowsPerPage === 5 ? "font-bold" : "cursor-pointer"}
+              onClick={() => rowsPerPageHandler(5)}
+            >
+              5
+            </span>
+            ,&nbsp;
+            <span
+              className={rowsPerPage === 10 ? "font-bold" : "cursor-pointer"}
+              onClick={() => rowsPerPageHandler(10)}
+            >
+              10
+            </span>
+            ,&nbsp;
+            <span
+              className={rowsPerPage === 15 ? "font-bold" : "cursor-pointer"}
+              onClick={() => rowsPerPageHandler(15)}
+            >
+              15
+            </span>
+            &nbsp; resultados
+          </p>
+        </div>
+      </header>
+
       <div className="overflow-x-auto">
         <table className="w-full max-w-full">
           <TableHead columns={columns} />
           <tbody>
             {content
-              .slice(
-                rowsPerPage * (Number(page) - 1),
-                rowsPerPage * Number(page)
-              )
+              .slice(rowsPerPage * (page - 1), rowsPerPage * page)
               .map((row, index) => (
                 <TableRow key={index} rowContent={row} />
               ))}
           </tbody>
         </table>
       </div>
+
       <Pagination numOfRows={content.length} rowsPerPage={rowsPerPage} />
     </>
   );

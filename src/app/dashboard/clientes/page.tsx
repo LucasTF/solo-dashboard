@@ -1,6 +1,7 @@
-import { DataTable, TableRow } from "@/components/DataTable/DataTable";
-import Pagination from "@/components/Pagination/Pagination";
+import { DataTable } from "@/components/DataTable/DataTable";
 import SearchBar from "@/components/SearchBar/SearchBar";
+
+import { FunnelIcon } from "@heroicons/react/24/outline";
 
 export default function Dashboard() {
   const clients = [
@@ -80,18 +81,22 @@ export default function Dashboard() {
         Clientes
       </h1>
       <section className="p-8 bg-slate-200 w-4/5 mx-auto rounded-md shadow-lg">
-        <SearchBar />
-
-        <p className="my-4 font-bold">
-          {clients.length} resultado(s) encontrados.
-        </p>
+        <header className="flex gap-4">
+          <SearchBar />
+          <button
+            type="button"
+            className="py-2 px-4 rounded-md shadow-md ease-in-out duration-300 hover:bg-sky-800 hover:text-white"
+          >
+            <FunnelIcon className="h-6 w-6" />
+          </button>
+        </header>
 
         <DataTable columns={columnNames} content={clients} />
 
         <div className="flex flex-row-reverse">
           <button
             type="button"
-            className="bg-green-700 hover:bg-green-600 font-semibold text-white p-4 rounded-md"
+            className="bg-green-700 ease-in-out duration-300 hover:bg-green-600 font-semibold text-white p-4 rounded-md"
           >
             + Novo Cliente
           </button>
