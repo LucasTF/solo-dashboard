@@ -13,15 +13,17 @@ type DataTableProps = {
 export function TableHead({ columns }: { columns: string[] }) {
   return (
     <thead>
-      {columns.map((col, index) => (
-        <th
-          key={index}
-          scope="col"
-          className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
-        >
-          {col}
-        </th>
-      ))}
+      <tr>
+        {columns.map((col, index) => (
+          <th
+            key={index}
+            className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
+            scope="col"
+          >
+            {col}
+          </th>
+        ))}
+      </tr>
     </thead>
   );
 }
