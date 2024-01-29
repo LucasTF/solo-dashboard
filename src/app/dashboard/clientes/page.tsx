@@ -1,3 +1,4 @@
+import DataOptions from "@/components/DataOptions/DataOptions";
 import { DataTable } from "@/components/DataTable/DataTable";
 import SearchBar from "@/components/SearchBar/SearchBar";
 
@@ -93,14 +94,7 @@ export default function Dashboard() {
 
         <DataTable columns={columnNames} content={clients} />
 
-        <div className="flex flex-row-reverse">
-          <button
-            type="button"
-            className="bg-green-700 ease-in-out duration-300 hover:bg-green-600 font-semibold text-white p-4 rounded-md"
-          >
-            + Novo Cliente
-          </button>
-        </div>
+        <DataOptions />
       </section>
     </main>
   );
