@@ -1,16 +1,15 @@
-"use client";
+type BackdropProps = {
+  visible: boolean;
+  onClick?: () => void;
+};
 
-import { useBackdrop } from "@/hooks/useBackdrop";
-
-const Backdrop = () => {
-  const { backdrop, toggleBackdrop } = useBackdrop();
-
+const Backdrop = ({ visible, onClick }: BackdropProps) => {
   return (
     <>
-      {backdrop && (
+      {visible && (
         <div
-          className="h-screen w-screen absolute top-0 left-0 z-40 bg-black opacity-70"
-          onClick={() => toggleBackdrop()}
+          className="h-screen w-screen absolute top-0 left-0 z-30 bg-black opacity-70"
+          onClick={() => onClick && onClick()}
         ></div>
       )}
     </>

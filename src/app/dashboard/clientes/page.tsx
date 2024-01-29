@@ -78,10 +78,10 @@ export default function Dashboard() {
 
   return (
     <main className="my-8">
-      <h1 className="font-bold text-4xl w-4/5 mx-auto mb-8 text-white">
+      <h1 className="font-bold text-4xl w-11/12 lg:w-4/5 mx-auto mb-8 text-white">
         Clientes
       </h1>
-      <section className="p-8 bg-slate-200 w-4/5 mx-auto rounded-md shadow-lg">
+      <section className="p-8 bg-slate-200 w-11/12 lg:w-4/5 mx-auto rounded-md shadow-lg">
         <header className="flex gap-4">
           <SearchBar />
           <button

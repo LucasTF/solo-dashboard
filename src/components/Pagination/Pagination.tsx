@@ -37,7 +37,7 @@ const Pagination = ({ numOfRows, rowsPerPage }: PaginationProps) => {
           key={index}
           href={pathname + `?page=${p}`}
           className={
-            "py-2 px-4 rounded-md shadow-md " +
+            "py-2 px-2 md:px-4 rounded-md shadow-md " +
             (page === String(p) || (!page && p === 1)
               ? "font-bold bg-sky-800 text-white"
               : "bg-slate-100")
@@ -55,7 +55,7 @@ const Pagination = ({ numOfRows, rowsPerPage }: PaginationProps) => {
             key={index}
             href={pathname + `?page=${index + 1}`}
             className={
-              "py-2 px-4 rounded-md shadow-md " +
+              "py-2 px-2 md:px-4 rounded-md shadow-md " +
               (page === String(index + 1) || (!page && index + 1 === 1)
                 ? "font-bold bg-sky-800 text-white"
                 : "bg-slate-100")
@@ -75,7 +75,7 @@ const Pagination = ({ numOfRows, rowsPerPage }: PaginationProps) => {
       <Link
         href={pathname + `?page=${Number(page) - 1}`}
         className={
-          "py-2 px-3 bg-slate-100 rounded-md shadow-md " +
+          "py-2 px-2 md:px-3 bg-slate-100 rounded-md shadow-md " +
           (Number(page) > 1 ? "" : "invisible")
         }
       >
@@ -85,7 +85,7 @@ const Pagination = ({ numOfRows, rowsPerPage }: PaginationProps) => {
       <Link
         href={pathname + `?page=${Number(page) + 1}`}
         className={
-          "py-2 px-3 bg-slate-100 rounded-md shadow-md " +
+          "py-2 px-2 md:px-3 bg-slate-100 rounded-md shadow-md " +
           (Number(page) < totalPages ? "" : "invisible")
         }
       >

@@ -1,19 +1,21 @@
 "use client";
 
-import { useBackdrop } from "@/hooks/useBackdrop";
+import { useState } from "react";
+import Backdrop from "../Backdrop/Backdrop";
 
 const DataOptions = () => {
-  const { toggleBackdrop } = useBackdrop();
+  const [backdrop, showBackdrop] = useState(false);
 
   return (
-    <div className="flex flex-row-reverse">
+    <div className="mt-6 flex flex-row-reverse">
       <button
         type="button"
         className="bg-green-700 ease-in-out duration-300 hover:bg-green-600 font-semibold text-white p-4 rounded-md"
-        onClick={() => toggleBackdrop()}
+        onClick={() => showBackdrop(true)}
       >
         + Novo Cliente
       </button>
+      <Backdrop visible={backdrop} onClick={() => showBackdrop(false)} />
     </div>
   );
 };

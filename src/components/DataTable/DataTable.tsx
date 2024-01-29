@@ -63,7 +63,7 @@ export function DataTable({ columns, content }: DataTableProps) {
 
   return (
     <>
-      <header className="my-4 flex justify-between">
+      <header className="my-4 flex flex-col text-center md:text-base md:flex-row md:justify-between">
         <p className="font-bold">{content.length} resultado(s) encontrados.</p>
 
         <div>
@@ -89,7 +89,7 @@ export function DataTable({ columns, content }: DataTableProps) {
             >
               15
             </span>
-            &nbsp; resultados
+            &nbsp;resultados
           </p>
         </div>
       </header>
