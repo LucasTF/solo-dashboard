@@ -26,4 +26,5 @@ const DataOptions = () => {
     </div>
   );
 };
+
 export default DataOptions;

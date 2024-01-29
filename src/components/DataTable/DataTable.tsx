@@ -29,7 +29,7 @@ export function TableHead({ columns }: { columns: string[] }) {
 
 export function TableRow({ rowContent }: { rowContent: Object }) {
   return (
-    <tr className="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-900 dark:even:bg-slate-800 hover:bg-gray-200 dark:hover:bg-gray-700">
+    <tr className="odd:bg-white even:bg-gray-100 hover:bg-gray-200">
       {Object.entries(rowContent).map(([key, value], index) => (
         <TableCell key={index}>{value}</TableCell>
       ))}
@@ -39,7 +39,7 @@ export function TableRow({ rowContent }: { rowContent: Object }) {
 
 export function TableCell({ children }: { children?: React.ReactNode }) {
   return (
-    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 border-r-[1px] border-solid border-slate-200">
+    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 border-r-[1px] border-solid border-slate-200">
       {children}
     </td>
   );
