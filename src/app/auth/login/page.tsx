@@ -9,7 +9,7 @@ export default function Login() {
   return (
     <div className="w-screen h-screen flex justify-center bg-sky-900">
       <main className="md:w-96 my-auto bg-slate-200 rounded-md shadow-xl">
-        <div className="bg-slate-300 text-center mb-4 border-b-2 border-solid border-slate-400 px-8 py-4 rounded-t-md">
+        <header className="bg-slate-300 text-center mb-4 border-b-2 border-solid border-slate-400 px-8 py-4 rounded-t-md">
           <Image
             src="/img/solo-logo.png"
             alt="Solo"
@@ -19,7 +19,7 @@ export default function Login() {
             priority
           />
           <h3 className="font-bold">Bem-Vindo</h3>
-        </div>
+        </header>
 
         <form className="flex flex-col gap-2 px-8 pt-4 pb-8">
           <label htmlFor="emailField" className="font-bold flex gap-2">

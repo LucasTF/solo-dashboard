@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Backdrop from "../Backdrop/Backdrop";
 import { Modal } from "../Modal/Modal";
 
 const DataOptions = () => {
@@ -17,12 +16,11 @@ const DataOptions = () => {
         + Novo Cliente
       </button>
 
-      <Modal visible={isModalVisible} />
-
-      <Backdrop
+      <Modal
         visible={isModalVisible}
-        onClick={() => toggleModal(false)}
-      ></Backdrop>
+        title="Novo Cliente"
+        onClose={() => toggleModal(false)}
+      ></Modal>
     </div>
   );
 };
