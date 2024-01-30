@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
-import Table, { Tb } from "../Table";
+import { Table } from "../Table";
 
 const Databoard = () => {
   const clients = [
@@ -34,25 +34,25 @@ const Databoard = () => {
   const rowsPerPage = Number(searchParams.get("numRows") || "5");
 
   return (
-    <Table columns={columnNames} numOfRows={clients.length}>
+    <Table.Base columns={columnNames} numOfRows={clients.length}>
       {clients.length > 0 ? (
         clients
           .slice(rowsPerPage * (page - 1), rowsPerPage * page)
           .map((row, rowIndex) => (
-            <Tb.Row key={rowIndex}>
+            <Table.Row key={rowIndex}>
               {Object.entries(row).map(([_, value], index) => (
-                <Tb.Cell key={index}>{value}</Tb.Cell>
+                <Table.Cell key={index}>{value}</Table.Cell>
               ))}
-            </Tb.Row>
+            </Table.Row>
           ))
       ) : (
-        <Tb.Row>
-          <Tb.Cell colSpan={columnNames.length}>
+        <Table.Row>
+          <Table.Cell colSpan={columnNames.length}>
             Nenhum resultado foi encontrado.
-          </Tb.Cell>
-        </Tb.Row>
+          </Table.Cell>
+        </Table.Row>
       )}
-    </Table>
+    </Table.Base>
   );
 };
 

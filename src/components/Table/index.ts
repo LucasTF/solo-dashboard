@@ -4,11 +4,10 @@ import { Row } from "./Row";
 import { Cell } from "./Cell";
 import { Pagination } from "./Pagination";
 
-import { Table } from "./Table";
+import { Base } from "./Base";
 
-export default Table;
-
-export const Tb = {
+export const Table = {
+  Base,
   Results,
   Head,
   Row,

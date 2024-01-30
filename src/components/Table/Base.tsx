@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Tb } from "./index";
+import { Table } from "./index";
 
 type TableProps = {
   children?: React.ReactNode;
@@ -8,17 +8,17 @@ type TableProps = {
   columns: string[];
 };
 
-export const Table = ({ children, numOfRows, columns }: TableProps) => {
+export const Base = ({ children, numOfRows, columns }: TableProps) => {
   return (
     <>
-      <Tb.Results numOfResults={numOfRows} />
+      <Table.Results numOfResults={numOfRows} />
       <div className="overflow-x-auto">
         <table className="w-full max-w-full">
-          <Tb.Head columns={columns} />
+          <Table.Head columns={columns} />
           <tbody>{children}</tbody>
         </table>
       </div>
-      <Tb.Pagination numOfRows={numOfRows} />
+      <Table.Pagination numOfRows={numOfRows} />
     </>
   );
 };
