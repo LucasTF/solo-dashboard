@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col min-h-screen justify-between bg-sky-900">
+    <div className="flex flex-col min-h-screen justify-between">
       <Header />
       {children}
       <Footer />
