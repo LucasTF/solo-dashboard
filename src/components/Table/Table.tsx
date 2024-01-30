@@ -11,6 +11,7 @@ type TableProps = {
 export const Table = ({ children, numOfRows, columns }: TableProps) => {
   return (
     <>
+      <Tb.Results numOfResults={numOfRows} />
       <div className="overflow-x-auto">
         <table className="w-full max-w-full">
           <Tb.Head columns={columns} />
