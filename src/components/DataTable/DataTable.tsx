@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Pagination from "../Pagination/Pagination";
+import { Pagination } from "../Table/Pagination";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 type DataTableProps = {
@@ -110,7 +110,7 @@ export function DataTable({ columns, content }: DataTableProps) {
         </table>
       </div>
 
-      <Pagination numOfRows={content.length} rowsPerPage={rowsPerPage} />
+      <Pagination numOfRows={content.length} />
     </>
   );
 }

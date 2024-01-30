@@ -5,14 +5,15 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 type PaginationProps = {
   numOfRows: number;
-  rowsPerPage: number;
 };
 
-const Pagination = ({ numOfRows, rowsPerPage }: PaginationProps) => {
+export const Pagination = ({ numOfRows }: PaginationProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
   const page = searchParams.get("page") || "1";
+
+  const rowsPerPage = Number(searchParams.get("numRows") || "5");
 
   const totalPages = Math.ceil(numOfRows / rowsPerPage);
 
@@ -94,5 +95,3 @@ const Pagination = ({ numOfRows, rowsPerPage }: PaginationProps) => {
     </div>
   );
 };
-
-export default Pagination;

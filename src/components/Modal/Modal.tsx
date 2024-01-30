@@ -19,7 +19,7 @@ export const Modal = ({
     <>
       <dialog
         open={visible}
-        className="absolute top-0 bottom-0 rounded-md shadow-lg max-h-[80%] z-40 w-11/12 lg:w-3/4 lg:max-h-none bg-slate-200 overflow-y-scroll"
+        className="absolute top-0 bottom-0 rounded-md shadow-lg max-h-[80%] z-40 w-11/12 lg:w-3/4 lg:max-h-none bg-slate-200 overflow-y-hidden"
       >
         <header className="flex justify-between content-center border-b-2 border-slate-400 p-4 bg-slate-300">
           <h2 className="font-bold text-2xl my-auto">{title}</h2>
