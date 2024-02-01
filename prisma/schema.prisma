@@ -10,32 +10,134 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Usuario {
   id            String    @id @default(cuid())
-  firstName     String
-  lastName      String
+  nome          String
+  sobrenome     String
   email         String?   @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
+  senha         String?
+  imagem        String?
+  contas        Conta[]
 }
 
-model Account {
+model Conta {
   id                 String  @id @default(cuid())
-  userId             String
+  usuarioId          String
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
+  refresh_token      String?
+  access_token       String?
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String?  @db.Text
+  id_token           String?
   session_state      String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Proprietario {
+  id                    Int             @id @default(autoincrement())
+  nome                  String          @db.VarChar(40)
+  apelido               String?         @db.VarChar(40)
+  cpf                   String?         @db.VarChar(14)
+  cnpj                  String?         @db.VarChar(18)
+  logradouro            String          @db.VarChar(40)
+  num_logradouro        String          @db.VarChar(6)
+  complemento           String?         @db.VarChar(40)
+  bairro                String          @db.VarChar(40)
+  cidade                String          @db.VarChar(40)
+  uf                    String          @db.VarChar(2)
+  cep                   String          @db.VarChar(9)
+  email                 String?         @db.VarChar(40)
+  fone1                 Int?
+  fone2                 Int?
+
+  @@index([nome, apelido, cpf, cnpj, logradouro, num_logradouro, complemento, bairro, cidade, uf, cep, email, fone1, fone2])
+
+}
+
+model Cliente {
+  id                    Int             @id @default(autoincrement())
+  nome                  String          @db.VarChar(40)
+  apelido               String?         @db.VarChar(40)
+  cpf                   String?         @db.VarChar(14)
+  cnpj                  String?         @db.VarChar(18)
+  logradouro            String          @db.VarChar(40)
+  num_logradouro        String          @db.VarChar(6)
+  complemento           String?         @db.VarChar(40)
+  bairro                String          @db.VarChar(40)
+  cidade                String          @db.VarChar(40)
+  uf                    String          @db.VarChar(2)
+  cep                   String          @db.VarChar(9)
+  email                 String?         @db.VarChar(40)
+  fone1                 Int?
+  fone2                 Int?
+
+  @@index([nome, apelido, cpf, cnpj, logradouro, num_logradouro, complemento, bairro, cidade, uf, cep, email, fone1, fone2])
+}
+
+model Obra {
+  id                    Int         @id @default(autoincrement())
+  cod_prop              String?
+  nome                  String?     @db.VarChar(11)
+  num_obra              Int?
+  ano                   Int?
+  data_inicio           DateTime?
+  data_fim              DateTime?
+  tipo_logo             String?     @db.VarChar(10)
+  logradouro            String?     @db.VarChar(40)
+  lote                  String?
+  quadra                String?
+  num_logo              String?
+  bairro                String?     @db.VarChar(40)
+  cidade                String?     @db.VarChar(40)
+  uf                    String?     @db.VarChar(2)
+  cep                   String?     @db.VarChar(9)
+  complemento_logo      String?     @db.VarChar(30)
+  sp_sondagem           Int?
+  metros_sp_sondagem    Float?
+  sr_sondagem           String?
+  metros_sr_solo        String?
+  metros_sr_rocha       String?
+  rb_ponteiras          String?
+  rb_equipamentos       String?
+  rb_data_inicial       DateTime?
+  rb_data_termino       DateTime?
+  TITirantes            String?
+  tipo_tirantes         String?
+  carga_tirantes        String?
+  micro_estaca_1        String?
+  micro_estaca_2        String?
+  micro_estaca_3        String?
+  tb_tubulao            String?
+  tb_cota_apoio         String?
+  tb_cota_apoio_A       String?
+  tb_taxa_solo          String?
+  STTrado               Int?
+  STTradoml             Int?
+  proprietario          String?     @db.VarChar(40)
+  cliente               String?     @db.VarChar(40)
+
+  @@index([cod_prop, nome, num_obra, ano, data_inicio, data_fim, logradouro, bairro, cidade, uf, complemento_logo, cliente, proprietario])
+
+  @@unique([cod_prop])
+
+}
+
+model Sondagem {
+  id                    Int       @id @default(autoincrement())
+  cod_so                String    @db.VarChar(7)
+  nome_cliente          String    @db.VarChar(40)
+  endereco              String    @db.VarChar(40)
+  cidade                String    @db.VarChar(40)
+  tipo                  String    @db.VarChar(10)
+  data                  DateTime
+
+  @@unique([cod_so])
+
+  @@index([cod_so, nome_cliente, endereco, cidade, tipo, data])
 }
