@@ -15,6 +15,9 @@ import {
 import { Form } from "@/components/Form";
 
 import { LoginSchema } from "@/schemas";
+import { useSessionStore } from "@/lib/stores/session";
+import { useRouter } from "next/navigation";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 const LoginForm = () => {
   const {
@@ -28,6 +31,15 @@ const LoginForm = () => {
       password: "",
     },
   });
+
+  const { createSession } = useSessionStore();
+
+  const router = useRouter();
+
+  const submitHandler = (credentials: any) => {
+    createSession(credentials);
+    router.push(DEFAULT_LOGIN_REDIRECT);
+  };
 
   return (
     <>
@@ -43,7 +55,7 @@ const LoginForm = () => {
         <h3 className="font-bold">Bem-Vindo</h3>
       </Form.Head>
 
-      <Form.Base onSubmit={handleSubmit((onValid) => console.log(onValid))}>
+      <Form.Base onSubmit={handleSubmit((onValid) => submitHandler(onValid))}>
         <Form.Field
           label="Email"
           name="email"

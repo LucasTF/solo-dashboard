@@ -8,13 +8,29 @@ import {
   ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Backdrop from "@/components/Backdrop/Backdrop";
 import NavLink from "./NavLink";
+import { useSessionStore } from "@/lib/stores/session";
+import { useRouter } from "next/navigation";
+import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
 
 const Header = () => {
   const [isDrawerOpen, toggleDrawer] = useState(false);
+
+  const router = useRouter();
+
+  const { session, restoreSession, dropSession } = useSessionStore();
+
+  useEffect(() => {
+    restoreSession();
+  }, []);
+
+  const logoutHandler = () => {
+    dropSession();
+    router.push(DEFAULT_UNAUTHENTICATED_REDIRECT);
+  };
 
   let drawerAnimation = isDrawerOpen
     ? "max-lg:translate-x-0"
@@ -55,6 +71,7 @@ const Header = () => {
           <button
             type="button"
             className="font-bold bg-red-600 px-2 py-1 flex rounded-md text-white border-red-700 shadow-lg border-2"
+            onClick={() => logoutHandler()}
           >
             <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
             <span>Sair</span>
@@ -80,7 +97,7 @@ const Header = () => {
           <li>
             <p className="flex gap-1">
               <UserCircleIcon className="w-6 h-6" />
-              <span className="font-bold">Usuário</span>
+              <span className="font-bold">{session?.name}</span>
             </p>
           </li>
 
@@ -88,6 +105,7 @@ const Header = () => {
             <button
               type="button"
               className="flex gap-1 p-2 hover:text-red-600 hover:shadow-md ease-in-out duration-300"
+              onClick={() => logoutHandler()}
             >
               <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
               <span className="font-bold">Sair</span>
