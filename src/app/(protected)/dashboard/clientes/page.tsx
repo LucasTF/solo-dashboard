@@ -6,7 +6,7 @@ export default function ClientesPage() {
       <Dashboard.Title title="Clientes" />
 
       <Dashboard.MainContainer>
-        <Dashboard.Search />
+        {/* <Dashboard.Search /> */}
 
         {/* <Dashboard.Table /> */}
 

@@ -1,8 +1,16 @@
+"use client";
+
 import { FunnelIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
-import { Search } from "..";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { DashboardTableSearchSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ObrasSearchOptionsEnum } from "@/enums";
+import { Searchbar } from "../Searchbar";
+import { DashboardSearchOptions } from "@/types/dashboardSearchType";
 
 type SearchFormProps = {
-  searchTargets?: { name: string; value: string }[];
+  searchTargets: DashboardSearchOptions<ObrasSearchOptionsEnum>[];
   selectedIndex?: number;
 };
 
@@ -10,18 +18,29 @@ export const SearchForm = ({
   searchTargets,
   selectedIndex = 0,
 }: SearchFormProps) => {
+  const { register, handleSubmit } = useForm<
+    z.infer<typeof DashboardTableSearchSchema>
+  >({
+    resolver: zodResolver(DashboardTableSearchSchema),
+    defaultValues: {
+      search: "",
+    },
+  });
+
   return (
-    <form className="flex gap-4 max-md:flex-col">
-      <Search.Bar />
+    <form
+      className="flex gap-4 max-md:flex-col"
+      onSubmit={handleSubmit((onValid) => console.log(onValid))}
+    >
+      <Searchbar validation={register("search")} />
 
       <div className="flex gap-4">
         <select
           className="min-w-48 rounded-md p-4 max-md:w-full"
-          name="search-target"
-          disabled={searchTargets === undefined || searchTargets?.length === 0}
+          {...register("column")}
         >
-          {searchTargets?.map((target, index) => (
-            <option value={target.value} selected={selectedIndex === index}>
+          {searchTargets.map((target, index) => (
+            <option key={index} value={target.value}>
               {target.name}
             </option>
           ))}
