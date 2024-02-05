@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Modal } from "../Modal/Modal";
+import { Modal } from "../../Modal/Modal";
 
-const DataOptions = () => {
+export const DashboardOptions = () => {
   const [isModalVisible, toggleModal] = useState(false);
 
   return (
@@ -24,5 +24,3 @@ const DataOptions = () => {
     </div>
   );
 };
-
-export default DataOptions;

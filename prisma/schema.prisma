@@ -62,7 +62,7 @@ model Cliente {
 
 model Obra {
   id                    Int         @id @default(autoincrement())
-  cod_prop              String?
+  cod_prop              String?     
   nome                  String?     @db.VarChar(11)
   num_obra              Int?
   ano                   Int?
@@ -103,8 +103,6 @@ model Obra {
   cliente               String?     @db.VarChar(40)
 
   @@index([cod_prop, nome, num_obra, ano, data_inicio, data_fim, logradouro, bairro, cidade, uf, complemento_logo, cliente, proprietario])
-
-  @@unique([cod_prop])
 
 }
 

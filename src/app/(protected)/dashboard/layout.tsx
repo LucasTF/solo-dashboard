@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer/Footer";
 import Header from "@/components/layout/Header/Header";
 
 export const metadata: Metadata = {
-  title: "Solo Dashboard",
+  title: "Solo Engenharia | Dashboard",
   description: "Dashboard de Dados | Solo Engenharia",
 };
 
@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <div className="flex flex-col min-h-screen justify-between">
       <Header />
-      {children}
+      <div className="my-8">{children}</div>
       <Footer />
     </div>
   );

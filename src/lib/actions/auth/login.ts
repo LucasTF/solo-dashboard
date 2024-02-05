@@ -11,7 +11,7 @@ import { User } from "@/types/userType";
 import { LoginResponse } from "@/types/loginResponseType";
 
 import { cookies } from "next/headers";
-import { getJwtSecretKey } from "../jwt";
+import { getJwtSecretKey } from "../../jwt";
 
 const ERROR_MESSAGE = "Email ou senha inválidos.";
 

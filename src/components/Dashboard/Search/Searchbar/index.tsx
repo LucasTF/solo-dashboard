@@ -3,7 +3,7 @@
 import { ChangeEvent, useCallback } from "react";
 import debounce from "lodash/debounce";
 
-const SearchBar = () => {
+export const Searchbar = () => {
   const debouncedSearch = useCallback(
     debounce((value) => value && console.log(value), 800),
     []
@@ -22,5 +22,3 @@ const SearchBar = () => {
     />
   );
 };
-
-export default SearchBar;

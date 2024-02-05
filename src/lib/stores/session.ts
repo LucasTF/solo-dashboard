@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-import { logout } from "../actions/logout";
-import { login } from "../actions/login";
+import { logout } from "../actions/auth/logout";
+import { login } from "../actions/auth/login";
 
 type UserDataType = {
   name: string;

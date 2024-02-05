@@ -2,9 +2,9 @@
 
 import { useSearchParams } from "next/navigation";
 
-import { Table } from "../Table";
+import { Table } from "../../Table";
 
-const Databoard = () => {
+export const DashboardTable = () => {
   const clients = [
     {
       id: 1,
@@ -55,5 +55,3 @@ const Databoard = () => {
     </Table.Base>
   );
 };
-
-export default Databoard;

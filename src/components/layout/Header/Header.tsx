@@ -83,7 +83,7 @@ const Header = () => {
             <NavLink href="/dashboard/clientes">Clientes</NavLink>
           </li>
           <li>
-            <NavLink href="#">Obras Executadas</NavLink>
+            <NavLink href="/dashboard/obras">Obras</NavLink>
           </li>
           <li>
             <NavLink href="#">Orçamentos</NavLink>
