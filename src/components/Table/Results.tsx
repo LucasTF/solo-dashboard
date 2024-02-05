@@ -11,7 +11,7 @@ export const Results = ({ numOfResults = 0 }: ResultsProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const rowsPerPage = Number(searchParams.get("numRows") || "5");
+  const rowsPerPage = Number(searchParams.get("numRows") || "10");
 
   const rowsPerPageHandler = (numRows: number) => {
     let newPath = pathname + "?";
@@ -33,13 +33,6 @@ export const Results = ({ numOfResults = 0 }: ResultsProps) => {
         <p>
           Mostrar&nbsp;
           <span
-            className={rowsPerPage === 5 ? "font-bold" : "cursor-pointer"}
-            onClick={() => rowsPerPageHandler(5)}
-          >
-            5
-          </span>
-          ,&nbsp;
-          <span
             className={rowsPerPage === 10 ? "font-bold" : "cursor-pointer"}
             onClick={() => rowsPerPageHandler(10)}
           >
@@ -47,10 +40,17 @@ export const Results = ({ numOfResults = 0 }: ResultsProps) => {
           </span>
           ,&nbsp;
           <span
-            className={rowsPerPage === 15 ? "font-bold" : "cursor-pointer"}
-            onClick={() => rowsPerPageHandler(15)}
+            className={rowsPerPage === 25 ? "font-bold" : "cursor-pointer"}
+            onClick={() => rowsPerPageHandler(25)}
           >
-            15
+            25
+          </span>
+          ,&nbsp;
+          <span
+            className={rowsPerPage === 50 ? "font-bold" : "cursor-pointer"}
+            onClick={() => rowsPerPageHandler(50)}
+          >
+            50
           </span>
           &nbsp;resultados
         </p>

@@ -4,39 +4,21 @@ import { useSearchParams } from "next/navigation";
 
 import { Table } from "../../Table";
 
-export const DashboardTable = () => {
-  const clients = [
-    {
-      id: 1,
-      name: "Lucas",
-      email: "lucas.htferreira@outlook.com",
-      phone: "11941410495",
-    },
-    {
-      id: 2,
-      name: "John",
-      email: "john.doe@outlook.com",
-      phone: "11954540492",
-    },
-    {
-      id: 3,
-      name: "Jane",
-      email: "jane.doe@outlook.com",
-      phone: "11933520489",
-    },
-  ];
+type DashboardTableProps = {
+  data: object[];
+  columnNames: string[];
+};
 
-  const columnNames = ["Id", "Nome", "Email", "Telefone"];
-
+export const DashboardTable = ({ data, columnNames }: DashboardTableProps) => {
   const searchParams = useSearchParams();
 
   const page = Number(searchParams.get("page") || "1");
-  const rowsPerPage = Number(searchParams.get("numRows") || "5");
+  const rowsPerPage = Number(searchParams.get("numRows") || "10");
 
   return (
-    <Table.Base columns={columnNames} numOfRows={clients.length}>
-      {clients.length > 0 ? (
-        clients
+    <Table.Base columns={columnNames} numOfRows={data.length}>
+      {data.length > 0 ? (
+        data
           .slice(rowsPerPage * (page - 1), rowsPerPage * page)
           .map((row, rowIndex) => (
             <Table.Row key={rowIndex}>

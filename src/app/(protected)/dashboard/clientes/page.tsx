@@ -8,7 +8,7 @@ export default function ClientesPage() {
       <Dashboard.MainContainer>
         <Dashboard.Search />
 
-        <Dashboard.Table />
+        {/* <Dashboard.Table /> */}
 
         <Dashboard.Options />
       </Dashboard.MainContainer>

@@ -13,7 +13,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
 
   const page = searchParams.get("page") || "1";
 
-  const rowsPerPage = Number(searchParams.get("numRows") || "5");
+  const rowsPerPage = Number(searchParams.get("numRows") || "10");
 
   const totalPages = Math.ceil(numOfRows / rowsPerPage);
 
