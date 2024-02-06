@@ -1,6 +1,5 @@
+import { obrasStructure } from "@/lib/structures/dashboard/structures";
 import * as z from "zod";
-
-import { ObrasSearchOptionsEnum } from "@/enums";
 
 export const LoginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -9,5 +8,12 @@ export const LoginSchema = z.object({
 
 export const DashboardTableSearchSchema = z.object({
   search: z.string().min(1),
-  column: z.nativeEnum(ObrasSearchOptionsEnum),
+  column: z.string(),
+});
+
+export type SearchFilter = z.infer<typeof DashboardTableSearchSchema>;
+
+export const ObrasSearchFilterSchema = z.object({
+  search: z.string().min(1),
+  column: z.enum(["nome", "bairro", "cidade", "cliente", "proprietario"]),
 });

@@ -5,19 +5,23 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DashboardTableSearchSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ObrasSearchOptionsEnum } from "@/enums";
 import { Searchbar } from "../Searchbar";
-import { DashboardSearchOptions } from "@/types/dashboardSearchType";
+import { SearchColumn, TablesEnum } from "@/lib/structures/TableStructure";
+import { useRouter } from "next/navigation";
 
 type SearchFormProps = {
-  searchTargets: DashboardSearchOptions<ObrasSearchOptionsEnum>[];
+  searchColumns: SearchColumn[];
+  table: TablesEnum;
   selectedIndex?: number;
 };
 
 export const SearchForm = ({
-  searchTargets,
+  searchColumns,
+  table,
   selectedIndex = 0,
 }: SearchFormProps) => {
+  const router = useRouter();
+
   const { register, handleSubmit } = useForm<
     z.infer<typeof DashboardTableSearchSchema>
   >({
@@ -27,10 +31,20 @@ export const SearchForm = ({
     },
   });
 
+  const searchHandler = (searchString: string, column: string) => {
+    const newUrl =
+      table +
+      "?" +
+      new URLSearchParams(`search=${searchString}&column=${column}`);
+    router.push(newUrl);
+  };
+
   return (
     <form
       className="flex gap-4 max-md:flex-col"
-      onSubmit={handleSubmit((onValid) => console.log(onValid))}
+      onSubmit={handleSubmit((onValid) =>
+        searchHandler(onValid.search, onValid.column)
+      )}
     >
       <Searchbar validation={register("search")} />
 
@@ -39,7 +53,7 @@ export const SearchForm = ({
           className="min-w-48 rounded-md p-4 max-md:w-full"
           {...register("column")}
         >
-          {searchTargets.map((target, index) => (
+          {searchColumns.map((target, index) => (
             <option key={index} value={target.value}>
               {target.name}
             </option>

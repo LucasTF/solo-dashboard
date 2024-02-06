@@ -1,38 +1,32 @@
 import { Dashboard } from "@/components/Dashboard";
-import { ObrasSearchOptionsEnum } from "@/enums";
-import { getObras } from "@/lib/actions/data/obras";
-import { DashboardSearchParameters } from "@/types/dashboardSearchType";
+import { obrasStructure } from "@/lib/structures/dashboard/structures";
 
-export default async function ObrasPage() {
-  const searchTargets = [
-    { name: "Nome", value: ObrasSearchOptionsEnum.nome },
-    { name: "Cliente", value: ObrasSearchOptionsEnum.cliente },
-    { name: "Bairro", value: ObrasSearchOptionsEnum.bairro },
-    { name: "Cidade", value: ObrasSearchOptionsEnum.cidade },
-    { name: "Proprietário", value: ObrasSearchOptionsEnum.proprietario },
-  ];
+type PageProps = {
+  searchParams: {
+    search?: string;
+    column?: string;
+    numRows?: string;
+  };
+};
 
+export default async function ObrasPage({ searchParams }: PageProps) {
   return (
     <>
       <Dashboard.Title title="Obras" />
 
       <Dashboard.MainContainer>
-        <Dashboard.Search searchTargets={searchTargets} />
+        <Dashboard.Search
+          searchColumns={obrasStructure.searchColumns}
+          table={obrasStructure.type}
+        />
 
-        <Dashboard.Table
-          columnNames={[
-            "ID",
-            "Nome",
-            "Ano",
-            "Tipo Logradouro",
-            "Logradouro",
-            "Cidade",
-            "Bairro",
-            "UF",
-            "Cliente",
-            "Proprietário",
-          ]}
-          data={await getObras()}
+        <Dashboard.TableConstructor
+          columnNames={obrasStructure.columnNames}
+          tableType={obrasStructure.type}
+          searchFilter={{
+            search: searchParams.search!,
+            column: searchParams.column!,
+          }}
         />
 
         <Dashboard.Options />
