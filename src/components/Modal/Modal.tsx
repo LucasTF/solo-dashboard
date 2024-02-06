@@ -9,12 +9,7 @@ type ModalProps = {
   onClose?: (close: boolean) => void;
 };
 
-export const Modal = ({
-  visible = false,
-  title,
-  children,
-  onClose,
-}: ModalProps) => {
+const Modal = ({ visible = false, title, children, onClose }: ModalProps) => {
   return (
     <>
       <dialog
@@ -36,3 +31,5 @@ export const Modal = ({
     </>
   );
 };
+
+export default Modal;

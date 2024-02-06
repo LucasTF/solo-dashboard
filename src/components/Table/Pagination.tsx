@@ -17,6 +17,12 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
 
   const totalPages = Math.ceil(numOfRows / rowsPerPage);
 
+  const pathBuilder = (key: string, value: string | number) => {
+    const urlParams = new URLSearchParams(searchParams);
+    urlParams.set(key, value.toString());
+    return pathname + "?" + urlParams.toString();
+  };
+
   const pagination = () => {
     let paginationLinks;
 
@@ -33,20 +39,22 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
       else
         pagArr = [pageNum - 2, pageNum - 1, pageNum, pageNum + 1, pageNum + 2];
 
-      paginationLinks = pagArr.map((p, index) => (
-        <Link
-          key={index}
-          href={pathname + `?page=${p}`}
-          className={
-            "py-2 px-2 md:px-4 rounded-md shadow-md " +
-            (page === String(p) || (!page && p === 1)
-              ? "font-bold bg-sky-800 text-white"
-              : "bg-slate-100")
-          }
-        >
-          {p}
-        </Link>
-      ));
+      paginationLinks = pagArr.map((p, index) => {
+        return (
+          <Link
+            key={index}
+            href={pathBuilder("page", p)}
+            className={
+              "py-2 px-2 md:px-4 rounded-md shadow-md " +
+              (page === String(p) || (!page && p === 1)
+                ? "font-bold bg-sky-800 text-white"
+                : "bg-slate-100")
+            }
+          >
+            {p}
+          </Link>
+        );
+      });
     }
 
     if (totalPages <= 5) {
@@ -54,7 +62,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
         return (
           <Link
             key={index}
-            href={pathname + `?page=${index + 1}`}
+            href={pathBuilder("page", index + 1)}
             className={
               "py-2 px-2 md:px-4 rounded-md shadow-md " +
               (page === String(index + 1) || (!page && index + 1 === 1)
@@ -74,7 +82,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
   return (
     <div className="flex justify-center gap-4 mt-4">
       <Link
-        href={pathname + `?page=${Number(page) - 1}`}
+        href={pathBuilder("page", Number(page) - 1)}
         className={
           "py-2 px-2 md:px-3 bg-slate-100 rounded-md shadow-md " +
           (Number(page) > 1 ? "" : "invisible")
@@ -84,7 +92,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
       </Link>
       {pagination()}
       <Link
-        href={pathname + `?page=${Number(page) + 1}`}
+        href={pathBuilder("page", Number(page) + 1)}
         className={
           "py-2 px-2 md:px-3 bg-slate-100 rounded-md shadow-md " +
           (Number(page) < totalPages ? "" : "invisible")

@@ -6,6 +6,7 @@ type PageProps = {
     search?: string;
     column?: string;
     numRows?: string;
+    page?: string;
   };
 };
 

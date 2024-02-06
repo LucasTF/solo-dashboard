@@ -39,7 +39,9 @@ export async function searchObras(searchFilter: SearchFilter) {
       proprietario: true,
     },
     where: {
-      [searchFilter.column]: searchFilter.search,
+      [searchFilter.column]: {
+        contains: searchFilter.search,
+      },
     },
   });
 
