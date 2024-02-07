@@ -19,11 +19,15 @@ const button = tv({
       square: "p-4",
       rectangle: "py-4 px-6",
     },
+    disabled: {
+      true: "bg-gray-400 hover:bg-gray-400 cursor-not-allowed",
+    },
   },
   defaultVariants: {
     color: "blue",
     fontStrength: "normal",
     shape: "square",
+    disabled: false,
   },
 });
 
@@ -36,10 +40,15 @@ export const Button = ({
   color,
   fontStrength,
   shape,
+  disabled,
   ...rest
 }: ButtonProps) => {
   return (
-    <button className={button({ color, fontStrength, shape })} {...rest}>
+    <button
+      className={button({ color, fontStrength, shape, disabled })}
+      disabled={disabled}
+      {...rest}
+    >
       {children}
     </button>
   );

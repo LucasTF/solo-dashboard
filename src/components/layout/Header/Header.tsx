@@ -15,6 +15,7 @@ import NavLink from "./NavLink";
 import { useSessionStore } from "@/lib/stores/session";
 import { useRouter } from "next/navigation";
 import { logout } from "@/lib/actions/auth/logout";
+import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
 
 const Header = () => {
   const [isDrawerOpen, toggleDrawer] = useState(false);
@@ -30,7 +31,7 @@ const Header = () => {
   const logoutHandler = async () => {
     const response = await logout();
     dropSession();
-    router.push("/login");
+    router.push(DEFAULT_UNAUTHENTICATED_REDIRECT);
   };
 
   let drawerAnimation = isDrawerOpen
@@ -62,12 +63,14 @@ const Header = () => {
           drawerAnimation
         }
       >
-        <h1 className="font-bold max-lg:hidden">Solo Dashboard</h1>
+        <h1 className="font-bold select-none max-lg:hidden">Solo Dashboard</h1>
 
         <div className="lg:hidden bg-slate-300 border-b-slate-400 border-[1px] p-4 flex flex-col gap-4 justify-center items-center">
           <div className="flex flex-col items-center gap-1">
             <UserCircleIcon className="w-12 h-12" />
-            <span className="font-semibold text-sm">Usuário</span>
+            <span className="font-semibold text-sm select-none">
+              {session?.name}
+            </span>
           </div>
           <button
             type="button"
@@ -98,7 +101,7 @@ const Header = () => {
           <li>
             <p className="flex gap-1">
               <UserCircleIcon className="w-6 h-6" />
-              <span className="font-bold">{session?.name}</span>
+              <span className="font-bold select-none">{session?.name}</span>
             </p>
           </li>
 

@@ -19,6 +19,8 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { Button } from "../ui/Button";
 import { Field } from "../ui/Field";
 import { login } from "@/lib/actions/auth/login";
+import { useTransition } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 type LoginCredentials = z.infer<typeof LoginSchema>;
 
@@ -35,21 +37,29 @@ const LoginForm = () => {
     },
   });
 
+  const [isPending, startTransition] = useTransition();
+
   const { createSession } = useSessionStore();
 
   const router = useRouter();
 
-  const loginHandler = async (credentials: LoginCredentials) => {
-    try {
-      const response = await login(credentials);
-      if (response.success) {
-        const { email, name, surname } = response.user;
-        createSession({ email, name, surname });
-        router.push(DEFAULT_LOGIN_REDIRECT);
+  const loginHandler = (credentials: LoginCredentials) => {
+    startTransition(async () => {
+      try {
+        const response = await login(credentials);
+        if (response.success) {
+          const { email, name, surname } = response.user;
+          createSession({ email, name, surname });
+          toast("Login realizado com sucesso! Redirecionando...", {
+            type: "success",
+            autoClose: 1000,
+            onClose: () => router.push(DEFAULT_LOGIN_REDIRECT),
+          });
+        } else toast(response.message, { type: "error" });
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    });
   };
 
   return (
@@ -78,6 +88,7 @@ const LoginForm = () => {
           icon={<EnvelopeIcon className="w-5 h-5" />}
           isInvalid={!!errors.email}
           errorMessage={errors.email?.message}
+          disabled={isPending}
           {...register("email")}
         />
 
@@ -89,14 +100,22 @@ const LoginForm = () => {
           icon={<KeyIcon className="w-5 h-5" />}
           isInvalid={!!errors.password}
           errorMessage={errors.password?.message}
+          disabled={isPending}
           {...register("password")}
         />
 
-        <Button>
-          <LockOpenIcon className="w-5 h-5" />
-          Entrar
+        <Button disabled={isPending}>
+          {isPending ? (
+            <>Processando...</>
+          ) : (
+            <>
+              <LockOpenIcon className="w-5 h-5" />
+              Entrar
+            </>
+          )}
         </Button>
       </form>
+      <ToastContainer />
     </>
   );
 };
