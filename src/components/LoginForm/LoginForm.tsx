@@ -12,12 +12,12 @@ import {
   LockOpenIcon,
 } from "@heroicons/react/24/outline";
 
-import { Form } from "@/components/Form";
-
 import { LoginSchema } from "@/schemas";
 import { useSessionStore } from "@/lib/stores/session";
 import { useRouter } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { Button } from "../ui/Button";
+import { Field } from "../ui/Field";
 
 const LoginForm = () => {
   const {
@@ -43,7 +43,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <Form.Head>
+      <header className="bg-slate-300 text-center mb-4 border-b-2 border-solid border-slate-400 px-8 py-4 rounded-t-md">
         <Image
           src="/img/solo-logo.png"
           alt="Solo"
@@ -53,36 +53,39 @@ const LoginForm = () => {
           priority
         />
         <h3 className="font-bold">Bem-Vindo</h3>
-      </Form.Head>
+      </header>
 
-      <Form.Base onSubmit={handleSubmit((onValid) => submitHandler(onValid))}>
-        <Form.Field
+      <form
+        className="flex flex-col gap-4 px-8 pb-8"
+        onSubmit={handleSubmit((onValid) => submitHandler(onValid))}
+      >
+        <Field
           label="Email"
-          name="email"
+          id="email"
           type="email"
           placeholder="email@host.com"
           icon={<EnvelopeIcon className="w-5 h-5" />}
           isInvalid={!!errors.email}
           errorMessage={errors.email?.message}
-          validation={register("email")}
+          {...register("email")}
         />
 
-        <Form.Field
+        <Field
           label="Senha"
-          name="password"
+          id="password"
           type="password"
           placeholder="******"
           icon={<KeyIcon className="w-5 h-5" />}
           isInvalid={!!errors.password}
           errorMessage={errors.password?.message}
-          validation={register("password")}
+          {...register("password")}
         />
 
-        <Form.Button
-          icon={<LockOpenIcon className="w-5 h-5" />}
-          label="Entrar"
-        />
-      </Form.Base>
+        <Button>
+          <LockOpenIcon className="w-5 h-5" />
+          Entrar
+        </Button>
+      </form>
     </>
   );
 };

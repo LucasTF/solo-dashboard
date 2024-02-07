@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Searchbar } from "../Searchbar";
 import { SearchColumn, TablesEnum } from "@/lib/structures/TableStructure";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
 
 type SearchFormProps = {
   searchColumns: SearchColumn[];
@@ -50,7 +51,7 @@ export const SearchForm = ({
 
       <div className="flex gap-4">
         <select
-          className="min-w-48 rounded-md p-4 max-md:w-full"
+          className="lg:min-w-48 rounded-md p-4 max-md:w-full"
           {...register("column")}
         >
           {searchColumns.map((target, index) => (
@@ -60,19 +61,13 @@ export const SearchForm = ({
           ))}
         </select>
 
-        <button
-          type="submit"
-          className="px-6 rounded-md shadow-md ease-in-out duration-300 text-white bg-green-700 hover:bg-green-600"
-        >
+        <Button type="submit" color="green" shape="rectangle">
           <ArrowRightIcon className="h-6 w-6" />
-        </button>
+        </Button>
 
-        <button
-          type="button"
-          className="px-4 rounded-md shadow-md ease-in-out duration-300 hover:bg-sky-800 hover:text-white"
-        >
+        <Button type="button" color="clear">
           <FunnelIcon className="h-6 w-6" />
-        </button>
+        </Button>
       </div>
     </form>
   );

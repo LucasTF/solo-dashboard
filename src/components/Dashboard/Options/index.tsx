@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/Button";
 import { lazy, useState } from "react";
 
 const Modal = lazy(() => import("@/components/Modal/Modal"));
@@ -9,13 +10,14 @@ export const DashboardOptions = () => {
 
   return (
     <div className="mt-6 flex flex-row-reverse">
-      <button
+      <Button
+        color="green"
+        fontStrength="semibold"
         type="button"
-        className="bg-green-700 ease-in-out duration-300 hover:bg-green-600 font-semibold text-white p-4 rounded-md"
         onClick={() => toggleModal(true)}
       >
-        + Nova Obra
-      </button>
+        + Nova obra
+      </Button>
 
       <Modal
         visible={isModalVisible}
