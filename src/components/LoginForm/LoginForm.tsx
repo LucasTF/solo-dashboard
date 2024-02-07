@@ -18,13 +18,16 @@ import { useRouter } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { Button } from "../ui/Button";
 import { Field } from "../ui/Field";
+import { login } from "@/lib/actions/auth/login";
+
+type LoginCredentials = z.infer<typeof LoginSchema>;
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof LoginSchema>>({
+  } = useForm<LoginCredentials>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
@@ -36,9 +39,17 @@ const LoginForm = () => {
 
   const router = useRouter();
 
-  const submitHandler = (credentials: any) => {
-    createSession(credentials);
-    router.push(DEFAULT_LOGIN_REDIRECT);
+  const loginHandler = async (credentials: LoginCredentials) => {
+    try {
+      const response = await login(credentials);
+      if (response.success) {
+        const { email, name, surname } = response.user;
+        createSession({ email, name, surname });
+        router.push(DEFAULT_LOGIN_REDIRECT);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -57,7 +68,7 @@ const LoginForm = () => {
 
       <form
         className="flex flex-col gap-4 px-8 pb-8"
-        onSubmit={handleSubmit((onValid) => submitHandler(onValid))}
+        onSubmit={handleSubmit((credentials) => loginHandler(credentials))}
       >
         <Field
           label="Email"

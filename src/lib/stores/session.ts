@@ -1,8 +1,5 @@
 import { create } from "zustand";
 
-import { logout } from "../actions/auth/logout";
-import { login } from "../actions/auth/login";
-
 type UserDataType = {
   name: string;
   surname: string;
@@ -12,7 +9,7 @@ type UserDataType = {
 type SessionState = {
   session: UserDataType | null;
   restoreSession: () => void;
-  createSession: (credentials: { email: string; password: string }) => void;
+  createSession: (credentials: UserDataType) => void;
   dropSession: () => void;
 };
 
@@ -22,16 +19,11 @@ export const useSessionStore = create<SessionState>((set) => ({
     set((state) => ({
       session: JSON.parse(localStorage.getItem("userData")!),
     })),
-  createSession: async (credentials) => {
-    const response = await login(credentials);
-    if (response.success) {
-      localStorage.setItem("userData", JSON.stringify(response.user));
-
-      set((state) => ({ session: response.user }));
-    }
+  createSession: (credentials: UserDataType) => {
+    localStorage.setItem("userData", JSON.stringify(credentials));
+    set((state) => ({ session: credentials }));
   },
   dropSession: () => {
-    logout();
     localStorage.removeItem("userData");
     set((state) => ({ session: null }));
   },

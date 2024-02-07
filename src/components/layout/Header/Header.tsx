@@ -14,7 +14,7 @@ import Backdrop from "@/components/Backdrop/Backdrop";
 import NavLink from "./NavLink";
 import { useSessionStore } from "@/lib/stores/session";
 import { useRouter } from "next/navigation";
-import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
+import { logout } from "@/lib/actions/auth/logout";
 
 const Header = () => {
   const [isDrawerOpen, toggleDrawer] = useState(false);
@@ -27,9 +27,10 @@ const Header = () => {
     restoreSession();
   }, []);
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
+    const response = await logout();
     dropSession();
-    router.push(DEFAULT_UNAUTHENTICATED_REDIRECT);
+    router.push("/login");
   };
 
   let drawerAnimation = isDrawerOpen

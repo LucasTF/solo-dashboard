@@ -19,9 +19,8 @@ export default function auth(req: NextRequest) {
     const isLoggedIn = verifyJwt(token.value) !== null;
 
     if (isAuthRoute) {
-      if (isLoggedIn) {
+      if (isLoggedIn)
         return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
-      }
 
       return null;
     }
