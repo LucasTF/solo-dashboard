@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Searchbar } from "../Searchbar";
 import { SearchColumn, TablesEnum } from "@/lib/structures/TableStructure";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
+import Button from "@/components/ui/Button";
 
 type SearchFormProps = {
   searchColumns: SearchColumn[];

@@ -18,11 +18,19 @@ const button = tv({
     shape: {
       square: "p-4",
       rectangle: "py-4 px-6",
+      close: "p-3",
     },
     disabled: {
       true: "bg-gray-400 hover:bg-gray-400 cursor-not-allowed",
     },
   },
+  compoundVariants: [
+    {
+      color: "red",
+      shape: "close",
+      class: "rounded-2xl shadow-lg",
+    },
+  ],
   defaultVariants: {
     color: "blue",
     fontStrength: "normal",
@@ -35,7 +43,7 @@ type ButtonVariants = VariantProps<typeof button>;
 
 type ButtonProps = ButtonVariants & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button = ({
+const Button = ({
   children,
   color,
   fontStrength,
@@ -53,3 +61,5 @@ export const Button = ({
     </button>
   );
 };
+
+export default Button;

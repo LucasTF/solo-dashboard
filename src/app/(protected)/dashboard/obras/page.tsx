@@ -1,5 +1,7 @@
 import { Dashboard } from "@/components/Dashboard";
 import { obrasStructure } from "@/lib/structures/dashboard/structures";
+import { Suspense } from "react";
+import Loading from "../loading";
 
 type PageProps = {
   searchParams: {

@@ -1,6 +1,7 @@
 import Backdrop from "../Backdrop/Backdrop";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import Button from "../ui/Button";
 
 type ModalProps = {
   visible?: boolean;
@@ -18,12 +19,13 @@ const Modal = ({ visible = false, title, children, onClose }: ModalProps) => {
       >
         <header className="flex justify-between content-center border-b-2 border-slate-400 p-4 bg-slate-300">
           <h2 className="font-bold text-2xl my-auto select-none">{title}</h2>
-          <button
+          <Button
+            color="red"
+            shape="close"
             onClick={() => onClose && onClose(false)}
-            className="ease-in-out duration-300 p-3 bg-red-700 hover:bg-red-600 rounded-2xl shadow-lg"
           >
             <XMarkIcon className="w-6 h-6 text-white" />
-          </button>
+          </Button>
         </header>
         <div className="m-4">{children}</div>
       </dialog>

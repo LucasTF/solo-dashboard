@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
+import Button from "@/components/ui/Button";
 import { lazy, useState } from "react";
 
 const Modal = lazy(() => import("@/components/Modal/Modal"));

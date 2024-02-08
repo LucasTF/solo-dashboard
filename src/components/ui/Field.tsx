@@ -32,7 +32,7 @@ type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
   isInvalid?: boolean;
 };
 
-export const Field = forwardRef<HTMLInputElement, FieldProps>(
+const Field = forwardRef<HTMLInputElement, FieldProps>(
   (
     {
       isInvalid = false,
@@ -69,3 +69,5 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
     );
   }
 );
+
+export default Field;
