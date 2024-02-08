@@ -3,7 +3,7 @@ import { TableStructure, TablesEnum } from "../TableStructure";
 export const obrasStructure: TableStructure = {
   columnNames: [
     "ID",
-    "Nome",
+    "Cod SP",
     "Ano",
     "Tipo Logradouro",
     "Logradouro",
@@ -14,7 +14,7 @@ export const obrasStructure: TableStructure = {
     "Proprietário",
   ],
   searchColumns: [
-    { name: "Nome", value: "nome" },
+    { name: "Cod SP", value: "nome" },
     { name: "Bairro", value: "bairro" },
     { name: "Cidade", value: "cidade" },
     { name: "Cliente", value: "cliente" },

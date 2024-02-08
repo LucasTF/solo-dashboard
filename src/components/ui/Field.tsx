@@ -1,11 +1,16 @@
-import React, { forwardRef, InputHTMLAttributes } from "react";
+import React, {
+  forwardRef,
+  InputHTMLAttributes,
+  SelectHTMLAttributes,
+} from "react";
 import { tv } from "tailwind-variants";
 
 const field = tv({
   slots: {
     root: "flex flex-col w-full gap-2",
-    label: "font-bold mt-4 flex gap-2",
+    label: "font-bold flex gap-2",
     input: "rounded-md p-4 border-[1px] border-slate-300",
+    select: "rounded-md p-4 border-[1px] border-slate-300",
     errorParagraph: "text-sm font-semibold",
   },
   variants: {
@@ -25,14 +30,17 @@ const field = tv({
   ],
 });
 
-type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
+type FieldProps = {
   label: string;
   icon?: React.ReactNode;
   errorMessage?: string;
   isInvalid?: boolean;
 };
 
-const Field = forwardRef<HTMLInputElement, FieldProps>(
+const Input = forwardRef<
+  HTMLInputElement,
+  FieldProps & InputHTMLAttributes<HTMLInputElement>
+>(
   (
     {
       isInvalid = false,
@@ -70,4 +78,39 @@ const Field = forwardRef<HTMLInputElement, FieldProps>(
   }
 );
 
-export default Field;
+const Select = forwardRef<
+  HTMLSelectElement,
+  FieldProps & SelectHTMLAttributes<HTMLSelectElement>
+>(
+  (
+    { isInvalid = false, label, id, icon, errorMessage, children, ...rest },
+    ref
+  ) => {
+    return (
+      <div className={field().root()}>
+        <label htmlFor={id} className={field({ isInvalid }).label()}>
+          {icon}
+          {label}
+        </label>
+        <select
+          className={field({ isInvalid }).select()}
+          id={id}
+          {...rest}
+          ref={ref}
+        >
+          {children}
+        </select>
+        {isInvalid && (
+          <p className={field({ isInvalid }).errorParagraph()}>
+            {errorMessage}
+          </p>
+        )}
+      </div>
+    );
+  }
+);
+
+export const Field = {
+  Input,
+  Select,
+};

@@ -17,10 +17,10 @@ import { useSessionStore } from "@/lib/stores/session";
 import { useRouter } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import Button from "../ui/Button";
-import Field from "../ui/Field";
+import { Field } from "../ui/Field";
 import { login } from "@/lib/actions/auth/login";
 import { useTransition } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 type LoginCredentials = z.infer<typeof LoginSchema>;
 
@@ -50,11 +50,11 @@ const LoginForm = () => {
         if (response.success) {
           const { email, name, surname } = response.user;
           createSession({ email, name, surname });
-          toast("Login realizado com sucesso! Redirecionando...", {
+          toast("Login realizado com sucesso!", {
             type: "success",
             autoClose: 1000,
-            onClose: () => router.push(DEFAULT_LOGIN_REDIRECT),
           });
+          router.push(DEFAULT_LOGIN_REDIRECT);
         } else toast(response.message, { type: "error" });
       } catch (error) {
         console.log(error);
@@ -80,7 +80,7 @@ const LoginForm = () => {
         className="flex flex-col gap-4 px-8 pb-8"
         onSubmit={handleSubmit((credentials) => loginHandler(credentials))}
       >
-        <Field
+        <Field.Input
           label="Email"
           id="email"
           type="email"
@@ -92,7 +92,7 @@ const LoginForm = () => {
           {...register("email")}
         />
 
-        <Field
+        <Field.Input
           label="Senha"
           id="password"
           type="password"
@@ -115,7 +115,6 @@ const LoginForm = () => {
           )}
         </Button>
       </form>
-      <ToastContainer />
     </>
   );
 };

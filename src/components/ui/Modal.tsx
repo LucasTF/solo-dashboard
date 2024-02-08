@@ -1,7 +1,7 @@
 import Backdrop from "../Backdrop/Backdrop";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import Button from "../ui/Button";
+import Button from "./Button";
 
 type ModalProps = {
   visible?: boolean;
@@ -15,7 +15,7 @@ const Modal = ({ visible = false, title, children, onClose }: ModalProps) => {
     <>
       <dialog
         open={visible}
-        className="absolute top-0 bottom-0 rounded-md shadow-lg max-h-[80%] z-40 w-11/12 lg:w-3/4 lg:max-h-none bg-slate-200 overflow-y-hidden"
+        className="absolute top-0 bottom-0 rounded-md shadow-lg z-40 w-11/12 lg:w-3/4 bg-slate-200 overflow-hidden"
       >
         <header className="flex justify-between content-center border-b-2 border-slate-400 p-4 bg-slate-300">
           <h2 className="font-bold text-2xl my-auto select-none">{title}</h2>
@@ -27,7 +27,7 @@ const Modal = ({ visible = false, title, children, onClose }: ModalProps) => {
             <XMarkIcon className="w-6 h-6 text-white" />
           </Button>
         </header>
-        <div className="m-4">{children}</div>
+        <div className="overflow-y-auto max-h-[30rem]">{children}</div>
       </dialog>
       <Backdrop visible={visible} onClick={() => onClose && onClose(false)} />
     </>
