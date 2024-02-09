@@ -1,17 +1,11 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "react-toastify/dist/ReactToastify.css";
-import "./globals.css";
+import "../globals.css";
 import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Solo Dashboard",
-  description: "Dashboard de Dados | Solo Engenharia",
-};
-
-export default function RootLayout({
+export default function MainAppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

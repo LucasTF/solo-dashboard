@@ -66,8 +66,8 @@ model Obra {
   nome                  String?     @db.VarChar(11)
   num_obra              Int?
   ano                   Int?
-  data_inicio           DateTime?
-  data_fim              DateTime?
+  data_inicio           String?     @db.VarChar(30)
+  data_fim              String?     @db.VarChar(30)
   tipo_logo             String?     @db.VarChar(10)
   logradouro            String?     @db.VarChar(40)
   lote                  String?
@@ -85,8 +85,8 @@ model Obra {
   metros_sr_rocha       String?
   rb_ponteiras          String?
   rb_equipamentos       String?
-  rb_data_inicial       DateTime?
-  rb_data_termino       DateTime?
+  rb_data_inicial       String?     @db.VarChar(30)
+  rb_data_termino       String?     @db.VarChar(30)
   TITirantes            String?
   tipo_tirantes         String?
   carga_tirantes        String?

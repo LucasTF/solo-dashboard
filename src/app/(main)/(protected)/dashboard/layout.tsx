@@ -1,4 +1,4 @@
-import { Metadata } from "next/types";
+import type { Metadata } from "next";
 
 import Footer from "@/components/layout/Footer/Footer";
 import Header from "@/components/layout/Header/Header";
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Dashboard de Dados | Solo Engenharia",
 };
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

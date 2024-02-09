@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 
 import { Table } from "../../Table";
+import Link from "next/link";
 
 type DashboardTableProps = {
   data: object[];

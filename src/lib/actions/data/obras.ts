@@ -2,11 +2,10 @@
 
 import { db } from "@/lib/db";
 import { SearchFilter } from "@/schemas";
-
-// TODO: Create Type for Obras
+import { Obra } from "@/types/obraType";
 
 export async function getObras() {
-  const obras: object[] = await db.obra.findMany({
+  const obras: Obra[] = await db.obra.findMany({
     select: {
       id: true,
       nome: true,
@@ -24,8 +23,14 @@ export async function getObras() {
   return obras;
 }
 
+export async function getObraById(id: number) {
+  const obra: Obra = await db.obra.findUnique({ where: { id } });
+
+  return obra;
+}
+
 export async function searchObras(searchFilter: SearchFilter) {
-  const obras: object[] = await db.obra.findMany({
+  const obras: Obra[] = await db.obra.findMany({
     select: {
       id: true,
       nome: true,
