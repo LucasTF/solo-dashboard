@@ -3,10 +3,10 @@
 import { useSearchParams } from "next/navigation";
 
 import { Table } from "../../Table";
-import Link from "next/link";
+import { TableData } from "@/lib/structures/TableStructure";
 
 type DashboardTableProps = {
-  data: object[];
+  data: TableData;
   columnNames: string[];
 };
 
@@ -17,12 +17,15 @@ export const DashboardTable = ({ data, columnNames }: DashboardTableProps) => {
   const rowsPerPage = Number(searchParams.get("numRows") || "10");
 
   return (
-    <Table.Base columns={columnNames} numOfRows={data.length}>
-      {data.length > 0 ? (
-        data
+    <Table.Base columns={columnNames} numOfRows={data.entries.length}>
+      {data.entries.length > 0 ? (
+        data.entries
           .slice(rowsPerPage * (page - 1), rowsPerPage * page)
           .map((row, rowIndex) => (
-            <Table.Row key={rowIndex}>
+            <Table.Row
+              key={rowIndex}
+              identifier={{ id: row.id, table: data.type }}
+            >
               {Object.entries(row).map(([_, value], index) => (
                 <Table.Cell key={index}>{value}</Table.Cell>
               ))}

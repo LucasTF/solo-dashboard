@@ -5,6 +5,7 @@ const NUMBER = "Valor deve ser um número.";
 const POSITIVE = "Valor deve ser maior ou igual a 0.";
 const GREATER_THAN_0 = "Valor deve ser maior que 0.";
 const CANNOT_BE_EMPTY = "Campo obrigatório.";
+const INVALID_DATE = "Data inválida.";
 
 export const LoginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -27,11 +28,18 @@ export const NewObraSchema = z.object({
     .nonnegative(POSITIVE),
   STTradoml: z.coerce
     .number({ invalid_type_error: NUMBER })
-    .int()
     .nonnegative(POSITIVE),
   ano: z.coerce.number().int().positive().min(1980),
-  data_inicio: z.coerce.date(),
-  data_fim: z.coerce.date(),
+  data_inicio: z.coerce.date({
+    errorMap: (issue, { defaultError }) => ({
+      message: issue.code === "invalid_date" ? INVALID_DATE : defaultError,
+    }),
+  }),
+  data_fim: z.coerce.date({
+    errorMap: (issue, { defaultError }) => ({
+      message: issue.code === "invalid_date" ? INVALID_DATE : defaultError,
+    }),
+  }),
   uf: z.string().min(2).max(2),
   cidade: z.string().min(1).max(40),
   tipo_logo: z.nativeEnum(Logradouro),

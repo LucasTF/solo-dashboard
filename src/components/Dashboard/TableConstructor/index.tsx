@@ -17,5 +17,10 @@ export const TableConstructor = async ({
 }: TableConstructorProps) => {
   const data = await getTableData(tableType, searchFilter);
 
-  return <DashboardTable columnNames={columnNames} data={data} />;
+  return (
+    <DashboardTable
+      columnNames={columnNames}
+      data={{ type: tableType, entries: data }}
+    />
+  );
 };

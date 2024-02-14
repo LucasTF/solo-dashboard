@@ -5,5 +5,5 @@ type DashboardOptionsProps = {
 };
 
 export const DashboardOptions = ({ children }: DashboardOptionsProps) => {
-  return <div className="mt-6 flex flex-row-reverse">{children}</div>;
+  return <div className="mt-6 flex flex-row-reverse gap-4">{children}</div>;
 };

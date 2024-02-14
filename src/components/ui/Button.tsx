@@ -1,4 +1,5 @@
-import React, { ButtonHTMLAttributes } from "react";
+import Link, { LinkProps } from "next/link";
+import React, { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const button = tv({
@@ -43,6 +44,10 @@ type ButtonVariants = VariantProps<typeof button>;
 
 type ButtonProps = ButtonVariants & ButtonHTMLAttributes<HTMLButtonElement>;
 
+type ButtonLinkProps = ButtonVariants &
+  LinkProps &
+  AnchorHTMLAttributes<HTMLAnchorElement>;
+
 const Button = ({
   children,
   color,
@@ -59,6 +64,27 @@ const Button = ({
     >
       {children}
     </button>
+  );
+};
+
+export const ButtonLink = ({
+  href,
+  children,
+  color,
+  fontStrength,
+  shape,
+  target,
+  ...rest
+}: ButtonLinkProps) => {
+  return (
+    <Link
+      href={href}
+      target={target}
+      className={button({ color, fontStrength, shape })}
+      {...rest}
+    >
+      {children}
+    </Link>
   );
 };
 

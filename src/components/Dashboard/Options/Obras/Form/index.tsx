@@ -203,7 +203,9 @@ export const NewObraForm = () => {
             errorMessage={errors.cidade?.message}
             {...register("cidade")}
           >
+            <option value="São Paulo">São Paulo</option>
             {municipios.map((municipio) => {
+              if (municipio.nome === "São Paulo") return;
               return (
                 <option key={municipio.id} value={municipio.nome}>
                   {municipio.nome}
