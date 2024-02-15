@@ -10,6 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// New Models
+
 model User {
   id            String    @id @default(cuid())
   name          String    @db.VarChar(30)
@@ -118,4 +120,50 @@ model So {
   @@unique([cod_so])
 
   @@index([cod_so, nome_cliente, endereco, cidade, tipo, data])
+}
+
+// Legacy Models
+
+model tbobras {
+  codobra                   Int         @id @default(autoincrement())
+  codprop                   String?     
+  nomeobra                  String?     @db.VarChar(11)
+  numobra                   Int?
+  anoobra                   Int?
+  datainiobra               String?     @db.VarChar(30)
+  datafimobra               String?     @db.VarChar(30)
+  tipologobra               String?     @db.VarChar(10)
+  logradouroobra            String?     @db.VarChar(40)
+  loteobra                  String?
+  quadraobra                String?
+  numlogobra                String?
+  bairroobra                String?     @db.VarChar(40)
+  cidadeobra                String?     @db.VarChar(40)
+  ufobra                    String?     @db.Char(2)
+  cepobra                   String?     @db.Char(9)
+  complelogobra             String?     @db.VarChar(30)
+  SPSondagem                Int?
+  MetrosSPSondagem          Float?
+  SRSondagem                String?
+  MetrosSRSolo              String?
+  MetrosSRRocha             String?
+  RBPonteiras               String?
+  RBEquipamentos            String?
+  RBDataInicial             String?     @db.VarChar(30)
+  RBDataTermino             String?     @db.VarChar(30)
+  TITirantes                String?
+  TipoTirantes              String?
+  CargaTirantes             String?
+  MicroEstaca1              String?
+  MicroEstaca2              String?
+  MicroEstaca3              String?
+  TBTubulao                 String?
+  TBCotaApoio               String?
+  TBCotaApoioA              String?
+  TBTaxaSolo                String?
+  STTrado                   Int?
+  STTradoml                 Int?
+  proprietario              String?     @db.VarChar(40)
+  cliente                   String?     @db.VarChar(40)
+
 }

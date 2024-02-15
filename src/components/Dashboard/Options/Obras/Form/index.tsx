@@ -51,6 +51,20 @@ export const NewObraForm = () => {
   const [success, setSuccess] = useState(false);
   const [isPending, startTransition] = useTransition();
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<Obra>({
+    resolver: zodResolver(NewObraSchema),
+  });
+
+  const watchCodSP = watch("nome", "");
+  const watchUf = watch("uf", "SP");
+
   useEffect(() => {
     const fetchSelects = async () => {
       const ufFetch = fetch(
@@ -73,15 +87,30 @@ export const NewObraForm = () => {
     fetchSelects().catch((error) => console.log(error));
   }, []);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<Obra>({
-    resolver: zodResolver(NewObraSchema),
-  });
+  useEffect(() => {
+    const fetchMunicipios = async () => {
+      const muniData = await fetch(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${watchUf}/municipios`
+      );
+
+      const muniJson = await muniData.json();
+
+      setMunicipios(muniJson);
+    };
+
+    fetchMunicipios().catch((error) => console.log(error));
+  }, [watchUf]);
+
+  useEffect(() => {
+    if (watchCodSP.length >= 6) {
+      let numObra = Number(watchCodSP.slice(2, 5));
+      if (!Number.isNaN(numObra)) {
+        setValue("num_obra", numObra);
+      } else {
+        setValue("num_obra", 0);
+      }
+    }
+  }, [watchCodSP]);
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
@@ -227,9 +256,7 @@ export const NewObraForm = () => {
               errorMessage={errors.cidade?.message}
               {...register("cidade")}
             >
-              <option value="São Paulo">São Paulo</option>
               {municipios.map((municipio) => {
-                if (municipio.nome === "São Paulo") return;
                 return (
                   <option key={municipio.id} value={municipio.nome}>
                     {municipio.nome}

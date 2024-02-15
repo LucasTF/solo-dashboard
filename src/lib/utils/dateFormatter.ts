@@ -9,3 +9,11 @@ export const formatFullYear = (date: Date, joinChar = "-") => {
     date.getFullYear(),
   ].join(joinChar);
 };
+
+export const formatYYYYMMDD = (date: Date, joinChar = "-") => {
+  return [
+    date.getFullYear(),
+    padTo2Digits(date.getMonth() + 1),
+    padTo2Digits(date.getDate() + 1),
+  ].join(joinChar);
+};

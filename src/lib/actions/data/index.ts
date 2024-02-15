@@ -1,7 +1,7 @@
 "use server";
 
 import { TablesEnum } from "@/lib/structures/TableStructure";
-import { getObras, searchObras } from "./obras";
+import { getTableObras, searchObras } from "./obras";
 import { ObrasSearchFilterSchema, SearchFilter } from "@/schemas";
 
 export async function getTableData(
@@ -12,7 +12,7 @@ export async function getTableData(
     case TablesEnum.Obras:
       const obrasSchema = ObrasSearchFilterSchema.safeParse(searchFilter);
       if (obrasSchema.success) return await searchObras(searchFilter);
-      return await getObras();
+      return await getTableObras();
     default:
       return [];
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { lazy, useState } from "react";
-import { DocumentTextIcon } from "@heroicons/react/24/outline";
+import { DocumentTextIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 
 import Button, { ButtonLink } from "@/components/ui/Button";
 import { DashboardOptions } from "..";
@@ -26,7 +26,8 @@ export const ObrasOptions = () => {
         type="button"
         onClick={() => setVisible(true)}
       >
-        + Nova obra
+        <PlusCircleIcon className="size-6" />
+        Nova obra
       </Button>
 
       {entry && entry.table === pathname && (
