@@ -5,14 +5,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
+import { Obra as ObraType } from "@/types/obraType";
+
 import { NewObraSchema } from "@/schemas";
 import { Logradouro } from "@/enums/Logradouro";
 
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
-import { insertNewObra } from "@/lib/actions/data/obras";
 import Loading from "../../Loading";
 import Success from "../../Success";
+import { useEntryStore } from "@/lib/stores/entry";
+import { updateObra } from "@/lib/actions/data/obras";
 
 type UF = {
   id: number;
@@ -39,9 +42,15 @@ type Municipio = {
   };
 };
 
+type EditObraFormProps = {
+  obra: ObraType;
+};
+
 type Obra = z.infer<typeof NewObraSchema>;
 
-export const NewObraForm = () => {
+export const EditObraForm = ({ obra }: EditObraFormProps) => {
+  const { entry } = useEntryStore();
+
   const year = new Date().getFullYear();
   const years = Array.from(new Array(45), (_, index) => year - index);
 
@@ -60,10 +69,26 @@ export const NewObraForm = () => {
     formState: { errors },
   } = useForm<Obra>({
     resolver: zodResolver(NewObraSchema),
+    defaultValues: {
+      nome: obra.nome,
+      ano: obra.ano,
+      bairro: obra.bairro,
+      tipo_logo: obra.tipo_logo as Logradouro,
+      cliente: obra.cliente,
+      complemento: obra.complemento_logo,
+      logradouro: obra.logradouro,
+      lote: obra.lote,
+      metros_sp_sondagem: obra.metros_sp_sondagem,
+      num_obra: obra.num_obra,
+      proprietario: obra.proprietario,
+      quadra: obra.quadra,
+      sp_sondagem: obra.sp_sondagem,
+      STTrado: obra.STTrado,
+      STTradoml: obra.STTradoml,
+      data_inicio: obra.data_inicio as unknown as Date,
+      data_fim: obra.data_fim as unknown as Date,
+    },
   });
-
-  const watchCodSP = watch("nome", "");
-  const watchUf = watch("uf", "SP");
 
   useEffect(() => {
     const fetchSelects = async () => {
@@ -71,7 +96,7 @@ export const NewObraForm = () => {
         "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
       );
       const muniFetch = fetch(
-        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/municipios"
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${obra.uf}/municipios`
       );
 
       const [ufData, muniData] = await Promise.all([ufFetch, muniFetch]);
@@ -86,6 +111,9 @@ export const NewObraForm = () => {
 
     fetchSelects().catch((error) => console.log(error));
   }, []);
+
+  const watchCodSP = watch("nome", obra.nome);
+  const watchUf = watch("uf", obra.uf);
 
   useEffect(() => {
     const fetchMunicipios = async () => {
@@ -114,7 +142,7 @@ export const NewObraForm = () => {
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
-      const response = await insertNewObra(formData);
+      const response = await updateObra(Number(entry?.id), formData);
       if (response.success) {
         reset();
         setSuccess(true);
@@ -240,9 +268,8 @@ export const NewObraForm = () => {
               errorMessage={errors.uf?.message}
               {...register("uf")}
             >
-              <option value="SP">São Paulo</option>
+              <option value={obra.uf}>{obra.uf}</option>
               {ufs.map((uf) => {
-                if (uf.sigla === "SP") return;
                 return (
                   <option key={uf.sigla} value={uf.sigla}>
                     {uf.nome}
@@ -256,6 +283,7 @@ export const NewObraForm = () => {
               errorMessage={errors.cidade?.message}
               {...register("cidade")}
             >
+              <option value={obra.cidade}>{obra.cidade}</option>
               {municipios.map((municipio) => {
                 return (
                   <option key={municipio.id} value={municipio.nome}>

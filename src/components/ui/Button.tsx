@@ -7,6 +7,7 @@ const button = tv({
   variants: {
     color: {
       blue: "bg-sky-900 hover:bg-sky-800",
+      lightblue: "bg-sky-700 hover:bg-sky-600",
       green: "bg-green-700 hover:bg-green-600",
       red: "bg-red-700 hover:bg-red-600",
       clear: "text-black hover:bg-sky-800 hover:text-white",

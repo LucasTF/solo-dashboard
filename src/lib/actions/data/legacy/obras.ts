@@ -87,6 +87,42 @@ export async function searchObrasLegacy(searchFilter: SearchFilter) {
 
 type ObraData = z.infer<typeof NewObraSchema>;
 
+export async function updateObraLegacy(
+  id: number,
+  obra: ObraData
+): Promise<ServerResponse> {
+  const data = {
+    nomeobra: obra.nome,
+    numobra: obra.num_obra,
+    SPSondagem: obra.sp_sondagem,
+    MetrosSPSondagem: obra.metros_sp_sondagem,
+    STTrado: obra.STTrado,
+    STTradoml: obra.STTradoml,
+    datainiobra: formatYYYYMMDD(obra.data_inicio),
+    datafimobra: formatYYYYMMDD(obra.data_fim),
+    anoobra: obra.ano,
+    tipologobra: obra.tipo_logo,
+    cidadeobra: obra.cidade,
+    ufobra: obra.uf,
+    logradouroobra: obra.logradouro,
+    complelogobra: obra.complemento,
+    bairroobra: obra.bairro,
+    loteobra: obra.lote,
+    quadraobra: obra.quadra,
+    cliente: obra.cliente,
+    proprietario: obra.proprietario,
+  };
+
+  await db.tbobras.update({
+    data,
+    where: {
+      codobra: id,
+    },
+  });
+
+  return { success: true, message: "Obra criada com sucesso!" };
+}
+
 export async function insertNewObraLegacy(
   obra: ObraData
 ): Promise<ServerResponse> {
