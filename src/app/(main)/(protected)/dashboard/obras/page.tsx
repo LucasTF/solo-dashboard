@@ -1,6 +1,5 @@
 import { Dashboard } from "@/components/Dashboard";
 import { obrasStructure } from "@/lib/structures/dashboard/structures";
-import Link from "next/link";
 
 type PageProps = {
   searchParams: {

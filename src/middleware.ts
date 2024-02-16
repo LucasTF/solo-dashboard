@@ -12,6 +12,7 @@ export default function auth(req: NextRequest) {
 
   const isPublicRoute = publicRoutes.includes(pathname);
   const isAuthRoute = authRoutes.includes(pathname);
+  const isStartRoute = pathname === "/";
 
   const token = req.cookies.get("jwt");
 
@@ -30,6 +31,9 @@ export default function auth(req: NextRequest) {
         new URL(DEFAULT_UNAUTHENTICATED_REDIRECT, req.nextUrl)
       );
     }
+
+    if (isStartRoute)
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
 
     return null;
   }
