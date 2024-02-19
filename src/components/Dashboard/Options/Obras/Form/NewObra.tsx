@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { NewObraSchema } from "@/schemas";
+import { ObraModalSchema } from "@/schemas";
 import { Logradouro } from "@/enums/Logradouro";
 
 import Button from "@/components/ui/Button";
@@ -39,7 +39,7 @@ type Municipio = {
   };
 };
 
-type Obra = z.infer<typeof NewObraSchema>;
+type Obra = z.infer<typeof ObraModalSchema>;
 
 export const NewObraForm = () => {
   const year = new Date().getFullYear();
@@ -59,7 +59,7 @@ export const NewObraForm = () => {
     setValue,
     formState: { errors },
   } = useForm<Obra>({
-    resolver: zodResolver(NewObraSchema),
+    resolver: zodResolver(ObraModalSchema),
   });
 
   const watchCodSP = watch("nome", "");
@@ -110,7 +110,7 @@ export const NewObraForm = () => {
         setValue("num_obra", 0);
       }
     }
-  }, [watchCodSP]);
+  }, [watchCodSP, setValue]);
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {

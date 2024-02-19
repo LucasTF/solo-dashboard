@@ -13,8 +13,8 @@ export type LegacyDbObra = {
   loteobra?: string;
   quadraobra?: string;
   numlogobra?: string;
-  bairroobra?: string;
   cidadeobra?: string;
+  bairroobra?: string;
   ufobra?: string;
   cepobra?: string;
   complelogobra?: string;
@@ -43,9 +43,7 @@ export type LegacyDbObra = {
   cliente?: string;
 };
 
-export function adaptToObra(obra: LegacyDbObra): Obra | {} {
-  if (obra === null) return {};
-
+export function adaptToObra(obra: LegacyDbObra): Obra {
   return {
     id: obra.codobra,
     cod_prop: obra.codprop,
@@ -59,8 +57,8 @@ export function adaptToObra(obra: LegacyDbObra): Obra | {} {
     lote: obra.loteobra,
     quadra: obra.quadraobra,
     num_logo: obra.numlogobra,
-    bairro: obra.bairroobra,
     cidade: obra.cidadeobra,
+    bairro: obra.bairroobra,
     uf: obra.ufobra,
     cep: obra.cepobra,
     complemento_logo: obra.complelogobra,
@@ -104,8 +102,8 @@ export function adaptFromObra(obra: Obra): LegacyDbObra {
     loteobra: obra.lote,
     quadraobra: obra.quadra,
     numlogobra: obra.num_logo,
-    bairroobra: obra.bairro,
     cidadeobra: obra.cidade,
+    bairroobra: obra.bairro,
     ufobra: obra.uf,
     cepobra: obra.cep,
     complelogobra: obra.complemento_logo,

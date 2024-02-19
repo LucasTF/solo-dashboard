@@ -7,7 +7,7 @@ import * as z from "zod";
 
 import { Obra as ObraType } from "@/types/obraType";
 
-import { NewObraSchema } from "@/schemas";
+import { ObraModalSchema } from "@/schemas";
 import { Logradouro } from "@/enums/Logradouro";
 
 import Button from "@/components/ui/Button";
@@ -46,7 +46,7 @@ type EditObraFormProps = {
   obra: ObraType;
 };
 
-type Obra = z.infer<typeof NewObraSchema>;
+type Obra = z.infer<typeof ObraModalSchema>;
 
 export const EditObraForm = ({ obra }: EditObraFormProps) => {
   const { entry } = useEntryStore();
@@ -68,7 +68,7 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
     setValue,
     formState: { errors },
   } = useForm<Obra>({
-    resolver: zodResolver(NewObraSchema),
+    resolver: zodResolver(ObraModalSchema),
     defaultValues: {
       nome: obra.nome,
       ano: obra.ano,
@@ -138,7 +138,7 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
         setValue("num_obra", 0);
       }
     }
-  }, [watchCodSP]);
+  }, [watchCodSP, setValue]);
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
@@ -350,7 +350,7 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
 
         <section className="flex flex-row-reverse mt-4">
           <Button color="green" fontStrength="semibold" type="submit">
-            Cadastrar nova obra
+            Atualizar obra
           </Button>
         </section>
       </form>

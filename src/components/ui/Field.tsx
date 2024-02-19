@@ -78,6 +78,8 @@ const Input = forwardRef<
   }
 );
 
+Input.displayName = "InputField";
+
 const Select = forwardRef<
   HTMLSelectElement,
   FieldProps & SelectHTMLAttributes<HTMLSelectElement>
@@ -109,6 +111,8 @@ const Select = forwardRef<
     );
   }
 );
+
+Select.displayName = "SelectField";
 
 export const Field = {
   Input,

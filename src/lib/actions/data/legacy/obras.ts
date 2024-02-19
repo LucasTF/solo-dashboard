@@ -5,7 +5,7 @@ import * as z from "zod";
 import { LegacyDbObra, adaptToObra } from "@/lib/adapters/obraAdapter";
 import { db } from "@/lib/db";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
-import { NewObraSchema, SearchFilter } from "@/schemas";
+import { ObraModalSchema, SearchFilter } from "@/schemas";
 import { ServerResponse } from "@/types/serverResponseType";
 
 export async function getTableObrasLegacy() {
@@ -85,7 +85,7 @@ export async function searchObrasLegacy(searchFilter: SearchFilter) {
   return treatedObras;
 }
 
-type ObraData = z.infer<typeof NewObraSchema>;
+type ObraData = z.infer<typeof ObraModalSchema>;
 
 export async function updateObraLegacy(
   id: number,

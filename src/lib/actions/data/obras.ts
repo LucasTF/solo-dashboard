@@ -3,7 +3,7 @@
 import * as z from "zod";
 
 import { db } from "@/lib/db";
-import { NewObraSchema, SearchFilter } from "@/schemas";
+import { ObraModalSchema, SearchFilter } from "@/schemas";
 import { Obra } from "@/types/obraType";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 import { ServerResponse } from "@/types/serverResponseType";
@@ -15,9 +15,11 @@ import {
   updateObraLegacy,
 } from "./legacy/obras";
 
+const isLegacy = process.env.USE_LEGACY_TABLES === "true";
+
 export async function getTableObras() {
   try {
-    if (process.env.USE_LEGACY_TABLES) return await getTableObrasLegacy();
+    if (isLegacy) return await getTableObrasLegacy();
 
     const obras: Obra[] = await db.obra.findMany({
       select: {
@@ -43,21 +45,20 @@ export async function getTableObras() {
 
 export async function getObraById(id: number) {
   try {
-    if (process.env.USE_LEGACY_TABLES) return await getObraByIdLegacy(id);
+    if (isLegacy) return await getObraByIdLegacy(id);
 
     const obra: Obra = await db.obra.findUnique({ where: { id } });
 
     return obra;
   } catch (error) {
     console.log(error);
-    return {};
+    return {} as Obra;
   }
 }
 
 export async function searchObras(searchFilter: SearchFilter) {
   try {
-    if (process.env.USE_LEGACY_TABLES)
-      return await searchObrasLegacy(searchFilter);
+    if (isLegacy) return await searchObrasLegacy(searchFilter);
 
     const obras: Obra[] = await db.obra.findMany({
       select: {
@@ -86,14 +87,14 @@ export async function searchObras(searchFilter: SearchFilter) {
   }
 }
 
-type ObraData = z.infer<typeof NewObraSchema>;
+type ObraData = z.infer<typeof ObraModalSchema>;
 
 export async function updateObra(
   id: number,
   obra: ObraData
 ): Promise<ServerResponse> {
   try {
-    if (process.env.USE_LEGACY_TABLES) return await updateObraLegacy(id, obra);
+    if (isLegacy) return await updateObraLegacy(id, obra);
 
     const data = {
       nome: obra.nome,
@@ -132,7 +133,7 @@ export async function updateObra(
 
 export async function insertNewObra(obra: ObraData): Promise<ServerResponse> {
   try {
-    if (process.env.USE_LEGACY_TABLES) return await insertNewObraLegacy(obra);
+    if (isLegacy) return await insertNewObraLegacy(obra);
 
     const data = {
       nome: obra.nome,

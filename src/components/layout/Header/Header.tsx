@@ -29,7 +29,7 @@ const Header = () => {
   }, []);
 
   const logoutHandler = async () => {
-    const response = await logout();
+    await logout();
     dropSession();
     router.push(DEFAULT_UNAUTHENTICATED_REDIRECT);
   };
