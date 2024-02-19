@@ -33,8 +33,10 @@ export const ObrasOptions = () => {
 
   useEffect(() => {
     const fetchObra = async () => {
-      const obraData = (await getObraById(Number(entry?.id))) as Obra;
-      setObra(obraData);
+      if (entry) {
+        const obraData = (await getObraById(Number(entry.id))) as Obra;
+        setObra(obraData);
+      }
     };
     fetchObra().catch((err) => console.log(err));
   }, [entry]);

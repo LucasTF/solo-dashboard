@@ -2,6 +2,24 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { tv } from "tailwind-variants";
+
+const pagButton = tv({
+  base: "py-2 px-2 rounded-md shadow-md bg-slate-100",
+  variants: {
+    type: {
+      numbered: "md:px-4",
+      arrow: "md:px-3",
+      bigArrow: "md:px-1",
+    },
+    selected: {
+      true: "font-bold bg-sky-800 text-white",
+    },
+    invisible: {
+      true: "invisible",
+    },
+  },
+});
 
 type PaginationProps = {
   numOfRows: number;
@@ -44,12 +62,10 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
           <Link
             key={index}
             href={pathBuilder("page", p)}
-            className={
-              "py-2 px-2 md:px-4 rounded-md shadow-md " +
-              (page === String(p) || (!page && p === 1)
-                ? "font-bold bg-sky-800 text-white"
-                : "bg-slate-100")
-            }
+            className={pagButton({
+              selected: page === String(p) || (!page && p === 1),
+              type: "numbered",
+            })}
           >
             {p}
           </Link>
@@ -63,12 +79,11 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
           <Link
             key={index}
             href={pathBuilder("page", index + 1)}
-            className={
-              "py-2 px-2 md:px-4 rounded-md shadow-md " +
-              (page === String(index + 1) || (!page && index + 1 === 1)
-                ? "font-bold bg-sky-800 text-white"
-                : "bg-slate-100")
-            }
+            className={pagButton({
+              selected:
+                page === String(index + 1) || (!page && index + 1 === 1),
+              type: "numbered",
+            })}
           >
             {index + 1}
           </Link>
@@ -82,23 +97,38 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
   return (
     <div className="flex justify-center gap-4 mt-4">
       <Link
+        href={pathBuilder("page", 1)}
+        className={pagButton({
+          invisible: Number(page) <= 1,
+          type: "bigArrow",
+        })}
+      >
+        &lt;&lt;
+      </Link>
+      <Link
         href={pathBuilder("page", Number(page) - 1)}
-        className={
-          "py-2 px-2 md:px-3 bg-slate-100 rounded-md shadow-md " +
-          (Number(page) > 1 ? "" : "invisible")
-        }
+        className={pagButton({ invisible: Number(page) <= 1, type: "arrow" })}
       >
         &lt;
       </Link>
       {pagination()}
       <Link
         href={pathBuilder("page", Number(page) + 1)}
-        className={
-          "py-2 px-2 md:px-3 bg-slate-100 rounded-md shadow-md " +
-          (Number(page) < totalPages ? "" : "invisible")
-        }
+        className={pagButton({
+          invisible: Number(page) >= totalPages,
+          type: "arrow",
+        })}
       >
         &gt;
+      </Link>
+      <Link
+        href={pathBuilder("page", totalPages)}
+        className={pagButton({
+          invisible: Number(page) >= totalPages,
+          type: "bigArrow",
+        })}
+      >
+        &gt;&gt;
       </Link>
     </div>
   );

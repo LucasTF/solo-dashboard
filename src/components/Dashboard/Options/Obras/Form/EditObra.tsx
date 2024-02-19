@@ -155,7 +155,7 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
 
   const formBuilder = () => {
     if (isPending) return <Loading />;
-    if (success) return <Success message="Obra criada com sucesso!" />;
+    if (success) return <Success message="Obra atualizada com sucesso!" />;
     return (
       <form
         className="m-4"
