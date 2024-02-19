@@ -44,11 +44,14 @@ export async function searchObrasLegacy(searchFilter: SearchFilter) {
     case "nome":
       column = "nomeobra";
       break;
+    case "cidade":
+      column = "cidadeobra";
+      break;
     case "bairro":
       column = "bairroobra";
       break;
-    case "cidade":
-      column = "cidadeobra";
+    case "logradouro":
+      column = "logradouroobra";
       break;
     case "cliente":
       column = "cliente";

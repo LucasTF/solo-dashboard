@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
-import { Table } from "../../Table";
+import { Table } from "../Table";
 import { TableData } from "@/lib/structures/TableStructure";
 
 type DashboardTableProps = {

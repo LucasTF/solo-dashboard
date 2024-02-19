@@ -61,5 +61,12 @@ export type SearchFilter = z.infer<typeof DashboardTableSearchSchema>;
 
 export const ObrasSearchFilterSchema = z.object({
   search: z.string().min(1),
-  column: z.enum(["nome", "bairro", "cidade", "cliente", "proprietario"]),
+  column: z.enum([
+    "nome",
+    "bairro",
+    "logradouro",
+    "cidade",
+    "cliente",
+    "proprietario",
+  ]),
 });

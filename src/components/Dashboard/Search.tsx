@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DashboardTableSearchSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Searchbar } from "../Searchbar";
 import { SearchColumn, TablesEnum } from "@/lib/structures/TableStructure";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
@@ -16,7 +15,7 @@ type SearchFormProps = {
   selectedIndex?: number;
 };
 
-export const SearchForm = ({
+export const Search = ({
   searchColumns,
   table,
   selectedIndex = 0,
@@ -47,7 +46,13 @@ export const SearchForm = ({
         searchHandler(onValid.search, onValid.column)
       )}
     >
-      <Searchbar validation={register("search")} />
+      <input
+        type="text"
+        autoComplete="off"
+        placeholder="Buscar"
+        className="w-full p-4 rounded-md"
+        {...register("search")}
+      />
 
       <div className="flex gap-4">
         <select

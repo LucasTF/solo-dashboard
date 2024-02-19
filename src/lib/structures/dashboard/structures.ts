@@ -15,8 +15,9 @@ export const obrasStructure: TableStructure = {
   ],
   searchColumns: [
     { name: "Cod SP", value: "nome" },
-    { name: "Bairro", value: "bairro" },
     { name: "Cidade", value: "cidade" },
+    { name: "Bairro", value: "bairro" },
+    { name: "Logradouro", value: "logradouro" },
     { name: "Cliente", value: "cliente" },
     { name: "Proprietário", value: "proprietario" },
   ],
