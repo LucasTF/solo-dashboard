@@ -4,7 +4,7 @@ const spinner = tv({
   base: "border-gray-300 animate-spin rounded-full border-8 border-t-sky-400",
   variants: {
     size: {
-      sm: "size-10",
+      sm: "size-6 border-4",
       md: "size-16",
       lg: "size-24",
     },

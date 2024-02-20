@@ -1,6 +1,10 @@
 "use client";
 
-import { FunnelIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import {
+  FunnelIcon,
+  ArrowRightIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DashboardTableSearchSchema } from "@/schemas";
@@ -41,7 +45,7 @@ export const Search = ({
 
   return (
     <form
-      className="flex gap-4 max-md:flex-col"
+      className="flex gap-4 max-md:flex-col relative"
       onSubmit={handleSubmit((onValid) =>
         searchHandler(onValid.search, onValid.column)
       )}
@@ -50,9 +54,10 @@ export const Search = ({
         type="text"
         autoComplete="off"
         placeholder="Buscar"
-        className="w-full p-4 rounded-md"
+        className="w-full p-4 pl-12 rounded-md"
         {...register("search")}
       />
+      <MagnifyingGlassIcon className="size-6 absolute top-4 left-4 text-gray-400" />
 
       <div className="flex gap-4">
         <select
@@ -67,11 +72,11 @@ export const Search = ({
         </select>
 
         <Button type="submit" color="green" shape="rectangle">
-          <ArrowRightIcon className="h-6 w-6" />
+          <ArrowRightIcon className="size-6" />
         </Button>
 
         <Button type="button" color="clear">
-          <FunnelIcon className="h-6 w-6" />
+          <FunnelIcon className="size-6" />
         </Button>
       </div>
     </form>

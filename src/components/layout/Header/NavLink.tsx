@@ -1,25 +1,31 @@
 "use client";
 
-import Link from "next/link";
+import React, { AnchorHTMLAttributes } from "react";
+import Link, { LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import { VariantProps, tv } from "tailwind-variants";
 
-type NavLinkProps = {
-  children?: React.ReactNode;
-  href: string;
-};
+const navLink = tv({
+  base: "hover:text-sky-800 ease-in-out duration-300",
+  variants: {
+    selected: {
+      true: "font-bold text-sky-800",
+    },
+  },
+});
 
-const NavLink = ({ children, href }: NavLinkProps) => {
+type NavLinkProps = VariantProps<typeof navLink> &
+  LinkProps &
+  AnchorHTMLAttributes<HTMLAnchorElement>;
+
+const NavLink = ({ children, href, selected, ...rest }: NavLinkProps) => {
   const pathname = usePathname();
 
   return (
     <Link
       href={href}
-      className={
-        "hover:text-sky-800 ease-in-out duration-300" +
-        " " +
-        (pathname.startsWith(href) ? "font-bold text-sky-800" : "")
-      }
+      className={navLink({ selected: pathname.startsWith(href) })}
+      {...rest}
     >
       {children}
     </Link>

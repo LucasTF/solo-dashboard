@@ -15,7 +15,7 @@ const row = tv({
   base: "odd:bg-white even:bg-gray-100 hover:bg-gray-200 cursor-pointer",
   variants: {
     selected: {
-      true: "odd:bg-sky-500 even:bg-sky-500 border-[1px] border-sky-400 hover:bg-sky-500",
+      true: "odd:bg-sky-500 even:bg-sky-500 hover:bg-sky-500",
     },
   },
 });

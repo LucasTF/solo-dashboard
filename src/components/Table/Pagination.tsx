@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { tv } from "tailwind-variants";
 
 const pagButton = tv({
-  base: "py-2 px-2 rounded-md shadow-md bg-slate-100",
+  base: "p-2 rounded-md shadow-md bg-slate-100 max-md:text-sm",
   variants: {
     type: {
       numbered: "md:px-4",
@@ -95,7 +95,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
   };
 
   return (
-    <div className="flex justify-center gap-4 mt-4">
+    <div className="flex justify-center gap-2 md:gap-4 mt-4">
       <Link
         href={pathBuilder("page", 1)}
         className={pagButton({

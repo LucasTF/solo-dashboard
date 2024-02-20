@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import {
   Bars3Icon,
   SunIcon,
@@ -8,14 +11,23 @@ import {
   ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 
-import { useEffect, useState } from "react";
+import { logout } from "@/lib/actions/auth/logout";
 
 import Backdrop from "@/components/Backdrop/Backdrop";
 import NavLink from "./NavLink";
 import { useSessionStore } from "@/lib/stores/session";
-import { useRouter } from "next/navigation";
-import { logout } from "@/lib/actions/auth/logout";
 import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
+import { tv } from "tailwind-variants";
+
+const drawer = tv({
+  base: "max-lg:absolute max-lg:top-0 max-lg:left-0 max-md:w-3/5 max-lg:h-screen max-lg:bg-slate-200 max-lg:z-40 flex max-lg:flex-col lg:items-center lg:h-full lg:justify-around transition ease-in duration-300",
+  variants: {
+    open: {
+      true: "max-lg:translate-x-0",
+      false: "max-lg:-translate-x-full",
+    },
+  },
+});
 
 const Header = () => {
   const [isDrawerOpen, toggleDrawer] = useState(false);
@@ -34,35 +46,25 @@ const Header = () => {
     router.push(DEFAULT_UNAUTHENTICATED_REDIRECT);
   };
 
-  let drawerAnimation = isDrawerOpen
-    ? "max-lg:translate-x-0"
-    : "max-lg:-translate-x-full";
-
   return (
-    <header className="h-14 max-h-14 bg-slate-200 sticky top-0 left-0">
+    <header className="h-14 max-h-14 bg-slate-200 sticky top-0 left-0 z-10">
       <div className="lg:hidden h-full w-full flex justify-between items-center px-5">
         <button
           className="bg-slate-200 rounded-md p-2"
           type="button"
           onClick={() => toggleDrawer(true)}
         >
-          <Bars3Icon className="w-6 h-6" />
+          <Bars3Icon className="size-6" />
         </button>
         <button
           type="button"
           className="bg-slate-200 rounded-md p-2 hover:shadow-md ease-in-out duration-300"
         >
-          <MoonIcon className="w-6 h-6" />
+          <MoonIcon className="size-6" />
         </button>
       </div>
 
-      <nav
-        className={
-          "max-lg:absolute max-lg:top-0 max-lg:left-0 max-md:w-3/5 max-lg:h-screen max-lg:bg-slate-200 max-lg:z-40 flex max-lg:flex-col lg:items-center lg:h-full lg:justify-around transition ease-in duration-300" +
-          " " +
-          drawerAnimation
-        }
-      >
+      <nav className={drawer({ open: isDrawerOpen })}>
         <h1 className="font-bold select-none max-lg:hidden">Solo Dashboard</h1>
 
         <div className="lg:hidden bg-slate-300 border-b-slate-400 border-[1px] p-4 flex flex-col gap-4 justify-center items-center">
@@ -77,7 +79,7 @@ const Header = () => {
             className="font-bold bg-red-600 px-2 py-1 flex rounded-md text-white border-red-700 shadow-lg border-2"
             onClick={() => logoutHandler()}
           >
-            <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
+            <ArrowLeftStartOnRectangleIcon className="size-6" />
             <span>Sair</span>
           </button>
         </div>
@@ -100,7 +102,7 @@ const Header = () => {
         <ul className="flex gap-4 items-center max-lg:hidden">
           <li>
             <p className="flex gap-1">
-              <UserCircleIcon className="w-6 h-6" />
+              <UserCircleIcon className="size-6" />
               <span className="font-bold select-none">{session?.name}</span>
             </p>
           </li>
@@ -111,7 +113,7 @@ const Header = () => {
               className="flex gap-1 p-2 hover:text-red-600 hover:shadow-md ease-in-out duration-300"
               onClick={() => logoutHandler()}
             >
-              <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
+              <ArrowLeftStartOnRectangleIcon className="size-6" />
               <span className="font-bold">Sair</span>
             </button>
           </li>
@@ -121,7 +123,7 @@ const Header = () => {
               type="button"
               className="bg-slate-200 rounded-md p-2 hover:shadow-md ease-in-out duration-300"
             >
-              <MoonIcon className="w-6 h-6" />
+              <MoonIcon className="size-6" />
             </button>
           </li>
         </ul>

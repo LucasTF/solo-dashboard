@@ -51,7 +51,7 @@ export const ObrasOptions = () => {
   };
 
   return (
-    <div className="mt-6 flex justify-between flex-row-reverse">
+    <div className="mt-6 flex justify-between max-md:flex-col-reverse md:flex-row-reverse max-md:gap-8">
       <Button
         color="green"
         fontStrength="semibold"
@@ -63,7 +63,8 @@ export const ObrasOptions = () => {
       </Button>
 
       {entry && entry.table === pathname && (
-        <div className="flex gap-4">
+        <div className="flex gap-2 md:gap-4 max-md:flex-col">
+          <h3 className="text-center md:hidden">Opções</h3>
           <Button
             color="lightblue"
             fontStrength="semibold"

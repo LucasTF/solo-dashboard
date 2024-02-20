@@ -21,6 +21,7 @@ import { Field } from "../ui/Field";
 import { login } from "@/lib/actions/auth/login";
 import { useTransition } from "react";
 import { toast } from "react-toastify";
+import Spinner from "../ui/Spinner";
 
 type LoginCredentials = z.infer<typeof LoginSchema>;
 
@@ -52,7 +53,6 @@ const LoginForm = () => {
           createSession({ email, name, surname });
           toast("Login realizado com sucesso!", {
             type: "success",
-            autoClose: 1000,
           });
           router.push(DEFAULT_LOGIN_REDIRECT);
         } else toast(response.message, { type: "error" });
@@ -106,7 +106,7 @@ const LoginForm = () => {
 
         <Button disabled={isPending}>
           {isPending ? (
-            <>Processando...</>
+            <Spinner size="sm" />
           ) : (
             <>
               <LockOpenIcon className="w-5 h-5" />
