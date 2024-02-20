@@ -31,5 +31,5 @@ export type TableData = ObrasData | ClientesData | ProprietariosData;
 export type TableStructure = {
   searchColumns: SearchColumn[];
   columnNames: string[];
-  type: TablesEnum;
+  table: TablesEnum;
 };

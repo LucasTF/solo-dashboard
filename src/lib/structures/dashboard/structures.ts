@@ -1,6 +1,8 @@
+import { ObrasSearchColumnsEnum } from "@/enums/SearchColumns";
 import { TableStructure, TablesEnum } from "../TableStructure";
 
 export const obrasStructure: TableStructure = {
+  table: TablesEnum.Obras,
   columnNames: [
     "ID",
     "Cod SP",
@@ -14,12 +16,11 @@ export const obrasStructure: TableStructure = {
     "Proprietário",
   ],
   searchColumns: [
-    { name: "Cod SP", value: "nome" },
-    { name: "Cidade", value: "cidade" },
-    { name: "Bairro", value: "bairro" },
-    { name: "Logradouro", value: "logradouro" },
-    { name: "Cliente", value: "cliente" },
-    { name: "Proprietário", value: "proprietario" },
+    { name: "Cod SP", value: ObrasSearchColumnsEnum.CodSP },
+    { name: "Cidade", value: ObrasSearchColumnsEnum.Cidade },
+    { name: "Bairro", value: ObrasSearchColumnsEnum.Bairro },
+    { name: "Logradouro", value: ObrasSearchColumnsEnum.Logradouro },
+    { name: "Cliente", value: ObrasSearchColumnsEnum.Cliente },
+    { name: "Proprietário", value: ObrasSearchColumnsEnum.Proprietario },
   ],
-  type: TablesEnum.Obras,
 };

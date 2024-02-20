@@ -1,54 +1,33 @@
 "use client";
 
+import { UseFormRegister } from "react-hook-form";
+
 import {
   FunnelIcon,
   ArrowRightIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { DashboardTableSearchSchema } from "@/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SearchColumn, TablesEnum } from "@/lib/structures/TableStructure";
-import { useRouter } from "next/navigation";
-import Button from "@/components/ui/Button";
 
-type SearchFormProps = {
+import { SearchColumn } from "@/lib/structures/TableStructure";
+import Button from "@/components/ui/Button";
+import { FormHTMLAttributes } from "react";
+
+type SearchProps = FormHTMLAttributes<HTMLFormElement> & {
   searchColumns: SearchColumn[];
-  table: TablesEnum;
-  selectedIndex?: number;
+  register: UseFormRegister<any>;
 };
 
-export const Search = ({
+export const SearchBase = ({
+  onSubmit,
+  register,
   searchColumns,
-  table,
-  selectedIndex = 0,
-}: SearchFormProps) => {
-  const router = useRouter();
-
-  const { register, handleSubmit } = useForm<
-    z.infer<typeof DashboardTableSearchSchema>
-  >({
-    resolver: zodResolver(DashboardTableSearchSchema),
-    defaultValues: {
-      search: "",
-    },
-  });
-
-  const searchHandler = (searchString: string, column: string) => {
-    const newUrl =
-      table +
-      "?" +
-      new URLSearchParams(`search=${searchString}&column=${column}`);
-    router.push(newUrl);
-  };
-
+  ...rest
+}: SearchProps) => {
   return (
     <form
       className="flex gap-4 max-md:flex-col relative"
-      onSubmit={handleSubmit((onValid) =>
-        searchHandler(onValid.search, onValid.column)
-      )}
+      onSubmit={onSubmit}
+      {...rest}
     >
       <input
         type="text"

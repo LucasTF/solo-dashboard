@@ -7,17 +7,17 @@ import { TableData } from "@/lib/structures/TableStructure";
 
 type DashboardTableProps = {
   data: TableData;
-  columnNames: string[];
+  columns: string[];
 };
 
-export const DashboardTable = ({ data, columnNames }: DashboardTableProps) => {
+export const DashboardTable = ({ data, columns }: DashboardTableProps) => {
   const searchParams = useSearchParams();
 
   const page = Number(searchParams.get("page") || "1");
   const rowsPerPage = Number(searchParams.get("numRows") || "10");
 
   return (
-    <Table.Base columns={columnNames} numOfRows={data.entries.length}>
+    <Table.Base columns={columns} numOfRows={data.entries.length}>
       {data.entries.length > 0 ? (
         data.entries
           .slice(rowsPerPage * (page - 1), rowsPerPage * page)
@@ -33,7 +33,7 @@ export const DashboardTable = ({ data, columnNames }: DashboardTableProps) => {
           ))
       ) : (
         <Table.Row>
-          <Table.Cell colSpan={columnNames.length}>
+          <Table.Cell colSpan={columns.length}>
             Nenhum resultado foi encontrado.
           </Table.Cell>
         </Table.Row>

@@ -1,27 +1,26 @@
 import { Dashboard } from "@/components/Dashboard";
+import { ObrasSearchColumnsEnum } from "@/enums/SearchColumns";
 import { obrasStructure } from "@/lib/structures/dashboard/structures";
 
 type PageProps = {
   searchParams: {
     search?: string;
-    column?: string;
-    numRows?: string;
-    page?: string;
+    column?: ObrasSearchColumnsEnum;
   };
 };
 
 export default async function ObrasPage({ searchParams }: PageProps) {
   return (
     <Dashboard.Template title="Obras">
-      <Dashboard.Search
+      <Dashboard.Search.Obras
         searchColumns={obrasStructure.searchColumns}
-        table={obrasStructure.type}
+        table={obrasStructure.table}
       />
 
       <Dashboard.TableConstructor
-        columnNames={obrasStructure.columnNames}
-        tableType={obrasStructure.type}
-        searchFilter={{
+        columns={obrasStructure.columnNames}
+        searchFilters={{
+          table: obrasStructure.table,
           search: searchParams.search!,
           column: searchParams.column!,
         }}

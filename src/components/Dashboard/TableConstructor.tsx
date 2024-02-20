@@ -1,26 +1,22 @@
 import { getTableData } from "@/lib/actions/data";
 import { DashboardTable } from "./Table";
-import { TablesEnum } from "@/lib/structures/TableStructure";
-import { SearchFilter } from "@/schemas";
-import React from "react";
+import { SearchFilters } from "@/types/SearchFilters";
 
 type TableConstructorProps = {
-  columnNames: string[];
-  searchFilter: SearchFilter;
-  tableType: TablesEnum;
+  columns: string[];
+  searchFilters: SearchFilters;
 };
 
 export const TableConstructor = async ({
-  columnNames,
-  searchFilter,
-  tableType,
+  columns,
+  searchFilters,
 }: TableConstructorProps) => {
-  const data = await getTableData(tableType, searchFilter);
+  const data = await getTableData(searchFilters);
 
   return (
     <DashboardTable
-      columnNames={columnNames}
-      data={{ type: tableType, entries: data }}
+      columns={columns}
+      data={{ type: searchFilters.table, entries: data }}
     />
   );
 };
