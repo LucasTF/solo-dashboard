@@ -11,7 +11,7 @@ import Button, { ButtonLink } from "@/components/ui/Button";
 
 import { NewObraForm } from "./Form/NewObra";
 import { useEntryStore } from "@/lib/stores/entry";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { EditObraForm } from "./Form/EditObra";
 import { Obra } from "@/types/data/Obra";
 import { getObraById } from "@/lib/actions/data/obras";
@@ -28,13 +28,15 @@ export const ObrasOptions = () => {
   const [modal, setModal] = useState<ModalState>(ModalState.Off);
   const [obra, setObra] = useState<Obra>();
 
-  const { entry } = useEntryStore();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const { entry } = useEntryStore();
 
   useEffect(() => {
     const fetchObra = async () => {
       if (entry) {
-        const obraData = (await getObraById(Number(entry.id))) as Obra;
+        const obraData = (await getObraById(Number(entry.data.id))) as Obra;
         setObra(obraData);
       }
     };
@@ -62,9 +64,9 @@ export const ObrasOptions = () => {
         Nova obra
       </Button>
 
-      {entry && entry.table === pathname && (
+      {entry && searchParams.size > 0 && entry.table === pathname && (
         <div className="flex gap-2 md:gap-4 max-md:flex-col">
-          <h3 className="text-center md:hidden">Opções</h3>
+          <h3 className="max-md:text-center md:hidden">Opções</h3>
           <Button
             color="lightblue"
             fontStrength="semibold"
@@ -72,16 +74,16 @@ export const ObrasOptions = () => {
             onClick={() => setModal(ModalState.Edit)}
           >
             <PencilSquareIcon className="size-6" />
-            Editar obra
+            Editar obra ({obra?.sp})
           </Button>
 
           <ButtonLink
             fontStrength="semibold"
-            href={`/report/obra/${entry.id}`}
+            href={`/report/obra/${entry.data.id}`}
             target="_blank"
           >
             <DocumentTextIcon className="size-6" />
-            Relatório
+            Relatório ({obra?.sp})
           </ButtonLink>
         </div>
       )}

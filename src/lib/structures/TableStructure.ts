@@ -1,4 +1,4 @@
-import { Obra } from "@/types/obraType";
+import { Obra } from "@/types/data/Obra";
 
 export type SearchColumn = {
   name: string;

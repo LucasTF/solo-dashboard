@@ -63,7 +63,6 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     setValue,
     formState: { errors },
@@ -142,9 +141,8 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
-      const response = await updateObra(Number(entry?.id), formData);
+      const response = await updateObra(Number(entry?.data.id), formData);
       if (response.success) {
-        reset();
         setSuccess(true);
         setTimeout(() => setSuccess(false), 3000);
       } else {

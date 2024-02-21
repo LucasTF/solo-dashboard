@@ -25,7 +25,7 @@ export const DashboardTable = ({ data, columns }: DashboardTableProps) => {
           .map((row, rowIndex) => (
             <Table.Row
               key={rowIndex}
-              identifier={{ id: row.id, table: data.type }}
+              identifier={{ table: data.type, data: row }}
             >
               {Object.entries(row).map(([_, value], index) => (
                 <Table.Cell key={index}>{value as React.ReactNode}</Table.Cell>

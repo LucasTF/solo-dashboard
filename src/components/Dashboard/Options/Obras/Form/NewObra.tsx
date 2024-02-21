@@ -62,7 +62,7 @@ export const NewObraForm = () => {
     resolver: zodResolver(ObraModalSchema),
   });
 
-  const watchCodSP = watch("nome", "");
+  const watchCodSP = watch("sp", "");
   const watchUf = watch("uf", "SP");
 
   useEffect(() => {
@@ -137,9 +137,9 @@ export const NewObraForm = () => {
           <div className="flex flex-col gap-y-4">
             <Field.Input
               label="Código SP"
-              isInvalid={!!errors.nome}
-              errorMessage={errors.nome?.message}
-              {...register("nome")}
+              isInvalid={!!errors.sp}
+              errorMessage={errors.sp?.message}
+              {...register("sp")}
             />
             <Field.Input
               label="Número SP"

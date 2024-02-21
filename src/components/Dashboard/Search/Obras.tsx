@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { ObrasSearchFiltersSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useEntryStore } from "@/lib/stores/entry";
 
 type SearchBaseProps = {
   searchColumns: SearchColumn[];
@@ -15,6 +16,8 @@ type SearchBaseProps = {
 
 export const ObrasSearch = ({ searchColumns, table }: SearchBaseProps) => {
   const router = useRouter();
+
+  const { resetEntry } = useEntryStore();
 
   const { register, handleSubmit } = useForm<
     z.infer<typeof ObrasSearchFiltersSchema>
@@ -26,6 +29,7 @@ export const ObrasSearch = ({ searchColumns, table }: SearchBaseProps) => {
   });
 
   const searchHandler = (searchString: string, column: string) => {
+    resetEntry();
     const newUrl =
       table +
       "?" +

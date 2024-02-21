@@ -3,11 +3,11 @@
 import React from "react";
 import { tv } from "tailwind-variants";
 
-import { TablesEnum } from "@/lib/structures/TableStructure";
 import { useEntryStore } from "@/lib/stores/entry";
+import { Entry } from "@/types/Entry";
 
 type RowProps = {
-  identifier?: { id: number | string; table: TablesEnum };
+  identifier?: Entry;
   children?: React.ReactNode;
 };
 
@@ -32,7 +32,7 @@ export const Row = ({ children, identifier }: RowProps) => {
   return (
     <tr
       className={row({
-        selected: identifier && entry?.id === identifier.id,
+        selected: identifier && entry?.data.id === identifier.data.id,
       })}
       onClick={() => selectHandler()}
     >
