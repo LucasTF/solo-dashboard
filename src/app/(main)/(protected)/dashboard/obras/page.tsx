@@ -1,12 +1,9 @@
 import { Dashboard } from "@/components/Dashboard";
-import { ObrasSearchColumnsEnum } from "@/enums/SearchColumns";
 import { obrasStructure } from "@/lib/structures/dashboard/structures";
+import { SearchFilters } from "@/types/SearchFilters";
 
 type PageProps = {
-  searchParams: {
-    search?: string;
-    column?: ObrasSearchColumnsEnum;
-  };
+  searchParams: SearchFilters;
 };
 
 export default async function ObrasPage({ searchParams }: PageProps) {
@@ -18,11 +15,11 @@ export default async function ObrasPage({ searchParams }: PageProps) {
       />
 
       <Dashboard.TableConstructor
+        table={obrasStructure.table}
         columns={obrasStructure.columnNames}
         searchFilters={{
-          table: obrasStructure.table,
-          search: searchParams.search!,
-          column: searchParams.column!,
+          column: searchParams.column,
+          search: searchParams.search,
         }}
       />
 

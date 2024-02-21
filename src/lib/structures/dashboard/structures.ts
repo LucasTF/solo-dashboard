@@ -5,7 +5,7 @@ export const obrasStructure: TableStructure = {
   table: TablesEnum.Obras,
   columnNames: [
     "ID",
-    "Cod SP",
+    "SP",
     "Ano",
     "Tipo Logradouro",
     "Logradouro",
@@ -16,7 +16,7 @@ export const obrasStructure: TableStructure = {
     "Proprietário",
   ],
   searchColumns: [
-    { name: "Cod SP", value: ObrasSearchColumnsEnum.CodSP },
+    { name: "SP", value: ObrasSearchColumnsEnum.CodSP },
     { name: "Cidade", value: ObrasSearchColumnsEnum.Cidade },
     { name: "Bairro", value: ObrasSearchColumnsEnum.Bairro },
     { name: "Logradouro", value: ObrasSearchColumnsEnum.Logradouro },

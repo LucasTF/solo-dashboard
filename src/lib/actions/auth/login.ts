@@ -7,8 +7,8 @@ import { LoginSchema } from "@/schemas";
 import * as z from "zod";
 import { db } from "@/lib/db";
 
-import { User } from "@/types/userType";
-import { LoginResponse } from "@/types/loginResponseType";
+import { User } from "@/types/data/User";
+import { LoginResponse } from "@/types/LoginResponse";
 
 import { cookies } from "next/headers";
 import { getJwtSecretKey } from "../../jwt";

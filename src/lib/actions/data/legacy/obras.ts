@@ -3,10 +3,11 @@
 import * as z from "zod";
 
 import { LegacyDbObra, adaptToObra } from "@/lib/adapters/obraAdapter";
+import { SearchFilters } from "@/types/SearchFilters";
 import { db } from "@/lib/db";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
-import { ObraModalSchema, SearchFilter } from "@/schemas";
-import { ServerResponse } from "@/types/serverResponseType";
+import { ObraModalSchema } from "@/schemas";
+import { ServerResponse } from "@/types/ServerResponse";
 
 export async function getTableObrasLegacy() {
   const obras: LegacyDbObra[] = await db.tbobras.findMany({
@@ -37,10 +38,10 @@ export async function getObraByIdLegacy(id: number) {
   return adaptToObra(obra);
 }
 
-export async function searchObrasLegacy(searchFilter: SearchFilter) {
+export async function searchObrasLegacy(searchFilters: SearchFilters) {
   let column;
 
-  switch (searchFilter.column) {
+  switch (searchFilters.column) {
     case "nome":
       column = "nomeobra";
       break;
@@ -78,7 +79,7 @@ export async function searchObrasLegacy(searchFilter: SearchFilter) {
     },
     where: {
       [column]: {
-        contains: searchFilter.search,
+        contains: searchFilters.search,
       },
     },
   });

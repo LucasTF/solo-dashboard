@@ -13,7 +13,7 @@ import { NewObraForm } from "./Form/NewObra";
 import { useEntryStore } from "@/lib/stores/entry";
 import { usePathname } from "next/navigation";
 import { EditObraForm } from "./Form/EditObra";
-import { Obra } from "@/types/obraType";
+import { Obra } from "@/types/data/Obra";
 import { getObraById } from "@/lib/actions/data/obras";
 
 const Modal = lazy(() => import("@/components/ui/Modal"));

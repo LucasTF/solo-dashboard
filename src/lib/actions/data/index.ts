@@ -1,17 +1,28 @@
 "use server";
 
 import { TablesEnum } from "@/lib/structures/TableStructure";
-import { getTableObras, searchObras } from "./obras";
-import { ObrasSearchFilterSchema } from "@/schemas";
+import { searchObras } from "./obras";
+import { ObrasSearchFiltersSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";
+import { DataResponse } from "@/types/DataResponse";
+import { Obra } from "@/types/data/Obra";
 
-export async function getTableData(searchFilters: SearchFilters) {
-  switch (searchFilters.table) {
+export async function getTableData(
+  table: TablesEnum,
+  searchFilters: SearchFilters
+): Promise<DataResponse<Obra>> {
+  switch (table) {
     case TablesEnum.Obras:
-      const obrasSchema = ObrasSearchFilterSchema.safeParse(searchFilters);
-      if (obrasSchema.success) return await searchObras(searchFilters);
-      return await getTableObras();
+      const obrasSchema = ObrasSearchFiltersSchema.safeParse(searchFilters);
+      if (obrasSchema.success) {
+        const obras = await searchObras(searchFilters);
+        return { success: true, data: obras };
+      }
+      return { success: false, message: "Filtros de busca inválidos!" };
     default:
-      return [];
+      return {
+        success: false,
+        message: "Não foi possível recuperar os dados dessa tabela.",
+      };
   }
 }

@@ -1,6 +1,6 @@
 import * as z from "zod";
-import { ObrasSearchFilterSchema } from "@/schemas";
+import { ObrasSearchFiltersSchema } from "@/schemas";
 
-type ObrasSearchFilters = z.infer<typeof ObrasSearchFilterSchema>;
+type ObrasSearchFilters = z.infer<typeof ObrasSearchFiltersSchema>;
 
 export type SearchFilters = ObrasSearchFilters;

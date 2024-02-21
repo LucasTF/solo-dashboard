@@ -1,8 +1,9 @@
 import { getObraById } from "@/lib/actions/data/obras";
+import { Obra } from "@/types/data/Obra";
 import Image from "next/image";
 
 export default async function Report({ params }: { params: { id: number } }) {
-  const obra = await getObraById(Number(params.id));
+  const obra: Obra = await getObraById(Number(params.id));
 
   return (
     <div className="bg-white block m-4 overflow-hidden divide-y-2 divide-black w-[210mm] h-[297mm]">
@@ -44,6 +45,14 @@ export default async function Report({ params }: { params: { id: number } }) {
               Metros:{" "}
               <span className="font-normal">{obra.metros_sp_sondagem}</span>
             </h3>
+            {obra.sp_sondagem! > 0 && (
+              <h3 className="text-2xl font-bold">
+                Média:{" "}
+                <span className="font-normal">
+                  {obra.metros_sp_sondagem! / obra.sp_sondagem!}
+                </span>
+              </h3>
+            )}
             <h3 className="text-2xl font-bold">
               Metros Solo:{" "}
               <span className="font-normal">{obra.metros_sr_solo}</span>

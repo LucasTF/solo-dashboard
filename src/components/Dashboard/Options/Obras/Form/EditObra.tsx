@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { Obra as ObraType } from "@/types/obraType";
+import { Obra as ObraType } from "@/types/data/Obra";
 
 import { ObraModalSchema } from "@/schemas";
 import { Logradouro } from "@/enums/Logradouro";

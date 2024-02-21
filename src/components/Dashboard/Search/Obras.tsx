@@ -4,7 +4,7 @@ import { SearchColumn, TablesEnum } from "@/lib/structures/TableStructure";
 import { SearchBase } from "./Base";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { ObrasSearchFilterSchema } from "@/schemas";
+import { ObrasSearchFiltersSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
@@ -17,11 +17,10 @@ export const ObrasSearch = ({ searchColumns, table }: SearchBaseProps) => {
   const router = useRouter();
 
   const { register, handleSubmit } = useForm<
-    z.infer<typeof ObrasSearchFilterSchema>
+    z.infer<typeof ObrasSearchFiltersSchema>
   >({
-    resolver: zodResolver(ObrasSearchFilterSchema),
+    resolver: zodResolver(ObrasSearchFiltersSchema),
     defaultValues: {
-      table,
       search: "",
     },
   });

@@ -3,10 +3,11 @@
 import * as z from "zod";
 
 import { db } from "@/lib/db";
-import { ObraModalSchema, SearchFilter } from "@/schemas";
-import { Obra } from "@/types/obraType";
+import { ObraModalSchema } from "@/schemas";
+import { SearchFilters } from "@/types/SearchFilters";
+import { Obra } from "@/types/data/Obra";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
-import { ServerResponse } from "@/types/serverResponseType";
+import { ServerResponse } from "@/types/ServerResponse";
 import {
   getObraByIdLegacy,
   getTableObrasLegacy,
@@ -56,9 +57,9 @@ export async function getObraById(id: number) {
   }
 }
 
-export async function searchObras(searchFilter: SearchFilter) {
+export async function searchObras(searchFilters: SearchFilters) {
   try {
-    if (isLegacy) return await searchObrasLegacy(searchFilter);
+    if (isLegacy) return await searchObrasLegacy(searchFilters);
 
     const obras: Obra[] = await db.obra.findMany({
       select: {
@@ -74,8 +75,8 @@ export async function searchObras(searchFilter: SearchFilter) {
         proprietario: true,
       },
       where: {
-        [searchFilter.column]: {
-          contains: searchFilter.search,
+        [searchFilters.column]: {
+          contains: searchFilters.search,
         },
       },
     });
