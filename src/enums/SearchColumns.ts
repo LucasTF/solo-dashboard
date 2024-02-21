@@ -1,5 +1,5 @@
 export enum ObrasSearchColumnsEnum {
-  CodSP = "nome",
+  CodSP = "sp",
   Cidade = "cidade",
   Bairro = "bairro",
   Logradouro = "logradouro",

@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 
 import { Table } from "../Table";
 import { TableData } from "@/lib/structures/TableStructure";
+import React from "react";
 
 type DashboardTableProps = {
   data: TableData;
@@ -27,7 +28,7 @@ export const DashboardTable = ({ data, columns }: DashboardTableProps) => {
               identifier={{ id: row.id, table: data.type }}
             >
               {Object.entries(row).map(([_, value], index) => (
-                <Table.Cell key={index}>{value}</Table.Cell>
+                <Table.Cell key={index}>{value as React.ReactNode}</Table.Cell>
               ))}
             </Table.Row>
           ))

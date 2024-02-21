@@ -1,7 +1,7 @@
 export type Obra = {
   id: number;
   cod_prop?: string;
-  nome?: string;
+  sp?: string;
   num_obra?: number;
   ano?: number;
   data_inicio?: string;

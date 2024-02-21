@@ -70,7 +70,7 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
   } = useForm<Obra>({
     resolver: zodResolver(ObraModalSchema),
     defaultValues: {
-      nome: obra.nome,
+      sp: obra.sp,
       ano: obra.ano,
       bairro: obra.bairro,
       tipo_logo: obra.tipo_logo as Logradouro,
@@ -112,7 +112,7 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
     fetchSelects().catch((error) => console.log(error));
   }, []);
 
-  const watchCodSP = watch("nome", obra.nome);
+  const watchCodSP = watch("sp", obra.sp);
   const watchUf = watch("uf", obra.uf);
 
   useEffect(() => {
@@ -165,9 +165,9 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
           <div className="flex flex-col gap-y-4">
             <Field.Input
               label="Código SP"
-              isInvalid={!!errors.nome}
-              errorMessage={errors.nome?.message}
-              {...register("nome")}
+              isInvalid={!!errors.sp}
+              errorMessage={errors.sp?.message}
+              {...register("sp")}
             />
             <Field.Input
               label="Número SP"

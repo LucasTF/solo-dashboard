@@ -14,7 +14,7 @@ export const LoginSchema = z.object({
 });
 
 export const ObraModalSchema = z.object({
-  nome: z.string().max(8, "Deve conter apenas 8 caracteres"),
+  sp: z.string().max(8, "Deve conter apenas 8 caracteres"),
   num_obra: z.coerce.number().int().min(1, GREATER_THAN_0).max(999),
   sp_sondagem: z.coerce
     .number({ invalid_type_error: NUMBER })

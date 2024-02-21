@@ -98,7 +98,7 @@ export async function updateObra(
     if (isLegacy) return await updateObraLegacy(id, obra);
 
     const data = {
-      nome: obra.nome,
+      sp: obra.sp,
       num_obra: obra.num_obra,
       sp_sondagem: obra.sp_sondagem,
       metros_sp_sondagem: obra.metros_sp_sondagem,
@@ -137,7 +137,7 @@ export async function insertNewObra(obra: ObraData): Promise<ServerResponse> {
     if (isLegacy) return await insertNewObraLegacy(obra);
 
     const data = {
-      nome: obra.nome,
+      sp: obra.sp,
       num_obra: obra.num_obra,
       sp_sondagem: obra.sp_sondagem,
       metros_sp_sondagem: obra.metros_sp_sondagem,

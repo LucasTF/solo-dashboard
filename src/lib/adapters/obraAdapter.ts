@@ -1,4 +1,4 @@
-import { Obra } from "@/types/obraType";
+import { Obra } from "@/types/data/Obra";
 
 export type LegacyDbObra = {
   codobra: number;
@@ -47,7 +47,7 @@ export function adaptToObra(obra: LegacyDbObra): Obra {
   return {
     id: obra.codobra,
     cod_prop: obra.codprop,
-    nome: obra.nomeobra,
+    sp: obra.nomeobra,
     num_obra: obra.numobra,
     ano: obra.anoobra,
     data_inicio: obra.datainiobra,
@@ -92,7 +92,7 @@ export function adaptFromObra(obra: Obra): LegacyDbObra {
   return {
     codobra: obra.id,
     codprop: obra.cod_prop,
-    nomeobra: obra.nome,
+    nomeobra: obra.sp,
     numobra: obra.num_obra,
     anoobra: obra.ano,
     datainiobra: obra.data_inicio,

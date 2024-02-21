@@ -42,7 +42,7 @@ export async function searchObrasLegacy(searchFilters: SearchFilters) {
   let column;
 
   switch (searchFilters.column) {
-    case "nome":
+    case "sp":
       column = "nomeobra";
       break;
     case "cidade":
@@ -96,7 +96,7 @@ export async function updateObraLegacy(
   obra: ObraData
 ): Promise<ServerResponse> {
   const data = {
-    nomeobra: obra.nome,
+    nomeobra: obra.sp,
     numobra: obra.num_obra,
     SPSondagem: obra.sp_sondagem,
     MetrosSPSondagem: obra.metros_sp_sondagem,
@@ -131,7 +131,7 @@ export async function insertNewObraLegacy(
   obra: ObraData
 ): Promise<ServerResponse> {
   const data = {
-    nomeobra: obra.nome,
+    nomeobra: obra.sp,
     numobra: obra.num_obra,
     SPSondagem: obra.sp_sondagem,
     MetrosSPSondagem: obra.metros_sp_sondagem,
