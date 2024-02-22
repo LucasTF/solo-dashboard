@@ -15,17 +15,21 @@ import { FormHTMLAttributes } from "react";
 type SearchProps = FormHTMLAttributes<HTMLFormElement> & {
   searchColumns: SearchColumn[];
   register: UseFormRegister<any>;
+  onAdvancedFilterClick: () => void;
+  advancedFilterState: boolean;
 };
 
 export const SearchBase = ({
   onSubmit,
   register,
   searchColumns,
+  onAdvancedFilterClick,
+  advancedFilterState,
   ...rest
 }: SearchProps) => {
   return (
     <form
-      className="flex gap-4 max-md:flex-col relative"
+      className="flex gap-4 max-md:flex-col grow relative"
       onSubmit={onSubmit}
       {...rest}
     >
@@ -54,7 +58,11 @@ export const SearchBase = ({
           <ArrowRightIcon className="size-6" />
         </Button>
 
-        <Button type="button" color="clear">
+        <Button
+          type="button"
+          color={advancedFilterState ? "blue" : "clear"}
+          onClick={() => onAdvancedFilterClick()}
+        >
           <FunnelIcon className="size-6" />
         </Button>
       </div>
