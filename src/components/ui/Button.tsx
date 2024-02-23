@@ -45,9 +45,10 @@ type ButtonVariants = VariantProps<typeof button>;
 
 type ButtonProps = ButtonVariants & ButtonHTMLAttributes<HTMLButtonElement>;
 
-type ButtonLinkProps = ButtonVariants &
-  LinkProps &
+type ButtonAnchorProps = ButtonVariants &
   AnchorHTMLAttributes<HTMLAnchorElement>;
+
+type ButtonLinkProps = ButtonAnchorProps & LinkProps;
 
 const Button = ({
   children,
@@ -86,6 +87,27 @@ export const ButtonLink = ({
     >
       {children}
     </Link>
+  );
+};
+
+export const ButtonAnchor = ({
+  href,
+  children,
+  color,
+  fontStrength,
+  shape,
+  target,
+  ...rest
+}: ButtonAnchorProps) => {
+  return (
+    <a
+      href={href}
+      target={target}
+      className={button({ color, fontStrength, shape })}
+      {...rest}
+    >
+      {children}
+    </a>
   );
 };
 

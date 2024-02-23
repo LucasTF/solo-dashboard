@@ -21,11 +21,13 @@ const row = tv({
 });
 
 export const Row = ({ children, identifier }: RowProps) => {
-  const { entry, setEntry } = useEntryStore();
+  const { entry, setEntry, resetEntry } = useEntryStore();
 
   const selectHandler = () => {
     if (identifier) {
-      setEntry(identifier);
+      if (entry?.data.id === identifier.data.id) {
+        resetEntry();
+      } else setEntry(identifier);
     }
   };
 

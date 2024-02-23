@@ -2,11 +2,12 @@
 
 import { lazy, useEffect, useState } from "react";
 import {
+  DocumentIcon,
   DocumentTextIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 
-import Button, { ButtonLink } from "@/components/ui/Button";
+import Button, { ButtonAnchor, ButtonLink } from "@/components/ui/Button";
 
 import { useEntryStore } from "@/lib/stores/entry";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -48,38 +49,54 @@ export const ObrasOptions = () => {
   };
 
   return (
-    <div className="mt-6 flex justify-between max-md:flex-col-reverse md:flex-row-reverse max-md:gap-8">
+    <>
       {entry && searchParams.size > 0 && entry.table === pathname && (
-        <div className="flex gap-2 md:gap-4 max-md:flex-col">
-          <h3 className="max-md:text-center md:hidden">Opções</h3>
-          <Button
-            color="lightblue"
-            fontStrength="semibold"
-            type="button"
-            onClick={() => setModal(ModalState.Edit)}
-          >
-            <PencilSquareIcon className="size-6" />
-            Editar obra ({obra?.sp})
-          </Button>
+        <div className="mt-6 flex justify-between max-md:flex-col-reverse md:flex-row-reverse max-md:gap-8">
+          <div className="flex gap-2 md:gap-4 max-md:flex-col">
+            <h3 className="max-md:text-center md:hidden">Opções</h3>
+            <Button
+              color="lightblue"
+              fontStrength="semibold"
+              type="button"
+              onClick={() => setModal(ModalState.Edit)}
+            >
+              <PencilSquareIcon className="size-6" />
+              Editar obra ({obra?.sp})
+            </Button>
 
-          <ButtonLink
-            fontStrength="semibold"
-            href={`/report/obra/${entry.data.id}`}
-            target="_blank"
+            <ButtonLink
+              fontStrength="semibold"
+              href={`/report/obra/${entry.data.id}`}
+              target="_blank"
+            >
+              <DocumentTextIcon className="size-6" />
+              Relatório ({obra?.sp})
+            </ButtonLink>
+            <Button
+              color="red"
+              fontStrength="semibold"
+              onClick={() =>
+                window.open(
+                  `${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${
+                    obra?.ano
+                  }/${obra?.sp?.replace("/", "-")}-Model.pdf`
+                )
+              }
+            >
+              <DocumentIcon className="size-6" />
+              PDF ({obra?.sp})
+            </Button>
+          </div>
+
+          <Modal
+            title={modal.toString()}
+            visible={modal !== ModalState.Off}
+            onClose={() => setModal(ModalState.Off)}
           >
-            <DocumentTextIcon className="size-6" />
-            Relatório ({obra?.sp})
-          </ButtonLink>
+            {modalBuilder()}
+          </Modal>
         </div>
       )}
-
-      <Modal
-        title={modal.toString()}
-        visible={modal !== ModalState.Off}
-        onClose={() => setModal(ModalState.Off)}
-      >
-        {modalBuilder()}
-      </Modal>
-    </div>
+    </>
   );
 };
