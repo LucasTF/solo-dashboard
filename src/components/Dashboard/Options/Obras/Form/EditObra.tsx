@@ -270,7 +270,7 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
               {ufs.map((uf) => {
                 return (
                   <option key={uf.sigla} value={uf.sigla}>
-                    {uf.nome}
+                    {uf.sigla}
                   </option>
                 );
               })}

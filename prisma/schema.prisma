@@ -103,9 +103,18 @@ model Obra {
   STTradoml             Int?
   proprietario          String?     @db.VarChar(40)
   cliente               String?     @db.VarChar(40)
+  arquivos              Arquivo[]
 
   @@index([cod_prop, sp, num_obra, ano, data_inicio, data_fim, logradouro, bairro, cidade, uf, complemento_logo, cliente, proprietario])
 
+}
+
+model Arquivo {
+  id                    Int       @id @default(autoincrement())
+  obra                  Obra      @relation(fields: [obraId], references: [id])
+  obraId                Int
+  nome                  String    @db.VarChar(40)
+  formato               String    @db.VarChar(5)
 }
 
 model So {
@@ -165,5 +174,13 @@ model tbobras {
   STTradoml                 Int?
   proprietario              String?     @db.VarChar(40)
   cliente                   String?     @db.VarChar(40)
+  arquivos                  tbarquivos[]
+}
 
+model tbarquivos {
+  id                    Int       @id @default(autoincrement())
+  obra                  tbobras   @relation(fields: [obraCod], references: [codobra])
+  obraCod               Int
+  nome                  String    @db.VarChar(40)
+  formato               String    @db.VarChar(5)
 }
