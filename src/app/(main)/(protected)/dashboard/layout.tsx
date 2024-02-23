@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import Footer from "@/components/layout/Footer/Footer";
 import Header from "@/components/layout/Header/Header";
+import { ScrollButton } from "@/components/ui/ScrollButton";
 
 export const metadata: Metadata = {
   title: "Solo Engenharia | Dashboard",
@@ -18,6 +19,7 @@ export default function DashboardLayout({
       <Header />
       <div className="my-8">{children}</div>
       <Footer />
+      <ScrollButton />
     </div>
   );
 }

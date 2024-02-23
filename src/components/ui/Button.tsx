@@ -10,6 +10,7 @@ const button = tv({
       lightblue: "bg-sky-700 hover:bg-sky-600",
       green: "bg-green-700 hover:bg-green-600",
       red: "bg-red-700 hover:bg-red-600",
+      purple: "bg-violet-700 hover:bg-violet-600",
       clear: "text-black hover:bg-sky-800 hover:text-white",
     },
     fontStrength: {
@@ -21,6 +22,7 @@ const button = tv({
       square: "p-4",
       rectangle: "py-4 px-6",
       close: "p-3",
+      round: "p-2 rounded-full",
     },
     disabled: {
       true: "bg-gray-400 hover:bg-gray-400 cursor-not-allowed",
@@ -56,11 +58,12 @@ const Button = ({
   fontStrength,
   shape,
   disabled,
+  className,
   ...rest
 }: ButtonProps) => {
   return (
     <button
-      className={button({ color, fontStrength, shape, disabled })}
+      className={button({ color, fontStrength, shape, disabled, className })}
       disabled={disabled}
       {...rest}
     >
@@ -76,13 +79,14 @@ export const ButtonLink = ({
   fontStrength,
   shape,
   target,
+  className,
   ...rest
 }: ButtonLinkProps) => {
   return (
     <Link
       href={href}
       target={target}
-      className={button({ color, fontStrength, shape })}
+      className={button({ color, fontStrength, shape, className })}
       {...rest}
     >
       {children}
