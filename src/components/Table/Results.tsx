@@ -1,5 +1,6 @@
 "use client";
 
+import { useEntryStore } from "@/lib/stores/entry";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type ResultsProps = {
@@ -10,6 +11,8 @@ export const Results = ({ numOfResults = 0 }: ResultsProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+
+  const { resetEntry } = useEntryStore();
 
   const rowsPerPage = Number(searchParams.get("numRows") || "10");
 

@@ -9,16 +9,18 @@ type PageProps = {
 export default async function ObrasPage({ searchParams }: PageProps) {
   return (
     <Dashboard.Template title="Obras">
-      <Dashboard.Header.Obras />
+      <Dashboard.Container>
+        <Dashboard.Header.Obras />
 
-      <Dashboard.TableConstructor
-        table={obrasStructure.table}
-        columns={obrasStructure.columnNames}
-        searchFilters={{
-          column: searchParams.column,
-          search: searchParams.search,
-        }}
-      />
+        <Dashboard.TableConstructor
+          table={obrasStructure.table}
+          columns={obrasStructure.columnNames}
+          searchFilters={{
+            column: searchParams.column,
+            search: searchParams.search,
+          }}
+        />
+      </Dashboard.Container>
 
       <Dashboard.Options.Obras />
     </Dashboard.Template>

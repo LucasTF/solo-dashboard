@@ -94,9 +94,6 @@ const Header = () => {
           <li>
             <NavLink href="#">Orçamentos</NavLink>
           </li>
-          <li>
-            <NavLink href="#">Histórico</NavLink>
-          </li>
         </ul>
 
         <ul className="flex gap-4 items-center max-lg:hidden">

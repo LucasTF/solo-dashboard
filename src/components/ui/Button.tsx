@@ -3,7 +3,7 @@ import React, { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const button = tv({
-  base: "flex justify-center gap-2 rounded-md text-white ease-in-out duration-300 shadow-md active:opacity-80",
+  base: "flex justify-center items-center gap-2 rounded-md text-white ease-in-out duration-300 shadow-md active:opacity-80",
   variants: {
     color: {
       blue: "bg-sky-900 hover:bg-sky-800",
@@ -87,27 +87,6 @@ export const ButtonLink = ({
     >
       {children}
     </Link>
-  );
-};
-
-export const ButtonAnchor = ({
-  href,
-  children,
-  color,
-  fontStrength,
-  shape,
-  target,
-  ...rest
-}: ButtonAnchorProps) => {
-  return (
-    <a
-      href={href}
-      target={target}
-      className={button({ color, fontStrength, shape })}
-      {...rest}
-    >
-      {children}
-    </a>
   );
 };
 

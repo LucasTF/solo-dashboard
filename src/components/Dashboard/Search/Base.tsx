@@ -37,14 +37,14 @@ export const SearchBase = ({
         type="text"
         autoComplete="off"
         placeholder="Buscar"
-        className="w-full p-4 pl-12 rounded-md"
+        className="grow p-4 pl-12 rounded-md"
         {...register("search")}
       />
       <MagnifyingGlassIcon className="size-6 absolute top-4 left-4 text-gray-400" />
 
       <div className="flex gap-4">
         <select
-          className="lg:min-w-48 rounded-md p-4 max-md:w-full"
+          className="lg:min-w-24 rounded-md p-4 max-md:w-full"
           {...register("column")}
         >
           {searchColumns.map((target, index) => (
