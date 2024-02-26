@@ -25,10 +25,10 @@ enum ModalState {
 }
 
 const options = tv({
-  base: "max-lg:mt-4 lg:ml-8",
+  base: "max-lg:mb-4 lg:ml-8",
   variants: {
     visible: {
-      true: "lg:col-span-1",
+      true: "lg:col-span-1 order-2",
       false: "hidden",
     },
   },

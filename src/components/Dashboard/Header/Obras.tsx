@@ -13,7 +13,7 @@ export const ObrasTableHeader = () => {
   const [modal, toggleModal] = useState(false);
 
   return (
-    <header className="flex max-md:flex-col gap-4">
+    <header className="flex max-md:flex-col gap-4 order-1">
       <ObrasSearch
         searchColumns={obrasStructure.searchColumns}
         table={obrasStructure.table}

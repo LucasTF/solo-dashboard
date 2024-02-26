@@ -47,7 +47,7 @@ const Header = () => {
   };
 
   return (
-    <header className="h-14 max-h-14 bg-slate-200 sticky top-0 left-0 z-10">
+    <header className="h-14 max-h-14 border-b-2 border-slate-400 bg-slate-200 sticky top-0 left-0 z-10">
       <div className="lg:hidden h-full w-full flex justify-between items-center px-5">
         <button
           className="bg-slate-200 rounded-md p-2"

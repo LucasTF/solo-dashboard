@@ -21,7 +21,6 @@ export default async function ObrasPage({ searchParams }: PageProps) {
           }}
         />
       </Dashboard.Container>
-
       <Dashboard.Options.Obras />
     </Dashboard.Template>
   );

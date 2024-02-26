@@ -1,18 +1,25 @@
 "use client";
 
-import { useEntryStore } from "@/lib/stores/entry";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { tv } from "tailwind-variants";
 
 type ResultsProps = {
   numOfResults?: number;
 };
 
+const resultNums = tv({
+  variants: {
+    selected: {
+      true: "font-bold select-none",
+      false: "cursor-pointer hover:underline",
+    },
+  },
+});
+
 export const Results = ({ numOfResults = 0 }: ResultsProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-
-  const { resetEntry } = useEntryStore();
 
   const rowsPerPage = Number(searchParams.get("numRows") || "10");
 
@@ -36,21 +43,21 @@ export const Results = ({ numOfResults = 0 }: ResultsProps) => {
         <p>
           Mostrar&nbsp;
           <span
-            className={rowsPerPage === 10 ? "font-bold" : "cursor-pointer"}
+            className={resultNums({ selected: rowsPerPage === 10 })}
             onClick={() => rowsPerPageHandler(10)}
           >
             10
           </span>
           ,&nbsp;
           <span
-            className={rowsPerPage === 25 ? "font-bold" : "cursor-pointer"}
+            className={resultNums({ selected: rowsPerPage === 25 })}
             onClick={() => rowsPerPageHandler(25)}
           >
             25
           </span>
           ,&nbsp;
           <span
-            className={rowsPerPage === 50 ? "font-bold" : "cursor-pointer"}
+            className={resultNums({ selected: rowsPerPage === 50 })}
             onClick={() => rowsPerPageHandler(50)}
           >
             50
