@@ -2,7 +2,12 @@
 
 import * as z from "zod";
 
-import { LegacyDbObra, adaptToObra } from "@/lib/adapters/obraAdapter";
+import {
+  LegacyDbObra,
+  LegacyDbObraWithFiles,
+  adaptToObra,
+  adaptToObraWithFiles,
+} from "@/lib/adapters/obraAdapter";
 import { SearchFilters } from "@/types/SearchFilters";
 import { db } from "@/lib/db";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
@@ -31,11 +36,14 @@ export async function getTableObrasLegacy() {
 }
 
 export async function getObraByIdLegacy(id: number) {
-  const obra: LegacyDbObra = await db.tbobras.findUnique({
+  const obra: LegacyDbObraWithFiles = await db.tbobras.findUnique({
     where: { codobra: id },
+    include: {
+      arquivos: true,
+    },
   });
 
-  return adaptToObra(obra);
+  return adaptToObraWithFiles(obra);
 }
 
 export async function searchObrasLegacy(searchFilters: SearchFilters) {

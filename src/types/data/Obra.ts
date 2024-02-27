@@ -1,3 +1,5 @@
+import { Arquivo } from "./Arquivo";
+
 export type Obra = {
   id: number;
   cod_prop?: string;
@@ -39,4 +41,8 @@ export type Obra = {
   STTradoml?: number;
   proprietario?: string;
   cliente?: string;
+};
+
+export type ObraWithFiles = Obra & {
+  arquivos: Arquivo[];
 };

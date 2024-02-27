@@ -13,7 +13,7 @@ import Button, { ButtonLink } from "@/components/ui/Button";
 
 import { useEntryStore } from "@/lib/stores/entry";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Obra } from "@/types/data/Obra";
+import { Obra, ObraWithFiles } from "@/types/data/Obra";
 import { getObraById } from "@/lib/actions/data/obras";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import Modal from "@/components/ui/Modal";
@@ -40,7 +40,7 @@ const options = tv({
 
 export const ObrasOptions = () => {
   const [modal, setModal] = useState<ModalState>(ModalState.Off);
-  const [obra, setObra] = useState<Obra>();
+  const [obra, setObra] = useState<ObraWithFiles>();
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -50,7 +50,9 @@ export const ObrasOptions = () => {
   useEffect(() => {
     const fetchObra = async () => {
       if (entry) {
-        const obraData = (await getObraById(Number(entry.data.id))) as Obra;
+        const obraData = (await getObraById(
+          Number(entry.data.id)
+        )) as ObraWithFiles;
         setObra(obraData);
       }
     };
@@ -62,7 +64,7 @@ export const ObrasOptions = () => {
       case ModalState.Edit:
         return <EditObraForm obra={obra as Obra} />;
       case ModalState.Archives:
-        return <Archives obra={obra as Obra} />;
+        return <Archives obra={obra as ObraWithFiles} />;
     }
   };
 
@@ -110,22 +112,29 @@ export const ObrasOptions = () => {
             Relatório
           </ButtonLink>
 
-          <TitledDivider title="Arquivos" />
+          {obra && obra.arquivos.length > 0 && (
+            <>
+              <TitledDivider title="Arquivos" />
 
-          <Button
-            color="red"
-            fontStrength="semibold"
-            onClick={() =>
-              window.open(
-                `${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${
-                  obra?.ano
-                }/${obra?.sp?.replace("/", "-")}-Model.pdf`
-              )
-            }
-          >
-            <DocumentIcon className="size-6" />
-            PDF
-          </Button>
+              <ul>
+                {obra?.arquivos.map((arquivo) => (
+                  <li className="flex gap-2 p-1 odd:bg-slate-300 even:bg-slate-100">
+                    <DocumentIcon className="size-6" />
+                    <span
+                      className="cursor-pointer underline text-sky-800 hover:text-sky-700 font-semibold text-sm"
+                      onClick={() =>
+                        window.open(
+                          `${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${obra.ano}/${arquivo.nome}`
+                        )
+                      }
+                    >
+                      {arquivo.nome}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       )}
 

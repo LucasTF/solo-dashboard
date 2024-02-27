@@ -1,19 +1,48 @@
-import { Obra } from "@/types/data/Obra";
 import { Prisma } from "@prisma/client";
 import { db } from "../db";
 import { ServerResponse } from "@/types/ServerResponse";
+import { writeFile } from "fs/promises";
+import fs from "fs";
 
 const isLegacy = process.env.USE_LEGACY_TABLES === "true";
 
-// TODO: Implement upload to Static Files Server
-export async function uploadToServer() {}
+export async function uploadFilesToServer(
+  ano: number,
+  files: File[]
+): Promise<ServerResponse> {
+  try {
+    files.forEach(async (file) => {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
 
-export async function registerArchivesToDatabase(
+      const path = `/srv/http/sondagens/${ano}`;
+
+      if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, { recursive: true });
+      }
+
+      await writeFile(path + `/${file.name}`, buffer);
+    });
+
+    return {
+      success: true,
+      message: "Arquivo salvo no armazenamento com sucesso!",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "Não foi possível salvar o arquivo no armazenamento.",
+    };
+  }
+}
+
+export async function registerFilesToDatabase(
   obraId: number,
   files: File[]
 ): Promise<ServerResponse> {
   try {
-    if (isLegacy) return registerArchivesToDatabaseLegacy(obraId, files);
+    if (isLegacy) return registerFilesToDatabaseLegacy(obraId, files);
 
     const dbData: Prisma.ArquivoCreateManyInput[] = files.map((file) => {
       const extStart = file.name.lastIndexOf(".");
@@ -42,7 +71,7 @@ export async function registerArchivesToDatabase(
   }
 }
 
-async function registerArchivesToDatabaseLegacy(
+async function registerFilesToDatabaseLegacy(
   obraId: number,
   files: File[]
 ): Promise<ServerResponse> {
@@ -59,8 +88,6 @@ async function registerArchivesToDatabaseLegacy(
   const archives = await db.tbarquivos.createMany({
     data: dbData,
   });
-
-  console.log(archives);
 
   return {
     success: true,

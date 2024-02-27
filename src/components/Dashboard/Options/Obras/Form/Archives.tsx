@@ -7,6 +7,7 @@ import { ChangeEvent, useState, useTransition } from "react";
 import Loading from "../../Loading";
 import Success from "../../Success";
 import { ServerResponse } from "@/types/ServerResponse";
+import { toast } from "react-toastify";
 
 type ArchivesProps = {
   obra: Obra;
@@ -27,9 +28,9 @@ const Archives = ({ obra }: ArchivesProps) => {
     if (!fileList) return;
     startTransition(async () => {
       const formData = new FormData();
-      files.forEach((file) => formData.append("obra-file", file, file.name));
+      files.forEach((file) => formData.append("obra", file, file.name));
 
-      const res = await fetch(`/api/archives/${obra.id}`, {
+      const res = await fetch(`/api/upload/${obra.id}`, {
         method: "POST",
         body: formData,
       });
@@ -37,7 +38,13 @@ const Archives = ({ obra }: ArchivesProps) => {
       const resJson: ServerResponse = await res.json();
 
       if (resJson.success) {
-        setTimeout(() => setSuccess(true), 3000);
+        setFileList(null);
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 3000);
+      }
+
+      if (!resJson.success) {
+        toast(resJson.error, { type: "error" });
       }
     });
   };
@@ -69,6 +76,7 @@ const Archives = ({ obra }: ArchivesProps) => {
               type="file"
               onChange={(e) => fileChangeHandler(e)}
               multiple
+              accept=".pdf"
               hidden
             />
             <label

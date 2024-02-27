@@ -5,7 +5,7 @@ import * as z from "zod";
 import { db } from "@/lib/db";
 import { ObraModalSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";
-import { Obra } from "@/types/data/Obra";
+import { Obra, ObraWithFiles } from "@/types/data/Obra";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 import { ServerResponse } from "@/types/ServerResponse";
 import {
@@ -48,7 +48,12 @@ export async function getObraById(id: number) {
   try {
     if (isLegacy) return await getObraByIdLegacy(id);
 
-    const obra: Obra = await db.obra.findUnique({ where: { id } });
+    const obra: ObraWithFiles = await db.obra.findUnique({
+      where: { id },
+      include: {
+        arquivos: true,
+      },
+    });
 
     return obra;
   } catch (error) {

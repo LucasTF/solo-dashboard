@@ -1,4 +1,5 @@
-import { Obra } from "@/types/data/Obra";
+import { Arquivo } from "@/types/data/Arquivo";
+import { Obra, ObraWithFiles } from "@/types/data/Obra";
 
 export type LegacyDbObra = {
   codobra: number;
@@ -43,6 +44,15 @@ export type LegacyDbObra = {
   cliente?: string;
 };
 
+export type LegacyDbObraWithFiles = LegacyDbObra & {
+  arquivos: {
+    id: number;
+    obraCod: number;
+    nome: string;
+    formato: string;
+  }[];
+};
+
 export function adaptToObra(obra: LegacyDbObra): Obra {
   return {
     id: obra.codobra,
@@ -85,6 +95,64 @@ export function adaptToObra(obra: LegacyDbObra): Obra {
     STTradoml: obra.STTradoml,
     proprietario: obra.proprietario,
     cliente: obra.cliente,
+  };
+}
+
+export function adaptToObraWithFiles(
+  obra: LegacyDbObraWithFiles
+): ObraWithFiles {
+  let arquivos: Arquivo[] = [];
+  obra.arquivos.forEach((arquivo) =>
+    arquivos.push({
+      id: arquivo.id,
+      obraId: arquivo.obraCod,
+      nome: arquivo.nome,
+      formato: arquivo.formato,
+    })
+  );
+
+  return {
+    id: obra.codobra,
+    cod_prop: obra.codprop,
+    sp: obra.nomeobra,
+    num_obra: obra.numobra,
+    ano: obra.anoobra,
+    data_inicio: obra.datainiobra,
+    data_fim: obra.datafimobra,
+    tipo_logo: obra.tipologobra,
+    logradouro: obra.logradouroobra,
+    lote: obra.loteobra,
+    quadra: obra.quadraobra,
+    num_logo: obra.numlogobra,
+    cidade: obra.cidadeobra,
+    bairro: obra.bairroobra,
+    uf: obra.ufobra,
+    cep: obra.cepobra,
+    complemento_logo: obra.complelogobra,
+    sp_sondagem: obra.SPSondagem,
+    metros_sp_sondagem: obra.MetrosSPSondagem,
+    sr_sondagem: obra.SRSondagem,
+    metros_sr_solo: obra.MetrosSRSolo,
+    metros_sr_rocha: obra.MetrosSRRocha,
+    rb_ponteiras: obra.RBPonteiras,
+    rb_equipamentos: obra.RBEquipamentos,
+    rb_data_inicial: obra.RBDataInicial,
+    rb_data_termino: obra.RBDataTermino,
+    TITirantes: obra.TITirantes,
+    tipo_tirantes: obra.TipoTirantes,
+    carga_tirantes: obra.CargaTirantes,
+    micro_estaca_1: obra.MicroEstaca1,
+    micro_estaca_2: obra.MicroEstaca2,
+    micro_estaca_3: obra.MicroEstaca3,
+    tb_tubulao: obra.TBTubulao,
+    tb_cota_apoio: obra.TBCotaApoio,
+    tb_cota_apoio_A: obra.TBCotaApoioA,
+    tb_taxa_solo: obra.TBTaxaSolo,
+    STTrado: obra.STTrado,
+    STTradoml: obra.STTradoml,
+    proprietario: obra.proprietario,
+    cliente: obra.cliente,
+    arquivos,
   };
 }
 
