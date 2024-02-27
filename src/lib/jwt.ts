@@ -10,6 +10,7 @@ export const getJwtSecretKey = () => {
 };
 
 export const verifyJwt = async (tokenString: string) => {
+  if (!tokenString) return null;
   try {
     const decodedToken = await jwtVerify(tokenString, getJwtSecretKey());
     return decodedToken;

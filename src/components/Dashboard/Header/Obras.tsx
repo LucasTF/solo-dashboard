@@ -1,13 +1,15 @@
 "use client";
 
-import { lazy, useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { obrasStructure } from "@/lib/structures/dashboard/structures";
 import Button from "@/components/ui/Button";
-import { NewObraForm } from "../Options/Obras/Form/NewObra";
 import { ObrasSearch } from "../Search/Obras";
 
-const Modal = lazy(() => import("@/components/ui/Modal"));
+import Modal from "@/components/ui/Modal";
+import Loading from "../Options/Loading";
+
+const NewObraForm = lazy(() => import("../Options/Obras/Form/NewObra"));
 
 export const ObrasTableHeader = () => {
   const [modal, toggleModal] = useState(false);
@@ -38,7 +40,9 @@ export const ObrasTableHeader = () => {
         visible={modal === true}
         onClose={() => toggleModal(false)}
       >
-        <NewObraForm />
+        <Suspense fallback={<Loading />}>
+          <NewObraForm />
+        </Suspense>
       </Modal>
     </header>
   );

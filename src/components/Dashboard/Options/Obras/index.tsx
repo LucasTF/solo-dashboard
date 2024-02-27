@@ -1,8 +1,9 @@
 "use client";
 
-import { lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
 import {
+  ArrowUpOnSquareStackIcon,
   DocumentIcon,
   DocumentTextIcon,
   PencilSquareIcon,
@@ -12,16 +13,19 @@ import Button, { ButtonLink } from "@/components/ui/Button";
 
 import { useEntryStore } from "@/lib/stores/entry";
 import { usePathname, useSearchParams } from "next/navigation";
-import { EditObraForm } from "./Form/EditObra";
 import { Obra } from "@/types/data/Obra";
 import { getObraById } from "@/lib/actions/data/obras";
 import { TitledDivider } from "@/components/ui/TitledDivider";
+import Modal from "@/components/ui/Modal";
+import Loading from "../Loading";
 
-const Modal = lazy(() => import("@/components/ui/Modal"));
+const EditObraForm = lazy(() => import("./Form/EditObra"));
+const Archives = lazy(() => import("./Form/Archives"));
 
 enum ModalState {
   Off,
   Edit = "Editar Obra",
+  Archives = "Gerenciar arquivos",
 }
 
 const options = tv({
@@ -57,6 +61,8 @@ export const ObrasOptions = () => {
     switch (modal) {
       case ModalState.Edit:
         return <EditObraForm obra={obra as Obra} />;
+      case ModalState.Archives:
+        return <Archives obra={obra as Obra} />;
     }
   };
 
@@ -82,6 +88,18 @@ export const ObrasOptions = () => {
             <PencilSquareIcon className="size-6" />
             Editar obra
           </Button>
+
+          <Button
+            color="red"
+            fontStrength="semibold"
+            type="button"
+            onClick={() => setModal(ModalState.Archives)}
+          >
+            <ArrowUpOnSquareStackIcon className="size-6" />
+            Gerenciar arquivos
+          </Button>
+
+          <TitledDivider title="Detalhes" />
 
           <ButtonLink
             fontStrength="semibold"
@@ -112,11 +130,11 @@ export const ObrasOptions = () => {
       )}
 
       <Modal
-        title={modal.toString()}
+        title={`Obra ${obra?.sp} - ${modal.toString()}`}
         visible={modal !== ModalState.Off}
         onClose={() => setModal(ModalState.Off)}
       >
-        {modalBuilder()}
+        <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
       </Modal>
     </div>
   );

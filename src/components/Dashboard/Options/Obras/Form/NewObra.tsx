@@ -41,7 +41,7 @@ type Municipio = {
 
 type Obra = z.infer<typeof ObraModalSchema>;
 
-export const NewObraForm = () => {
+const NewObraForm = () => {
   const year = new Date().getFullYear();
   const years = Array.from(new Array(45), (_, index) => year - index);
 
@@ -331,3 +331,5 @@ export const NewObraForm = () => {
 
   return formBuilder();
 };
+
+export default NewObraForm;

@@ -7,17 +7,18 @@ import {
 } from "./routes";
 import { verifyJwt } from "./lib/jwt";
 
-export default function auth(req: NextRequest) {
+export default async function auth(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
   const isPublicRoute = publicRoutes.includes(pathname);
   const isAuthRoute = authRoutes.includes(pathname);
   const isStartRoute = pathname === "/";
+  const isApiRoute = pathname.includes("/api");
 
   const token = req.cookies.get("jwt");
 
   if (token) {
-    const isLoggedIn = verifyJwt(token.value) !== null;
+    const isLoggedIn = (await verifyJwt(token.value)) !== null;
 
     if (isAuthRoute) {
       if (isLoggedIn)
@@ -27,6 +28,12 @@ export default function auth(req: NextRequest) {
     }
 
     if (!isLoggedIn && !isPublicRoute) {
+      if (isApiRoute)
+        return Response.json(
+          { error: "Você não está autorizado a usar essa API!" },
+          { status: 401 }
+        );
+
       return Response.redirect(
         new URL(DEFAULT_UNAUTHENTICATED_REDIRECT, req.nextUrl)
       );
@@ -37,6 +44,12 @@ export default function auth(req: NextRequest) {
 
     return null;
   }
+
+  if (isApiRoute)
+    return Response.json(
+      { error: "Você não está autorizado a usar essa API!" },
+      { status: 401 }
+    );
 
   if (!isAuthRoute && !isPublicRoute)
     return Response.redirect(

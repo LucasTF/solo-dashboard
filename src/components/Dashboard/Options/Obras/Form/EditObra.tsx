@@ -48,7 +48,7 @@ type EditObraFormProps = {
 
 type Obra = z.infer<typeof ObraModalSchema>;
 
-export const EditObraForm = ({ obra }: EditObraFormProps) => {
+const EditObraForm = ({ obra }: EditObraFormProps) => {
   const { entry } = useEntryStore();
 
   const year = new Date().getFullYear();
@@ -357,3 +357,5 @@ export const EditObraForm = ({ obra }: EditObraFormProps) => {
 
   return formBuilder();
 };
+
+export default EditObraForm;
