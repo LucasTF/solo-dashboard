@@ -60,16 +60,15 @@ export async function POST(
     return NextResponse.json({ success: false, error: "Obra inválida!" });
   }
 
-  // const resultUpload = await uploadFilesToServer(ano, files);
-  // if (!resultUpload.success)
-  //   return NextResponse.json(resultUpload, { status: 400 });
+  // Uploads files to the static files server
+  const resultUpload = await uploadFilesToServer(ano, files);
+  if (!resultUpload.success)
+    return NextResponse.json(resultUpload, { status: 400 });
 
-  // const resultRegister = await registerFilesToDatabase(
-  //   Number(obraId),
-  //   files
-  // );
-  // if (!resultRegister.success)
-  //   return NextResponse.json(resultRegister, { status: 400 });
+  // Register uploaded files onto the database
+  const resultRegister = await registerFilesToDatabase(Number(obraId), files);
+  if (!resultRegister.success)
+    return NextResponse.json(resultRegister, { status: 400 });
 
   return NextResponse.json({
     success: true,

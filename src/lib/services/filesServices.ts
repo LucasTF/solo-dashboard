@@ -15,7 +15,7 @@ export async function uploadFilesToServer(
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
-      const path = `/srv/http/sondagens/${ano}`;
+      const path = `${process.env.UPLOADED_FILES_PATH}/${ano}`;
 
       if (!fs.existsSync(path)) {
         fs.mkdirSync(path, { recursive: true });
