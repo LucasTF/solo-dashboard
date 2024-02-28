@@ -20,8 +20,8 @@ import Modal from "@/components/ui/Modal";
 import Loading from "../Loading";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Arquivo } from "@/types/data/Arquivo";
-import DeleteFile from "./Form/DeleteFile";
 
+const DeleteFile = lazy(() => import("./Form/DeleteFile"));
 const EditObraForm = lazy(() => import("./Form/EditObra"));
 const Upload = lazy(() => import("./Form/Upload"));
 
