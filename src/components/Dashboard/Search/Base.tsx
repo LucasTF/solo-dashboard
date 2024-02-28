@@ -29,7 +29,7 @@ export const SearchBase = ({
 }: SearchProps) => {
   return (
     <form
-      className="flex gap-4 max-md:flex-col grow relative"
+      className="flex gap-4 max-lg:flex-col grow relative"
       onSubmit={onSubmit}
       {...rest}
     >
@@ -44,7 +44,7 @@ export const SearchBase = ({
 
       <div className="flex gap-4">
         <select
-          className="lg:min-w-24 rounded-md p-4 max-md:w-full"
+          className="lg:min-w-24 rounded-md p-4 max-md:w-full grow"
           {...register("column")}
         >
           {searchColumns.map((target, index) => (
