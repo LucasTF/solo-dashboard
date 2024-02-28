@@ -23,11 +23,11 @@ model User {
 
 model Proprietario {
   id                    Int             @id @default(autoincrement())
-  nome                  String          @db.VarChar(40)
+  nome                  String          @db.VarChar(60)
   apelido               String?         @db.VarChar(40)
   cpf                   String?         @db.VarChar(14)
   cnpj                  String?         @db.VarChar(18)
-  logradouro            String          @db.VarChar(40)
+  logradouro            String          @db.VarChar(60)
   num_logradouro        String          @db.VarChar(6)
   complemento           String?         @db.VarChar(40)
   bairro                String          @db.VarChar(40)
@@ -44,11 +44,11 @@ model Proprietario {
 
 model Cliente {
   id                    Int             @id @default(autoincrement())
-  nome                  String          @db.VarChar(40)
+  nome                  String          @db.VarChar(60)
   apelido               String?         @db.VarChar(40)
   cpf                   String?         @db.VarChar(14)
   cnpj                  String?         @db.VarChar(18)
-  logradouro            String          @db.VarChar(40)
+  logradouro            String          @db.VarChar(60)
   num_logradouro        String          @db.VarChar(6)
   complemento           String?         @db.VarChar(40)
   bairro                String          @db.VarChar(40)
@@ -71,7 +71,7 @@ model Obra {
   data_inicio           String?     @db.VarChar(30)
   data_fim              String?     @db.VarChar(30)
   tipo_logo             String?     @db.VarChar(10)
-  logradouro            String?     @db.VarChar(40)
+  logradouro            String?     @db.VarChar(60)
   lote                  String?
   quadra                String?
   num_logo              String?
@@ -101,8 +101,8 @@ model Obra {
   tb_taxa_solo          String?
   STTrado               Int?
   STTradoml             Int?
-  proprietario          String?     @db.VarChar(40)
-  cliente               String?     @db.VarChar(40)
+  proprietario          String?     @db.VarChar(60)
+  cliente               String?     @db.VarChar(60)
   arquivos              Arquivo[]
 
   @@index([cod_prop, sp, num_obra, ano, data_inicio, data_fim, logradouro, bairro, cidade, uf, complemento_logo, cliente, proprietario])
@@ -142,7 +142,7 @@ model tbobras {
   datainiobra               String?     @db.VarChar(30)
   datafimobra               String?     @db.VarChar(30)
   tipologobra               String?     @db.VarChar(10)
-  logradouroobra            String?     @db.VarChar(40)
+  logradouroobra            String?     @db.VarChar(60)
   loteobra                  String?
   quadraobra                String?
   numlogobra                String?
@@ -172,8 +172,8 @@ model tbobras {
   TBTaxaSolo                String?
   STTrado                   Int?
   STTradoml                 Int?
-  proprietario              String?     @db.VarChar(40)
-  cliente                   String?     @db.VarChar(40)
+  proprietario              String?     @db.VarChar(60)
+  cliente                   String?     @db.VarChar(60)
   arquivos                  tbarquivos[]
 }
 

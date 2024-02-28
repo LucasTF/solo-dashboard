@@ -18,14 +18,18 @@ import { getObraById } from "@/lib/actions/data/obras";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import Modal from "@/components/ui/Modal";
 import Loading from "../Loading";
+import { TrashIcon } from "@heroicons/react/24/solid";
+import { Arquivo } from "@/types/data/Arquivo";
+import DeleteFile from "./Form/DeleteFile";
 
 const EditObraForm = lazy(() => import("./Form/EditObra"));
-const Archives = lazy(() => import("./Form/Archives"));
+const Upload = lazy(() => import("./Form/Upload"));
 
 enum ModalState {
   Off,
   Edit = "Editar Obra",
-  Archives = "Gerenciar arquivos",
+  Upload = "Upload de arquivos",
+  DeleteFile = "Deletar arquivo",
 }
 
 const options = tv({
@@ -41,6 +45,7 @@ const options = tv({
 export const ObrasOptions = () => {
   const [modal, setModal] = useState<ModalState>(ModalState.Off);
   const [obra, setObra] = useState<ObraWithFiles>();
+  const [file, setFile] = useState<Arquivo>();
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -63,13 +68,20 @@ export const ObrasOptions = () => {
     switch (modal) {
       case ModalState.Edit:
         return <EditObraForm obra={obra as Obra} />;
-      case ModalState.Archives:
-        return <Archives obra={obra as ObraWithFiles} />;
+      case ModalState.Upload:
+        return <Upload obra={obra as ObraWithFiles} />;
+      case ModalState.DeleteFile:
+        return (
+          <DeleteFile
+            file={file!}
+            closeModal={() => setModal(ModalState.Off)}
+          />
+        );
     }
   };
 
   return (
-    <div className={options({ visible: entry !== null })}>
+    <aside className={options({ visible: entry !== null })}>
       {entry && searchParams.size > 0 && entry.table === pathname && (
         <div className="flex flex-col gap-4">
           <div>
@@ -95,10 +107,10 @@ export const ObrasOptions = () => {
             color="red"
             fontStrength="semibold"
             type="button"
-            onClick={() => setModal(ModalState.Archives)}
+            onClick={() => setModal(ModalState.Upload)}
           >
             <ArrowUpOnSquareStackIcon className="size-6" />
-            Gerenciar arquivos
+            Upload de arquivos
           </Button>
 
           <TitledDivider title="Detalhes" />
@@ -118,18 +130,27 @@ export const ObrasOptions = () => {
 
               <ul>
                 {obra?.arquivos.map((arquivo) => (
-                  <li className="flex gap-2 p-1 odd:bg-slate-300 even:bg-slate-100">
-                    <DocumentIcon className="size-6" />
-                    <span
-                      className="cursor-pointer underline text-sky-800 hover:text-sky-700 font-semibold text-sm"
-                      onClick={() =>
-                        window.open(
-                          `${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${obra.ano}/${arquivo.nome}`
-                        )
-                      }
-                    >
-                      {arquivo.nome}
-                    </span>
+                  <li className="flex justify-between p-1 odd:bg-slate-300 even:bg-slate-100">
+                    <div className="flex gap-2">
+                      <DocumentIcon className="size-6" />
+                      <span
+                        className="cursor-pointer underline text-sky-800 hover:text-sky-700 font-semibold text-sm"
+                        onClick={() =>
+                          window.open(
+                            `${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${obra.ano}/${arquivo.nome}`
+                          )
+                        }
+                      >
+                        {arquivo.nome}
+                      </span>
+                    </div>
+                    <TrashIcon
+                      className="size-6 text-red-600 cursor-pointer"
+                      onClick={() => {
+                        setFile(arquivo);
+                        setModal(ModalState.DeleteFile);
+                      }}
+                    />
                   </li>
                 ))}
               </ul>
@@ -145,6 +166,6 @@ export const ObrasOptions = () => {
       >
         <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
       </Modal>
-    </div>
+    </aside>
   );
 };
