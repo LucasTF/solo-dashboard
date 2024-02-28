@@ -1,18 +1,20 @@
+import { Column } from "@/lib/structures/TableStructure";
+
 type HeadProps = {
-  columns: string[];
+  columns: Column[];
 };
 
 export const Head = ({ columns }: HeadProps) => {
   return (
     <thead>
       <tr>
-        {columns.map((col, index) => (
+        {columns.map((column) => (
           <th
-            key={index}
+            key={column.name}
             className="px-4 py-2 text-xs font-medium text-gray-500 uppercase sticky top-0 bg-slate-200"
             scope="col"
           >
-            {col}
+            {column.name}
           </th>
         ))}
       </tr>

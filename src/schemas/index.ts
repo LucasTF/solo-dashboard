@@ -1,5 +1,4 @@
 import { Logradouro } from "@/enums/Logradouro";
-import { ObrasSearchColumnsEnum } from "@/enums/SearchColumns";
 import * as z from "zod";
 
 const NUMBER = "Valor deve ser um número.";
@@ -54,6 +53,13 @@ export const ObraModalSchema = z.object({
 });
 
 export const ObrasSearchFiltersSchema = z.object({
-  search: z.string(),
-  column: z.nativeEnum(ObrasSearchColumnsEnum),
+  search: z.string().max(40),
+  column: z.enum([
+    "sp",
+    "cidade",
+    "bairro",
+    "logradouro",
+    "cliente",
+    "proprietario",
+  ]),
 });

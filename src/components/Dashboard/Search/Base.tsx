@@ -8,12 +8,12 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 
-import { SearchColumn } from "@/lib/structures/TableStructure";
+import { TableStructure } from "@/lib/structures/TableStructure";
 import Button from "@/components/ui/Button";
 import { FormHTMLAttributes } from "react";
 
 type SearchProps = FormHTMLAttributes<HTMLFormElement> & {
-  searchColumns: SearchColumn[];
+  tableStructure: TableStructure;
   register: UseFormRegister<any>;
   onAdvancedFilterClick: () => void;
   advancedFilterState: boolean;
@@ -22,7 +22,7 @@ type SearchProps = FormHTMLAttributes<HTMLFormElement> & {
 export const SearchBase = ({
   onSubmit,
   register,
-  searchColumns,
+  tableStructure,
   onAdvancedFilterClick,
   advancedFilterState,
   ...rest
@@ -47,11 +47,15 @@ export const SearchBase = ({
           className="lg:min-w-24 rounded-md p-4 max-md:w-full grow"
           {...register("column")}
         >
-          {searchColumns.map((target, index) => (
-            <option key={index} value={target.value}>
-              {target.name}
-            </option>
-          ))}
+          {tableStructure.columns.map((column) => {
+            if (column.searchable) {
+              return (
+                <option key={column.name} value={column.value}>
+                  {column.name}
+                </option>
+              );
+            }
+          })}
         </select>
 
         <Button type="submit" color="green" shape="rectangle">

@@ -73,18 +73,24 @@ const Header = () => {
         <div className="lg:hidden bg-slate-300 border-b-slate-400 border-[1px] p-4 flex flex-col gap-4 justify-center items-center">
           <div className="flex flex-col items-center gap-1">
             <UserCircleIcon className="size-12" />
-            <span className="font-semibold text-sm select-none">
-              {session?.name}
-            </span>
+            {!isPending && (
+              <span className="font-semibold text-sm select-none">
+                {session?.name}
+              </span>
+            )}
           </div>
-          <button
-            type="button"
-            className="font-bold bg-red-600 px-2 py-1 flex rounded-md text-white border-red-700 shadow-lg border-2"
-            onClick={() => logoutHandler()}
-          >
-            <ArrowLeftStartOnRectangleIcon className="size-6" />
-            <span>Sair</span>
-          </button>
+          {isPending ? (
+            <p className="font-bold">Saindo...</p>
+          ) : (
+            <button
+              type="button"
+              className="font-bold bg-red-600 px-2 py-1 flex rounded-md text-white border-red-700 shadow-lg border-2"
+              onClick={() => logoutHandler()}
+            >
+              <ArrowLeftStartOnRectangleIcon className="size-6" />
+              <span>Sair</span>
+            </button>
+          )}
         </div>
 
         <ul className="flex max-lg:flex-col gap-4 lg:gap-2 max-lg:m-5">

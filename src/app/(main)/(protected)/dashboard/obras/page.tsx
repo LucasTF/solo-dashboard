@@ -13,8 +13,7 @@ export default async function ObrasPage({ searchParams }: PageProps) {
         <Dashboard.Header.Obras />
 
         <Dashboard.TableConstructor
-          table={obrasStructure.table}
-          columns={obrasStructure.columnNames}
+          tableStructure={obrasStructure}
           searchFilters={{
             column: searchParams.column,
             search: searchParams.search,

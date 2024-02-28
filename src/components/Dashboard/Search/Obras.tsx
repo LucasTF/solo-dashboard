@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchColumn, TablesEnum } from "@/lib/structures/TableStructure";
+import { TableStructure } from "@/lib/structures/TableStructure";
 import { SearchBase } from "./Base";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -11,11 +11,10 @@ import { useEntryStore } from "@/lib/stores/entry";
 import { useState } from "react";
 
 type SearchBaseProps = {
-  searchColumns: SearchColumn[];
-  table: TablesEnum;
+  tableStructure: TableStructure;
 };
 
-export const ObrasSearch = ({ searchColumns, table }: SearchBaseProps) => {
+export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
   const router = useRouter();
 
   const [advancedFilters, toggleAdvancedFilters] = useState(false);
@@ -34,7 +33,7 @@ export const ObrasSearch = ({ searchColumns, table }: SearchBaseProps) => {
   const searchHandler = (searchString: string, column: string) => {
     resetEntry();
     const newUrl =
-      table +
+      tableStructure.table +
       "?" +
       new URLSearchParams(`search=${searchString}&column=${column}`);
     router.push(newUrl);
@@ -43,7 +42,7 @@ export const ObrasSearch = ({ searchColumns, table }: SearchBaseProps) => {
   return (
     <div className="flex flex-col grow gap-4">
       <SearchBase
-        searchColumns={searchColumns}
+        tableStructure={tableStructure}
         register={register}
         onSubmit={handleSubmit((onValid) =>
           searchHandler(onValid.search, onValid.column)

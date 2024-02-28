@@ -1,10 +1,5 @@
 import { Obra } from "@/types/data/Obra";
 
-export type SearchColumn = {
-  name: string;
-  value: string;
-};
-
 export enum TablesEnum {
   Obras = "/dashboard/obras",
   Clientes = "/dashboard/clientes",
@@ -28,8 +23,13 @@ type ProprietariosData = {
 
 export type TableData = ObrasData | ClientesData | ProprietariosData;
 
+export type Column = {
+  name: string;
+  value: string;
+  searchable: true;
+};
+
 export type TableStructure = {
-  searchColumns: SearchColumn[];
-  columnNames: string[];
   table: TablesEnum;
+  columns: Column[];
 };

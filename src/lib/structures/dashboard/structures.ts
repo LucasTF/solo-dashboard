@@ -1,26 +1,17 @@
-import { ObrasSearchColumnsEnum } from "@/enums/SearchColumns";
 import { TableStructure, TablesEnum } from "../TableStructure";
 
 export const obrasStructure: TableStructure = {
   table: TablesEnum.Obras,
-  columnNames: [
-    "ID",
-    "SP",
-    "Ano",
-    "Tipo Logradouro",
-    "Logradouro",
-    "Cidade",
-    "Bairro",
-    "UF",
-    "Cliente",
-    "Proprietário",
-  ],
-  searchColumns: [
-    { name: "SP", value: ObrasSearchColumnsEnum.CodSP },
-    { name: "Cidade", value: ObrasSearchColumnsEnum.Cidade },
-    { name: "Bairro", value: ObrasSearchColumnsEnum.Bairro },
-    { name: "Logradouro", value: ObrasSearchColumnsEnum.Logradouro },
-    { name: "Cliente", value: ObrasSearchColumnsEnum.Cliente },
-    { name: "Proprietário", value: ObrasSearchColumnsEnum.Proprietario },
+  columns: [
+    { name: "ID", value: "id", searchable: false },
+    { name: "SP", value: "sp", searchable: true },
+    { name: "Ano", value: "ano", searchable: false },
+    { name: "Tipo Logradouro", value: "tipo_logo", searchable: false },
+    { name: "Logradouro", value: "logradouro", searchable: true },
+    { name: "UF", value: "uf", searchable: false },
+    { name: "Cidade", value: "cidade", searchable: true },
+    { name: "Bairro", value: "bairro", searchable: true },
+    { name: "Cliente", value: "cliente", searchable: true },
+    { name: "Proprietário", value: "proprietario", searchable: true },
   ],
 };

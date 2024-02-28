@@ -16,10 +16,7 @@ export const ObrasTableHeader = () => {
 
   return (
     <header className="flex max-md:flex-col gap-4 order-1">
-      <ObrasSearch
-        searchColumns={obrasStructure.searchColumns}
-        table={obrasStructure.table}
-      />
+      <ObrasSearch tableStructure={obrasStructure} />
 
       <div className="border-2 border-slate-300" />
 

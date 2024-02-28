@@ -1,11 +1,12 @@
 import React from "react";
 
 import { Table } from "./index";
+import { Column } from "@/lib/structures/TableStructure";
 
 type TableProps = {
   children?: React.ReactNode;
   numOfRows: number;
-  columns: string[];
+  columns: Column[];
 };
 
 export const Base = ({ children, numOfRows, columns }: TableProps) => {
