@@ -53,7 +53,7 @@ export const ObraModalSchema = z.object({
 });
 
 export const ObrasSearchFiltersSchema = z.object({
-  search: z.string().max(40),
+  search: z.string().min(1).max(40),
   column: z.enum([
     "sp",
     "cidade",

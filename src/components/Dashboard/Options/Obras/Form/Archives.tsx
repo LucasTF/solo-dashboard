@@ -28,7 +28,7 @@ const Archives = ({ obra }: ArchivesProps) => {
     if (!fileList) return;
     startTransition(async () => {
       const formData = new FormData();
-      files.forEach((file) => formData.append("obra", file, file.name));
+      files.forEach((file) => formData.append("obra-file", file, file.name));
 
       const res = await fetch(`/api/upload/${obra.id}`, {
         method: "POST",

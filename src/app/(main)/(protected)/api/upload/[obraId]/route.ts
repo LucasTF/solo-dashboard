@@ -4,12 +4,16 @@ import {
   uploadFilesToServer,
 } from "@/lib/services/filesServices";
 import { ServerResponse } from "@/types/ServerResponse";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { obraId: string } }
 ): Promise<NextResponse<ServerResponse>> {
+  const searchParams = request.nextUrl.searchParams;
+  const noWrite = searchParams.get("noWrite");
+  const noDb = searchParams.get("noDb");
+
   const obraId = params.obraId;
 
   let files: File[];
@@ -61,14 +65,18 @@ export async function POST(
   }
 
   // Uploads files to the static files server
-  const resultUpload = await uploadFilesToServer(ano, files);
-  if (!resultUpload.success)
-    return NextResponse.json(resultUpload, { status: 400 });
+  if (noWrite !== "true") {
+    const resultUpload = await uploadFilesToServer(ano, files);
+    if (!resultUpload.success)
+      return NextResponse.json(resultUpload, { status: 400 });
+  }
 
   // Register uploaded files onto the database
-  const resultRegister = await registerFilesToDatabase(Number(obraId), files);
-  if (!resultRegister.success)
-    return NextResponse.json(resultRegister, { status: 400 });
+  if (noDb !== "true") {
+    const resultRegister = await registerFilesToDatabase(Number(obraId), files);
+    if (!resultRegister.success)
+      return NextResponse.json(resultRegister, { status: 400 });
+  }
 
   return NextResponse.json({
     success: true,
