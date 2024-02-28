@@ -26,7 +26,7 @@ export type TableData = ObrasData | ClientesData | ProprietariosData;
 export type Column = {
   name: string;
   value: string;
-  searchable: true;
+  searchable: boolean;
 };
 
 export type TableStructure = {
