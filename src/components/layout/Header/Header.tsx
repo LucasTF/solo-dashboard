@@ -13,7 +13,7 @@ import {
 
 import { logout } from "@/lib/actions/auth/logout";
 
-import Backdrop from "@/components/Backdrop/Backdrop";
+import Backdrop from "@/components/ui/Backdrop";
 import NavLink from "./NavLink";
 import { useSessionStore } from "@/lib/stores/session";
 import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";

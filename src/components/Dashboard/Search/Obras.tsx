@@ -40,7 +40,7 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
   };
 
   return (
-    <div className="flex flex-col grow gap-4">
+    <section className="flex flex-col grow gap-4">
       <SearchBase
         tableStructure={tableStructure}
         register={register}
@@ -51,10 +51,10 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
         advancedFilterState={advancedFilters}
       />
       {advancedFilters && (
-        <div className="h-56">
+        <div>
           <p>Filtros a serem adicionados.</p>
         </div>
       )}
-    </div>
+    </section>
   );
 };

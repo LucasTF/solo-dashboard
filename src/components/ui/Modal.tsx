@@ -1,4 +1,4 @@
-import Backdrop from "../Backdrop/Backdrop";
+import Backdrop from "./Backdrop";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Button from "./Button";

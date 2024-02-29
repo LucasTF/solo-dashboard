@@ -24,4 +24,5 @@ const Backdrop = ({ visible = false, onClick }: BackdropProps) => {
     </>
   );
 };
+
 export default Backdrop;
