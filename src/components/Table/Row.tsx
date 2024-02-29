@@ -25,16 +25,18 @@ export const Row = ({ children, rowInfo }: RowProps) => {
 
   const selectHandler = () => {
     if (rowInfo) {
-      if (entry?.data.id === rowInfo.id) {
+      if (entry?.id === rowInfo.id) {
         clearEntry();
-      } else setEntry(rowInfo.table, rowInfo.id);
+      } else {
+        setEntry(rowInfo.table, rowInfo.id);
+      }
     }
   };
 
   return (
     <tr
       className={row({
-        selected: rowInfo && entry?.data.id === rowInfo?.id,
+        selected: rowInfo && entry?.id === rowInfo.id,
       })}
       onClick={() => selectHandler()}
     >

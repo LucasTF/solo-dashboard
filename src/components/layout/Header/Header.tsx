@@ -93,7 +93,7 @@ const Header = () => {
           )}
         </div>
 
-        <ul className="flex max-lg:flex-col gap-4 lg:gap-2 max-lg:m-5">
+        <ul className="flex max-lg:flex-col gap-4 lg:gap-3 max-lg:m-5">
           <li>
             <NavLink href="/dashboard/clientes">Clientes</NavLink>
           </li>

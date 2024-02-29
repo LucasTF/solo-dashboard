@@ -13,7 +13,10 @@ export const LoginSchema = z.object({
 });
 
 export const ObraModalSchema = z.object({
-  sp: z.string().max(8, "Deve conter apenas 8 caracteres"),
+  sp: z
+    .string()
+    .min(8, "Deve conter apenas 8 caracteres")
+    .max(8, "Deve conter apenas 8 caracteres"),
   num_obra: z.coerce.number().int().min(1, GREATER_THAN_0).max(999),
   sp_sondagem: z.coerce
     .number({ invalid_type_error: NUMBER })
@@ -41,14 +44,14 @@ export const ObraModalSchema = z.object({
     }),
   }),
   uf: z.string().min(2).max(2),
-  cidade: z.string().min(1).max(40),
+  cidade: z.string().max(40),
   tipo_logo: z.nativeEnum(Logradouro),
   logradouro: z.string().min(1, CANNOT_BE_EMPTY).max(60),
-  complemento: z.string().min(1, CANNOT_BE_EMPTY).max(30),
+  complemento: z.string().max(30),
   bairro: z.string().min(1, CANNOT_BE_EMPTY).max(40),
   lote: z.string().max(40),
   quadra: z.string().max(40),
-  proprietario: z.string().min(1, CANNOT_BE_EMPTY).max(60),
+  proprietario: z.string().max(60),
   cliente: z.string().min(1, CANNOT_BE_EMPTY).max(60),
 });
 

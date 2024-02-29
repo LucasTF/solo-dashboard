@@ -131,6 +131,7 @@ const NewObraForm = () => {
     return (
       <form
         className="m-4"
+        autoComplete="off"
         onSubmit={handleSubmit((formData) => submitHandler(formData))}
       >
         <section className="grid lg:grid-cols-2 gap-8">
@@ -139,6 +140,10 @@ const NewObraForm = () => {
               label="Código SP"
               isInvalid={!!errors.sp}
               errorMessage={errors.sp?.message}
+              placeholder={`SP000/${new Date()
+                .getFullYear()
+                .toString()
+                .substr(-2)}`}
               {...register("sp")}
             />
             <Field.Input

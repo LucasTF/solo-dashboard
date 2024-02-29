@@ -5,8 +5,7 @@ import { getObraById, searchObras } from "./obras";
 import { ObrasSearchFiltersSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";
 import { DataResponse } from "@/types/DataResponse";
-import { Obra } from "@/types/data/Obra";
-import { Entry } from "@/types/Entry";
+import { Obra, ObraWithFiles } from "@/types/data/Obra";
 
 export async function getTableData(
   table: TablesEnum,
@@ -31,11 +30,11 @@ export async function getTableData(
 export async function getEntryData(
   table: TablesEnum,
   id: number
-): Promise<Entry | null> {
+): Promise<ObraWithFiles | null> {
   switch (table) {
     case TablesEnum.Obras:
       const obra = await getObraById(id);
-      return { table, data: obra };
+      return obra;
     default:
       return null;
   }

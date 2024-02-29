@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { tv } from "tailwind-variants";
 import {
   ArrowUpOnSquareStackIcon,
@@ -70,12 +70,16 @@ export const ObrasOptions = () => {
 
   return (
     <aside className={options({ visible: entry !== null })}>
-      {entry && searchParams.size > 0 && entry.table === pathname && (
+      {entry && searchParams.size > 0 && entry?.table === pathname && (
         <div className="flex flex-col gap-4">
           <div>
             <p className="text-center font-semibold">Obra</p>
             <h2 className="font-bold text-center sm:text-2xl xl:text-4xl">
-              {obra?.sp}
+              {obra ? (
+                obra.sp
+              ) : (
+                <div className="animate-pulse bg-slate-300 h-10 w-full rounded-md"></div>
+              )}
             </h2>
           </div>
 
@@ -85,6 +89,7 @@ export const ObrasOptions = () => {
             color="lightblue"
             fontStrength="semibold"
             type="button"
+            disabled={!obra}
             onClick={() => setModal(ModalState.Edit)}
           >
             <PencilSquareIcon className="size-6" />
@@ -95,6 +100,7 @@ export const ObrasOptions = () => {
             color="red"
             fontStrength="semibold"
             type="button"
+            disabled={!obra}
             onClick={() => setModal(ModalState.Upload)}
           >
             <ArrowUpOnSquareStackIcon className="size-6" />
@@ -105,7 +111,7 @@ export const ObrasOptions = () => {
 
           <ButtonLink
             fontStrength="semibold"
-            href={`/report/obra/${entry.data.id}`}
+            href={`/report/obra/${entry.id}`}
             target="_blank"
           >
             <DocumentTextIcon className="size-6" />
@@ -118,7 +124,10 @@ export const ObrasOptions = () => {
 
               <ul>
                 {obra?.arquivos.map((arquivo) => (
-                  <li className="flex justify-between p-1 odd:bg-slate-300 even:bg-slate-100">
+                  <li
+                    className="flex justify-between p-1 odd:bg-slate-300 even:bg-slate-100"
+                    key={arquivo.id}
+                  >
                     <div className="flex gap-2">
                       <DocumentIcon className="size-6" />
                       <span

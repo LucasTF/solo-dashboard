@@ -13,8 +13,9 @@ type EntryState = {
 export const useEntryStore = create<EntryState>((set, get) => ({
   entry: null,
   setEntry: async (table, id) => {
-    const entry = await getEntryData(table, id);
-    set({ entry });
+    set({ entry: { id, table } });
+    const data = await getEntryData(table, id);
+    if (data) set({ entry: { id, table, data } });
   },
   updateEntry: (fn) => set((state) => ({ entry: fn(state.entry) })),
   clearEntry: () => set((state) => ({ entry: null })),
