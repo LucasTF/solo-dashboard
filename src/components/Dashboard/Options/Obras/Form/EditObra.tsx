@@ -154,6 +154,7 @@ const EditObraForm = ({ obra }: EditObraFormProps) => {
     return (
       <form
         className="m-4"
+        autoComplete="off"
         onSubmit={handleSubmit((formData) => submitHandler(formData))}
       >
         <section className="grid lg:grid-cols-2 gap-8">
