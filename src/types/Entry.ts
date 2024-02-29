@@ -1,9 +1,9 @@
 import { TablesEnum } from "@/lib/structures/TableStructure";
-import { Obra } from "./data/Obra";
+import { ObraWithFiles } from "./data/Obra";
 
 type ObraEntry = {
   table: TablesEnum.Obras;
-  data: Obra;
+  data: ObraWithFiles;
 };
 
 type ClienteEntry = {

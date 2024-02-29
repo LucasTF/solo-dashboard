@@ -26,7 +26,7 @@ export const DashboardTable = ({
         data.slice(rowsPerPage * (page - 1), rowsPerPage * page).map((row) => (
           <Table.Row
             key={row.id}
-            identifier={{ table: tableStructure.table, data: row }}
+            rowInfo={{ table: tableStructure.table, id: row.id }}
           >
             {tableStructure.columns.map((column, colIndex) => {
               return (

@@ -19,7 +19,7 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
 
   const [advancedFilters, toggleAdvancedFilters] = useState(false);
 
-  const { resetEntry } = useEntryStore();
+  const { clearEntry } = useEntryStore();
 
   const { register, handleSubmit } = useForm<
     z.infer<typeof ObrasSearchFiltersSchema>
@@ -31,7 +31,7 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
   });
 
   const searchHandler = (searchString: string, column: string) => {
-    resetEntry();
+    clearEntry();
     const newUrl =
       tableStructure.table +
       "?" +

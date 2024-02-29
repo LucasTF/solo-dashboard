@@ -58,7 +58,7 @@ export async function getObraById(id: number) {
     return obra;
   } catch (error) {
     console.log(error);
-    return {} as Obra;
+    return {} as ObraWithFiles;
   }
 }
 

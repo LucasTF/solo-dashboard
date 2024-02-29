@@ -1,11 +1,12 @@
 "use server";
 
 import { TablesEnum } from "@/lib/structures/TableStructure";
-import { searchObras } from "./obras";
+import { getObraById, searchObras } from "./obras";
 import { ObrasSearchFiltersSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";
 import { DataResponse } from "@/types/DataResponse";
 import { Obra } from "@/types/data/Obra";
+import { Entry } from "@/types/Entry";
 
 export async function getTableData(
   table: TablesEnum,
@@ -24,5 +25,18 @@ export async function getTableData(
         success: false,
         message: "Não foi possível recuperar os dados dessa tabela.",
       };
+  }
+}
+
+export async function getEntryData(
+  table: TablesEnum,
+  id: number
+): Promise<Entry | null> {
+  switch (table) {
+    case TablesEnum.Obras:
+      const obra = await getObraById(id);
+      return { table, data: obra };
+    default:
+      return null;
   }
 }

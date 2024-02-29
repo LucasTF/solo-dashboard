@@ -14,7 +14,6 @@ import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import Loading from "../../Loading";
 import Success from "../../Success";
-import { useEntryStore } from "@/lib/stores/entry";
 import { updateObra } from "@/lib/actions/data/obras";
 
 type UF = {
@@ -49,8 +48,6 @@ type EditObraFormProps = {
 type Obra = z.infer<typeof ObraModalSchema>;
 
 const EditObraForm = ({ obra }: EditObraFormProps) => {
-  const { entry } = useEntryStore();
-
   const year = new Date().getFullYear();
   const years = Array.from(new Array(45), (_, index) => year - index);
 
@@ -141,7 +138,7 @@ const EditObraForm = ({ obra }: EditObraFormProps) => {
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
-      const response = await updateObra(Number(entry?.data.id), formData);
+      const response = await updateObra(obra.id, formData);
       if (response.success) {
         setSuccess(true);
         setTimeout(() => setSuccess(false), 3000);

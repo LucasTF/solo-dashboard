@@ -4,10 +4,10 @@ import React from "react";
 import { tv } from "tailwind-variants";
 
 import { useEntryStore } from "@/lib/stores/entry";
-import { Entry } from "@/types/Entry";
+import { TablesEnum } from "@/lib/structures/TableStructure";
 
 type RowProps = {
-  identifier?: Entry;
+  rowInfo?: { id: number; table: TablesEnum };
   children?: React.ReactNode;
 };
 
@@ -20,21 +20,21 @@ const row = tv({
   },
 });
 
-export const Row = ({ children, identifier }: RowProps) => {
-  const { entry, setEntry, resetEntry } = useEntryStore();
+export const Row = ({ children, rowInfo }: RowProps) => {
+  const { entry, setEntry, clearEntry } = useEntryStore();
 
   const selectHandler = () => {
-    if (identifier) {
-      if (entry?.data.id === identifier.data.id) {
-        resetEntry();
-      } else setEntry(identifier);
+    if (rowInfo) {
+      if (entry?.data.id === rowInfo.id) {
+        clearEntry();
+      } else setEntry(rowInfo.table, rowInfo.id);
     }
   };
 
   return (
     <tr
       className={row({
-        selected: identifier && entry?.data.id === identifier.data.id,
+        selected: rowInfo && entry?.data.id === rowInfo?.id,
       })}
       onClick={() => selectHandler()}
     >

@@ -14,7 +14,6 @@ import Button, { ButtonLink } from "@/components/ui/Button";
 import { useEntryStore } from "@/lib/stores/entry";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Obra, ObraWithFiles } from "@/types/data/Obra";
-import { getObraById } from "@/lib/actions/data/obras";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import Modal from "@/components/ui/Modal";
 import Loading from "../Loading";
@@ -44,7 +43,6 @@ const options = tv({
 
 export const ObrasOptions = () => {
   const [modal, setModal] = useState<ModalState>(ModalState.Off);
-  const [obra, setObra] = useState<ObraWithFiles>();
   const [file, setFile] = useState<Arquivo>();
 
   const pathname = usePathname();
@@ -52,24 +50,14 @@ export const ObrasOptions = () => {
 
   const { entry } = useEntryStore();
 
-  useEffect(() => {
-    const fetchObra = async () => {
-      if (entry) {
-        const obraData = (await getObraById(
-          Number(entry.data.id)
-        )) as ObraWithFiles;
-        setObra(obraData);
-      }
-    };
-    fetchObra().catch((err) => console.log(err));
-  }, [entry]);
+  const obra = entry?.data as ObraWithFiles;
 
   const modalBuilder = () => {
     switch (modal) {
       case ModalState.Edit:
         return <EditObraForm obra={obra as Obra} />;
       case ModalState.Upload:
-        return <Upload obra={obra as ObraWithFiles} />;
+        return <Upload obra={obra} />;
       case ModalState.DeleteFile:
         return (
           <DeleteFile

@@ -8,6 +8,8 @@ import { useState, useTransition } from "react";
 import Loading from "../../Loading";
 import Success from "../../Success";
 import { toast } from "react-toastify";
+import { useEntryStore } from "@/lib/stores/entry";
+import { ObraWithFiles } from "@/types/data/Obra";
 
 type DeleteFileProps = {
   file: Arquivo;
@@ -18,10 +20,20 @@ const DeleteFile = ({ file, closeModal }: DeleteFileProps) => {
   const [success, setSuccess] = useState(false);
   const [isPending, startTransition] = useTransition();
 
+  const { updateEntry } = useEntryStore();
+
   const deleteFileHandler = () => {
     startTransition(async () => {
       const response = await deleteFile(file.id);
       if (response.success) {
+        updateEntry((prevState) => {
+          if (prevState) {
+            const data = prevState.data as ObraWithFiles;
+            const index = data.arquivos.indexOf(file);
+            data.arquivos.splice(index, 1);
+            return { ...prevState, data };
+          } else return prevState;
+        });
         setSuccess(true);
         setTimeout(() => closeModal(), 3000);
       } else toast(response.error, { type: "error" });
