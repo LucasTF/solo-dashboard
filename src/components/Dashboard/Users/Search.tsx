@@ -47,8 +47,7 @@ export const UsersSearch = ({ tableStructure }: SearchBaseProps) => {
         onSubmit={handleSubmit((onValid) =>
           searchHandler(onValid.search, onValid.column)
         )}
-        onAdvancedFilterClick={() => toggleAdvancedFilters((state) => !state)}
-        advancedFilterState={advancedFilters}
+        filter={{ hasAdvancedFilter: false }}
       />
       {advancedFilters && (
         <div>

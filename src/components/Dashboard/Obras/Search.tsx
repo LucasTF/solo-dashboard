@@ -47,8 +47,11 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
         onSubmit={handleSubmit((onValid) =>
           searchHandler(onValid.search, onValid.column)
         )}
-        onAdvancedFilterClick={() => toggleAdvancedFilters((state) => !state)}
-        advancedFilterState={advancedFilters}
+        filter={{
+          hasAdvancedFilter: true,
+          onAdvancedFilterClick: () => toggleAdvancedFilters((state) => !state),
+          advancedFilterState: advancedFilters,
+        }}
       />
       {advancedFilters && (
         <div>

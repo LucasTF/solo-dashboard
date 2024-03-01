@@ -13,19 +13,29 @@ import Button from "@/components/ui/Button";
 import { FormHTMLAttributes } from "react";
 import { useTheme } from "next-themes";
 
+type NoAdvancedFilter = {
+  hasAdvancedFilter: false;
+};
+
+type HasAdvancedFilter = {
+  hasAdvancedFilter: true;
+  onAdvancedFilterClick: () => void;
+  advancedFilterState: boolean;
+};
+
+type AdvancedFilter = NoAdvancedFilter | HasAdvancedFilter;
+
 type SearchProps = FormHTMLAttributes<HTMLFormElement> & {
   tableStructure: TableStructure;
   register: UseFormRegister<any>;
-  onAdvancedFilterClick: () => void;
-  advancedFilterState: boolean;
+  filter: AdvancedFilter;
 };
 
 export const BaseSearch = ({
   onSubmit,
   register,
   tableStructure,
-  onAdvancedFilterClick,
-  advancedFilterState,
+  filter,
   ...rest
 }: SearchProps) => {
   const { resolvedTheme } = useTheme();
@@ -65,19 +75,21 @@ export const BaseSearch = ({
           <ArrowRightIcon className="size-6" />
         </Button>
 
-        <Button
-          type="button"
-          color={
-            advancedFilterState
-              ? resolvedTheme === "dark"
-                ? "indigo"
-                : "blue"
-              : "clear"
-          }
-          onClick={() => onAdvancedFilterClick()}
-        >
-          <FunnelIcon className="size-6" />
-        </Button>
+        {filter.hasAdvancedFilter && (
+          <Button
+            type="button"
+            color={
+              filter.advancedFilterState
+                ? resolvedTheme === "dark"
+                  ? "indigo"
+                  : "blue"
+                : "clear"
+            }
+            onClick={() => filter.onAdvancedFilterClick()}
+          >
+            <FunnelIcon className="size-6" />
+          </Button>
+        )}
       </div>
     </form>
   );
