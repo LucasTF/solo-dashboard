@@ -15,9 +15,9 @@ const Modal = ({ visible = false, title, children, onClose }: ModalProps) => {
     <>
       <dialog
         open={visible}
-        className="fixed top-0 bottom-0 rounded-md shadow-lg z-40 w-11/12 lg:w-3/4 bg-slate-200 overflow-hidden"
+        className="fixed top-0 bottom-0 rounded-md shadow-lg z-40 w-11/12 lg:w-3/4 bg-slate-200 dark:bg-zinc-800 overflow-hidden"
       >
-        <header className="flex justify-between content-center border-b-2 border-slate-400 p-4 bg-slate-300">
+        <header className="flex justify-between content-center border-b-2 border-slate-400 dark:border-zinc-900 p-4 bg-slate-300 dark:bg-gray-800">
           <h2 className="font-bold text-2xl my-auto select-none">{title}</h2>
           <Button
             color="red"

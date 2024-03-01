@@ -19,6 +19,7 @@ import Modal from "@/components/ui/Modal";
 import Loading from "@/components/ui/Loading";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Arquivo } from "@/types/data/Arquivo";
+import { useTheme } from "next-themes";
 
 const DeleteFile = lazy(() => import("./Modals/DeleteFile"));
 const EditObraForm = lazy(() => import("./Modals/EditObra"));
@@ -44,6 +45,8 @@ const options = tv({
 export const ObrasOptions = () => {
   const [modal, setModal] = useState<ModalState>(ModalState.Off);
   const [file, setFile] = useState<Arquivo>();
+
+  const { resolvedTheme } = useTheme();
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -78,7 +81,7 @@ export const ObrasOptions = () => {
               {obra ? (
                 obra.sp
               ) : (
-                <div className="animate-pulse bg-slate-300 h-10 w-full rounded-md"></div>
+                <div className="animate-pulse bg-slate-300 dark:bg-zinc-700 h-10 w-full rounded-md"></div>
               )}
             </h2>
           </div>
@@ -86,7 +89,7 @@ export const ObrasOptions = () => {
           <TitledDivider title="Opções" />
 
           <Button
-            color="lightblue"
+            color={resolvedTheme === "dark" ? "lightindigo" : "lightblue"}
             fontStrength="semibold"
             type="button"
             disabled={!obra}
@@ -110,6 +113,7 @@ export const ObrasOptions = () => {
           <TitledDivider title="Detalhes" />
 
           <ButtonLink
+            color={resolvedTheme === "dark" ? "indigo" : "blue"}
             fontStrength="semibold"
             href={`/report/obra/${entry.id}`}
             target="_blank"
@@ -124,14 +128,11 @@ export const ObrasOptions = () => {
 
               <ul>
                 {obra?.arquivos.map((arquivo) => (
-                  <li
-                    className="flex justify-between p-1 odd:bg-slate-300 even:bg-slate-100"
-                    key={arquivo.id}
-                  >
+                  <li className="flex justify-between p-1" key={arquivo.id}>
                     <div className="flex gap-2">
                       <DocumentIcon className="size-6" />
                       <span
-                        className="cursor-pointer underline text-sky-800 hover:text-sky-700 font-semibold text-sm"
+                        className="cursor-pointer underline text-sky-800 dark:text-purple-500 hover:text-sky-700 dark:hover:text-purple-400 font-semibold text-sm"
                         onClick={() =>
                           window.open(
                             `${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${obra.ano}/${arquivo.nome}`

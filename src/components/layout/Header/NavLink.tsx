@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import { VariantProps, tv } from "tailwind-variants";
 
 const navLink = tv({
-  base: "hover:text-sky-800 ease-in-out duration-300",
+  base: "hover:text-sky-800 dark:hover:text-purple-500 ease-in-out duration-300",
   variants: {
     selected: {
-      true: "font-bold text-sky-800",
+      true: "font-bold text-sky-800 dark:text-purple-500",
     },
   },
 });

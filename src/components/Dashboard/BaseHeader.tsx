@@ -21,7 +21,7 @@ export const BaseHeader = (props: BaseHeaderProps) => {
     <header className="flex max-md:flex-col gap-4 order-1">
       {props.searchComponent}
 
-      <div className="border-2 border-slate-300" />
+      <div className="border-2 border-slate-300 dark:border-zinc-700" />
 
       <div className="max-md:mx-auto">
         <Button

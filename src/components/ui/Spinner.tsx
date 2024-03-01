@@ -1,7 +1,7 @@
 import { tv, VariantProps } from "tailwind-variants";
 
 const spinner = tv({
-  base: "border-gray-300 animate-spin rounded-full border-8 border-t-sky-400",
+  base: "border-gray-300 dark:border-gray-600 animate-spin rounded-full border-8 border-t-sky-400 dark:border-t-purple-700",
   variants: {
     size: {
       sm: "size-6 border-4",

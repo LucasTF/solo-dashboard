@@ -10,7 +10,7 @@ type ResultsProps = {
 const resultNums = tv({
   variants: {
     selected: {
-      true: "font-bold select-none",
+      true: "font-bold select-none text-sky-800 dark:text-purple-500",
       false: "cursor-pointer hover:underline",
     },
   },

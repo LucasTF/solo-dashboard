@@ -18,7 +18,7 @@ export const TableConstructor = async ({
   return response.success ? (
     <DashboardTable tableStructure={tableStructure} data={response.data} />
   ) : (
-    <div className="h-48 rounded-md mt-4 flex flex-col items-center justify-center text-gray-500">
+    <div className="h-48 rounded-md mt-4 flex flex-col items-center justify-center text-gray-400">
       <TableCellsIcon className="size-24" />
       <p>Faça uma busca para começar</p>
     </div>

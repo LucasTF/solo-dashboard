@@ -154,7 +154,7 @@ const NewObraForm = () => {
             />
           </div>
 
-          <aside className="grid grid-cols-2 gap-4 border-2 border-slate-300 border-solid rounded-md p-4">
+          <aside className="grid grid-cols-2 gap-4 border-2 border-slate-300 dark:border-zinc-700 border-solid rounded-md p-4">
             <Field.Input
               label="Sondagens"
               isInvalid={!!errors.sp_sondagem}
@@ -184,7 +184,7 @@ const NewObraForm = () => {
           </aside>
         </section>
 
-        <hr className="m-4" />
+        <hr className="m-4 dark:border-zinc-700" />
 
         <section className="grid lg:grid-cols-3 gap-4">
           <Field.Select
@@ -215,7 +215,7 @@ const NewObraForm = () => {
           />
         </section>
 
-        <hr className="m-4" />
+        <hr className="m-4 dark:border-zinc-700" />
 
         <section className="grid lg:grid-cols-3 gap-4">
           <aside className="grid gap-4 col-span-1">
@@ -308,20 +308,20 @@ const NewObraForm = () => {
           </section>
         </section>
 
-        <hr className="m-4" />
+        <hr className="m-4 dark:border-zinc-700" />
 
         <section className="grid gap-4">
-          <Field.Input
-            label="Proprietário"
-            isInvalid={!!errors.proprietario}
-            errorMessage={errors.proprietario?.message}
-            {...register("proprietario")}
-          />
           <Field.Input
             label="Cliente"
             isInvalid={!!errors.cliente}
             errorMessage={errors.cliente?.message}
             {...register("cliente")}
+          />
+          <Field.Input
+            label="Proprietário"
+            isInvalid={!!errors.proprietario}
+            errorMessage={errors.proprietario?.message}
+            {...register("proprietario")}
           />
         </section>
 

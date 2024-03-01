@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { tv } from "tailwind-variants";
 
 const pagButton = tv({
-  base: "p-2 rounded-md shadow-md bg-slate-100 max-md:text-sm",
+  base: "p-2 rounded-md shadow-md bg-slate-100 dark:bg-zinc-700 max-md:text-sm",
   variants: {
     type: {
       numbered: "md:px-4",
@@ -13,7 +13,7 @@ const pagButton = tv({
       bigArrow: "md:px-1",
     },
     selected: {
-      true: "font-bold bg-sky-800 text-white",
+      true: "font-bold bg-sky-800 dark:bg-purple-800 text-white",
     },
     invisible: {
       true: "invisible",

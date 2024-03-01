@@ -76,7 +76,7 @@ const Upload = ({ obra }: UploadProps) => {
           />
           <label
             htmlFor="archives-input"
-            className="flex flex-col gap-4 justify-center items-center bg-slate-300 cursor-pointer h-56 rounded-md w-full text-gray-600 border-slate-400 border-2 border-dashed transition-colors ease-in duration-200 hover:text-black hover:border-slate-500"
+            className="flex flex-col gap-4 justify-center items-center bg-slate-300 dark:bg-zinc-700 cursor-pointer h-56 rounded-md w-full text-gray-600 dark:text-gray-400 border-slate-400 dark:border-zinc-900 border-2 border-dashed transition-colors ease-in duration-200 hover:text-black hover:border-slate-500"
           >
             <ArrowUpTrayIcon className="size-8" />
             {!fileList ? (

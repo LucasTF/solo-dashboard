@@ -22,6 +22,7 @@ import { login } from "@/lib/actions/auth/login";
 import { useTransition } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../ui/Spinner";
+import { useTheme } from "next-themes";
 
 type LoginCredentials = z.infer<typeof LoginSchema>;
 
@@ -44,6 +45,8 @@ const LoginForm = () => {
 
   const router = useRouter();
 
+  const { resolvedTheme } = useTheme();
+
   const loginHandler = (credentials: LoginCredentials) => {
     startTransition(async () => {
       try {
@@ -63,8 +66,8 @@ const LoginForm = () => {
   };
 
   return (
-    <section>
-      <header className="bg-slate-300 text-center mb-4 border-b-2 border-solid border-slate-400 px-8 py-4 rounded-t-md">
+    <section className="md:w-96 bg-slate-200 dark:bg-zinc-800 rounded-md shadow-xl">
+      <header className="bg-slate-300 dark:bg-gray-800 text-center mb-4 border-b-2 border-solid border-slate-400 dark:border-zinc-900 px-8 py-4 rounded-t-md">
         <Image
           src="/img/solo-logo.png"
           alt="Solo"
@@ -85,7 +88,7 @@ const LoginForm = () => {
           id="email"
           type="email"
           placeholder="email@host.com"
-          icon={<EnvelopeIcon className="w-5 h-5" />}
+          icon={<EnvelopeIcon className="size-5" />}
           isInvalid={!!errors.email}
           errorMessage={errors.email?.message}
           disabled={isPending}
@@ -97,19 +100,23 @@ const LoginForm = () => {
           id="password"
           type="password"
           placeholder="******"
-          icon={<KeyIcon className="w-5 h-5" />}
+          icon={<KeyIcon className="size-5" />}
           isInvalid={!!errors.password}
           errorMessage={errors.password?.message}
           disabled={isPending}
           {...register("password")}
         />
 
-        <Button disabled={isPending}>
+        <Button
+          color={resolvedTheme === "dark" ? "indigo" : "blue"}
+          disabled={isPending}
+          className="font-semibold"
+        >
           {isPending ? (
             <Spinner size="sm" />
           ) : (
             <>
-              <LockOpenIcon className="w-5 h-5" />
+              <LockOpenIcon className="size-5" />
               Entrar
             </>
           )}

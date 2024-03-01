@@ -1,8 +1,10 @@
 import LoginForm from "@/components/Login/Form";
+import ThemeSwitcher from "@/components/ui/ThemeSwitcher";
 
 export default function Login() {
   return (
-    <main className="md:w-96 my-auto bg-slate-200 rounded-md shadow-xl">
+    <main className="my-auto">
+      <ThemeSwitcher className="absolute top-0 right-0" />
       <LoginForm />
     </main>
   );

@@ -8,10 +8,15 @@ const button = tv({
     color: {
       blue: "bg-sky-900 hover:bg-sky-800",
       lightblue: "bg-sky-700 hover:bg-sky-600",
-      green: "bg-green-700 hover:bg-green-600",
+      green:
+        "bg-green-700 hover:bg-green-600 dark:bg-green-900 dark:hover:bg-green-800",
       red: "bg-red-700 hover:bg-red-600",
-      purple: "bg-violet-700 hover:bg-violet-600",
-      clear: "text-black hover:bg-sky-800 hover:text-white",
+      purple:
+        "bg-violet-700 hover:bg-violet-600 dark:bg-purple-900 dark:hover:bg-purple-800",
+      lightindigo: "bg-indigo-700 hover:bg-indigo-600",
+      indigo: "bg-indigo-800 hover:bg-indigo-700",
+      clear:
+        "text-black dark:text-white dark:bg-zinc-900 hover:bg-sky-800 dark:hover:bg-indigo-800 hover:text-white",
     },
     fontStrength: {
       normal: "font-normal",
@@ -25,7 +30,7 @@ const button = tv({
       round: "p-2 rounded-full",
     },
     disabled: {
-      true: "bg-gray-400 hover:bg-gray-400 cursor-not-allowed",
+      true: "bg-gray-400 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-600 cursor-not-allowed",
     },
   },
   compoundVariants: [
