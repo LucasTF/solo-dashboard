@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { obrasStructure } from "@/lib/structures/dashboard/structures";
+import { obrasStructure } from "@/lib/structures";
 import { ObrasSearch } from "./Search";
 
 import { BaseHeader } from "../BaseHeader";

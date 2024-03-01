@@ -4,7 +4,7 @@ import { TableStructure } from "@/types/TableStructure";
 import { BaseSearch } from "@/components/Dashboard/BaseSearch";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { ObrasSearchFiltersSchema } from "@/schemas";
+import { UsersSearchFiltersSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useEntryStore } from "@/lib/stores/entry";
@@ -14,7 +14,7 @@ type SearchBaseProps = {
   tableStructure: TableStructure;
 };
 
-export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
+export const UsersSearch = ({ tableStructure }: SearchBaseProps) => {
   const router = useRouter();
 
   const [advancedFilters, toggleAdvancedFilters] = useState(false);
@@ -22,9 +22,9 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
   const { clearEntry } = useEntryStore();
 
   const { register, handleSubmit } = useForm<
-    z.infer<typeof ObrasSearchFiltersSchema>
+    z.infer<typeof UsersSearchFiltersSchema>
   >({
-    resolver: zodResolver(ObrasSearchFiltersSchema),
+    resolver: zodResolver(UsersSearchFiltersSchema),
     defaultValues: {
       search: "",
     },

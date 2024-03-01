@@ -8,7 +8,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 
-import { TableStructure } from "@/lib/structures/TableStructure";
+import { TableStructure } from "@/types/TableStructure";
 import Button from "@/components/ui/Button";
 import { FormHTMLAttributes } from "react";
 import { useTheme } from "next-themes";

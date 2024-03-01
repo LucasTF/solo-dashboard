@@ -66,3 +66,8 @@ export const ObrasSearchFiltersSchema = z.object({
     "proprietario",
   ]),
 });
+
+export const UsersSearchFiltersSchema = z.object({
+  search: z.string().min(1).max(40),
+  column: z.enum(["name", "surname", "email"]),
+});

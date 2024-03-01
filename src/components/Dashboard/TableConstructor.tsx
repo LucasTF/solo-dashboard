@@ -1,7 +1,7 @@
 import { getTableData } from "@/lib/actions/data";
 import { DashboardTable } from "./Table";
 import { SearchFilters } from "@/types/SearchFilters";
-import { TableStructure } from "@/lib/structures/TableStructure";
+import { TableStructure } from "@/types/TableStructure";
 import { TableCellsIcon } from "@heroicons/react/24/outline";
 
 type TableConstructorProps = {

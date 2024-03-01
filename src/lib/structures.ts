@@ -1,7 +1,8 @@
-import { TableStructure, TablesEnum } from "../TableStructure";
+import { Tables } from "@/enums/Tables";
+import { TableStructure } from "@/types/TableStructure";
 
 export const obrasStructure: TableStructure = {
-  table: TablesEnum.Obras,
+  table: Tables.Obras,
   columns: [
     { name: "ID", value: "id", searchable: false },
     { name: "SP", value: "sp", searchable: true },
@@ -13,5 +14,15 @@ export const obrasStructure: TableStructure = {
     { name: "Bairro", value: "bairro", searchable: true },
     { name: "Cliente", value: "cliente", searchable: true },
     { name: "Proprietário", value: "proprietario", searchable: true },
+  ],
+};
+
+export const usersStructure: TableStructure = {
+  table: Tables.Users,
+  columns: [
+    { name: "ID", value: "id", searchable: false },
+    { name: "Nome", value: "name", searchable: true },
+    { name: "Sobrenome", value: "surname", searchable: true },
+    { name: "Email", value: "email", searchable: true },
   ],
 };

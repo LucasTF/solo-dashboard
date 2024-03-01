@@ -1,22 +1,17 @@
-import { TablesEnum } from "@/lib/structures/TableStructure";
+import { Tables } from "@/enums/Tables";
 import { ObraWithFiles } from "./data/Obra";
+import { User } from "./data/User";
 
 type ObraEntry = {
+  table: Tables.Obras;
   id: number;
-  table: TablesEnum.Obras;
   data?: ObraWithFiles;
 };
 
-type ClienteEntry = {
+type UserEntry = {
+  table: Tables.Users;
   id: number;
-  table: TablesEnum.Clientes;
-  data?: object;
+  data?: User;
 };
 
-type ProprietarioEntry = {
-  id: number;
-  table: TablesEnum.Proprietarios;
-  data?: object;
-};
-
-export type Entry = ObraEntry | ClienteEntry | ProprietarioEntry;
+export type Entry = ObraEntry | UserEntry;

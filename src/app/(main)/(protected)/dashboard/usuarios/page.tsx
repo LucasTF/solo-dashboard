@@ -1,26 +1,26 @@
 import { Dashboard } from "@/components/Dashboard";
-import { obrasStructure } from "@/lib/structures";
+import { usersStructure } from "@/lib/structures";
 import { SearchFilters } from "@/types/SearchFilters";
 
 type PageProps = {
   searchParams: SearchFilters;
 };
 
-export default async function ObrasPage({ searchParams }: PageProps) {
+export default async function UsersPage({ searchParams }: PageProps) {
   return (
-    <Dashboard.Template title="Obras">
+    <Dashboard.Template title="Usuários">
       <Dashboard.Container>
-        <Dashboard.Header.Obras />
+        <Dashboard.Header.Users />
 
         <Dashboard.TableConstructor
-          tableStructure={obrasStructure}
+          tableStructure={usersStructure}
           searchFilters={{
             column: searchParams.column,
             search: searchParams.search,
           }}
         />
       </Dashboard.Container>
-      <Dashboard.Options.Obras />
+      <Dashboard.Options.Users />
     </Dashboard.Template>
   );
 }

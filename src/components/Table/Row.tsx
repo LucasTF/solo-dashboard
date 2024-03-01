@@ -4,10 +4,10 @@ import React from "react";
 import { tv } from "tailwind-variants";
 
 import { useEntryStore } from "@/lib/stores/entry";
-import { TablesEnum } from "@/lib/structures/TableStructure";
+import { Tables } from "@/enums/Tables";
 
 type RowProps = {
-  rowInfo?: { id: number; table: TablesEnum };
+  rowInfo?: { id: number; table: Tables };
   children?: React.ReactNode;
 };
 

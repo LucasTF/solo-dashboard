@@ -4,7 +4,7 @@ import React from "react";
 import { useSearchParams } from "next/navigation";
 
 import { Table } from "../Table";
-import { TableStructure } from "@/lib/structures/TableStructure";
+import { TableStructure } from "@/types/TableStructure";
 
 type DashboardTableProps = {
   tableStructure: TableStructure;
