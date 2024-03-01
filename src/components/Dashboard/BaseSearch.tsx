@@ -19,7 +19,7 @@ type SearchProps = FormHTMLAttributes<HTMLFormElement> & {
   advancedFilterState: boolean;
 };
 
-export const SearchBase = ({
+export const BaseSearch = ({
   onSubmit,
   register,
   tableStructure,

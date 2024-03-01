@@ -3,8 +3,8 @@ import { Obra } from "@/types/data/Obra";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { ChangeEvent, useState, useTransition } from "react";
-import Loading from "../../Loading";
-import Success from "../../Success";
+import Loading from "@/components/ui/Loading";
+import Success from "@/components/ui/Modals/Success";
 import { ServerResponse } from "@/types/ServerResponse";
 import { toast } from "react-toastify";
 

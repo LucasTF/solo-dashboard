@@ -1,22 +1,25 @@
 "use client";
 
-import { Suspense, lazy, useState } from "react";
+import React, { Suspense, useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { obrasStructure } from "@/lib/structures/dashboard/structures";
-import Button from "@/components/ui/Button";
-import { ObrasSearch } from "../Search/Obras";
 
-import Modal from "@/components/ui/Modal";
-import Loading from "../Options/Loading";
+import Button from "../ui/Button";
+import Modal from "../ui/Modal";
+import Loading from "../ui/Loading";
 
-const NewObraForm = lazy(() => import("../Options/Obras/Form/NewObra"));
+type BaseHeaderProps = {
+  searchComponent: Readonly<React.ReactNode>;
+  newEntryButtonText: string;
+  newEntryModalTitle: string;
+  newEntryModalComponent: Readonly<React.ReactNode>;
+};
 
-export const ObrasTableHeader = () => {
+export const BaseHeader = (props: BaseHeaderProps) => {
   const [modal, toggleModal] = useState(false);
 
   return (
     <header className="flex max-md:flex-col gap-4 order-1">
-      <ObrasSearch tableStructure={obrasStructure} />
+      {props.searchComponent}
 
       <div className="border-2 border-slate-300" />
 
@@ -28,17 +31,17 @@ export const ObrasTableHeader = () => {
           onClick={() => toggleModal(true)}
         >
           <PlusCircleIcon className="size-6" />
-          Nova obra
+          {props.newEntryButtonText}
         </Button>
       </div>
 
       <Modal
-        title="Nova Obra"
+        title={props.newEntryModalTitle}
         visible={modal === true}
         onClose={() => toggleModal(false)}
       >
         <Suspense fallback={<Loading />}>
-          <NewObraForm />
+          {props.newEntryModalComponent}
         </Suspense>
       </Modal>
     </header>

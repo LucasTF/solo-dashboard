@@ -1,7 +1,7 @@
 "use client";
 
 import { TableStructure } from "@/lib/structures/TableStructure";
-import { SearchBase } from "./Base";
+import { BaseSearch } from "@/components/Dashboard/BaseSearch";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { ObrasSearchFiltersSchema } from "@/schemas";
@@ -41,7 +41,7 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
 
   return (
     <section className="flex flex-col grow gap-4">
-      <SearchBase
+      <BaseSearch
         tableStructure={tableStructure}
         register={register}
         onSubmit={handleSubmit((onValid) =>

@@ -12,8 +12,8 @@ import { Logradouro } from "@/enums/Logradouro";
 
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
-import Loading from "../../Loading";
-import Success from "../../Success";
+import Loading from "@/components/ui/Loading";
+import Success from "@/components/ui/Modals/Success";
 import { updateObra } from "@/lib/actions/data/obras";
 
 type UF = {

@@ -16,13 +16,13 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Obra, ObraWithFiles } from "@/types/data/Obra";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import Modal from "@/components/ui/Modal";
-import Loading from "../Loading";
+import Loading from "@/components/ui/Loading";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Arquivo } from "@/types/data/Arquivo";
 
-const DeleteFile = lazy(() => import("./Form/DeleteFile"));
-const EditObraForm = lazy(() => import("./Form/EditObra"));
-const Upload = lazy(() => import("./Form/Upload"));
+const DeleteFile = lazy(() => import("./Modals/DeleteFile"));
+const EditObraForm = lazy(() => import("./Modals/EditObra"));
+const Upload = lazy(() => import("./Modals/Upload"));
 
 enum ModalState {
   Off,

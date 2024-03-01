@@ -1,9 +1,9 @@
 "use client";
 
+import React from "react";
 import { useSearchParams } from "next/navigation";
 
 import { Table } from "../Table";
-import React from "react";
 import { TableStructure } from "@/lib/structures/TableStructure";
 
 type DashboardTableProps = {
