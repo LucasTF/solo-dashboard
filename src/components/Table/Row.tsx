@@ -12,7 +12,7 @@ type RowProps = {
 };
 
 const row = tv({
-  base: "odd:bg-white even:bg-gray-100 hover:bg-gray-200 dark:odd:bg-zinc-600 dark:even:bg-zinc-700 dark:hover:bg-zinc-600 cursor-pointer",
+  base: "odd:bg-white even:bg-gray-100 hover:bg-gray-200 dark:odd:bg-zinc-600 dark:even:bg-zinc-700 dark:hover:bg-zinc-500 cursor-pointer",
   variants: {
     selected: {
       true: "odd:bg-sky-500 even:bg-sky-500 hover:bg-sky-500 dark:odd:bg-indigo-800 dark:even:bg-indigo-800 dark:hover:bg-indigo-800",
