@@ -7,6 +7,28 @@ import { SearchFilters } from "@/types/SearchFilters";
 import { ServerResponse } from "@/types/ServerResponse";
 import { User } from "@/types/data/User";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
+import { z } from "zod";
+import { UserEditModalSchema } from "@/schemas";
+
+type UserUpdateData = z.infer<typeof UserEditModalSchema>;
+
+export async function getAllUsers() {
+  try {
+    const users: User[] = await db.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+      },
+    });
+
+    return users;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
 
 export async function searchUsers(searchFilters: SearchFilters) {
   try {
@@ -31,9 +53,34 @@ export async function searchUsers(searchFilters: SearchFilters) {
   }
 }
 
+export async function updateUser(
+  id: number,
+  userUpdateData: UserUpdateData
+): Promise<ServerResponse> {
+  try {
+    await db.user.update({
+      data: userUpdateData,
+      where: {
+        id,
+      },
+    });
+
+    return { success: true, message: "Usuário atualizado com sucesso!" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "Erro ao atualizar dados do usuário." };
+  }
+}
+
 export async function getUserById(id: number) {
   try {
     const user: User = await db.user.findUnique({
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+      },
       where: { id },
     });
 

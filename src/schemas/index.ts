@@ -88,6 +88,28 @@ export const UserModalSchema = z
     path: ["confirmPassword"],
   });
 
+export const UserEditModalSchema = z.object({
+  name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
+  surname: z.string().min(1, CANNOT_BE_EMPTY).max(40),
+  email: z.string().email(INVALID_EMAIL).max(40),
+});
+
+export const ResetPasswordModalSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, "Deve possuir no mínimo 6 caracteres.")
+      .max(100),
+    confirmPassword: z
+      .string()
+      .min(6, "Deve possuir no mínimo 6 caracteres.")
+      .max(100),
+  })
+  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+    message: "As senhas não coincidem.",
+    path: ["confirmPassword"],
+  });
+
 export const UsersSearchFiltersSchema = z.object({
   search: z.string().min(1).max(40),
   column: z.enum(["name", "surname", "email"]),

@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense, lazy, useState } from "react";
 import { tv } from "tailwind-variants";
 import {
   LockClosedIcon,
@@ -7,13 +8,22 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 
+import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
 
 import { useEntryStore } from "@/lib/stores/entry";
 import { usePathname, useSearchParams } from "next/navigation";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import { useTheme } from "next-themes";
 import { User } from "@/types/data/User";
+
+const EditUserForm = lazy(() => import("./Modals/EditUser"));
+
+enum ModalState {
+  Off,
+  Edit = "Editar Usuário",
+}
 
 const options = tv({
   base: "max-lg:mb-4 lg:ml-8",
@@ -26,6 +36,8 @@ const options = tv({
 });
 
 export const UsersOptions = () => {
+  const [modal, setModal] = useState<ModalState>(ModalState.Off);
+
   const { resolvedTheme } = useTheme();
 
   const pathname = usePathname();
@@ -34,6 +46,13 @@ export const UsersOptions = () => {
   const { entry } = useEntryStore();
 
   const user = entry?.data as User;
+
+  const modalBuilder = () => {
+    switch (modal) {
+      case ModalState.Edit:
+        return <EditUserForm user={user} />;
+    }
+  };
 
   return (
     <aside className={options({ visible: entry !== null })}>
@@ -57,6 +76,7 @@ export const UsersOptions = () => {
             fontStrength="semibold"
             type="button"
             disabled={!user}
+            onClick={() => setModal(ModalState.Edit)}
           >
             <PencilSquareIcon className="size-6" />
             Editar usuário
@@ -83,6 +103,13 @@ export const UsersOptions = () => {
           </Button>
         </div>
       )}
+      <Modal
+        title={`Usuário ${user?.email} - ${modal.toString()}`}
+        visible={modal !== ModalState.Off}
+        onClose={() => setModal(ModalState.Off)}
+      >
+        <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
+      </Modal>
     </aside>
   );
 };

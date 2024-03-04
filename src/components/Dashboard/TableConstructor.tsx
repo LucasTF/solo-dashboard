@@ -7,6 +7,7 @@ import { TableCellsIcon } from "@heroicons/react/24/outline";
 type TableConstructorProps = {
   tableStructure: TableStructure;
   searchFilters: SearchFilters;
+  ignoreFilters?: boolean;
 };
 
 export const TableConstructor = async ({
