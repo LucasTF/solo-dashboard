@@ -2,16 +2,8 @@ import { Tables } from "@/enums/Tables";
 import { ObraWithFiles } from "./data/Obra";
 import { User } from "./data/User";
 
-type ObraEntry = {
-  table: Tables.Obras;
+export type Entry = {
+  table: Tables;
   id: number;
-  data?: ObraWithFiles;
+  data?: ObraWithFiles | User;
 };
-
-type UserEntry = {
-  table: Tables.Users;
-  id: number;
-  data?: User;
-};
-
-export type Entry = ObraEntry | UserEntry;

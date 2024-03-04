@@ -6,10 +6,12 @@ const POSITIVE = "Valor deve ser maior ou igual a 0.";
 const GREATER_THAN_0 = "Valor deve ser maior que 0.";
 const CANNOT_BE_EMPTY = "Campo obrigatório.";
 const INVALID_DATE = "Data inválida.";
+const INVALID_EMAIL = "Email inválido.";
+const INVALID_PASSWORD = "Senha inválida.";
 
 export const LoginSchema = z.object({
-  email: z.string().email("Email inválido"),
-  password: z.string().min(1, "Senha inválida"),
+  email: z.string().email(INVALID_EMAIL),
+  password: z.string().min(1, INVALID_PASSWORD),
 });
 
 export const ObraModalSchema = z.object({
@@ -66,6 +68,25 @@ export const ObrasSearchFiltersSchema = z.object({
     "proprietario",
   ]),
 });
+
+export const UserModalSchema = z
+  .object({
+    name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
+    surname: z.string().min(1, CANNOT_BE_EMPTY).max(40),
+    email: z.string().email(INVALID_EMAIL).max(40),
+    password: z
+      .string()
+      .min(6, "Deve possuir no mínimo 6 caracteres.")
+      .max(100),
+    confirmPassword: z
+      .string()
+      .min(6, "Deve possuir no mínimo 6 caracteres.")
+      .max(100),
+  })
+  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+    message: "As senhas não coincidem.",
+    path: ["confirmPassword"],
+  });
 
 export const UsersSearchFiltersSchema = z.object({
   search: z.string().min(1).max(40),
