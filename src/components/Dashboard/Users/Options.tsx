@@ -17,6 +17,7 @@ import { usePathname } from "next/navigation";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import { useTheme } from "next-themes";
 import { User } from "@/types/data/User";
+import ResetPassword from "./Modals/ResetPassword";
 
 const EditUserForm = lazy(() => import("./Modals/EditUser"));
 const DeleteUser = lazy(() => import("./Modals/DeleteUser"));
@@ -25,10 +26,11 @@ enum ModalState {
   Off,
   Edit = "Editar Usuário",
   Delete = "Deletar Usuário",
+  ResetPassword = "Atualizar Senha",
 }
 
 const options = tv({
-  base: "max-lg:mb-4 lg:ml-8",
+  base: "max-lg:mt-4 lg:ml-8",
   variants: {
     visible: {
       true: "lg:col-span-1 order-2",
@@ -54,6 +56,8 @@ export const UsersOptions = () => {
         return <EditUserForm user={user} />;
       case ModalState.Delete:
         return <DeleteUser closeModal={() => setModal(ModalState.Off)} />;
+      case ModalState.ResetPassword:
+        return <ResetPassword userId={user.id} />;
     }
   };
 
@@ -90,6 +94,7 @@ export const UsersOptions = () => {
             fontStrength="semibold"
             type="button"
             disabled={!user}
+            onClick={() => setModal(ModalState.ResetPassword)}
           >
             <LockClosedIcon className="size-6" />
             Nova senha

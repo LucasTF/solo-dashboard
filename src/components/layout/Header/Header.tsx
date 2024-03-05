@@ -88,13 +88,13 @@ const Header = () => {
         </div>
 
         <ul className="flex max-lg:flex-col gap-4 lg:gap-3 max-lg:m-5">
-          <li>
+          <li onClick={() => toggleDrawer(false)}>
             <NavLink href="/dashboard/clientes">Clientes</NavLink>
           </li>
-          <li>
+          <li onClick={() => toggleDrawer(false)}>
             <NavLink href="/dashboard/obras">Obras</NavLink>
           </li>
-          <li>
+          <li onClick={() => toggleDrawer(false)}>
             <NavLink href="/dashboard/usuarios">Usuários</NavLink>
           </li>
         </ul>

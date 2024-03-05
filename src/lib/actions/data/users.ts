@@ -128,3 +128,26 @@ export async function deleteUser(id: number): Promise<ServerResponse> {
     return { success: false, error: "Não foi possível deletar o usuário." };
   }
 }
+
+export async function resetUserPassword(
+  id: number,
+  password: string
+): Promise<ServerResponse> {
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await db.user.update({
+      data: {
+        password: hashedPassword,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return { success: true, message: "Senha atualizada com sucesso!" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "Não foi possível atualizar a senha." };
+  }
+}
