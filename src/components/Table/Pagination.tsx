@@ -62,6 +62,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
           <Link
             key={index}
             href={pathBuilder("page", p)}
+            scroll={false}
             className={pagButton({
               selected: page === String(p) || (!page && p === 1),
               type: "numbered",
@@ -79,6 +80,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
           <Link
             key={index}
             href={pathBuilder("page", index + 1)}
+            scroll={false}
             className={pagButton({
               selected:
                 page === String(index + 1) || (!page && index + 1 === 1),
@@ -98,6 +100,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
     <div className="flex justify-center gap-2 md:gap-4 mt-4">
       <Link
         href={pathBuilder("page", 1)}
+        scroll={false}
         className={pagButton({
           invisible: Number(page) <= 1,
           type: "bigArrow",
@@ -107,6 +110,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
       </Link>
       <Link
         href={pathBuilder("page", Number(page) - 1)}
+        scroll={false}
         className={pagButton({ invisible: Number(page) <= 1, type: "arrow" })}
       >
         &lt;
@@ -114,6 +118,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
       {pagination()}
       <Link
         href={pathBuilder("page", Number(page) + 1)}
+        scroll={false}
         className={pagButton({
           invisible: Number(page) >= totalPages,
           type: "arrow",
@@ -123,6 +128,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
       </Link>
       <Link
         href={pathBuilder("page", totalPages)}
+        scroll={false}
         className={pagButton({
           invisible: Number(page) >= totalPages,
           type: "bigArrow",

@@ -33,7 +33,7 @@ enum ModalState {
 }
 
 const options = tv({
-  base: "max-lg:mt-4 lg:ml-8",
+  base: "max-lg:mb-4 lg:ml-8",
   variants: {
     visible: {
       true: "lg:col-span-1 order-2",
@@ -153,6 +153,7 @@ export const ObrasOptions = () => {
               </ul>
             </>
           )}
+          <hr className="m-2 border-slate-300 dark:border-zinc-700 border-2 lg:hidden" />
         </div>
       )}
 
