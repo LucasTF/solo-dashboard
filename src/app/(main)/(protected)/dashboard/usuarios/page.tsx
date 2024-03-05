@@ -18,6 +18,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
             column: searchParams.column,
             search: searchParams.search,
           }}
+          showAllData={true}
         />
       </Dashboard.Container>
       <Dashboard.Options.Users />

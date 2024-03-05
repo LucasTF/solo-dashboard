@@ -13,7 +13,7 @@ import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 
 import { useEntryStore } from "@/lib/stores/entry";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import { useTheme } from "next-themes";
 import { User } from "@/types/data/User";
@@ -41,7 +41,6 @@ export const UsersOptions = () => {
   const { resolvedTheme } = useTheme();
 
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const { entry } = useEntryStore();
 
@@ -56,7 +55,7 @@ export const UsersOptions = () => {
 
   return (
     <aside className={options({ visible: entry !== null })}>
-      {entry && searchParams.size > 0 && entry?.table === pathname && (
+      {entry && entry?.table === pathname && (
         <div className="flex flex-col gap-4">
           <div>
             <p className="text-center font-semibold">Usuário</p>

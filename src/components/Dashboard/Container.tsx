@@ -3,7 +3,7 @@
 import { useEntryStore } from "@/lib/stores/entry";
 import { tv } from "tailwind-variants";
 import React from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 type DashboardContainerProps = {
   children?: React.ReactNode;
@@ -19,13 +19,13 @@ const dashboardContainer = tv({
 });
 
 export const DashboardContainer = ({ children }: DashboardContainerProps) => {
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const { entry } = useEntryStore();
 
   return (
     <div
       className={dashboardContainer({
-        fullscreen: entry === null || searchParams.size === 0,
+        fullscreen: entry === null || (entry && entry.table !== pathname),
       })}
     >
       {children}

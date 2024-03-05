@@ -12,7 +12,7 @@ import {
 import Button, { ButtonLink } from "@/components/ui/Button";
 
 import { useEntryStore } from "@/lib/stores/entry";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Obra, ObraWithFiles } from "@/types/data/Obra";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import Modal from "@/components/ui/Modal";
@@ -49,7 +49,6 @@ export const ObrasOptions = () => {
   const { resolvedTheme } = useTheme();
 
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const { entry } = useEntryStore();
 
@@ -73,7 +72,7 @@ export const ObrasOptions = () => {
 
   return (
     <aside className={options({ visible: entry !== null })}>
-      {entry && searchParams.size > 0 && entry?.table === pathname && (
+      {entry && entry?.table === pathname && (
         <div className="flex flex-col gap-4">
           <div>
             <p className="text-center font-semibold">Obra</p>
