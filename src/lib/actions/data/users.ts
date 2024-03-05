@@ -118,3 +118,13 @@ export async function createNewUser(user: User): Promise<ServerResponse> {
     return { success: false, error: "Erro ao criar o usuário." };
   }
 }
+
+export async function deleteUser(id: number): Promise<ServerResponse> {
+  try {
+    await db.user.delete({ where: { id } });
+    return { success: true, message: "Usuário deletado com sucesso." };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "Não foi possível deletar o usuário." };
+  }
+}

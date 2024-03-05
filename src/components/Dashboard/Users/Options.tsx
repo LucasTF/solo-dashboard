@@ -19,10 +19,12 @@ import { useTheme } from "next-themes";
 import { User } from "@/types/data/User";
 
 const EditUserForm = lazy(() => import("./Modals/EditUser"));
+const DeleteUser = lazy(() => import("./Modals/DeleteUser"));
 
 enum ModalState {
   Off,
   Edit = "Editar Usuário",
+  Delete = "Deletar Usuário",
 }
 
 const options = tv({
@@ -50,6 +52,8 @@ export const UsersOptions = () => {
     switch (modal) {
       case ModalState.Edit:
         return <EditUserForm user={user} />;
+      case ModalState.Delete:
+        return <DeleteUser closeModal={() => setModal(ModalState.Off)} />;
     }
   };
 
@@ -59,7 +63,7 @@ export const UsersOptions = () => {
         <div className="flex flex-col gap-4">
           <div>
             <p className="text-center font-semibold">Usuário</p>
-            <h2 className="font-bold text-center sm:text-2xl xl:text-4xl">
+            <h2 className="font-bold text-center text-4xl lg:text-2xl xl:text-3xl">
               {user ? (
                 user.name + " " + user.surname
               ) : (
@@ -96,6 +100,7 @@ export const UsersOptions = () => {
             fontStrength="semibold"
             type="button"
             disabled={!user}
+            onClick={() => setModal(ModalState.Delete)}
           >
             <TrashIcon className="size-6" />
             Deletar usuário
@@ -103,7 +108,7 @@ export const UsersOptions = () => {
         </div>
       )}
       <Modal
-        title={`Usuário ${user?.email} - ${modal.toString()}`}
+        title={`${user?.email} - ${modal.toString()}`}
         visible={modal !== ModalState.Off}
         onClose={() => setModal(ModalState.Off)}
       >

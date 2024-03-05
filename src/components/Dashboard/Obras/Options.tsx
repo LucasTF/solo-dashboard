@@ -76,11 +76,11 @@ export const ObrasOptions = () => {
         <div className="flex flex-col gap-4">
           <div>
             <p className="text-center font-semibold">Obra</p>
-            <h2 className="font-bold text-center sm:text-2xl xl:text-4xl">
+            <h2 className="font-bold text-center text-4xl lg:text-2xl xl:text-3xl">
               {obra ? (
                 obra.sp
               ) : (
-                <div className="animate-pulse bg-slate-300 dark:bg-zinc-700 h-10 w-full rounded-md"></div>
+                <div className="animate-pulse bg-slate-300 dark:bg-zinc-700 h-8 w-full rounded-md"></div>
               )}
             </h2>
           </div>
