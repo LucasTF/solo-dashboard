@@ -131,7 +131,7 @@ export async function updateObra(
       },
     });
 
-    return { success: true, message: "Dados atualizados com sucesso" };
+    return { success: true, message: "Obra atualizada com sucesso." };
   } catch (error) {
     return { success: false, error: "Erro ao atualizar a obra." };
   }

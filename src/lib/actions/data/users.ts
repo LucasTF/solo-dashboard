@@ -9,6 +9,7 @@ import { User } from "@/types/data/User";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 import { z } from "zod";
 import { UserEditModalSchema } from "@/schemas";
+import { DataResponse } from "@/types/DataResponse";
 
 type UserUpdateData = z.infer<typeof UserEditModalSchema>;
 
@@ -91,7 +92,7 @@ export async function getUserById(id: number) {
   }
 }
 
-export async function createNewUser(user: User): Promise<ServerResponse> {
+export async function createNewUser(user: User): Promise<DataResponse<User>> {
   try {
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
@@ -104,7 +105,13 @@ export async function createNewUser(user: User): Promise<ServerResponse> {
 
     await db.user.create({ data });
 
-    return { success: true, message: "Usuário criado com sucesso!" };
+    const newUser = await db.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+
+    return { success: true, data: newUser };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2002") {

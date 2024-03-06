@@ -1,9 +1,12 @@
-import { TableData } from "@/types/data/TableData";
 import { create } from "zustand";
 
 type TableState = {
-  tableData: TableData;
-  setTableData: (fn: (prevState: TableData) => TableData) => void;
+  tableData: (object & Record<"id", number>)[];
+  setTableData: (
+    fn: (
+      prevState: (object & Record<"id", number>)[]
+    ) => (object & Record<"id", number>)[]
+  ) => void;
 };
 
 export const useTableStore = create<TableState>((set) => ({

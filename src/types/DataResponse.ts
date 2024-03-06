@@ -1,11 +1,11 @@
 type ErrorDataResponse = {
   success: false;
-  message: string;
+  error: string;
 };
 
 type SuccessDataResponse<T> = {
   success: true;
-  data: T[];
+  data: T;
 };
 
 export type DataResponse<T> = SuccessDataResponse<T> | ErrorDataResponse;

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useEntryStore } from "@/lib/stores/entry";
 import { User } from "@/types/data/User";
 import { deleteUser } from "@/lib/actions/data/users";
+import { useTableStore } from "@/lib/stores/table";
 
 type DeleteUserProps = {
   closeModal: Function;
@@ -17,6 +18,7 @@ const DeleteUser = ({ closeModal }: DeleteUserProps) => {
   const [isPending, startTransition] = useTransition();
 
   const { entry, clearEntry } = useEntryStore();
+  const { setTableData } = useTableStore();
 
   const user = entry?.data as User;
 
@@ -24,6 +26,13 @@ const DeleteUser = ({ closeModal }: DeleteUserProps) => {
     startTransition(async () => {
       const response = await deleteUser(user.id);
       if (response.success) {
+        setTableData((prevState) => {
+          if (entry) {
+            console.log(entry.tableIndex);
+            prevState.splice(entry.tableIndex, 1);
+          }
+          return prevState;
+        });
         toast(response.message, { type: "success" });
         clearEntry();
       } else toast(response.error, { type: "error" });

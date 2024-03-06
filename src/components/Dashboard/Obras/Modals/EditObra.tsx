@@ -13,10 +13,10 @@ import { Logradouro } from "@/enums/Logradouro";
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import Loading from "@/components/ui/Loading";
-import Success from "@/components/ui/Modals/Success";
 import { updateObra } from "@/lib/actions/data/obras";
 import { useTableStore } from "@/lib/stores/table";
 import { useEntryStore } from "@/lib/stores/entry";
+import { toast } from "react-toastify";
 
 type UF = {
   id: number;
@@ -45,11 +45,12 @@ type Municipio = {
 
 type EditObraFormProps = {
   obra: ObraType;
+  closeModal: Function;
 };
 
 type Obra = z.infer<typeof ObraModalSchema>;
 
-const EditObraForm = ({ obra }: EditObraFormProps) => {
+const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
   const year = new Date().getFullYear();
   const years = Array.from(new Array(45), (_, index) => year - index);
 
@@ -161,17 +162,16 @@ const EditObraForm = ({ obra }: EditObraFormProps) => {
             return prevState;
           });
         }
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
+        toast(response.message, { type: "success" });
       } else {
-        console.log(response.error);
+        toast(response.error, { type: "error" });
       }
+      closeModal();
     });
   };
 
   const formBuilder = () => {
     if (isPending) return <Loading />;
-    if (success) return <Success message="Obra atualizada com sucesso!" />;
     return (
       <form
         className="m-4"

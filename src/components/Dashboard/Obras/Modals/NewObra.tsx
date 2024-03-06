@@ -12,7 +12,7 @@ import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { insertNewObra } from "@/lib/actions/data/obras";
 import Loading from "@/components/ui/Loading";
-import Success from "@/components/ui/Modals/Success";
+import { toast } from "react-toastify";
 
 type UF = {
   id: number;
@@ -41,14 +41,13 @@ type Municipio = {
 
 type Obra = z.infer<typeof ObraModalSchema>;
 
-const NewObraForm = () => {
+const NewObraForm = ({ closeModal }: { closeModal: Function }) => {
   const year = new Date().getFullYear();
   const years = Array.from(new Array(45), (_, index) => year - index);
 
   const [ufs, setUfs] = useState<UF[]>([]);
   const [municipios, setMunicipios] = useState<Municipio[]>([]);
 
-  const [success, setSuccess] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -116,18 +115,18 @@ const NewObraForm = () => {
     startTransition(async () => {
       const response = await insertNewObra(formData);
       if (response.success) {
+        toast(response.message, { type: "success" });
         reset();
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
       } else {
-        console.log(response.error);
+        console.error(response.error);
+        toast(response.error, { type: "error" });
       }
+      closeModal();
     });
   };
 
   const formBuilder = () => {
     if (isPending) return <Loading />;
-    if (success) return <Success message="Obra criada com sucesso!" />;
     return (
       <form
         className="m-4"
@@ -231,7 +230,6 @@ const NewObraForm = () => {
                   const indexLog = Object.values(Logradouro).indexOf(
                     log as unknown as Logradouro
                   );
-                  const key = Object.keys(Logradouro)[indexLog];
                   return (
                     <option key={indexLog} value={log}>
                       {log}

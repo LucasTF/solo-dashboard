@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -9,17 +9,16 @@ import { Field } from "@/components/ui/Field";
 import { ResetPasswordModalSchema } from "@/schemas";
 import { resetUserPassword } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
-import Success from "@/components/ui/Modals/Success";
 import { toast } from "react-toastify";
 
 type ResetPasswordForm = { password: string; confirmPassword: string };
 
 type EditUserProps = {
   userId: number;
+  closeModal: Function;
 };
 
-const ResetPassword = ({ userId }: EditUserProps) => {
-  const [success, setSuccess] = useState(false);
+const ResetPassword = ({ userId, closeModal }: EditUserProps) => {
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -34,18 +33,16 @@ const ResetPassword = ({ userId }: EditUserProps) => {
     startTransition(async () => {
       const response = await resetUserPassword(userId, formData.password);
       if (response.success) {
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
+        toast(response.message, { type: "success" });
       } else {
-        console.error(response.error);
         toast(response.error, { type: "error" });
       }
+      closeModal();
     });
   };
 
   const formBuilder = () => {
     if (isPending) return <Loading />;
-    if (success) return <Success message="Usuário atualizado com sucesso!" />;
     return (
       <form
         className="m-4 space-y-4"

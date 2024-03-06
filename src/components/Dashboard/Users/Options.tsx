@@ -53,11 +53,21 @@ export const UsersOptions = () => {
   const modalBuilder = () => {
     switch (modal) {
       case ModalState.Edit:
-        return <EditUserForm user={user} />;
+        return (
+          <EditUserForm
+            user={user}
+            closeModal={() => setModal(ModalState.Off)}
+          />
+        );
       case ModalState.Delete:
         return <DeleteUser closeModal={() => setModal(ModalState.Off)} />;
       case ModalState.ResetPassword:
-        return <ResetPassword userId={user.id} />;
+        return (
+          <ResetPassword
+            userId={user.id}
+            closeModal={() => setModal(ModalState.Off)}
+          />
+        );
     }
   };
 

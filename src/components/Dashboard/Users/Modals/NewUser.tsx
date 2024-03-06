@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -11,14 +11,19 @@ import { Field } from "@/components/ui/Field";
 import { UserModalSchema } from "@/schemas";
 import { createNewUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
-import Success from "@/components/ui/Modals/Success";
 import { toast } from "react-toastify";
+import { useTableStore } from "@/lib/stores/table";
 
 type UserForm = User & { confirmPassword: string };
 
-export const NewUser = () => {
-  const [success, setSuccess] = useState(false);
+type NewUserProps = {
+  closeModal: Function;
+};
+
+const NewUser = ({ closeModal }: NewUserProps) => {
   const [isPending, startTransition] = useTransition();
+
+  const { setTableData } = useTableStore();
 
   const {
     register,
@@ -33,19 +38,28 @@ export const NewUser = () => {
     startTransition(async () => {
       const response = await createNewUser(formData);
       if (response.success) {
+        setTableData((prevState) => {
+          const newData = {
+            id: response.data.id,
+            name: response.data.name,
+            surname: response.data.surname,
+            email: response.data.email,
+          };
+          prevState.push(newData);
+          return prevState;
+        });
         reset();
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
+        toast("Usuário criado com sucesso!", { type: "success" });
       } else {
         console.error(response.error);
         toast(response.error, { type: "error" });
       }
+      closeModal(true);
     });
   };
 
   const formBuilder = () => {
     if (isPending) return <Loading />;
-    if (success) return <Success message="Usuário criado com sucesso!" />;
     return (
       <form
         className="m-4 space-y-4"
@@ -104,3 +118,5 @@ export const NewUser = () => {
 
   return formBuilder();
 };
+
+export default NewUser;

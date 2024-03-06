@@ -12,7 +12,7 @@ import { Obra } from "@/types/data/Obra";
 export async function getTableData(
   table: Tables,
   searchFilters: SearchFilters
-): Promise<DataResponse<Obra | User>> {
+): Promise<DataResponse<Obra[] | User[]>> {
   let schema;
 
   switch (table) {
@@ -22,7 +22,7 @@ export async function getTableData(
         const data = await searchObras(searchFilters);
         return { success: true, data };
       }
-      return { success: false, message: "Filtros de busca inválidos!" };
+      return { success: false, error: "Filtros de busca inválidos!" };
     case Tables.Users:
       schema = UsersSearchFiltersSchema.safeParse(searchFilters);
       if (schema.success) {
@@ -32,12 +32,12 @@ export async function getTableData(
     default:
       return {
         success: false,
-        message: "Não foi possível recuperar os dados dessa tabela.",
+        error: "Não foi possível recuperar os dados dessa tabela.",
       };
   }
 }
 
-export async function getAllData(table: Tables): Promise<DataResponse<User>> {
+export async function getAllData(table: Tables): Promise<DataResponse<User[]>> {
   switch (table) {
     case Tables.Users:
       const data = await getAllUsers();
@@ -45,7 +45,7 @@ export async function getAllData(table: Tables): Promise<DataResponse<User>> {
     default:
       return {
         success: false,
-        message: "Não foi possível recuperar os dados dessa tabela.",
+        error: "Não foi possível recuperar os dados dessa tabela.",
       };
   }
 }

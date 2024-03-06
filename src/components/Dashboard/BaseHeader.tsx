@@ -1,6 +1,4 @@
-"use client";
-
-import React, { Suspense, useState } from "react";
+import React, { Suspense } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 import Button from "../ui/Button";
@@ -12,11 +10,11 @@ type BaseHeaderProps = {
   newEntryButtonText: string;
   newEntryModalTitle: string;
   newEntryModalComponent: Readonly<React.ReactNode>;
+  modalState: boolean;
+  toggleModalState: (modalState: boolean) => void;
 };
 
 export const BaseHeader = (props: BaseHeaderProps) => {
-  const [modal, toggleModal] = useState(false);
-
   return (
     <header className="flex max-md:flex-col gap-4 order-1">
       {props.searchComponent}
@@ -28,7 +26,7 @@ export const BaseHeader = (props: BaseHeaderProps) => {
           color="green"
           fontStrength="semibold"
           type="button"
-          onClick={() => toggleModal(true)}
+          onClick={() => props.toggleModalState(true)}
         >
           <PlusCircleIcon className="size-6" />
           {props.newEntryButtonText}
@@ -37,8 +35,8 @@ export const BaseHeader = (props: BaseHeaderProps) => {
 
       <Modal
         title={props.newEntryModalTitle}
-        visible={modal === true}
-        onClose={() => toggleModal(false)}
+        visible={props.modalState}
+        onClose={() => props.toggleModalState(false)}
       >
         <Suspense fallback={<Loading />}>
           {props.newEntryModalComponent}

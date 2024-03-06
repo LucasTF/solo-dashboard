@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -11,17 +11,16 @@ import { Field } from "@/components/ui/Field";
 import { UserEditModalSchema } from "@/schemas";
 import { updateUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
-import Success from "@/components/ui/Modals/Success";
 import { toast } from "react-toastify";
 
 type UserForm = Omit<User, "id" | "image" | "password">;
 
 type EditUserProps = {
   user: User;
+  closeModal: Function;
 };
 
-const EditUser = ({ user }: EditUserProps) => {
-  const [success, setSuccess] = useState(false);
+const EditUser = ({ user, closeModal }: EditUserProps) => {
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -41,18 +40,16 @@ const EditUser = ({ user }: EditUserProps) => {
     startTransition(async () => {
       const response = await updateUser(user.id, formData);
       if (response.success) {
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
+        toast(response.message, { type: "success" });
       } else {
-        console.error(response.error);
         toast(response.error, { type: "error" });
       }
+      closeModal();
     });
   };
 
   const formBuilder = () => {
     if (isPending) return <Loading />;
-    if (success) return <Success message="Usuário atualizado com sucesso!" />;
     return (
       <form
         className="m-4 space-y-4"

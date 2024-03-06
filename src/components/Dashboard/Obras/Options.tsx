@@ -57,9 +57,16 @@ export const ObrasOptions = () => {
   const modalBuilder = () => {
     switch (modal) {
       case ModalState.Edit:
-        return <EditObraForm obra={obra as Obra} />;
+        return (
+          <EditObraForm
+            obra={obra as Obra}
+            closeModal={() => setModal(ModalState.Off)}
+          />
+        );
       case ModalState.Upload:
-        return <Upload obra={obra} />;
+        return (
+          <Upload obra={obra} closeModal={() => setModal(ModalState.Off)} />
+        );
       case ModalState.DeleteFile:
         return (
           <DeleteFile

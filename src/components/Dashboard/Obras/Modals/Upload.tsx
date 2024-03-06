@@ -4,17 +4,16 @@ import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { ChangeEvent, useState, useTransition } from "react";
 import Loading from "@/components/ui/Loading";
-import Success from "@/components/ui/Modals/Success";
 import { ServerResponse } from "@/types/ServerResponse";
 import { toast } from "react-toastify";
 
 type UploadProps = {
   obra: Obra;
+  closeModal: Function;
 };
 
-const Upload = ({ obra }: UploadProps) => {
+const Upload = ({ obra, closeModal }: UploadProps) => {
   const [fileList, setFileList] = useState<FileList | null>(null);
-  const [success, setSuccess] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const files = fileList ? [...fileList] : [];
@@ -43,20 +42,16 @@ const Upload = ({ obra }: UploadProps) => {
 
       if (resJson.success) {
         setFileList(null);
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
-      }
-
-      if (!resJson.success) {
+        toast(resJson.message, { type: "success" });
+      } else {
         toast(resJson.error, { type: "error" });
       }
+      closeModal();
     });
   };
 
   const modalBuilder = () => {
     if (isPending) return <Loading />;
-    if (success)
-      return <Success message="Arquivo(s) enviado(s) com sucesso!" />;
     return (
       <div className="p-4">
         <div className="my-4">
