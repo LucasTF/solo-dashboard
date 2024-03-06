@@ -15,6 +15,8 @@ import { Field } from "@/components/ui/Field";
 import Loading from "@/components/ui/Loading";
 import Success from "@/components/ui/Modals/Success";
 import { updateObra } from "@/lib/actions/data/obras";
+import { useTableStore } from "@/lib/stores/table";
+import { useEntryStore } from "@/lib/stores/entry";
 
 type UF = {
   id: number;
@@ -50,6 +52,9 @@ type Obra = z.infer<typeof ObraModalSchema>;
 const EditObraForm = ({ obra }: EditObraFormProps) => {
   const year = new Date().getFullYear();
   const years = Array.from(new Array(45), (_, index) => year - index);
+
+  const { entry } = useEntryStore();
+  const { tableData, setTableData } = useTableStore();
 
   const [ufs, setUfs] = useState<UF[]>([]);
   const [municipios, setMunicipios] = useState<Municipio[]>([]);
@@ -140,6 +145,22 @@ const EditObraForm = ({ obra }: EditObraFormProps) => {
     startTransition(async () => {
       const response = await updateObra(obra.id, formData);
       if (response.success) {
+        if (entry) {
+          const row = tableData.at(entry.tableIndex) as unknown as Obra;
+          row.sp = formData.sp;
+          row.ano = formData.ano;
+          row.tipo_logo = formData.tipo_logo;
+          row.logradouro = formData.logradouro;
+          row.uf = formData.uf;
+          row.cidade = formData.cidade;
+          row.bairro = formData.bairro;
+          row.cliente = formData.cliente;
+          row.proprietario = formData.proprietario;
+          setTableData((prevState) => {
+            prevState[entry.tableIndex] = row as any;
+            return prevState;
+          });
+        }
         setSuccess(true);
         setTimeout(() => setSuccess(false), 3000);
       } else {

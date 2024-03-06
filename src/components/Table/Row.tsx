@@ -7,7 +7,7 @@ import { useEntryStore } from "@/lib/stores/entry";
 import { Tables } from "@/enums/Tables";
 
 type RowProps = {
-  rowInfo?: { id: number; table: Tables };
+  rowInfo?: { id: number; table: Tables; tableIndex: number };
   children?: React.ReactNode;
 };
 
@@ -28,7 +28,7 @@ export const Row = ({ children, rowInfo }: RowProps) => {
       if (entry?.id === rowInfo.id) {
         clearEntry();
       } else {
-        setEntry(rowInfo.table, rowInfo.id);
+        setEntry(rowInfo.table, rowInfo.id, rowInfo.tableIndex);
       }
     }
   };
