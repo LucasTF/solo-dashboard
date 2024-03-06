@@ -34,38 +34,45 @@ export const DashboardTable = ({
     });
   }, [data]);
 
-  if (isPending) return <Loading />;
-
   return (
-    <Table.Base columns={tableStructure.columns} numOfRows={tableData.length}>
-      {tableData.length > 0 ? (
-        tableData
-          .slice(rowsPerPage * (page - 1), rowsPerPage * page)
-          .map((row, index) => (
-            <Table.Row
-              key={row.id}
-              rowInfo={{
-                table: tableStructure.table,
-                id: row.id,
-                tableIndex: index + rowsPerPage * (page - 1),
-              }}
-            >
-              {tableStructure.columns.map((column, colIndex) => {
-                return (
-                  <Table.Cell key={colIndex}>
-                    {row[column.value as keyof object] as React.ReactNode}
-                  </Table.Cell>
-                );
-              })}
-            </Table.Row>
-          ))
-      ) : (
-        <Table.Row>
-          <Table.Cell colSpan={tableStructure.columns.length}>
-            Nenhum resultado foi encontrado.
-          </Table.Cell>
-        </Table.Row>
-      )}
-    </Table.Base>
+    <>
+      <Table.Results numOfResults={tableData.length} />
+      <Table.Base columns={tableStructure.columns}>
+        {isPending && (
+          <div className="bg-black w-full h-full bg-opacity-50 absolute flex items-center justify-center">
+            <Loading />
+          </div>
+        )}
+        {tableData.length > 0 ? (
+          tableData
+            .slice(rowsPerPage * (page - 1), rowsPerPage * page)
+            .map((row, index) => (
+              <Table.Row
+                key={row.id}
+                rowInfo={{
+                  table: tableStructure.table,
+                  id: row.id,
+                  tableIndex: index + rowsPerPage * (page - 1),
+                }}
+              >
+                {tableStructure.columns.map((column, colIndex) => {
+                  return (
+                    <Table.Cell key={colIndex}>
+                      {row[column.value as keyof object] as React.ReactNode}
+                    </Table.Cell>
+                  );
+                })}
+              </Table.Row>
+            ))
+        ) : (
+          <Table.Row>
+            <Table.Cell colSpan={tableStructure.columns.length}>
+              Nenhum resultado foi encontrado.
+            </Table.Cell>
+          </Table.Row>
+        )}
+      </Table.Base>
+      {!isPending && <Table.Pagination numOfRows={tableData.length} />}
+    </>
   );
 };
