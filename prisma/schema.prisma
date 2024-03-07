@@ -27,7 +27,7 @@ model Proprietario {
   apelido               String?         @db.VarChar(40)
   cpf                   String?         @db.VarChar(14)
   cnpj                  String?         @db.VarChar(18)
-  logradouro            String          @db.VarChar(60)
+  logradouro            String          @db.VarChar(100)
   num_logradouro        String          @db.VarChar(6)
   complemento           String?         @db.VarChar(40)
   bairro                String          @db.VarChar(40)
@@ -48,7 +48,7 @@ model Cliente {
   apelido               String?         @db.VarChar(40)
   cpf                   String?         @db.VarChar(14)
   cnpj                  String?         @db.VarChar(18)
-  logradouro            String          @db.VarChar(60)
+  logradouro            String          @db.VarChar(100)
   num_logradouro        String          @db.VarChar(6)
   complemento           String?         @db.VarChar(40)
   bairro                String          @db.VarChar(40)
@@ -71,7 +71,7 @@ model Obra {
   data_inicio           String?     @db.VarChar(30)
   data_fim              String?     @db.VarChar(30)
   tipo_logo             String?     @db.VarChar(10)
-  logradouro            String?     @db.VarChar(60)
+  logradouro            String?     @db.VarChar(100)
   lote                  String?
   quadra                String?
   num_logo              String?
@@ -142,7 +142,7 @@ model tbobras {
   datainiobra               String?     @db.VarChar(30)
   datafimobra               String?     @db.VarChar(30)
   tipologobra               String?     @db.VarChar(10)
-  logradouroobra            String?     @db.VarChar(60)
+  logradouroobra            String?     @db.VarChar(100)
   loteobra                  String?
   quadraobra                String?
   numlogobra                String?

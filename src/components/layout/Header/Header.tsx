@@ -17,6 +17,7 @@ import { useSessionStore } from "@/lib/stores/session";
 import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
 import { tv } from "tailwind-variants";
 import ThemeSwitcher from "@/components/ui/ThemeSwitcher";
+import { useEntryStore } from "@/lib/stores/entry";
 
 const drawer = tv({
   base: "max-lg:absolute max-lg:top-0 max-lg:left-0 max-lg:w-2/5 max-lg:h-screen max-lg:bg-slate-200 max-lg:dark:bg-zinc-800 max-lg:z-40 flex max-lg:flex-col lg:items-center lg:h-full lg:justify-around transition ease-in duration-300",
@@ -33,6 +34,7 @@ const Header = () => {
   const [isPending, startTransition] = useTransition();
 
   const { session, restoreSession, dropSession } = useSessionStore();
+  const { updateEntry } = useEntryStore();
 
   const router = useRouter();
 
@@ -46,6 +48,11 @@ const Header = () => {
       dropSession();
       router.push(DEFAULT_UNAUTHENTICATED_REDIRECT);
     });
+  };
+
+  const onNavigationHandler = () => {
+    toggleDrawer(false);
+    updateEntry(() => null);
   };
 
   return (
@@ -88,13 +95,10 @@ const Header = () => {
         </div>
 
         <ul className="flex max-lg:flex-col gap-4 lg:gap-3 max-lg:m-5">
-          <li onClick={() => toggleDrawer(false)}>
-            <NavLink href="/dashboard/clientes">Clientes</NavLink>
-          </li>
-          <li onClick={() => toggleDrawer(false)}>
+          <li onClick={() => onNavigationHandler()}>
             <NavLink href="/dashboard/obras">Obras</NavLink>
           </li>
-          <li onClick={() => toggleDrawer(false)}>
+          <li onClick={() => onNavigationHandler()}>
             <NavLink href="/dashboard/usuarios">Usuários</NavLink>
           </li>
         </ul>

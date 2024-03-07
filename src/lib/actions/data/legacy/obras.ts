@@ -43,6 +43,8 @@ export async function getObraByIdLegacy(id: number) {
     },
   });
 
+  if (obra === null) return obra;
+
   return adaptToObraWithFiles(obra);
 }
 

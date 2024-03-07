@@ -1,4 +1,4 @@
-import { Column } from "@/lib/structures/TableStructure";
+import { Column } from "@/types/TableStructure";
 
 type HeadProps = {
   columns: Column[];
