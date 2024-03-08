@@ -4,6 +4,7 @@ type UserDataType = {
   name: string;
   surname: string;
   email: string;
+  isAdmin: boolean;
 };
 
 type SessionState = {

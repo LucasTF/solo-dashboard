@@ -57,9 +57,14 @@ export const DashboardTable = ({
                   }}
                 >
                   {tableStructure.columns.map((column, colIndex) => {
+                    const item = row[column.value as keyof object];
                     return (
                       <Table.Cell key={colIndex}>
-                        {row[column.value as keyof object] as React.ReactNode}
+                        {typeof item === "boolean"
+                          ? item
+                            ? "✔️"
+                            : "❌"
+                          : (item as React.ReactNode)}
                       </Table.Cell>
                     );
                   })}

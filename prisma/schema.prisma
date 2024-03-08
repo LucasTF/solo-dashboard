@@ -18,6 +18,7 @@ model User {
   surname       String    @db.VarChar(40)
   email         String    @unique @db.VarChar(40)
   password      String    @db.VarChar(100)
+  isAdmin       Boolean
   image         String?
 }
 

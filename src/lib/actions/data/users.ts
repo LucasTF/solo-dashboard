@@ -21,6 +21,7 @@ export async function getAllUsers() {
         name: true,
         surname: true,
         email: true,
+        isAdmin: true,
       },
     });
 
@@ -39,6 +40,7 @@ export async function searchUsers(searchFilters: SearchFilters) {
         name: true,
         surname: true,
         email: true,
+        isAdmin: true,
       },
       where: {
         [searchFilters.column]: {
@@ -81,6 +83,7 @@ export async function getUserById(id: number) {
         name: true,
         surname: true,
         email: true,
+        isAdmin: true,
       },
       where: { id },
     });
@@ -101,6 +104,7 @@ export async function createNewUser(user: User): Promise<DataResponse<User>> {
       surname: user.surname,
       email: user.email,
       password: hashedPassword,
+      isAdmin: user.isAdmin,
     };
 
     await db.user.create({ data });

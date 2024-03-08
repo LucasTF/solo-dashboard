@@ -98,9 +98,11 @@ const Header = () => {
           <li onClick={() => onNavigationHandler()}>
             <NavLink href="/dashboard/obras">Obras</NavLink>
           </li>
-          <li onClick={() => onNavigationHandler()}>
-            <NavLink href="/dashboard/usuarios">Usuários</NavLink>
-          </li>
+          {session?.isAdmin && (
+            <li onClick={() => onNavigationHandler()}>
+              <NavLink href="/dashboard/usuarios">Usuários</NavLink>
+            </li>
+          )}
         </ul>
 
         {isPending ? (

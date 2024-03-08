@@ -35,11 +35,25 @@ export async function login(
     if (!passwordsMatch) return { success: false, message: ERROR_MESSAGE };
 
     try {
+      if (user.isAdmin) {
+        const adminToken = await new SignJWT({ id: user.id })
+          .setProtectedHeader({ alg: "HS256" })
+          .setIssuedAt()
+          .setExpirationTime("30 days")
+          .sign(getJwtSecretKey(true));
+
+        cookies().set("adminJwt", adminToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          sameSite: "strict",
+          maxAge: 60 * 60 * 24 * 30, // 30 Days
+        });
+      }
       const token = await new SignJWT({ id: user.id })
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
         .setExpirationTime("30 days")
-        .sign(getJwtSecretKey());
+        .sign(getJwtSecretKey(false));
 
       cookies().set("jwt", token, {
         httpOnly: true,
@@ -50,7 +64,12 @@ export async function login(
 
       return {
         success: true,
-        user: { name: user.name, surname: user.surname, email: user.email },
+        user: {
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
       };
     } catch (error) {
       return { success: false, message: "Algo de errado ocorreu!" };

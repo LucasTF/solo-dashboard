@@ -33,6 +33,7 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
       name: user.name,
       surname: user.surname,
       email: user.email,
+      isAdmin: user.isAdmin,
     },
   });
 
@@ -76,6 +77,11 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
           isInvalid={!!errors.email}
           errorMessage={errors.email?.message}
           {...register("email")}
+        />
+        <Field.Checkbox
+          label="Administrador"
+          type="checkbox"
+          {...register("isAdmin")}
         />
         <Button
           type="submit"

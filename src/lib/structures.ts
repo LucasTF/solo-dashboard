@@ -24,5 +24,6 @@ export const usersStructure: TableStructure = {
     { name: "Nome", value: "name", searchable: true },
     { name: "Sobrenome", value: "surname", searchable: true },
     { name: "Email", value: "email", searchable: true },
+    { name: "Administrador", value: "isAdmin", searchable: false },
   ],
 };

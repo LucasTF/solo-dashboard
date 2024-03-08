@@ -8,6 +8,7 @@ import { tv } from "tailwind-variants";
 const field = tv({
   slots: {
     root: "flex flex-col w-full gap-2",
+    checkbox: "flex w-full gap-2",
     label: "font-bold flex gap-2",
     input: "rounded-md p-4 border border-slate-300 dark:border-slate-900",
     select: "rounded-md p-4 border border-slate-900 dark:border-slate-300",
@@ -80,6 +81,40 @@ const Input = forwardRef<
 
 Input.displayName = "InputField";
 
+const Checkbox = forwardRef<
+  HTMLInputElement,
+  FieldProps & InputHTMLAttributes<HTMLInputElement>
+>(
+  (
+    { isInvalid = false, label, id, placeholder, icon, errorMessage, ...rest },
+    ref
+  ) => {
+    return (
+      <div className={field().checkbox()}>
+        <input
+          className={field({ isInvalid }).input()}
+          id={id}
+          placeholder={placeholder}
+          {...rest}
+          type="checkbox"
+          ref={ref}
+        />
+        <label htmlFor={id} className={field({ isInvalid }).label()}>
+          {icon}
+          {label}
+        </label>
+        {isInvalid && (
+          <p className={field({ isInvalid }).errorParagraph()}>
+            {errorMessage}
+          </p>
+        )}
+      </div>
+    );
+  }
+);
+
+Checkbox.displayName = "CheckboxField";
+
 const Select = forwardRef<
   HTMLSelectElement,
   FieldProps & SelectHTMLAttributes<HTMLSelectElement>
@@ -116,5 +151,6 @@ Select.displayName = "SelectField";
 
 export const Field = {
   Input,
+  Checkbox,
   Select,
 };

@@ -44,6 +44,7 @@ const NewUser = ({ closeModal }: NewUserProps) => {
             name: response.data.name,
             surname: response.data.surname,
             email: response.data.email,
+            isAdmin: response.data.isAdmin,
           };
           prevState.push(newData);
           return prevState;
@@ -103,6 +104,11 @@ const NewUser = ({ closeModal }: NewUserProps) => {
           errorMessage={errors.confirmPassword?.message}
           placeholder="******"
           {...register("confirmPassword")}
+        />
+        <Field.Checkbox
+          label="Administrador"
+          type="checkbox"
+          {...register("isAdmin")}
         />
         <Button
           type="submit"

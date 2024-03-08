@@ -1,6 +1,8 @@
+import { User } from "./data/User";
+
 type SuccessLoginResponse = {
   success: true;
-  user: { name: string; surname: string; email: string };
+  user: Omit<User, "id" | "image" | "password">;
 };
 
 type ErrorLoginResponse = {

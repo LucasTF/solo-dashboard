@@ -82,6 +82,7 @@ export const UserModalSchema = z
       .string()
       .min(6, "Deve possuir no mínimo 6 caracteres.")
       .max(100),
+    isAdmin: z.boolean(),
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     message: "As senhas não coincidem.",
@@ -92,6 +93,7 @@ export const UserEditModalSchema = z.object({
   name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
   surname: z.string().min(1, CANNOT_BE_EMPTY).max(40),
   email: z.string().email(INVALID_EMAIL).max(40),
+  isAdmin: z.boolean(),
 });
 
 export const ResetPasswordModalSchema = z

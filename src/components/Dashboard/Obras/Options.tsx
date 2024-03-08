@@ -20,6 +20,7 @@ import Loading from "@/components/ui/Loading";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Arquivo } from "@/types/data/Arquivo";
 import { useTheme } from "next-themes";
+import { useSessionStore } from "@/lib/stores/session";
 
 const DeleteFile = lazy(() => import("./Modals/DeleteFile"));
 const EditObraForm = lazy(() => import("./Modals/EditObra"));
@@ -50,6 +51,7 @@ export const ObrasOptions = () => {
 
   const pathname = usePathname();
 
+  const { session } = useSessionStore();
   const { entry } = useEntryStore();
 
   const obra = entry?.data as ObraWithFiles;
@@ -92,29 +94,33 @@ export const ObrasOptions = () => {
             </h2>
           </div>
 
-          <TitledDivider title="Opções" />
+          {session?.isAdmin && (
+            <>
+              <TitledDivider title="Opções" />
 
-          <Button
-            color={resolvedTheme === "dark" ? "lightindigo" : "lightblue"}
-            fontStrength="semibold"
-            type="button"
-            disabled={!obra}
-            onClick={() => setModal(ModalState.Edit)}
-          >
-            <PencilSquareIcon className="size-6" />
-            Editar obra
-          </Button>
+              <Button
+                color={resolvedTheme === "dark" ? "lightindigo" : "lightblue"}
+                fontStrength="semibold"
+                type="button"
+                disabled={!obra}
+                onClick={() => setModal(ModalState.Edit)}
+              >
+                <PencilSquareIcon className="size-6" />
+                Editar obra
+              </Button>
 
-          <Button
-            color="red"
-            fontStrength="semibold"
-            type="button"
-            disabled={!obra}
-            onClick={() => setModal(ModalState.Upload)}
-          >
-            <ArrowUpOnSquareStackIcon className="size-6" />
-            Upload de arquivos
-          </Button>
+              <Button
+                color="red"
+                fontStrength="semibold"
+                type="button"
+                disabled={!obra}
+                onClick={() => setModal(ModalState.Upload)}
+              >
+                <ArrowUpOnSquareStackIcon className="size-6" />
+                Upload de arquivos
+              </Button>
+            </>
+          )}
 
           <TitledDivider title="Detalhes" />
 
@@ -148,13 +154,15 @@ export const ObrasOptions = () => {
                         {arquivo.nome}
                       </span>
                     </div>
-                    <TrashIcon
-                      className="size-6 text-red-600 cursor-pointer"
-                      onClick={() => {
-                        setFile(arquivo);
-                        setModal(ModalState.DeleteFile);
-                      }}
-                    />
+                    {session?.isAdmin && (
+                      <TrashIcon
+                        className="size-6 text-red-600 cursor-pointer"
+                        onClick={() => {
+                          setFile(arquivo);
+                          setModal(ModalState.DeleteFile);
+                        }}
+                      />
+                    )}
                   </li>
                 ))}
               </ul>
