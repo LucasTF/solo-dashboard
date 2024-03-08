@@ -9,9 +9,8 @@ const field = tv({
   slots: {
     root: "flex flex-col w-full gap-2",
     label: "font-bold flex gap-2",
-    input: "rounded-md p-4 border-[1px] border-slate-300 dark:border-slate-900",
-    select:
-      "rounded-md p-4 border-[1px] border-slate-300 dark:border-slate-900",
+    input: "rounded-md p-4 border border-slate-300 dark:border-slate-900",
+    select: "rounded-md p-4 border border-slate-900 dark:border-slate-300",
     errorParagraph: "text-sm font-semibold",
   },
   variants: {

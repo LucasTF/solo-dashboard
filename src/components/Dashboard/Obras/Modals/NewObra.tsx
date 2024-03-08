@@ -259,7 +259,9 @@ const NewObraForm = ({ closeModal }: { closeModal: Function }) => {
               errorMessage={errors.cidade?.message}
               {...register("cidade")}
             >
+              {watchUf === "SP" && <option value="São Paulo">São Paulo</option>}
               {municipios.map((municipio) => {
+                if (municipio.nome === "São Paulo") return;
                 return (
                   <option key={municipio.id} value={municipio.nome}>
                     {municipio.nome}

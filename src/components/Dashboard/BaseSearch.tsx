@@ -57,7 +57,7 @@ export const BaseSearch = ({
 
       <div className="flex gap-4">
         <select
-          className="lg:min-w-24 rounded-md p-4 max-md:w-full grow dark:border-zinc-900 dark:border dark:border-solid"
+          className="lg:min-w-24 rounded-md p-4 max-md:w-full grow border border-zinc-900 dark:border-slate-300"
           {...register("column")}
         >
           {tableStructure.columns.map((column) => {

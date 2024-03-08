@@ -3,13 +3,14 @@ import {
   registerFilesToDatabase,
   uploadFilesToServer,
 } from "@/lib/services/filesServices";
-import { ServerResponse } from "@/types/ServerResponse";
+import { DataResponse, ServerResponse } from "@/types/ServerResponse";
+import { Arquivo } from "@/types/data/Arquivo";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { obraId: string } }
-): Promise<NextResponse<ServerResponse>> {
+): Promise<NextResponse<DataResponse<Arquivo[]>>> {
   const searchParams = request.nextUrl.searchParams;
   const noWrite = searchParams.get("noWrite");
   const noDb = searchParams.get("noDb");
@@ -61,7 +62,10 @@ export async function POST(
     }
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ success: false, error: "Obra inválida!" });
+    return NextResponse.json(
+      { success: false, error: "Obra inválida!" },
+      { status: 400 }
+    );
   }
 
   // Uploads files to the static files server
@@ -78,8 +82,24 @@ export async function POST(
       return NextResponse.json(resultRegister, { status: 400 });
   }
 
+  let registeredFiles;
+  if (process.env.USE_LEGACY_TABLES === "true") {
+    registeredFiles = await db.tbarquivos.findMany({
+      where: {
+        obraCod: Number(obraId),
+      },
+    });
+  } else {
+    registeredFiles = await db.arquivo.findMany({
+      where: {
+        obraId: Number(obraId),
+      },
+    });
+  }
+
   return NextResponse.json({
     success: true,
     message: "Arquivo salvo com sucesso!",
+    data: registeredFiles,
   });
 }

@@ -1,20 +1,24 @@
 import Button from "@/components/ui/Button";
-import { Obra } from "@/types/data/Obra";
+import { ObraWithFiles } from "@/types/data/Obra";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { ChangeEvent, useState, useTransition } from "react";
 import Loading from "@/components/ui/Loading";
-import { ServerResponse } from "@/types/ServerResponse";
+import { DataResponse } from "@/types/ServerResponse";
 import { toast } from "react-toastify";
+import { useEntryStore } from "@/lib/stores/entry";
+import { Arquivo } from "@/types/data/Arquivo";
 
 type UploadProps = {
-  obra: Obra;
+  obra: ObraWithFiles;
   closeModal: Function;
 };
 
 const Upload = ({ obra, closeModal }: UploadProps) => {
   const [fileList, setFileList] = useState<FileList | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  const { updateEntry } = useEntryStore();
 
   const files = fileList ? [...fileList] : [];
 
@@ -38,9 +42,22 @@ const Upload = ({ obra, closeModal }: UploadProps) => {
         }
       );
 
-      const resJson: ServerResponse = await res.json();
+      const resJson: DataResponse<Arquivo[]> = await res.json();
 
       if (resJson.success) {
+        console.log(resJson.data);
+        updateEntry((prevState) => {
+          if (prevState) {
+            const entryData = prevState.data as ObraWithFiles;
+            entryData.arquivos = resJson.data;
+            return {
+              id: prevState.id,
+              table: prevState.table,
+              tableIndex: prevState.tableIndex,
+              data: entryData,
+            };
+          } else return prevState;
+        });
         setFileList(null);
         toast(resJson.message, { type: "success" });
       } else {

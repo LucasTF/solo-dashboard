@@ -6,7 +6,7 @@ import { ObrasSearchFiltersSchema, UsersSearchFiltersSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";
 import { User } from "@/types/data/User";
 import { getAllUsers, getUserById, searchUsers } from "./users";
-import { DataResponse } from "@/types/DataResponse";
+import { DataResponse } from "@/types/ServerResponse";
 import { Obra } from "@/types/data/Obra";
 
 export async function getTableData(

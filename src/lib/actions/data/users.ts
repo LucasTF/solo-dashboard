@@ -9,7 +9,7 @@ import { User } from "@/types/data/User";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 import { z } from "zod";
 import { UserEditModalSchema } from "@/schemas";
-import { DataResponse } from "@/types/DataResponse";
+import { DataResponse } from "@/types/ServerResponse";
 
 type UserUpdateData = z.infer<typeof UserEditModalSchema>;
 
