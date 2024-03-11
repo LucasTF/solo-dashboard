@@ -60,8 +60,22 @@ export const BaseSearch = ({
           className="lg:min-w-24 rounded-md p-4 max-md:w-full grow border border-zinc-900 dark:border-slate-300"
           {...register("column")}
         >
-          {tableStructure.columns.map((column) => {
+          {tableStructure.overrideSearchOrder &&
+            tableStructure.overrideSearchOrder.map((colIndex) => {
+              const column = tableStructure.columns[colIndex];
+              return (
+                <option key={column.name} value={column.value}>
+                  {column.name}
+                </option>
+              );
+            })}
+          {tableStructure.columns.map((column, index) => {
             if (column.searchable) {
+              if (
+                tableStructure.overrideSearchOrder &&
+                tableStructure.overrideSearchOrder.includes(index)
+              )
+                return;
               return (
                 <option key={column.name} value={column.value}>
                   {column.name}

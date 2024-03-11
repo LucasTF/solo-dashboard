@@ -106,7 +106,7 @@ const Header = () => {
         </ul>
 
         {isPending ? (
-          <p className="font-bold">Saindo...</p>
+          <p className="font-bold max-md:hidden">Saindo...</p>
         ) : (
           <ul className="flex gap-4 items-center max-lg:hidden">
             <li>

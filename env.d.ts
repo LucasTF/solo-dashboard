@@ -5,5 +5,6 @@ namespace NodeJS {
     UPLOADED_FILES_PATH: string;
     JWT_SECRET: string;
     JWT_ADMIN_SECRET: string;
+    DISABLE_HTTPS: string;
   }
 }

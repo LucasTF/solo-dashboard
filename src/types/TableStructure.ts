@@ -8,5 +8,6 @@ export type Column = {
 
 export type TableStructure = {
   table: Tables;
+  overrideSearchOrder?: number[];
   columns: Column[];
 };

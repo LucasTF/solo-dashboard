@@ -3,6 +3,7 @@ import { TableStructure } from "@/types/TableStructure";
 
 export const obrasStructure: TableStructure = {
   table: Tables.Obras,
+  overrideSearchOrder: [4],
   columns: [
     { name: "ID", value: "id", searchable: false },
     { name: "SP", value: "sp", searchable: true },

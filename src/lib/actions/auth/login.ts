@@ -44,7 +44,7 @@ export async function login(
 
         cookies().set("adminJwt", adminToken, {
           httpOnly: true,
-          secure: process.env.NODE_ENV !== "development",
+          secure: !process.env.DISABLE_HTTPS,
           sameSite: "strict",
           maxAge: 60 * 60 * 24 * 30, // 30 Days
         });
@@ -57,7 +57,7 @@ export async function login(
 
       cookies().set("jwt", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
+        secure: !process.env.DISABLE_HTTPS,
         sameSite: "strict",
         maxAge: 60 * 60 * 24 * 30, // 30 Days
       });
