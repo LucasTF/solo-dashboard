@@ -17,7 +17,7 @@ export default function DashboardLayout({
   return (
     <div className="flex flex-col min-h-screen justify-between">
       <Header />
-      <div className="my-8">{children}</div>
+      {children}
       <Footer />
       <ScrollButton />
     </div>

@@ -2,7 +2,7 @@ import Spinner from "@/components/ui/Spinner";
 
 export default function Loading() {
   return (
-    <main className="w-full flex justify-center">
+    <main className="m-auto">
       <Spinner size="lg" />
     </main>
   );

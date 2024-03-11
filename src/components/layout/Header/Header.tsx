@@ -18,6 +18,8 @@ import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
 import { tv } from "tailwind-variants";
 import ThemeSwitcher from "@/components/ui/ThemeSwitcher";
 import { useEntryStore } from "@/lib/stores/entry";
+import Image from "next/image";
+import Link from "next/link";
 
 const drawer = tv({
   base: "max-lg:absolute max-lg:top-0 max-lg:left-0 max-lg:w-2/5 max-lg:h-screen max-lg:bg-slate-200 max-lg:dark:bg-zinc-800 max-lg:z-40 flex max-lg:flex-col lg:items-center lg:h-full lg:justify-around transition ease-in duration-300",
@@ -69,7 +71,10 @@ const Header = () => {
       </div>
 
       <nav className={drawer({ open: isDrawerOpen })}>
-        <h1 className="font-bold select-none max-lg:hidden">Solo Dashboard</h1>
+        <Link href="/dashboard" className="flex gap-2 max-lg:hidden">
+          <Image src="/img/solo-logo.png" alt="Solo" width="24" height="24" />
+          <h1 className="font-bold">Solo Dashboard</h1>
+        </Link>
 
         <div className="lg:hidden bg-slate-300 dark:bg-gray-800 border border-b-slate-400 dark:border-zinc-900 p-4 flex flex-col gap-4 justify-center items-center">
           <div className="flex flex-col items-center gap-1">
