@@ -13,13 +13,7 @@ export default function MainAppLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body
-        className={
-          inter.className +
-          " " +
-          "bg-gradient-to-b from-sky-700 dark:from-gray-900 from-10% via-sky-800 dark:via-gray-900 via-30% dark:via-50% to-sky-900 dark:to-gray-900 to-50% dark:to-80%"
-        }
-      >
+      <body className={inter.className + " " + "bg-slate-200 dark:bg-gray-900"}>
         <Providers>
           {children}
           <ToastContainer />

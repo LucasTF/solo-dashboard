@@ -7,7 +7,7 @@ import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import Spinner from "./Spinner";
 
 const switcher = tv({
-  base: "rounded-md p-2 ease-in-out duration-300 dark:text-white dark:hover:text-purple-500 hover:text-sky-800",
+  base: "border-slate-700 p-2 border rounded-md ease-in-out duration-300 dark:text-white dark:hover:text-purple-500 hover:text-sky-800",
 });
 
 const ThemeSwitcher = ({
@@ -21,7 +21,12 @@ const ThemeSwitcher = ({
 
   if (!mounted)
     return (
-      <button type="button" className={switcher({ className })} {...rest}>
+      <button
+        type="button"
+        disabled={true}
+        className={switcher({ className })}
+        {...rest}
+      >
         <Spinner size="sm" />
       </button>
     );
@@ -34,7 +39,7 @@ const ThemeSwitcher = ({
         onClick={() => setTheme("light")}
         {...rest}
       >
-        <SunIcon className="size-6" />
+        <SunIcon className="size-5" />
       </button>
     );
   }
@@ -47,7 +52,7 @@ const ThemeSwitcher = ({
         onClick={() => setTheme("dark")}
         {...rest}
       >
-        <MoonIcon className="size-6" />
+        <MoonIcon className="size-5" />
       </button>
     );
   }

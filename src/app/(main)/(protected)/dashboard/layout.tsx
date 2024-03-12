@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
-import Footer from "@/components/layout/Footer/Footer";
-import Header from "@/components/layout/Header/Header";
-import { ScrollButton } from "@/components/ui/ScrollButton";
+import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "Solo Engenharia | Dashboard",
@@ -15,11 +14,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col min-h-screen justify-between">
-      <Header />
-      {children}
+    <div className="flex max-md:flex-col min-h-screen">
+      <Navigation />
+      <div className="max-md:my-16 flex-grow">{children}</div>
       <Footer />
-      <ScrollButton />
     </div>
   );
 }

@@ -19,7 +19,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import Button from "../ui/Button";
 import { Field } from "../ui/Field";
 import { login } from "@/lib/actions/auth/login";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../ui/Spinner";
 import { useTheme } from "next-themes";
@@ -39,6 +39,7 @@ const LoginForm = () => {
     },
   });
 
+  const [mounted, setMounted] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const { createSession } = useSessionStore();
@@ -46,6 +47,10 @@ const LoginForm = () => {
   const router = useRouter();
 
   const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const loginHandler = (credentials: LoginCredentials) => {
     startTransition(async () => {
@@ -69,7 +74,11 @@ const LoginForm = () => {
     <section className="md:w-96 bg-slate-200 dark:bg-zinc-800 rounded-md shadow-xl">
       <header className="bg-slate-300 dark:bg-gray-800 text-center mb-4 border-b-2 border-solid border-slate-400 dark:border-zinc-900 px-8 py-4 rounded-t-md">
         <Image
-          src="/img/solo-logo.png"
+          src={
+            mounted && resolvedTheme === "dark"
+              ? "/img/solo-logo-light.png"
+              : "/img/solo-logo.png"
+          }
           alt="Solo"
           width="128"
           height="128"
@@ -108,7 +117,7 @@ const LoginForm = () => {
         />
 
         <Button
-          color={resolvedTheme === "dark" ? "indigo" : "blue"}
+          color={mounted && resolvedTheme === "dark" ? "indigo" : "blue"}
           disabled={isPending}
           className="font-semibold"
         >

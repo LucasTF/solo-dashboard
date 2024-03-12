@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import { VariantProps, tv } from "tailwind-variants";
 
 const navLink = tv({
-  base: "hover:text-sky-800 dark:hover:text-purple-500 ease-in-out duration-300",
+  base: "flex items-center pl-2 gap-2 rounded-md hover:text-sky-800 dark:hover:text-purple-500 ease-in-out duration-300",
   variants: {
     selected: {
-      true: "font-bold text-sky-800 dark:text-purple-500",
+      true: "py-1 font-bold text-white bg-sky-600 bg-opacity-90 dark:bg-purple-500 dark:bg-opacity-50 hover:text-white dark:hover:text-white",
     },
   },
 });
@@ -24,7 +24,7 @@ const NavLink = ({ children, href, selected, ...rest }: NavLinkProps) => {
   return (
     <Link
       href={href}
-      className={navLink({ selected: pathname.startsWith(href) })}
+      className={navLink({ selected: pathname === href })}
       {...rest}
     >
       {children}
