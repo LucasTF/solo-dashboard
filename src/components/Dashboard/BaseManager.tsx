@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
