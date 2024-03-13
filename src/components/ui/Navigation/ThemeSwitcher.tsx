@@ -4,16 +4,17 @@ import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { tv } from "tailwind-variants";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 
 const switcher = tv({
-  base: "border-slate-700 p-2 border rounded-md ease-in-out duration-300 dark:text-white dark:hover:text-purple-500 hover:text-sky-800",
+  base: "flex items-center ease-in-out duration-300 dark:text-white dark:hover:text-purple-500 hover:text-sky-800",
 });
 
 const ThemeSwitcher = ({
   className,
+  size,
   ...rest
-}: ButtonHTMLAttributes<HTMLButtonElement>) => {
+}: { size?: number } & ButtonHTMLAttributes<HTMLButtonElement>) => {
   const [mounted, toggleMounted] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
 
@@ -39,7 +40,7 @@ const ThemeSwitcher = ({
         onClick={() => setTheme("light")}
         {...rest}
       >
-        <SunIcon className="size-5" />
+        <SunIcon className={`size-${size || 5}`} />
       </button>
     );
   }
@@ -52,7 +53,7 @@ const ThemeSwitcher = ({
         onClick={() => setTheme("dark")}
         {...rest}
       >
-        <MoonIcon className="size-5" />
+        <MoonIcon className={`size-${size || 5}`} />
       </button>
     );
   }

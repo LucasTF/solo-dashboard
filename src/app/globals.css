@@ -4,7 +4,7 @@
 
 @layer components {
   .bg-bar-gradient {
-    @apply bg-gradient-to-b from-sky-800 to-blue-600 dark:from-indigo-900 dark:to-purple-700;
+    @apply bg-gradient-to-r from-sky-700 to-sky-600 dark:from-indigo-800 dark:to-indigo-700;
   }
 }
 

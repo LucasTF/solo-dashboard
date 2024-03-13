@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
+import { ScrollButton } from "@/components/ui/ScrollButton";
 
 export const metadata: Metadata = {
   title: "Solo Engenharia | Dashboard",
@@ -18,6 +19,7 @@ export default function DashboardLayout({
       <Navigation />
       <div className="max-md:my-16 flex-grow">{children}</div>
       <Footer />
+      <ScrollButton />
     </div>
   );
 }

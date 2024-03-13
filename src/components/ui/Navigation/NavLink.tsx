@@ -9,7 +9,7 @@ const navLink = tv({
   base: "flex items-center pl-2 gap-2 rounded-md hover:text-sky-800 dark:hover:text-purple-500 ease-in-out duration-300",
   variants: {
     selected: {
-      true: "py-1 font-bold text-white bg-sky-600 bg-opacity-90 dark:bg-purple-500 dark:bg-opacity-50 hover:text-white dark:hover:text-white",
+      true: "py-1 font-bold text-white bg-sky-600 bg-opacity-90 dark:bg-indigo-700 dark:bg-opacity-90 hover:text-white dark:hover:text-white",
     },
   },
 });
