@@ -20,7 +20,6 @@ export const obrasStructure: TableStructure = {
 export const usersStructure: TableStructure = {
   table: Tables.Users,
   columns: [
-    { name: "ID", value: "id", searchable: false },
     { name: "Nome", value: "name", searchable: true },
     { name: "Sobrenome", value: "surname", searchable: true },
     { name: "Email", value: "email", searchable: true },
