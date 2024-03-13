@@ -18,6 +18,7 @@ import { TitledDivider } from "@/components/ui/TitledDivider";
 import { useTheme } from "next-themes";
 import { User } from "@/types/data/User";
 import ResetPassword from "./Modals/ResetPassword";
+import { createPortal } from "react-dom";
 
 const EditUserForm = lazy(() => import("./Modals/EditUser"));
 const DeleteUser = lazy(() => import("./Modals/DeleteUser"));
@@ -30,11 +31,11 @@ enum ModalState {
 }
 
 const options = tv({
-  base: "max-lg:mb-4 lg:ml-8",
+  base: "fixed h-full top-16 md:top-0 left-0 md:min-w-52 md:max-w-52 ease-in-out duration-300 bg-slate-300 dark:bg-slate-800",
   variants: {
-    visible: {
-      true: "lg:col-span-1 order-2",
-      false: "hidden",
+    open: {
+      true: "translate-x-0",
+      false: "-translate-x-full",
     },
   },
 });
@@ -72,12 +73,12 @@ export const UsersOptions = () => {
   };
 
   return (
-    <aside className={options({ visible: entry !== null })}>
+    <aside className={options({ open: entry !== null })}>
       {entry && entry?.table === pathname && (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 m-4">
           <div>
             <p className="text-center font-semibold">Usuário</p>
-            <h2 className="font-bold text-center text-4xl lg:text-2xl xl:text-3xl">
+            <h2 className="font-bold text-center text-2xl">
               {user ? (
                 user.name + " " + user.surname
               ) : (
@@ -122,13 +123,17 @@ export const UsersOptions = () => {
           </Button>
         </div>
       )}
-      <Modal
-        title={`${user?.email} - ${modal.toString()}`}
-        visible={modal !== ModalState.Off}
-        onClose={() => setModal(ModalState.Off)}
-      >
-        <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
-      </Modal>
+
+      {createPortal(
+        <Modal
+          title={`${user?.email} - ${modal.toString()}`}
+          visible={modal !== ModalState.Off}
+          onClose={() => setModal(ModalState.Off)}
+        >
+          <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
+        </Modal>,
+        document.body
+      )}
     </aside>
   );
 };

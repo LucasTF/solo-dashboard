@@ -10,11 +10,9 @@ type TableProps = {
 
 export const Base = ({ children, columns }: TableProps) => {
   return (
-    <div className="overflow-x-auto md:max-h-[28rem] relative">
-      <table className="w-full max-w-full">
-        <Table.Head columns={columns} />
-        <tbody>{children}</tbody>
-      </table>
-    </div>
+    <table className="w-full max-w-full">
+      <Table.Head columns={columns} />
+      <tbody>{children}</tbody>
+    </table>
   );
 };

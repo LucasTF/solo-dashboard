@@ -7,7 +7,7 @@ export const obrasStructure: TableStructure = {
   columns: [
     { name: "SP", value: "sp", searchable: true },
     { name: "Ano", value: "ano", searchable: false },
-    { name: "Tipo Logradouro", value: "tipo_logo", searchable: false },
+    { name: "Tipo Log.", value: "tipo_logo", searchable: false },
     { name: "Logradouro", value: "logradouro", searchable: true },
     { name: "UF", value: "uf", searchable: false },
     { name: "Cidade", value: "cidade", searchable: true },

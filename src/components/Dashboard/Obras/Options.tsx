@@ -21,6 +21,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { Arquivo } from "@/types/data/Arquivo";
 import { useTheme } from "next-themes";
 import { useSessionStore } from "@/lib/stores/session";
+import { createPortal } from "react-dom";
 
 const DeleteFile = lazy(() => import("./Modals/DeleteFile"));
 const EditObraForm = lazy(() => import("./Modals/EditObra"));
@@ -34,11 +35,11 @@ enum ModalState {
 }
 
 const options = tv({
-  base: "max-lg:mb-4 lg:ml-8",
+  base: "fixed h-full top-16 md:top-0 left-0 md:min-w-52 md:max-w-52 ease-in-out duration-300 bg-slate-300 dark:bg-slate-800",
   variants: {
-    visible: {
-      true: "lg:col-span-1 order-2",
-      false: "hidden",
+    open: {
+      true: "translate-x-0",
+      false: "-translate-x-full",
     },
   },
 });
@@ -80,9 +81,9 @@ export const ObrasOptions = () => {
   };
 
   return (
-    <aside className={options({ visible: entry !== null })}>
+    <aside className={options({ open: entry !== null })}>
       {entry && entry?.table === pathname && (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 m-4">
           <div>
             <p className="text-center font-semibold">Obra</p>
             <h2 className="font-bold text-center text-4xl lg:text-2xl xl:text-3xl">
@@ -141,10 +142,10 @@ export const ObrasOptions = () => {
               <ul>
                 {obra?.arquivos.map((arquivo) => (
                   <li className="flex justify-between p-1" key={arquivo.id}>
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-2">
                       <DocumentIcon className="size-6" />
                       <span
-                        className="cursor-pointer underline text-sky-800 dark:text-purple-500 hover:text-sky-700 dark:hover:text-purple-400 font-semibold text-sm"
+                        className="cursor-pointer underline text-sky-800 dark:text-purple-500 hover:text-sky-700 dark:hover:text-purple-400 font-semibold text-xs"
                         onClick={() =>
                           window.open(
                             `${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${obra.ano}/${arquivo.nome}`
@@ -153,32 +154,34 @@ export const ObrasOptions = () => {
                       >
                         {arquivo.nome}
                       </span>
+                      {session?.isAdmin && (
+                        <TrashIcon
+                          className="size-6 text-red-600 cursor-pointer"
+                          onClick={() => {
+                            setFile(arquivo);
+                            setModal(ModalState.DeleteFile);
+                          }}
+                        />
+                      )}
                     </div>
-                    {session?.isAdmin && (
-                      <TrashIcon
-                        className="size-6 text-red-600 cursor-pointer"
-                        onClick={() => {
-                          setFile(arquivo);
-                          setModal(ModalState.DeleteFile);
-                        }}
-                      />
-                    )}
                   </li>
                 ))}
               </ul>
             </>
           )}
-          <hr className="m-2 border-slate-300 dark:border-zinc-700 border-2 lg:hidden" />
         </div>
       )}
 
-      <Modal
-        title={`Obra ${obra?.sp} - ${modal.toString()}`}
-        visible={modal !== ModalState.Off}
-        onClose={() => setModal(ModalState.Off)}
-      >
-        <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
-      </Modal>
+      {createPortal(
+        <Modal
+          title={`Obra ${obra?.sp} - ${modal.toString()}`}
+          visible={modal !== ModalState.Off}
+          onClose={() => setModal(ModalState.Off)}
+        >
+          <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
+        </Modal>,
+        document.body
+      )}
     </aside>
   );
 };

@@ -15,9 +15,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex max-md:flex-col min-h-screen">
+    <div className="max-md:flex max-md:flex-col">
       <Navigation />
-      <div className="max-md:my-16 flex-grow">{children}</div>
+      <div className="md:ml-52 max-md:my-16 max-md:flex-grow">{children}</div>
       <Footer />
       <ScrollButton />
     </div>

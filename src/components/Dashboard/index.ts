@@ -1,18 +1,20 @@
 import { DashboardTable } from "./Table";
-import { Template } from "./Template";
 import { TableConstructor } from "./TableConstructor";
 import { ObrasOptions } from "./Obras/Options";
 import { ObrasHeader } from "./Obras/Header";
-import { DashboardContainer } from "./Container";
 import { UsersHeader } from "./Users/Header";
 import { UsersOptions } from "./Users/Options";
+import { ObrasManager } from "./Obras/Manager";
+import { UsersManager } from "./Users/Manager";
 
 export const Dashboard = {
-  Template,
-  Container: DashboardContainer,
   Header: {
     Obras: ObrasHeader,
     Users: UsersHeader,
+  },
+  Manager: {
+    Obras: ObrasManager,
+    Users: UsersManager,
   },
   TableConstructor: TableConstructor,
   Table: DashboardTable,

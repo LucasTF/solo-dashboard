@@ -97,7 +97,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
   };
 
   return (
-    <div className="flex justify-center gap-2 md:gap-4 mt-4">
+    <div className="flex justify-center gap-2 md:gap-4 my-4">
       <Link
         href={pathBuilder("page", 1)}
         scroll={false}

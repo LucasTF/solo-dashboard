@@ -34,10 +34,10 @@ export const TableConstructor = async ({
 
   if (!showAllData) {
     return (
-      <div className="h-48 rounded-md mt-4 flex flex-col items-center justify-center text-gray-400">
+      <main className="h-48 rounded-md mt-4 flex flex-col items-center justify-center text-gray-400">
         <TableCellsIcon className="size-24" />
         <p>Faça uma busca para começar</p>
-      </div>
+      </main>
     );
   }
 };

@@ -7,7 +7,7 @@ type TitledDividerProps = {
 const titledDivider = tv({
   slots: {
     base: "relative flex items-center",
-    divider: "flex-grow border-t-4 border-slate-300 dark:border-zinc-700",
+    divider: "flex-grow border-t-4 border-slate-400 dark:border-zinc-700",
     text: "flex-shrink mx-4 font-semibold select-none",
   },
 });

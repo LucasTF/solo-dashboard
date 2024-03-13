@@ -8,20 +8,21 @@ type PageProps = {
 
 export default async function UsersPage({ searchParams }: PageProps) {
   return (
-    <Dashboard.Template title="Usuários">
-      <Dashboard.Container>
-        <Dashboard.Header.Users />
+    <>
+      <Dashboard.Header.Users />
 
-        <Dashboard.TableConstructor
-          tableStructure={usersStructure}
-          searchFilters={{
-            column: searchParams.column,
-            search: searchParams.search,
-          }}
-          showAllData={true}
-        />
-      </Dashboard.Container>
+      <Dashboard.Manager.Users />
+
       <Dashboard.Options.Users />
-    </Dashboard.Template>
+
+      <Dashboard.TableConstructor
+        tableStructure={usersStructure}
+        searchFilters={{
+          column: searchParams.column,
+          search: searchParams.search,
+        }}
+        showAllData={true}
+      />
+    </>
   );
 }

@@ -1,47 +1,17 @@
-import React, { Suspense } from "react";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
-
-import Button from "../ui/Button";
-import Modal from "../ui/Modal";
-import Loading from "../ui/Loading";
+import React from "react";
 
 type BaseHeaderProps = {
-  searchComponent: Readonly<React.ReactNode>;
-  newEntryButtonText: string;
-  newEntryModalTitle: string;
-  newEntryModalComponent: Readonly<React.ReactNode>;
-  modalState: boolean;
-  toggleModalState: (modalState: boolean) => void;
+  title: string;
+  children?: React.ReactNode;
 };
 
-export const BaseHeader = (props: BaseHeaderProps) => {
+export const BaseHeader = ({ title, children }: BaseHeaderProps) => {
   return (
-    <header className="flex max-md:flex-col gap-4 order-1">
-      {props.searchComponent}
-
-      <div className="border-2 border-slate-300 dark:border-zinc-700" />
-
-      <div className="max-md:mx-auto">
-        <Button
-          color="green"
-          fontStrength="semibold"
-          type="button"
-          onClick={() => props.toggleModalState(true)}
-        >
-          <PlusCircleIcon className="size-6" />
-          {props.newEntryButtonText}
-        </Button>
-      </div>
-
-      <Modal
-        title={props.newEntryModalTitle}
-        visible={props.modalState}
-        onClose={() => props.toggleModalState(false)}
-      >
-        <Suspense fallback={<Loading />}>
-          {props.newEntryModalComponent}
-        </Suspense>
-      </Modal>
+    <header className="px-4 min-h-16 flex items-center gap-4 bg-gradient-to-b from-slate-300 to-slate-200 dark:bg-none">
+      <h1 className="text-black font-bold grow text-4xl dark:text-white select-none">
+        {title}
+      </h1>
+      {children}
     </header>
   );
 };

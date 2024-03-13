@@ -37,12 +37,9 @@ export const DashboardTable = ({
   if (tableData.length === 0 && tableData !== data) return <Loading />;
 
   return (
-    <>
+    <main className="mx-4">
       <Table.Results numOfResults={tableData.length} />
-      <div className="relative">
-        {isPending && (
-          <div className="absolute w-full h-full bg-black bg-opacity-20 z-[5] flex items-center justify-center"></div>
-        )}
+      <div className="overflow-auto">
         <Table.Base columns={tableStructure.columns}>
           {tableData.length > 0 ? (
             tableData
@@ -80,6 +77,6 @@ export const DashboardTable = ({
         </Table.Base>
       </div>
       {!isPending && <Table.Pagination numOfRows={tableData.length} />}
-    </>
+    </main>
   );
 };

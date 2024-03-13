@@ -3,7 +3,6 @@
 import { UseFormRegister } from "react-hook-form";
 
 import {
-  FunnelIcon,
   ArrowRightIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
@@ -11,38 +10,21 @@ import {
 import { TableStructure } from "@/types/TableStructure";
 import Button from "@/components/ui/Button";
 import { FormHTMLAttributes } from "react";
-import { useTheme } from "next-themes";
-
-type NoAdvancedFilter = {
-  hasAdvancedFilter: false;
-};
-
-type HasAdvancedFilter = {
-  hasAdvancedFilter: true;
-  onAdvancedFilterClick: () => void;
-  advancedFilterState: boolean;
-};
-
-type AdvancedFilter = NoAdvancedFilter | HasAdvancedFilter;
 
 type SearchProps = FormHTMLAttributes<HTMLFormElement> & {
   tableStructure: TableStructure;
   register: UseFormRegister<any>;
-  filter: AdvancedFilter;
 };
 
 export const BaseSearch = ({
   onSubmit,
   register,
   tableStructure,
-  filter,
   ...rest
 }: SearchProps) => {
-  const { resolvedTheme } = useTheme();
-
   return (
     <form
-      className="flex gap-4 max-lg:flex-col grow relative"
+      className="flex gap-4 relative max-h-12"
       onSubmit={onSubmit}
       {...rest}
     >
@@ -50,61 +32,43 @@ export const BaseSearch = ({
         type="text"
         autoComplete="off"
         placeholder="Buscar"
-        className="grow p-4 pl-12 rounded-md dark:border-zinc-900 dark:border dark:border-solid"
+        className="w-full pl-12 rounded-md shadow-lg dark:border-zinc-900 dark:border dark:border-solid placeholder:dark:text-gray-300"
         {...register("search")}
       />
-      <MagnifyingGlassIcon className="size-6 absolute top-4 left-4 text-gray-400" />
+      <MagnifyingGlassIcon className="size-6 absolute top-3 left-4 text-gray-400 dark:text-gray-300" />
 
-      <div className="flex gap-4">
-        <select
-          className="lg:min-w-24 rounded-md p-4 max-md:w-full grow border border-zinc-900 dark:border-slate-300"
-          {...register("column")}
-        >
-          {tableStructure.overrideSearchOrder &&
-            tableStructure.overrideSearchOrder.map((colIndex) => {
-              const column = tableStructure.columns[colIndex];
-              return (
-                <option key={column.name} value={column.value}>
-                  {column.name}
-                </option>
-              );
-            })}
-          {tableStructure.columns.map((column, index) => {
-            if (column.searchable) {
-              if (
-                tableStructure.overrideSearchOrder &&
-                tableStructure.overrideSearchOrder.includes(index)
-              )
-                return;
-              return (
-                <option key={column.name} value={column.value}>
-                  {column.name}
-                </option>
-              );
-            }
+      <select
+        className="px-2 rounded-md shadow-lg border border-zinc-500 dark:border-slate-300"
+        {...register("column")}
+      >
+        {tableStructure.overrideSearchOrder &&
+          tableStructure.overrideSearchOrder.map((colIndex) => {
+            const column = tableStructure.columns[colIndex];
+            return (
+              <option key={column.name} value={column.value}>
+                {column.name}
+              </option>
+            );
           })}
-        </select>
+        {tableStructure.columns.map((column, index) => {
+          if (column.searchable) {
+            if (
+              tableStructure.overrideSearchOrder &&
+              tableStructure.overrideSearchOrder.includes(index)
+            )
+              return;
+            return (
+              <option key={column.name} value={column.value}>
+                {column.name}
+              </option>
+            );
+          }
+        })}
+      </select>
 
-        <Button type="submit" color="green" shape="rectangle">
-          <ArrowRightIcon className="size-6" />
-        </Button>
-
-        {filter.hasAdvancedFilter && (
-          <Button
-            type="button"
-            color={
-              filter.advancedFilterState
-                ? resolvedTheme === "dark"
-                  ? "indigo"
-                  : "blue"
-                : "clear"
-            }
-            onClick={() => filter.onAdvancedFilterClick()}
-          >
-            <FunnelIcon className="size-6" />
-          </Button>
-        )}
-      </div>
+      <Button type="submit" color="green" shape="rectangle">
+        <ArrowRightIcon className="size-6" />
+      </Button>
     </form>
   );
 };
