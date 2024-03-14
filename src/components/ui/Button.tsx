@@ -82,6 +82,7 @@ export const ButtonLink = ({
   children,
   color,
   fontStrength,
+  disabled,
   shape,
   target,
   className,
@@ -91,7 +92,7 @@ export const ButtonLink = ({
     <Link
       href={href}
       target={target}
-      className={button({ color, fontStrength, shape, className })}
+      className={button({ color, fontStrength, shape, disabled, className })}
       {...rest}
     >
       {children}

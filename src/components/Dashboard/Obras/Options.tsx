@@ -7,6 +7,7 @@ import {
   ArrowUpOnSquareStackIcon,
   DocumentIcon,
   DocumentTextIcon,
+  MapPinIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 
@@ -129,6 +130,18 @@ export const ObrasOptions = () => {
           )}
 
           <TitledDivider title="Detalhes" />
+
+          <ButtonLink
+            color="green"
+            fontStrength="semibold"
+            disabled={!obra}
+            href={`https://maps.google.com/?q=${obra?.tipo_logo} ${obra?.logradouro}`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <MapPinIcon className="size-6" />
+            Abrir no Maps
+          </ButtonLink>
 
           <ButtonLink
             color={resolvedTheme === "dark" ? "indigo" : "blue"}
