@@ -19,6 +19,7 @@ import { useTheme } from "next-themes";
 import { User } from "@/types/data/User";
 import ResetPassword from "./Modals/ResetPassword";
 import { createPortal } from "react-dom";
+import { useSessionStore } from "@/lib/stores/session";
 
 const EditUserForm = lazy(() => import("./Modals/EditUser"));
 const DeleteUser = lazy(() => import("./Modals/DeleteUser"));
@@ -47,6 +48,7 @@ export const UsersOptions = () => {
 
   const pathname = usePathname();
 
+  const { session } = useSessionStore();
   const { entry } = useEntryStore();
 
   const user = entry?.data as User;
@@ -124,16 +126,17 @@ export const UsersOptions = () => {
         </div>
       )}
 
-      {createPortal(
-        <Modal
-          title={`${user?.email} - ${modal.toString()}`}
-          visible={modal !== ModalState.Off}
-          onClose={() => setModal(ModalState.Off)}
-        >
-          <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
-        </Modal>,
-        document.body
-      )}
+      {session &&
+        createPortal(
+          <Modal
+            title={`${user?.email} - ${modal.toString()}`}
+            visible={modal !== ModalState.Off}
+            onClose={() => setModal(ModalState.Off)}
+          >
+            <Suspense fallback={<Loading />}>{modalBuilder()}</Suspense>
+          </Modal>,
+          document.body
+        )}
     </aside>
   );
 };

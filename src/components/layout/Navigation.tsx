@@ -69,7 +69,7 @@ const Navigation = () => {
   };
 
   return (
-    <aside className="md:fixed top-0 flex flex-col max-md:w-full md:min-h-screen md:min-w-52 md:border-r border-sky-600 dark:border-indigo-700 bg-slate-300 dark:bg-slate-800">
+    <aside className="md:fixed flex flex-col max-md:w-full md:min-h-screen md:min-w-52 md:border-r border-sky-600 dark:border-indigo-700 bg-slate-300 dark:bg-slate-800">
       <header className="max-h-16 p-4 flex items-center justify-between md:justify-center gap-2 shadow-lg bg-bar-gradient max-md:fixed max-md:min-w-full max-md:z-40">
         <button
           className="border border-slate-200 dark:border-slate-500 rounded-md p-2 md:hidden text-white"
@@ -94,7 +94,7 @@ const Navigation = () => {
       </header>
       <nav className={drawerNav({ open: drawer })}>
         <p className={ulTitle()}>Sessão</p>
-        {session ? (
+        {session && !isPending ? (
           <ul className={ul()}>
             <li className="flex items-center gap-2 pl-2">
               <UserCircleIcon className={icon()} />

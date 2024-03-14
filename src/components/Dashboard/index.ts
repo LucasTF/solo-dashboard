@@ -6,9 +6,11 @@ import { UsersHeader } from "./Users/Header";
 import { UsersOptions } from "./Users/Options";
 import { ObrasManager } from "./Obras/Manager";
 import { UsersManager } from "./Users/Manager";
+import { BaseHeader } from "./BaseHeader";
 
 export const Dashboard = {
   Header: {
+    Base: BaseHeader,
     Obras: ObrasHeader,
     Users: UsersHeader,
   },

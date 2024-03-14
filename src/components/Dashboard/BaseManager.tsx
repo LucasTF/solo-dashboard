@@ -1,3 +1,5 @@
+"use client";
+
 import { Suspense } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
@@ -5,6 +7,7 @@ import Button from "../ui/Button";
 import Modal from "../ui/Modal";
 import Loading from "../ui/Loading";
 import { createPortal } from "react-dom";
+import { useSessionStore } from "@/lib/stores/session";
 
 type BaseManagerProps = {
   title: string;
@@ -19,6 +22,8 @@ export const BaseManager = ({
   toggleModal,
   children,
 }: BaseManagerProps) => {
+  const { session } = useSessionStore();
+
   return (
     <section className="m-4">
       <Button
@@ -32,16 +37,17 @@ export const BaseManager = ({
         {title}
       </Button>
 
-      {createPortal(
-        <Modal
-          title={title}
-          visible={modalState}
-          onClose={() => toggleModal(false)}
-        >
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-        </Modal>,
-        document.body
-      )}
+      {session &&
+        createPortal(
+          <Modal
+            title={title}
+            visible={modalState}
+            onClose={() => toggleModal(false)}
+          >
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </Modal>,
+          document.body
+        )}
     </section>
   );
 };
