@@ -24,6 +24,7 @@ import { Arquivo } from "@/types/data/Arquivo";
 import { useTheme } from "next-themes";
 import { useSessionStore } from "@/lib/stores/session";
 import { createPortal } from "react-dom";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 const DeleteFile = lazy(() => import("./Modals/DeleteFile"));
 const EditObraForm = lazy(() => import("./Modals/EditObra"));
@@ -93,11 +94,7 @@ export const ObrasOptions = () => {
           <div>
             <p className="text-center font-semibold">Obra</p>
             <h2 className="font-bold text-center text-4xl lg:text-2xl xl:text-3xl">
-              {obra ? (
-                obra.sp
-              ) : (
-                <div className="animate-pulse bg-slate-300 dark:bg-zinc-700 h-8 w-full rounded-md"></div>
-              )}
+              {obra ? obra.sp : <Skeleton className="w-full" />}
             </h2>
           </div>
 

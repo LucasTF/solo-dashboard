@@ -20,6 +20,7 @@ import { User } from "@/types/data/User";
 import ResetPassword from "./Modals/ResetPassword";
 import { createPortal } from "react-dom";
 import { useSessionStore } from "@/lib/stores/session";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 const EditUserForm = lazy(() => import("./Modals/EditUser"));
 const DeleteUser = lazy(() => import("./Modals/DeleteUser"));
@@ -84,7 +85,7 @@ export const UsersOptions = () => {
               {user ? (
                 user.name + " " + user.surname
               ) : (
-                <div className="animate-pulse bg-slate-300 dark:bg-zinc-700 h-10 w-full rounded-md"></div>
+                <Skeleton className="h-9 w-full" />
               )}
             </h2>
           </div>

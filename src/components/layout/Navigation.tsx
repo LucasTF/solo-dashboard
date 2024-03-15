@@ -86,7 +86,9 @@ const Navigation = () => {
             height="32"
             priority
           />
-          <span className="font-bold text-white">Solo Dashboard</span>
+          <span className="font-bold text-white select-none">
+            Solo Dashboard
+          </span>
         </div>
         <div className="md:hidden text-white">
           <ThemeSwitcher size={6} />
@@ -96,7 +98,7 @@ const Navigation = () => {
         <p className={ulTitle()}>Sessão</p>
         {session && !isPending ? (
           <ul className={ul()}>
-            <li className="flex items-center gap-2 pl-2">
+            <li className="flex items-center gap-2 pl-2 select-none">
               <UserCircleIcon className={icon()} />
               <span>{session.name}</span>
             </li>

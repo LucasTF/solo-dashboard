@@ -6,13 +6,17 @@ import { UsersHeader } from "./Users/Header";
 import { UsersOptions } from "./Users/Options";
 import { ObrasManager } from "./Obras/Manager";
 import { UsersManager } from "./Users/Manager";
-import { BaseHeader } from "./BaseHeader";
+import { HomeHeader } from "./Home/Header";
+import { HomeMain } from "./Home/Main";
 
 export const Dashboard = {
   Header: {
-    Base: BaseHeader,
+    Home: HomeHeader,
     Obras: ObrasHeader,
     Users: UsersHeader,
+  },
+  Main: {
+    Home: HomeMain,
   },
   Manager: {
     Obras: ObrasManager,

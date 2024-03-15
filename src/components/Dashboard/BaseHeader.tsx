@@ -1,7 +1,7 @@
 import React from "react";
 
 type BaseHeaderProps = {
-  title: string;
+  title: React.ReactNode;
   children?: React.ReactNode;
 };
 

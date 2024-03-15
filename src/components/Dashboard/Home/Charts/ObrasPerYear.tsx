@@ -8,8 +8,22 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export const BarChart = () => {
+type ChartProps = {
+  data: {
+    ano: number;
+    total: string;
+  }[];
+};
+
+export const ObrasPerYearChart = ({ data }: ChartProps) => {
   const { resolvedTheme } = useTheme();
+
+  const series: ApexAxisChartSeries = [
+    {
+      name: "Obras",
+      data: data.map((year) => Number(year.total)),
+    },
+  ];
 
   const chartOptions: ApexOptions = {
     chart: {
@@ -17,33 +31,14 @@ export const BarChart = () => {
     },
     colors: resolvedTheme === "dark" ? ["#4338ca"] : ["#0284c7"],
     title: {
-      text: "Obras - 2024",
+      text: "Obras - Últimos 10 anos",
       style: {
         color: resolvedTheme === "dark" ? "white" : "black",
         fontWeight: "bold",
       },
     },
-    series: [
-      {
-        name: "Obras",
-        data: [5, 3, 4, 8, 9, 3, 5, 5, 7, 12, 1, 6],
-      },
-    ],
     xaxis: {
-      categories: [
-        "Jan",
-        "Fev",
-        "Mar",
-        "Abr",
-        "Maio",
-        "Jun",
-        "Jul",
-        "Ago",
-        "Set",
-        "Out",
-        "Nov",
-        "Dez",
-      ],
+      categories: data.map((year) => year.ano),
       labels: {
         style: {
           colors: resolvedTheme === "dark" ? "white" : "black",
@@ -63,12 +58,14 @@ export const BarChart = () => {
   };
 
   return (
-    <ReactApexChart
-      options={chartOptions}
-      series={chartOptions.series}
-      type="bar"
-      width="100%"
-      height="350"
-    />
+    <div className="h-[20rem] w-full">
+      <ReactApexChart
+        options={chartOptions}
+        series={series}
+        type="bar"
+        width="100%"
+        height="320"
+      />
+    </div>
   );
 };

@@ -8,8 +8,6 @@ import { verifyJwt } from "@/lib/jwt";
 
 const isLegacy = process.env.USE_LEGACY_TABLES === "true";
 
-export async function getArchivesById(obraId: number) {}
-
 export async function deleteFile(fileId: number): Promise<ServerResponse> {
   const adminToken = cookies().get("adminJwt");
 
