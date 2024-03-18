@@ -132,7 +132,9 @@ export const ObrasOptions = () => {
             color="green"
             fontStrength="semibold"
             disabled={!obra}
-            href={`https://maps.google.com/?q=${obra?.tipo_logo} ${obra?.logradouro}`}
+            href={`https://maps.google.com/?q=${encodeURIComponent(
+              obra?.tipo_logo + " " + obra?.logradouro
+            )}`}
             rel="noopener noreferrer"
             target="_blank"
           >

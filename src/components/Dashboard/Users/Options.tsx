@@ -3,6 +3,7 @@
 import { Suspense, lazy, useState } from "react";
 import { tv } from "tailwind-variants";
 import {
+  ArrowLeftIcon,
   LockClosedIcon,
   PencilSquareIcon,
   TrashIcon,
@@ -50,7 +51,7 @@ export const UsersOptions = () => {
   const pathname = usePathname();
 
   const { session } = useSessionStore();
-  const { entry } = useEntryStore();
+  const { entry, clearEntry } = useEntryStore();
 
   const user = entry?.data as User;
 
@@ -79,6 +80,9 @@ export const UsersOptions = () => {
     <aside className={options({ open: entry !== null })}>
       {entry && entry?.table === pathname && (
         <div className="flex flex-col gap-4 m-4">
+          <button type="button" className="w-fit" onClick={() => clearEntry()}>
+            <ArrowLeftIcon className="size-6" />
+          </button>
           <div>
             <p className="text-center font-semibold">Usuário</p>
             <h2 className="font-bold text-center text-2xl">

@@ -19,7 +19,7 @@ import { logout } from "@/lib/actions/auth/logout";
 import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
 import ThemeSwitcher from "@/components/ui/Navigation/ThemeSwitcher";
 import NavLink from "@/components/ui/Navigation/NavLink";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Backdrop from "../ui/Backdrop";
 import Spinner from "../ui/Spinner";
 
@@ -76,7 +76,11 @@ const Navigation = () => {
           type="button"
           onClick={() => toggleDrawer((prevState) => !prevState)}
         >
-          <Bars3Icon className="size-6" />
+          {drawer ? (
+            <XMarkIcon className="size-6" />
+          ) : (
+            <Bars3Icon className="size-6" />
+          )}
         </button>
         <div className="flex items-center gap-2">
           <Image
@@ -106,7 +110,7 @@ const Navigation = () => {
               <button
                 type="button"
                 onClick={() => logoutHandler()}
-                className="flex items-center gap-2 pl-2 hover:text-red-600 ease-in-out duration-300"
+                className="w-full flex items-center gap-2 pl-2 hover:text-red-600 ease-in-out duration-300"
               >
                 <ArrowLeftEndOnRectangleIcon className={icon()} />
                 <span>Sair</span>
