@@ -1,4 +1,4 @@
-import { Tables } from "@/enums/Tables";
+import { Tables } from "@/lib/structures";
 
 export type Column = {
   name: string;

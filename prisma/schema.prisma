@@ -22,35 +22,14 @@ model User {
   image         String?
 }
 
-model Proprietario {
-  id                    Int             @id @default(autoincrement())
-  nome                  String          @db.VarChar(60)
-  apelido               String?         @db.VarChar(40)
-  cpf                   String?         @db.VarChar(14)
-  cnpj                  String?         @db.VarChar(18)
-  logradouro            String          @db.VarChar(100)
-  num_logradouro        String          @db.VarChar(6)
-  complemento           String?         @db.VarChar(40)
-  bairro                String          @db.VarChar(40)
-  cidade                String          @db.VarChar(40)
-  uf                    String          @db.Char(2)
-  cep                   String          @db.Char(9)
-  email                 String?         @db.VarChar(40)
-  fone1                 Int?
-  fone2                 Int?
-
-  @@index([nome, apelido, cpf, cnpj, logradouro, num_logradouro, complemento, bairro, cidade, uf, cep, email, fone1, fone2])
-
-}
-
 model Cliente {
   id                    Int             @id @default(autoincrement())
   nome                  String          @db.VarChar(60)
   apelido               String?         @db.VarChar(40)
   cpf                   String?         @db.VarChar(14)
   cnpj                  String?         @db.VarChar(18)
+  tipo_logo             String          @db.VarChar(20)
   logradouro            String          @db.VarChar(100)
-  num_logradouro        String          @db.VarChar(6)
   complemento           String?         @db.VarChar(40)
   bairro                String          @db.VarChar(40)
   cidade                String          @db.VarChar(40)
@@ -60,7 +39,7 @@ model Cliente {
   fone1                 Int?
   fone2                 Int?
 
-  @@index([nome, apelido, cpf, cnpj, logradouro, num_logradouro, complemento, bairro, cidade, uf, cep, email, fone1, fone2])
+  @@index([nome, cpf, cnpj, logradouro, cep, email])
 }
 
 model Obra {
@@ -71,8 +50,8 @@ model Obra {
   ano                   Int?
   data_inicio           String?     @db.VarChar(30)
   data_fim              String?     @db.VarChar(30)
-  tipo_logo             String?     @db.VarChar(10)
-  logradouro            String?     @db.VarChar(100)
+  tipo_logo             String      @db.VarChar(20)
+  logradouro            String      @db.VarChar(100)
   lote                  String?
   quadra                String?
   num_logo              String?
@@ -142,7 +121,7 @@ model tbobras {
   anoobra                   Int?
   datainiobra               String?     @db.VarChar(30)
   datafimobra               String?     @db.VarChar(30)
-  tipologobra               String?     @db.VarChar(10)
+  tipologobra               String?     @db.VarChar(20)
   logradouroobra            String?     @db.VarChar(100)
   loteobra                  String?
   quadraobra                String?

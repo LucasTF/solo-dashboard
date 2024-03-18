@@ -1,5 +1,10 @@
-import { Tables } from "@/enums/Tables";
 import { TableStructure } from "@/types/TableStructure";
+
+export enum Tables {
+  Obras = "/dashboard/obras",
+  Users = "/dashboard/usuarios",
+  Clientes = "/dashboard/clientes",
+}
 
 export const obrasStructure: TableStructure = {
   table: Tables.Obras,
@@ -25,4 +30,9 @@ export const usersStructure: TableStructure = {
     { name: "Email", value: "email", searchable: true },
     { name: "Administrador", value: "isAdmin", searchable: false },
   ],
+};
+
+export const clientesStructure: TableStructure = {
+  table: Tables.Clientes,
+  columns: [],
 };

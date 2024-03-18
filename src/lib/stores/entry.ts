@@ -1,7 +1,7 @@
 import { Entry } from "@/types/Entry";
 import { create } from "zustand";
 import { getEntryData } from "../actions/data";
-import { Tables } from "@/enums/Tables";
+import { Tables } from "@/lib/structures";
 
 type EntryState = {
   entry: Entry | null;

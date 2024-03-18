@@ -1,4 +1,4 @@
-import { Tables } from "@/enums/Tables";
+import { Tables } from "@/lib/structures";
 import { ObraWithFiles } from "./data/Obra";
 import { User } from "./data/User";
 

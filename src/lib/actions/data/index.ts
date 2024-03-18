@@ -1,6 +1,6 @@
 "use server";
 
-import { Tables } from "@/enums/Tables";
+import { Tables } from "@/lib/structures";
 import { getObraById, searchObras } from "./obras";
 import { ObrasSearchFiltersSchema, UsersSearchFiltersSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";

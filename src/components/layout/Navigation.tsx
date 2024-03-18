@@ -22,6 +22,7 @@ import NavLink from "@/components/ui/Navigation/NavLink";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Backdrop from "../ui/Backdrop";
 import Spinner from "../ui/Spinner";
+import { useScrollDirection } from "@/lib/hooks/scrollDirection";
 
 const drawerNav = tv({
   base: "max-md:py-4 md:mt-4 md:flex-grow space-y-4 ease-out duration-300 max-md:fixed max-md:bg-slate-300 max-md:dark:bg-slate-800 max-md:w-full max-md:z-30",
@@ -29,6 +30,16 @@ const drawerNav = tv({
     open: {
       true: "max-md:translate-y-16",
       false: "max-md:-translate-y-full",
+    },
+  },
+});
+
+const header = tv({
+  base: "max-md:fixed max-h-16 p-4 flex items-center justify-between md:justify-center gap-2 shadow-lg bg-bar-gradient max-md:min-w-full max-md:z-40 ease-in-out transition-all duration-300",
+  variants: {
+    down: {
+      true: "max-md:-top-16",
+      false: "max-md:top-0",
     },
   },
 });
@@ -50,6 +61,8 @@ const Navigation = () => {
 
   const router = useRouter();
 
+  const scrollDirection = useScrollDirection();
+
   const { ul, ulTitle, icon } = list();
 
   useEffect(() => {
@@ -70,7 +83,9 @@ const Navigation = () => {
 
   return (
     <aside className="md:fixed flex flex-col max-md:w-full md:min-h-screen md:min-w-52 md:border-r border-sky-600 dark:border-indigo-700 bg-slate-300 dark:bg-slate-800">
-      <header className="max-h-16 p-4 flex items-center justify-between md:justify-center gap-2 shadow-lg bg-bar-gradient max-md:fixed max-md:min-w-full max-md:z-40">
+      <header
+        className={header({ down: !drawer && scrollDirection === "down" })}
+      >
         <button
           className="border border-slate-200 dark:border-slate-500 rounded-md p-2 md:hidden text-white"
           type="button"
