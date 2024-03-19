@@ -4,7 +4,7 @@ import React from "react";
 import { tv } from "tailwind-variants";
 
 import { useEntryStore } from "@/lib/stores/entry";
-import { Tables } from "@/enums/Tables";
+import { Tables } from "@/lib/structures";
 
 type RowProps = {
   rowInfo?: { id: number; table: Tables; tableIndex: number };

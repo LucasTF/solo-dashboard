@@ -3,54 +3,49 @@ import { Obra, ObraWithFiles } from "@/types/data/Obra";
 
 export type LegacyDbObra = {
   codobra: number;
-  codprop?: string;
-  nomeobra?: string;
-  numobra?: number;
-  anoobra?: number;
-  datainiobra?: string;
-  datafimobra?: string;
-  tipologobra?: string;
-  logradouroobra?: string;
-  loteobra?: string;
-  quadraobra?: string;
-  numlogobra?: string;
-  cidadeobra?: string;
-  bairroobra?: string;
-  ufobra?: string;
-  cepobra?: string;
-  complelogobra?: string;
-  SPSondagem?: number;
-  MetrosSPSondagem?: number;
-  SRSondagem?: string;
-  MetrosSRSolo?: string;
-  MetrosSRRocha?: string;
-  RBPonteiras?: string;
-  RBEquipamentos?: string;
-  RBDataInicial?: string;
-  RBDataTermino?: string;
-  TITirantes?: string;
-  TipoTirantes?: string;
-  CargaTirantes?: string;
-  MicroEstaca1?: string;
-  MicroEstaca2?: string;
-  MicroEstaca3?: string;
-  TBTubulao?: string;
-  TBCotaApoio?: string;
-  TBCotaApoioA?: string;
-  TBTaxaSolo?: string;
-  STTrado?: number;
-  STTradoml?: number;
-  proprietario?: string;
-  cliente?: string;
+  codprop?: string | null;
+  nomeobra: string;
+  numobra?: number | null;
+  anoobra: number;
+  datainiobra?: string | null;
+  datafimobra?: string | null;
+  tipologobra: string;
+  logradouroobra: string;
+  loteobra?: string | null;
+  quadraobra?: string | null;
+  numlogobra?: string | null;
+  cidadeobra: string;
+  bairroobra: string;
+  ufobra: string;
+  cepobra?: string | null;
+  complelogobra?: string | null;
+  SPSondagem?: number | null;
+  MetrosSPSondagem?: number | null;
+  SRSondagem?: string | null;
+  MetrosSRSolo?: string | null;
+  MetrosSRRocha?: string | null;
+  RBPonteiras?: string | null;
+  RBEquipamentos?: string | null;
+  RBDataInicial?: string | null;
+  RBDataTermino?: string | null;
+  TITirantes?: string | null;
+  TipoTirantes?: string | null;
+  CargaTirantes?: string | null;
+  MicroEstaca1?: string | null;
+  MicroEstaca2?: string | null;
+  MicroEstaca3?: string | null;
+  TBTubulao?: string | null;
+  TBCotaApoio?: string | null;
+  TBCotaApoioA?: string | null;
+  TBTaxaSolo?: string | null;
+  STTrado?: number | null;
+  STTradoml?: number | null;
+  cliente: string;
+  proprietario?: string | null;
 };
 
 export type LegacyDbObraWithFiles = LegacyDbObra & {
-  arquivos: {
-    id: number;
-    obraCod: number;
-    nome: string;
-    formato: string;
-  }[];
+  arquivos: Arquivo[];
 };
 
 export function adaptToObra(obra: LegacyDbObra): Obra {
@@ -101,16 +96,6 @@ export function adaptToObra(obra: LegacyDbObra): Obra {
 export function adaptToObraWithFiles(
   obra: LegacyDbObraWithFiles
 ): ObraWithFiles {
-  let arquivos: Arquivo[] = [];
-  obra.arquivos.forEach((arquivo) =>
-    arquivos.push({
-      id: arquivo.id,
-      obraId: arquivo.obraCod,
-      nome: arquivo.nome,
-      formato: arquivo.formato,
-    })
-  );
-
   return {
     id: obra.codobra,
     cod_prop: obra.codprop,
@@ -152,51 +137,6 @@ export function adaptToObraWithFiles(
     STTradoml: obra.STTradoml,
     proprietario: obra.proprietario,
     cliente: obra.cliente,
-    arquivos,
-  };
-}
-
-export function adaptFromObra(obra: Obra): LegacyDbObra {
-  return {
-    codobra: obra.id,
-    codprop: obra.cod_prop,
-    nomeobra: obra.sp,
-    numobra: obra.num_obra,
-    anoobra: obra.ano,
-    datainiobra: obra.data_inicio,
-    datafimobra: obra.data_fim,
-    tipologobra: obra.tipo_logo,
-    logradouroobra: obra.logradouro,
-    loteobra: obra.lote,
-    quadraobra: obra.quadra,
-    numlogobra: obra.num_logo,
-    cidadeobra: obra.cidade,
-    bairroobra: obra.bairro,
-    ufobra: obra.uf,
-    cepobra: obra.cep,
-    complelogobra: obra.complemento_logo,
-    SPSondagem: obra.sp_sondagem,
-    MetrosSPSondagem: obra.metros_sp_sondagem,
-    SRSondagem: obra.sr_sondagem,
-    MetrosSRSolo: obra.metros_sr_solo,
-    MetrosSRRocha: obra.metros_sr_rocha,
-    RBPonteiras: obra.rb_ponteiras,
-    RBEquipamentos: obra.rb_equipamentos,
-    RBDataInicial: obra.rb_data_inicial,
-    RBDataTermino: obra.rb_data_termino,
-    TITirantes: obra.TITirantes,
-    TipoTirantes: obra.tipo_tirantes,
-    CargaTirantes: obra.carga_tirantes,
-    MicroEstaca1: obra.micro_estaca_1,
-    MicroEstaca2: obra.micro_estaca_2,
-    MicroEstaca3: obra.micro_estaca_3,
-    TBTubulao: obra.tb_tubulao,
-    TBCotaApoio: obra.tb_cota_apoio,
-    TBCotaApoioA: obra.tb_cota_apoio_A,
-    TBTaxaSolo: obra.tb_taxa_solo,
-    STTrado: obra.STTrado,
-    STTradoml: obra.STTradoml,
-    proprietario: obra.proprietario,
-    cliente: obra.cliente,
+    arquivos: obra.arquivos,
   };
 }

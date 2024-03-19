@@ -3,8 +3,17 @@ import "react-toastify/dist/ReactToastify.css";
 import "../globals.css";
 import { ToastContainer } from "react-toastify";
 import { Providers } from "../providers";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Solo Dashboard",
+    default: "Solo Dashboard",
+  },
+  description: "Dashboard de Dados | Solo Engenharia",
+};
 
 export default function MainAppLayout({
   children,

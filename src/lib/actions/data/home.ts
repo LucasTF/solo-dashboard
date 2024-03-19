@@ -3,13 +3,15 @@
 import { db } from "@/lib/db";
 import { DataResponse } from "@/types/ServerResponse";
 
+type YearlyObras = {
+  ano: number;
+  total: string;
+};
+
 type HomeData = {
   totalObras: number;
   totalFiles: number;
-  obrasPerYear: {
-    ano: number;
-    total: string;
-  }[];
+  obrasPerYear: YearlyObras[];
 };
 
 const isLegacy = process.env.USE_LEGACY_TABLES === "true";
@@ -43,7 +45,7 @@ export async function getHomeData(): Promise<DataResponse<HomeData>> {
       data: {
         totalObras,
         totalFiles,
-        obrasPerYear,
+        obrasPerYear: obrasPerYear as YearlyObras[],
       },
     };
   } catch (error) {

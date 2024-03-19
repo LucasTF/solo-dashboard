@@ -7,7 +7,6 @@ import { LoginSchema } from "@/schemas";
 import * as z from "zod";
 import { db } from "@/lib/db";
 
-import { User } from "@/types/data/User";
 import { LoginResponse } from "@/types/LoginResponse";
 
 import { cookies } from "next/headers";
@@ -22,7 +21,7 @@ export async function login(
 
   if (result.success) {
     const { email, password } = credentials;
-    const user: User = await db.user.findUnique({
+    const user = await db.user.findUnique({
       where: {
         email,
       },

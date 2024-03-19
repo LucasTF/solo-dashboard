@@ -3,7 +3,7 @@ import {
   registerFilesToDatabase,
   uploadFilesToServer,
 } from "@/lib/services/filesServices";
-import { DataResponse, ServerResponse } from "@/types/ServerResponse";
+import { DataResponse } from "@/types/ServerResponse";
 import { Arquivo } from "@/types/data/Arquivo";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -52,12 +52,22 @@ export async function POST(
         select: { anoobra: true },
         where: { codobra: Number(obraId) },
       });
+      if (anoDb === null)
+        return NextResponse.json(
+          { success: false, error: "Código de obra não encontrado!" },
+          { status: 400 }
+        );
       ano = anoDb.anoobra;
     } else {
       const anoDb = await db.obra.findUnique({
         select: { ano: true },
         where: { id: Number(obraId) },
       });
+      if (anoDb === null)
+        return NextResponse.json(
+          { success: false, error: "Código de obra não encontrado!" },
+          { status: 400 }
+        );
       ano = anoDb.ano;
     }
   } catch (error) {
@@ -86,7 +96,7 @@ export async function POST(
   if (process.env.USE_LEGACY_TABLES === "true") {
     registeredFiles = await db.tbarquivos.findMany({
       where: {
-        obraCod: Number(obraId),
+        obraId: Number(obraId),
       },
     });
   } else {

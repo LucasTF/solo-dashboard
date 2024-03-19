@@ -5,5 +5,7 @@ export type User = {
   email: string;
   password: string;
   isAdmin: boolean;
-  image?: string;
+  image?: string | null;
 };
+
+export type UserNopass = Omit<User, "password">;

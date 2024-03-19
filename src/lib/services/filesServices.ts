@@ -79,13 +79,13 @@ async function registerFilesToDatabaseLegacy(
     const extStart = file.name.lastIndexOf(".");
     const extension = file.name.slice(extStart + 1, file.name.length);
     return {
-      obraCod: obraId,
+      obraId,
       nome: file.name,
       formato: extension.toUpperCase(),
     };
   });
 
-  const archives = await db.tbarquivos.createMany({
+  await db.tbarquivos.createMany({
     data: dbData,
   });
 

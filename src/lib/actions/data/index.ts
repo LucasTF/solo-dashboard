@@ -4,7 +4,7 @@ import { Tables } from "@/lib/structures";
 import { getObraById, searchObras } from "./obras";
 import { ObrasSearchFiltersSchema, UsersSearchFiltersSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";
-import { User } from "@/types/data/User";
+import { UserNopass } from "@/types/data/User";
 import { getAllUsers, getUserById, searchUsers } from "./users";
 import { DataResponse } from "@/types/ServerResponse";
 import { Obra } from "@/types/data/Obra";
@@ -12,7 +12,7 @@ import { Obra } from "@/types/data/Obra";
 export async function getTableData(
   table: Tables,
   searchFilters: SearchFilters
-): Promise<DataResponse<Obra[] | User[]>> {
+): Promise<DataResponse<Obra[] | UserNopass[]>> {
   let schema;
 
   switch (table) {
@@ -37,7 +37,9 @@ export async function getTableData(
   }
 }
 
-export async function getAllData(table: Tables): Promise<DataResponse<User[]>> {
+export async function getAllData(
+  table: Tables
+): Promise<DataResponse<UserNopass[]>> {
   switch (table) {
     case Tables.Users:
       const data = await getAllUsers();

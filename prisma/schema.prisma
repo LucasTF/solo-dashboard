@@ -45,9 +45,9 @@ model Cliente {
 model Obra {
   id                    Int         @id @default(autoincrement())
   cod_prop              String?     
-  sp                    String?     @db.VarChar(11)
+  sp                    String      @db.VarChar(11)
   num_obra              Int?
-  ano                   Int?
+  ano                   Int
   data_inicio           String?     @db.VarChar(30)
   data_fim              String?     @db.VarChar(30)
   tipo_logo             String      @db.VarChar(20)
@@ -55,9 +55,9 @@ model Obra {
   lote                  String?
   quadra                String?
   num_logo              String?
-  bairro                String?     @db.VarChar(40)
-  cidade                String?     @db.VarChar(40)
-  uf                    String?     @db.Char(2)
+  bairro                String      @db.VarChar(40)
+  cidade                String      @db.VarChar(40)
+  uf                    String      @db.Char(2)
   cep                   String?     @db.Char(9)
   complemento_logo      String?     @db.VarChar(30)
   sp_sondagem           Int?
@@ -81,8 +81,8 @@ model Obra {
   tb_taxa_solo          String?
   STTrado               Int?
   STTradoml             Int?
+  cliente               String      @db.VarChar(60)
   proprietario          String?     @db.VarChar(60)
-  cliente               String?     @db.VarChar(60)
   arquivos              Arquivo[]
 
   @@index([cod_prop, sp, num_obra, ano, data_inicio, data_fim, logradouro, bairro, cidade, uf, complemento_logo, cliente, proprietario])
@@ -116,19 +116,19 @@ model So {
 model tbobras {
   codobra                   Int         @id @default(autoincrement())
   codprop                   String?     
-  nomeobra                  String?     @db.VarChar(11)
+  nomeobra                  String      @db.VarChar(11)
   numobra                   Int?
-  anoobra                   Int?
+  anoobra                   Int
   datainiobra               String?     @db.VarChar(30)
   datafimobra               String?     @db.VarChar(30)
-  tipologobra               String?     @db.VarChar(20)
-  logradouroobra            String?     @db.VarChar(100)
+  tipologobra               String      @db.VarChar(20)
+  logradouroobra            String      @db.VarChar(100)
   loteobra                  String?
   quadraobra                String?
   numlogobra                String?
-  bairroobra                String?     @db.VarChar(40)
-  cidadeobra                String?     @db.VarChar(40)
-  ufobra                    String?     @db.Char(2)
+  bairroobra                String      @db.VarChar(40)
+  cidadeobra                String      @db.VarChar(40)
+  ufobra                    String      @db.Char(2)
   cepobra                   String?     @db.Char(9)
   complelogobra             String?     @db.VarChar(30)
   SPSondagem                Int?
@@ -152,15 +152,15 @@ model tbobras {
   TBTaxaSolo                String?
   STTrado                   Int?
   STTradoml                 Int?
+  cliente                   String      @db.VarChar(60)
   proprietario              String?     @db.VarChar(60)
-  cliente                   String?     @db.VarChar(60)
   arquivos                  tbarquivos[]
 }
 
 model tbarquivos {
   id                    Int       @id @default(autoincrement())
-  obra                  tbobras   @relation(fields: [obraCod], references: [codobra])
-  obraCod               Int
+  obra                  tbobras   @relation(fields: [obraId], references: [codobra])
+  obraId                Int
   nome                  String    @db.VarChar(40)
   formato               String    @db.VarChar(5)
 }

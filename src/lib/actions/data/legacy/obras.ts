@@ -4,7 +4,6 @@ import * as z from "zod";
 
 import {
   LegacyDbObra,
-  LegacyDbObraWithFiles,
   adaptToObra,
   adaptToObraWithFiles,
 } from "@/lib/adapters/obraAdapter";
@@ -15,7 +14,7 @@ import { ObraModalSchema } from "@/schemas";
 import { ServerResponse } from "@/types/ServerResponse";
 
 export async function getTableObrasLegacy() {
-  const obras: LegacyDbObra[] = await db.tbobras.findMany({
+  const obras = await db.tbobras.findMany({
     select: {
       codobra: true,
       nomeobra: true,
@@ -36,7 +35,7 @@ export async function getTableObrasLegacy() {
 }
 
 export async function getObraByIdLegacy(id: number) {
-  const obra: LegacyDbObraWithFiles = await db.tbobras.findUnique({
+  const obra = await db.tbobras.findUnique({
     where: { codobra: id },
     include: {
       arquivos: true,
