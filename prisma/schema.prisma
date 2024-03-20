@@ -121,14 +121,14 @@ model tbobras {
   anoobra                   Int
   datainiobra               String?     @db.VarChar(30)
   datafimobra               String?     @db.VarChar(30)
-  tipologobra               String      @db.VarChar(20)
-  logradouroobra            String      @db.VarChar(100)
+  tipologobra               String?     @db.VarChar(20)
+  logradouroobra            String?     @db.VarChar(100)
   loteobra                  String?
   quadraobra                String?
   numlogobra                String?
-  bairroobra                String      @db.VarChar(40)
-  cidadeobra                String      @db.VarChar(40)
-  ufobra                    String      @db.Char(2)
+  bairroobra                String?     @db.VarChar(40)
+  cidadeobra                String?     @db.VarChar(40)
+  ufobra                    String?     @db.Char(2)
   cepobra                   String?     @db.Char(9)
   complelogobra             String?     @db.VarChar(30)
   SPSondagem                Int?

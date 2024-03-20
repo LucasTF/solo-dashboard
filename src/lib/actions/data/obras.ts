@@ -86,6 +86,9 @@ export async function searchObras(searchFilters: SearchFilters) {
           contains: searchFilters.search,
         },
       },
+      orderBy: {
+        sp: "desc",
+      },
     });
 
     return obras;

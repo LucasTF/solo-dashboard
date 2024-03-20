@@ -91,6 +91,9 @@ export async function searchObrasLegacy(searchFilters: SearchFilters) {
         contains: searchFilters.search,
       },
     },
+    orderBy: {
+      nomeobra: "desc",
+    },
   });
 
   const treatedObras = obras.map((obra) => adaptToObra(obra));

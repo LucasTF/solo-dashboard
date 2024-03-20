@@ -9,14 +9,14 @@ export type LegacyDbObra = {
   anoobra: number;
   datainiobra?: string | null;
   datafimobra?: string | null;
-  tipologobra: string;
-  logradouroobra: string;
+  tipologobra?: string | null;
+  logradouroobra?: string | null;
   loteobra?: string | null;
   quadraobra?: string | null;
   numlogobra?: string | null;
-  cidadeobra: string;
-  bairroobra: string;
-  ufobra: string;
+  cidadeobra?: string | null;
+  bairroobra?: string | null;
+  ufobra?: string | null;
   cepobra?: string | null;
   complelogobra?: string | null;
   SPSondagem?: number | null;
@@ -57,14 +57,14 @@ export function adaptToObra(obra: LegacyDbObra): Obra {
     ano: obra.anoobra,
     data_inicio: obra.datainiobra,
     data_fim: obra.datafimobra,
-    tipo_logo: obra.tipologobra,
-    logradouro: obra.logradouroobra,
+    tipo_logo: obra.tipologobra || "",
+    logradouro: obra.logradouroobra || "",
     lote: obra.loteobra,
     quadra: obra.quadraobra,
     num_logo: obra.numlogobra,
-    cidade: obra.cidadeobra,
-    bairro: obra.bairroobra,
-    uf: obra.ufobra,
+    cidade: obra.cidadeobra || "",
+    bairro: obra.bairroobra || "",
+    uf: obra.ufobra || "",
     cep: obra.cepobra,
     complemento_logo: obra.complelogobra,
     sp_sondagem: obra.SPSondagem,
@@ -104,14 +104,14 @@ export function adaptToObraWithFiles(
     ano: obra.anoobra,
     data_inicio: obra.datainiobra,
     data_fim: obra.datafimobra,
-    tipo_logo: obra.tipologobra,
-    logradouro: obra.logradouroobra,
+    tipo_logo: obra.tipologobra || "",
+    logradouro: obra.logradouroobra || "",
     lote: obra.loteobra,
     quadra: obra.quadraobra,
     num_logo: obra.numlogobra,
-    cidade: obra.cidadeobra,
-    bairro: obra.bairroobra,
-    uf: obra.ufobra,
+    cidade: obra.cidadeobra || "",
+    bairro: obra.bairroobra || "",
+    uf: obra.ufobra || "",
     cep: obra.cepobra,
     complemento_logo: obra.complelogobra,
     sp_sondagem: obra.SPSondagem,
