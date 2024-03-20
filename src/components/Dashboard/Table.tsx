@@ -10,7 +10,7 @@ import Loading from "../ui/Loading";
 
 type DashboardTableProps = {
   tableStructure: TableStructure;
-  data: (object & Record<"id", number>)[];
+  data: (Record<"id", number> & Record<string, unknown>)[];
 };
 
 export const DashboardTable = ({

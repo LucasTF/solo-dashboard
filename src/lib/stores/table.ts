@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
 type TableState = {
-  tableData: (object & Record<"id", number>)[];
+  tableData: (Record<"id", number> & Record<string, unknown>)[];
   setTableData: (
     fn: (
-      prevState: (object & Record<"id", number>)[]
-    ) => (object & Record<"id", number>)[]
+      prevState: (Record<"id", number> & Record<string, unknown>)[]
+    ) => (Record<"id", number> & Record<string, unknown>)[]
   ) => void;
 };
 
