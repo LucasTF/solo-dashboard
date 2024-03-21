@@ -3,7 +3,7 @@ import format, {
   formatYYYYMMDD,
   formatDDMMYYYY,
   formatTime,
-} from "../../../src/lib/utils/dateFormatter";
+} from "@/lib/utils/dateFormatter";
 
 // Date: 18/02/2024
 const dateWithoutTime = new Date(2024, 1, 17);

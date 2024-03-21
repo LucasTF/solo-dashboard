@@ -95,7 +95,9 @@ export async function getUserById(id: number) {
   }
 }
 
-export async function createNewUser(user: User): Promise<DataResponse<User>> {
+export async function createNewUser(
+  user: Omit<User, "id">
+): Promise<DataResponse<User>> {
   try {
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
@@ -107,13 +109,7 @@ export async function createNewUser(user: User): Promise<DataResponse<User>> {
       isAdmin: user.isAdmin,
     };
 
-    await db.user.create({ data });
-
-    const newUser = await db.user.findUnique({
-      where: {
-        email: user.email,
-      },
-    });
+    const newUser = await db.user.create({ data });
 
     if (newUser === null)
       return { success: false, error: "Não foi possível cadastrar o usuário." };
