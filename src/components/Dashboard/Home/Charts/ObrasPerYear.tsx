@@ -31,7 +31,7 @@ export const ObrasPerYearChart = ({ data }: ChartProps) => {
     },
     colors: resolvedTheme === "dark" ? ["#4338ca"] : ["#0284c7"],
     title: {
-      text: "Obras - Últimos 10 anos",
+      text: "Obras por ano",
       style: {
         color: resolvedTheme === "dark" ? "white" : "black",
         fontWeight: "bold",

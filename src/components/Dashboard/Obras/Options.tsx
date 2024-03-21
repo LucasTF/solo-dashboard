@@ -25,6 +25,7 @@ import { useTheme } from "next-themes";
 import { useSessionStore } from "@/lib/stores/session";
 import { createPortal } from "react-dom";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { FileLink } from "@/components/ui/FileLink";
 
 const DeleteFile = lazy(() => import("./Modals/DeleteFile"));
 const EditObraForm = lazy(() => import("./Modals/EditObra"));
@@ -158,19 +159,15 @@ export const ObrasOptions = () => {
 
               <ul>
                 {obra?.arquivos.map((arquivo) => (
-                  <li className="flex justify-between p-1" key={arquivo.id}>
-                    <div className="flex items-center gap-2">
-                      <DocumentIcon className="size-6" />
-                      <span
-                        className="cursor-pointer underline text-sky-800 dark:text-purple-500 hover:text-sky-700 dark:hover:text-purple-400 font-semibold text-xs"
-                        onClick={() =>
-                          window.open(
-                            `${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${obra.ano}/${arquivo.nome}`
-                          )
-                        }
-                      >
-                        {arquivo.nome}
-                      </span>
+                  <li key={arquivo.id}>
+                    <div className="flex justify-between items-center gap-2">
+                      <FileLink
+                        title={arquivo.nome}
+                        href={`${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${
+                          obra.ano
+                        }/${encodeURIComponent(arquivo.nome)}`}
+                        className="text-xs"
+                      />
                       {session?.isAdmin && (
                         <TrashIcon
                           className="size-6 text-red-600 cursor-pointer"

@@ -3,4 +3,5 @@ export type Arquivo = {
   obraId: number;
   nome: string;
   formato: string;
+  criado_em: Date;
 };

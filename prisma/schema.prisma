@@ -19,7 +19,6 @@ model User {
   email         String    @unique @db.VarChar(40)
   password      String    @db.VarChar(100)
   isAdmin       Boolean
-  image         String?
 }
 
 model Cliente {
@@ -95,6 +94,7 @@ model Arquivo {
   obraId                Int
   nome                  String    @db.VarChar(40)
   formato               String    @db.VarChar(5)
+  criado_em             DateTime
 }
 
 model So {
@@ -163,4 +163,5 @@ model tbarquivos {
   obraId                Int
   nome                  String    @db.VarChar(40)
   formato               String    @db.VarChar(5)
+  criado_em             DateTime
 }

@@ -1,8 +1,9 @@
+import fs from "fs";
+
 import { Prisma } from "@prisma/client";
 import { db } from "../db";
 import { ServerResponse } from "@/types/ServerResponse";
 import { writeFile } from "fs/promises";
-import fs from "fs";
 
 const isLegacy = process.env.USE_LEGACY_TABLES === "true";
 
@@ -51,6 +52,7 @@ export async function registerFilesToDatabase(
         obraId,
         nome: file.name,
         formato: extension.toUpperCase(),
+        criado_em: new Date(),
       };
     });
 
@@ -82,6 +84,7 @@ async function registerFilesToDatabaseLegacy(
       obraId,
       nome: file.name,
       formato: extension.toUpperCase(),
+      criado_em: new Date(),
     };
   });
 

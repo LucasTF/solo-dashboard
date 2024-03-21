@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Table } from "../Table";
 import { TableStructure } from "@/types/TableStructure";
 import { useTableStore } from "@/lib/stores/table";
+import { EntryRow } from "./EntryRow";
 import Loading from "../ui/Loading";
 
 type DashboardTableProps = {
@@ -40,12 +41,14 @@ export const DashboardTable = ({
     <section className="mx-4">
       <Table.Results numOfResults={tableData.length} />
       <div className="overflow-auto">
-        <Table.Base columns={tableStructure.columns}>
+        <Table.Base
+          columns={tableStructure.columns.map((column) => column.name)}
+        >
           {tableData.length > 0 ? (
             tableData
               .slice(rowsPerPage * (page - 1), rowsPerPage * page)
               .map((row, index) => (
-                <Table.Row
+                <EntryRow
                   key={row.id}
                   rowInfo={{
                     table: tableStructure.table,
@@ -65,7 +68,7 @@ export const DashboardTable = ({
                       </Table.Cell>
                     );
                   })}
-                </Table.Row>
+                </EntryRow>
               ))
           ) : (
             <Table.Row>
