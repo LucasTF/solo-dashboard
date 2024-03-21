@@ -31,8 +31,8 @@ type Format = "DDMMYYYY" | "YYYYMMDD";
 const format = (
   date: Date,
   form: Format,
-  joinChar = "-",
-  showTime: boolean
+  showTime: boolean,
+  joinChar = "-"
 ) => {
   let formattedDate;
   switch (form) {

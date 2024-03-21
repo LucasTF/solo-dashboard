@@ -23,7 +23,7 @@ export const LastFilesTable = ({ latestFiles }: LastFilesTableProps) => {
           </Table.Cell>
           <Table.Cell>{row.obra}</Table.Cell>
           <Table.Cell>
-            {format(row.createdAt, "DDMMYYYY", "/", true)}
+            {format(row.createdAt, "DDMMYYYY", true, "/")}
           </Table.Cell>
         </Table.Row>
       ))}
