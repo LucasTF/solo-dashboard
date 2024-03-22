@@ -78,13 +78,9 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
       complemento: obra.complemento_logo || "",
       logradouro: obra.logradouro,
       lote: obra.lote || "",
-      metros_sp_sondagem: obra.metros_sp_sondagem || undefined,
       num_obra: obra.num_obra || undefined,
       proprietario: obra.proprietario.nome || "",
       quadra: obra.quadra || "",
-      sp_sondagem: obra.sp_sondagem || undefined,
-      st_trado: obra.st_trado || undefined,
-      st_trado_ml: obra.st_trado_ml || undefined,
       data_inicio: obra.data_inicio,
       data_fim: obra.data_fim,
     },
@@ -193,32 +189,7 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
           </div>
 
           <aside className="grid grid-cols-2 gap-4 border-2 border-slate-300 dark:border-zinc-700 border-solid rounded-md p-4">
-            <Field.Input
-              label="Sondagens"
-              isInvalid={!!errors.sp_sondagem}
-              errorMessage={errors.sp_sondagem?.message}
-              {...register("sp_sondagem")}
-            />
-            <Field.Input
-              label="Total Metros"
-              isInvalid={!!errors.metros_sp_sondagem}
-              errorMessage={errors.metros_sp_sondagem?.message}
-              {...register("metros_sp_sondagem")}
-            />
-            <Field.Input
-              label="Trado"
-              defaultValue={0}
-              isInvalid={!!errors.st_trado}
-              errorMessage={errors.st_trado?.message}
-              {...register("st_trado")}
-            />
-            <Field.Input
-              label="Total Metros Trado"
-              defaultValue={0}
-              isInvalid={!!errors.st_trado_ml}
-              errorMessage={errors.st_trado_ml?.message}
-              {...register("st_trado_ml")}
-            />
+            {/* TODO: Select sondagem type and show options */}
           </aside>
         </section>
 
@@ -269,7 +240,6 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
                   const indexLog = Object.values(Logradouro).indexOf(
                     log as unknown as Logradouro
                   );
-                  const key = Object.keys(Logradouro)[indexLog];
                   return (
                     <option key={indexLog} value={log}>
                       {log}

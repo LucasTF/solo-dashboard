@@ -128,13 +128,10 @@ export async function updateObra(
 
   try {
     // TODO: Change clienteId & proprietarioId to actual values
+    // TODO: Update sondagem type with new obra
     const data = {
       cod_obra: obra.cod_obra,
       num_obra: obra.num_obra,
-      sp_sondagem: obra.sp_sondagem,
-      metros_sp_sondagem: obra.metros_sp_sondagem,
-      st_trado: obra.st_trado,
-      st_trado_ml: obra.st_trado_ml,
       data_inicio: formatYYYYMMDD(obra.data_inicio),
       data_fim: formatYYYYMMDD(obra.data_fim),
       ano: obra.ano,
@@ -166,13 +163,10 @@ export async function updateObra(
 export async function insertNewObra(obra: ObraData): Promise<ServerResponse> {
   try {
     // TODO: Change clienteId & proprietarioId to actual values
+    // TODO: Insert sondagem type with new obra
     const data = {
       cod_obra: obra.cod_obra,
       num_obra: obra.num_obra,
-      sp_sondagem: obra.sp_sondagem,
-      metros_sp_sondagem: obra.metros_sp_sondagem,
-      st_trado: obra.st_trado,
-      st_trado_ml: obra.st_trado_ml,
       data_inicio: formatYYYYMMDD(obra.data_inicio),
       data_fim: formatYYYYMMDD(obra.data_fim),
       ano: obra.ano,

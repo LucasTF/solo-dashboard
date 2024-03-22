@@ -19,6 +19,7 @@ export type TableObra = Pick<
   };
 };
 
+// TODO: Add options for sondagem type
 export type ModifyObra = TableObra &
   Pick<
     Obra,
@@ -28,10 +29,6 @@ export type ModifyObra = TableObra &
     | "data_inicio"
     | "data_fim"
     | "lote"
-    | "sp_sondagem"
-    | "metros_sp_sondagem"
-    | "st_trado"
-    | "st_trado_ml"
   >;
 
 export type EntryObra = Omit<Obra, "clienteId" | "proprietarioId"> & {

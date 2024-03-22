@@ -14,26 +14,13 @@ export const LoginSchema = z.object({
   password: z.string().min(1, INVALID_PASSWORD),
 });
 
+// TODO: Add validation for sondagem types
 export const ObraModalSchema = z.object({
   cod_obra: z
     .string()
     .min(8, "Deve conter apenas 8 caracteres")
     .max(8, "Deve conter apenas 8 caracteres"),
   num_obra: z.coerce.number().int().min(1, GREATER_THAN_0).max(999),
-  sp_sondagem: z.coerce
-    .number({ invalid_type_error: NUMBER })
-    .int()
-    .nonnegative(POSITIVE),
-  metros_sp_sondagem: z.coerce
-    .number({ invalid_type_error: NUMBER })
-    .nonnegative(POSITIVE),
-  st_trado: z.coerce
-    .number({ invalid_type_error: NUMBER })
-    .int()
-    .nonnegative(POSITIVE),
-  st_trado_ml: z.coerce
-    .number({ invalid_type_error: NUMBER })
-    .nonnegative(POSITIVE),
   ano: z.coerce.number().int().positive().min(1980),
   data_inicio: z.coerce.date({
     errorMap: (issue, { defaultError }) => ({

@@ -53,7 +53,6 @@ model Arquivo {
 
 model Obra {
   id                    Int         @id @default(autoincrement())
-  cod_prop              String?     
   cod_obra              String      @unique @db.VarChar(11)
   num_obra              Int
   ano                   Int
@@ -63,25 +62,45 @@ model Obra {
   logradouro            String      @db.VarChar(100)
   lote                  String?
   quadra                String?
-  num_logo              String?
   bairro                String      @db.VarChar(40)
   cidade                String      @db.VarChar(40)
   uf                    String      @db.Char(2)
   cep                   String?     @db.Char(9)
   complemento_logo      String?     @db.VarChar(30)
-  sp_sondagem           Int?
-  metros_sp_sondagem    Float?
-  sr_sondagem           String?
-  metros_sr_solo        String?
-  metros_sr_rocha       String?
-  st_trado              Int?
-  st_trado_ml           Int?
+  sondagem_percussao    Sondagem_Percussao?
+  sondagem_trado        Sondagem_Trado?
+  sondagem_rotativa     Sondagem_Rotativa?
   cliente               Cliente   @relation(name: "Cliente", fields: [clienteId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   clienteId             Int
   proprietario          Cliente   @relation(name: "Proprietario",fields: [proprietarioId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   proprietarioId        Int
   arquivos              Arquivo[]
 
-  @@index([cod_prop, cod_obra, num_obra, ano, data_inicio, data_fim, logradouro, bairro, cidade, uf, complemento_logo])
+  @@index([cod_obra, num_obra, ano, data_inicio, data_fim, logradouro, bairro, cidade, uf, complemento_logo])
 
+}
+
+model Sondagem_Percussao {
+  id                    Int         @id @default(autoincrement())
+  furos                 Int
+  metros                Float
+  obra                  Obra        @relation(fields: [obraId], references: [id])
+  obraId                Int         @unique
+}
+
+model Sondagem_Trado {
+  id                    Int         @id @default(autoincrement())
+  furos                 Int
+  metros                Float
+  obra                  Obra        @relation(fields: [obraId], references: [id])
+  obraId                Int         @unique
+}
+
+model Sondagem_Rotativa {
+  id                    Int         @id @default(autoincrement())
+  furos                 Int
+  metros_solo           Float
+  metros_rocha          Float
+  obra                  Obra        @relation(fields: [obraId], references: [id])
+  obraId                Int         @unique
 }

@@ -66,19 +66,28 @@ export default async function Report({ params }: ReportProps) {
         <section className="p-8 grid grid-cols-2 grid-rows-2 gap-4">
           <aside className="space-y-4">
             <h3 className="text-2xl font-bold">
-              SP: <span className="font-normal">{obra.sp_sondagem}</span>
+              SP:{" "}
+              <span className="font-normal">
+                {/* TODO: Get Sondagem data */}
+              </span>
             </h3>
             <h3 className="text-2xl font-bold">
-              SR: <span className="font-normal">{obra.sr_sondagem || "0"}</span>
+              SR:{" "}
+              <span className="font-normal">
+                {/* TODO: Get Sondagem data */}
+              </span>
             </h3>
           </aside>
 
           <div className="space-y-4">
             <h3 className="text-2xl font-bold">
               Metros:{" "}
-              <span className="font-normal">{obra.metros_sp_sondagem}</span>
+              <span className="font-normal">
+                {/* TODO: Get Sondagem data */}
+              </span>
             </h3>
-            {obra.sp_sondagem! > 0 && (
+            {/* TODO: Get Sondagem data */}
+            {/* {obra.sp_sondagem! > 0 && (
               <h3 className="text-2xl font-bold">
                 Média:{" "}
                 <span className="font-normal">
@@ -87,14 +96,18 @@ export default async function Report({ params }: ReportProps) {
                   )}
                 </span>
               </h3>
-            )}
+            )} */}
             <h3 className="text-2xl font-bold">
               Metros Solo:{" "}
-              <span className="font-normal">{obra.metros_sr_solo || "0"}</span>
+              <span className="font-normal">
+                {/* TODO: Get Sondagem data */}
+              </span>
             </h3>
             <h3 className="text-2xl font-bold">
               Metros Rocha:{" "}
-              <span className="font-normal">{obra.metros_sr_rocha || "0"}</span>
+              <span className="font-normal">
+                {/* TODO: Get Sondagem data */}
+              </span>
             </h3>
           </div>
 
