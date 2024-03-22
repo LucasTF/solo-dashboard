@@ -9,7 +9,6 @@ vi.mock("@/lib/db");
 
 const adminUser: Omit<User, "id"> = {
   name: "Admin",
-  surname: "User",
   email: "admin@test.com",
   password: "unhashed_password",
   isAdmin: true,
@@ -17,7 +16,6 @@ const adminUser: Omit<User, "id"> = {
 
 const user: Omit<User, "id"> = {
   name: "Normal",
-  surname: "User",
   email: "email@test.com",
   password: "unhashed_password",
   isAdmin: false,

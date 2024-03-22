@@ -1,16 +1,18 @@
-import Button from "@/components/ui/Button";
-import { ObraWithFiles } from "@/types/data/Obra";
+import { ChangeEvent, useState, useTransition } from "react";
+import { toast } from "react-toastify";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { ChangeEvent, useState, useTransition } from "react";
-import Loading from "@/components/ui/Loading";
+
+import { Arquivo } from "@prisma/client";
+import { EntryObra } from "@/types/data/Obra";
 import { DataResponse } from "@/types/ServerResponse";
-import { toast } from "react-toastify";
+
 import { useEntryStore } from "@/lib/stores/entry";
-import { Arquivo } from "@/types/data/Arquivo";
+import Button from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
 
 type UploadProps = {
-  obra: ObraWithFiles;
+  obra: EntryObra;
   closeModal: Function;
 };
 
@@ -48,7 +50,7 @@ const Upload = ({ obra, closeModal }: UploadProps) => {
         console.log(resJson.data);
         updateEntry((prevState) => {
           if (prevState) {
-            const entryData = prevState.data as ObraWithFiles;
+            const entryData = prevState.data as EntryObra;
             entryData.arquivos = resJson.data;
             return {
               id: prevState.id,

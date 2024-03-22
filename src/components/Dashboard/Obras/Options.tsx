@@ -1,31 +1,31 @@
 "use client";
 
 import { Suspense, lazy, useState } from "react";
+import { createPortal } from "react-dom";
+import { usePathname } from "next/navigation";
 import { tv } from "tailwind-variants";
+import { useTheme } from "next-themes";
 import {
   ArrowLeftIcon,
   ArrowUpOnSquareStackIcon,
-  DocumentIcon,
   DocumentTextIcon,
   MapPinIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
-import Button, { ButtonLink } from "@/components/ui/Button";
+import { Arquivo, Obra } from "@prisma/client";
 
 import { useEntryStore } from "@/lib/stores/entry";
-import { usePathname } from "next/navigation";
-import { Obra, ObraWithFiles } from "@/types/data/Obra";
-import { TitledDivider } from "@/components/ui/TitledDivider";
-import Modal from "@/components/ui/Modal";
-import Loading from "@/components/ui/Loading";
-import { TrashIcon } from "@heroicons/react/24/solid";
-import { Arquivo } from "@/types/data/Arquivo";
-import { useTheme } from "next-themes";
 import { useSessionStore } from "@/lib/stores/session";
-import { createPortal } from "react-dom";
-import { Skeleton } from "@/components/ui/Skeleton";
+
+import Button, { ButtonLink } from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
+import Modal from "@/components/ui/Modal";
 import { FileLink } from "@/components/ui/FileLink";
+import { Skeleton } from "@/components/ui/Skeleton";
+import { TitledDivider } from "@/components/ui/TitledDivider";
+import { EntryObra } from "@/types/data/Obra";
 
 const DeleteFile = lazy(() => import("./Modals/DeleteFile"));
 const EditObraForm = lazy(() => import("./Modals/EditObra"));
@@ -59,14 +59,14 @@ export const ObrasOptions = () => {
   const { session } = useSessionStore();
   const { entry, clearEntry } = useEntryStore();
 
-  const obra = entry?.data as ObraWithFiles;
+  const obra = entry?.data as EntryObra;
 
   const modalBuilder = () => {
     switch (modal) {
       case ModalState.Edit:
         return (
           <EditObraForm
-            obra={obra as Obra}
+            obra={obra}
             closeModal={() => setModal(ModalState.Off)}
           />
         );
@@ -95,7 +95,7 @@ export const ObrasOptions = () => {
           <div>
             <p className="text-center font-semibold">Obra</p>
             <h2 className="font-bold text-center text-4xl lg:text-2xl xl:text-3xl">
-              {obra ? obra.sp : <Skeleton className="w-full" />}
+              {obra ? obra.cod_obra : <Skeleton className="w-full" />}
             </h2>
           </div>
 
@@ -153,7 +153,7 @@ export const ObrasOptions = () => {
             Relatório
           </ButtonLink>
 
-          {obra && obra.arquivos.length > 0 && (
+          {obra.arquivos && obra.arquivos.length > 0 && (
             <>
               <TitledDivider title="Arquivos" />
 
@@ -189,7 +189,7 @@ export const ObrasOptions = () => {
       {session &&
         createPortal(
           <Modal
-            title={`Obra ${obra?.sp} - ${modal.toString()}`}
+            title={`Obra ${obra?.cod_obra} - ${modal.toString()}`}
             visible={modal !== ModalState.Off}
             onClose={() => setModal(ModalState.Off)}
           >

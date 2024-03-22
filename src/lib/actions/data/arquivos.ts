@@ -2,11 +2,8 @@
 
 import { db } from "@/lib/db";
 import { ServerResponse } from "@/types/ServerResponse";
-import { deleteFileLegacy } from "./legacy/arquivos";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
-
-const isLegacy = process.env.USE_LEGACY_TABLES === "true";
 
 export async function deleteFile(fileId: number): Promise<ServerResponse> {
   const adminToken = cookies().get("adminJwt");
@@ -18,8 +15,6 @@ export async function deleteFile(fileId: number): Promise<ServerResponse> {
     return { success: false, error: "Autorização insuficiente." };
 
   try {
-    if (isLegacy) return await deleteFileLegacy(fileId);
-
     await db.arquivo.delete({ where: { id: fileId } });
 
     return { success: true, message: "Arquivo deletado com sucesso!" };

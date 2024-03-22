@@ -1,41 +1,39 @@
 "use server";
 
 import * as z from "zod";
+import { cookies } from "next/headers";
+
+import { SearchFilters } from "@/types/SearchFilters";
+import { ServerResponse } from "@/types/ServerResponse";
 
 import { db } from "@/lib/db";
-import { ObraModalSchema } from "@/schemas";
-import { SearchFilters } from "@/types/SearchFilters";
-import { Obra } from "@/types/data/Obra";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
-import { ServerResponse } from "@/types/ServerResponse";
-import {
-  getObraByIdLegacy,
-  getTableObrasLegacy,
-  insertNewObraLegacy,
-  searchObrasLegacy,
-  updateObraLegacy,
-} from "./legacy/obras";
-import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
-
-const isLegacy = process.env.USE_LEGACY_TABLES === "true";
+import { ObraModalSchema } from "@/schemas";
+import { EntryObra, TableObra } from "@/types/data/Obra";
 
 export async function getTableObras() {
   try {
-    if (isLegacy) return await getTableObrasLegacy();
-
-    const obras: Obra[] = await db.obra.findMany({
+    const obras = await db.obra.findMany({
       select: {
         id: true,
-        sp: true,
+        cod_obra: true,
         ano: true,
         tipo_logo: true,
         logradouro: true,
         cidade: true,
         bairro: true,
         uf: true,
-        cliente: true,
-        proprietario: true,
+        cliente: {
+          select: {
+            nome: true,
+          },
+        },
+        proprietario: {
+          select: {
+            nome: true,
+          },
+        },
       },
     });
 
@@ -48,11 +46,21 @@ export async function getTableObras() {
 
 export async function getObraById(id: number) {
   try {
-    if (isLegacy) return await getObraByIdLegacy(id);
-
-    const obra = await db.obra.findUnique({
+    const obra: EntryObra | null = await db.obra.findUnique({
       where: { id },
       include: {
+        cliente: {
+          select: {
+            id: true,
+            nome: true,
+          },
+        },
+        proprietario: {
+          select: {
+            id: true,
+            nome: true,
+          },
+        },
         arquivos: true,
       },
     });
@@ -66,20 +74,26 @@ export async function getObraById(id: number) {
 
 export async function searchObras(searchFilters: SearchFilters) {
   try {
-    if (isLegacy) return await searchObrasLegacy(searchFilters);
-
-    const obras: Obra[] = await db.obra.findMany({
+    const obras: TableObra[] = await db.obra.findMany({
       select: {
         id: true,
-        sp: true,
+        cod_obra: true,
         ano: true,
         tipo_logo: true,
         logradouro: true,
         cidade: true,
         bairro: true,
         uf: true,
-        cliente: true,
-        proprietario: true,
+        cliente: {
+          select: {
+            nome: true,
+          },
+        },
+        proprietario: {
+          select: {
+            nome: true,
+          },
+        },
       },
       where: {
         [searchFilters.column]: {
@@ -87,7 +101,7 @@ export async function searchObras(searchFilters: SearchFilters) {
         },
       },
       orderBy: {
-        sp: "desc",
+        cod_obra: "desc",
       },
     });
 
@@ -113,15 +127,14 @@ export async function updateObra(
     return { success: false, error: "Autorização insuficiente." };
 
   try {
-    if (isLegacy) return await updateObraLegacy(id, obra);
-
+    // TODO: Change clienteId & proprietarioId to actual values
     const data = {
-      sp: obra.sp,
+      cod_obra: obra.cod_obra,
       num_obra: obra.num_obra,
       sp_sondagem: obra.sp_sondagem,
       metros_sp_sondagem: obra.metros_sp_sondagem,
-      STTrado: obra.STTrado,
-      STTradoml: obra.STTradoml,
+      st_trado: obra.st_trado,
+      st_trado_ml: obra.st_trado_ml,
       data_inicio: formatYYYYMMDD(obra.data_inicio),
       data_fim: formatYYYYMMDD(obra.data_fim),
       ano: obra.ano,
@@ -133,8 +146,8 @@ export async function updateObra(
       bairro: obra.bairro,
       lote: obra.lote,
       quadra: obra.quadra,
-      cliente: obra.cliente,
-      proprietario: obra.proprietario,
+      clienteId: 1,
+      proprietarioId: 1,
     };
 
     await db.obra.update({
@@ -152,15 +165,14 @@ export async function updateObra(
 
 export async function insertNewObra(obra: ObraData): Promise<ServerResponse> {
   try {
-    if (isLegacy) return await insertNewObraLegacy(obra);
-
+    // TODO: Change clienteId & proprietarioId to actual values
     const data = {
-      sp: obra.sp,
+      cod_obra: obra.cod_obra,
       num_obra: obra.num_obra,
       sp_sondagem: obra.sp_sondagem,
       metros_sp_sondagem: obra.metros_sp_sondagem,
-      STTrado: obra.STTrado,
-      STTradoml: obra.STTradoml,
+      st_trado: obra.st_trado,
+      st_trado_ml: obra.st_trado_ml,
       data_inicio: formatYYYYMMDD(obra.data_inicio),
       data_fim: formatYYYYMMDD(obra.data_fim),
       ano: obra.ano,
@@ -172,8 +184,8 @@ export async function insertNewObra(obra: ObraData): Promise<ServerResponse> {
       bairro: obra.bairro,
       lote: obra.lote,
       quadra: obra.quadra,
-      cliente: obra.cliente,
-      proprietario: obra.proprietario,
+      clienteId: 1,
+      proprietarioId: 1,
     };
 
     await db.obra.create({

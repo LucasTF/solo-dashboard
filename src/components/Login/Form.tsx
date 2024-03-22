@@ -57,8 +57,8 @@ const LoginForm = () => {
       try {
         const response = await login(credentials);
         if (response.success) {
-          const { email, name, surname, isAdmin } = response.user;
-          createSession({ email, name, surname, isAdmin });
+          const { email, name, isAdmin } = response.user;
+          createSession({ email, name, isAdmin });
           toast("Login realizado com sucesso!", {
             type: "success",
           });

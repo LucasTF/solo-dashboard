@@ -15,7 +15,7 @@ export const LoginSchema = z.object({
 });
 
 export const ObraModalSchema = z.object({
-  sp: z
+  cod_obra: z
     .string()
     .min(8, "Deve conter apenas 8 caracteres")
     .max(8, "Deve conter apenas 8 caracteres"),
@@ -27,11 +27,11 @@ export const ObraModalSchema = z.object({
   metros_sp_sondagem: z.coerce
     .number({ invalid_type_error: NUMBER })
     .nonnegative(POSITIVE),
-  STTrado: z.coerce
+  st_trado: z.coerce
     .number({ invalid_type_error: NUMBER })
     .int()
     .nonnegative(POSITIVE),
-  STTradoml: z.coerce
+  st_trado_ml: z.coerce
     .number({ invalid_type_error: NUMBER })
     .nonnegative(POSITIVE),
   ano: z.coerce.number().int().positive().min(1980),
@@ -60,7 +60,7 @@ export const ObraModalSchema = z.object({
 export const ObrasSearchFiltersSchema = z.object({
   search: z.string().min(1).max(40),
   column: z.enum([
-    "sp",
+    "cod",
     "cidade",
     "bairro",
     "logradouro",
@@ -72,7 +72,6 @@ export const ObrasSearchFiltersSchema = z.object({
 export const UserModalSchema = z
   .object({
     name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
-    surname: z.string().min(1, CANNOT_BE_EMPTY).max(40),
     email: z.string().email(INVALID_EMAIL).max(40),
     password: z
       .string()
@@ -91,7 +90,6 @@ export const UserModalSchema = z
 
 export const UserEditModalSchema = z.object({
   name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
-  surname: z.string().min(1, CANNOT_BE_EMPTY).max(40),
   email: z.string().email(INVALID_EMAIL).max(40),
   isAdmin: z.boolean(),
 });
@@ -114,5 +112,5 @@ export const ResetPasswordModalSchema = z
 
 export const UsersSearchFiltersSchema = z.object({
   search: z.string().min(1).max(40),
-  column: z.enum(["name", "surname", "email"]),
+  column: z.enum(["name", "email"]),
 });

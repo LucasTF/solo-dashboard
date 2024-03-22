@@ -6,13 +6,13 @@ import { ObrasSearchFiltersSchema, UsersSearchFiltersSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";
 import { getAllUsers, getUserById, searchUsers } from "./users";
 import { DataResponse } from "@/types/ServerResponse";
-import { Obra } from "@/types/data/Obra";
+import { TableObra } from "@/types/data/Obra";
 import { User } from "@prisma/client";
 
 export async function getTableData(
   table: Tables,
   searchFilters: SearchFilters
-): Promise<DataResponse<Obra[] | Omit<User, "password">[]>> {
+): Promise<DataResponse<TableObra[] | Omit<User, "password">[]>> {
   let schema;
 
   switch (table) {

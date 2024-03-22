@@ -87,11 +87,7 @@ export const UsersOptions = () => {
           <div>
             <p className="text-center font-semibold">Usuário</p>
             <h2 className="font-bold text-center text-2xl">
-              {user ? (
-                user.name + " " + user.surname
-              ) : (
-                <Skeleton className="h-9 w-full" />
-              )}
+              {user ? user.name : <Skeleton className="h-9 w-full" />}
             </h2>
           </div>
 

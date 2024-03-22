@@ -19,7 +19,7 @@ export async function generateMetadata({
 
   if (obra) {
     return {
-      title: `Relatório | ${obra.sp}`,
+      title: `Relatório | ${obra.cod_obra}`,
     };
   }
 
@@ -100,42 +100,35 @@ export default async function Report({ params }: ReportProps) {
 
           <aside className="space-y-4">
             <h3 className="text-2xl font-bold">
-              Ponteiras:{" "}
-              <span className="font-normal">{obra.rb_ponteiras || "N/A"}</span>
+              Ponteiras: <span className="font-normal">{"N/A"}</span>
             </h3>
             <h3 className="text-2xl font-bold">
-              Tirantes:{" "}
-              <span className="font-normal">{obra.TITirantes || "N/A"}</span>
+              Tirantes: <span className="font-normal">{"N/A"}</span>
             </h3>
           </aside>
 
           <div className="space-y-4">
             <h3 className="text-2xl font-bold">
-              Equipamentos:{" "}
-              <span className="font-normal">
-                {obra.rb_equipamentos || "N/A"}
-              </span>
+              Equipamentos: <span className="font-normal">{"N/A"}</span>
             </h3>
             <h3 className="text-2xl font-bold">
-              Tipo:{" "}
-              <span className="font-normal">{obra.tipo_tirantes || "N/A"}</span>
+              Tipo: <span className="font-normal">{"N/A"}</span>
             </h3>
             <h3 className="text-2xl font-bold">
-              Carga:{" "}
-              <span className="font-normal">
-                {obra.carga_tirantes || "N/A"}
-              </span>
+              Carga: <span className="font-normal">{"N/A"}</span>
             </h3>
           </div>
         </section>
 
         <section className="p-8 space-y-4">
           <h3 className="text-2xl font-bold">
-            Cliente: <span className="font-normal">{obra.cliente}</span>
+            Cliente: <span className="font-normal">{obra.cliente.nome}</span>
           </h3>
           <h3 className="text-2xl font-bold">
             Proprietário:{" "}
-            <span className="font-normal">{obra.proprietario || "N/A"}</span>
+            <span className="font-normal">
+              {obra.proprietario.nome || "N/A"}
+            </span>
           </h3>
         </section>
       </main>

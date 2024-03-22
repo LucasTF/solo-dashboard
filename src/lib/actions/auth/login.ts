@@ -65,7 +65,6 @@ export async function login(
         success: true,
         user: {
           name: user.name,
-          surname: user.surname,
           email: user.email,
           isAdmin: user.isAdmin,
         },

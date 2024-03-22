@@ -61,7 +61,7 @@ const NewObraForm = ({ closeModal }: { closeModal: Function }) => {
     resolver: zodResolver(ObraModalSchema),
   });
 
-  const watchCodSP = watch("sp", "");
+  const watchCodSP = watch("cod_obra", "");
   const watchUf = watch("uf", "SP");
 
   useEffect(() => {
@@ -137,13 +137,13 @@ const NewObraForm = ({ closeModal }: { closeModal: Function }) => {
           <div className="flex flex-col gap-y-4">
             <Field.Input
               label="Código SP"
-              isInvalid={!!errors.sp}
-              errorMessage={errors.sp?.message}
+              isInvalid={!!errors.cod_obra}
+              errorMessage={errors.cod_obra?.message}
               placeholder={`SP000/${new Date()
                 .getFullYear()
                 .toString()
                 .substr(-2)}`}
-              {...register("sp")}
+              {...register("cod_obra")}
             />
             <Field.Input
               label="Número SP"
@@ -169,16 +169,16 @@ const NewObraForm = ({ closeModal }: { closeModal: Function }) => {
             <Field.Input
               label="Trado"
               defaultValue={0}
-              isInvalid={!!errors.STTrado}
-              errorMessage={errors.STTrado?.message}
-              {...register("STTrado")}
+              isInvalid={!!errors.st_trado}
+              errorMessage={errors.st_trado?.message}
+              {...register("st_trado")}
             />
             <Field.Input
               label="Total Metros Trado"
               defaultValue={0}
-              isInvalid={!!errors.STTradoml}
-              errorMessage={errors.STTradoml?.message}
-              {...register("STTradoml")}
+              isInvalid={!!errors.st_trado_ml}
+              errorMessage={errors.st_trado_ml?.message}
+              {...register("st_trado_ml")}
             />
           </aside>
         </section>

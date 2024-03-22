@@ -3,10 +3,10 @@
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 import * as z from "zod";
 
-import { Obra as ObraType } from "@/types/data/Obra";
-
+import { ModifyObra } from "@/types/data/Obra";
 import { ObraModalSchema } from "@/schemas";
 import { Logradouro } from "@/enums/Logradouro";
 
@@ -16,7 +16,6 @@ import Loading from "@/components/ui/Loading";
 import { updateObra } from "@/lib/actions/data/obras";
 import { useTableStore } from "@/lib/stores/table";
 import { useEntryStore } from "@/lib/stores/entry";
-import { toast } from "react-toastify";
 
 type UF = {
   id: number;
@@ -44,11 +43,11 @@ type Municipio = {
 };
 
 type EditObraFormProps = {
-  obra: ObraType;
+  obra: ModifyObra;
   closeModal: Function;
 };
 
-type Obra = z.infer<typeof ObraModalSchema>;
+type ObraSchema = z.infer<typeof ObraModalSchema>;
 
 const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
   const year = new Date().getFullYear();
@@ -60,7 +59,6 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
   const [ufs, setUfs] = useState<UF[]>([]);
   const [municipios, setMunicipios] = useState<Municipio[]>([]);
 
-  const [success, setSuccess] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -69,26 +67,26 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<Obra>({
+  } = useForm<ObraSchema>({
     resolver: zodResolver(ObraModalSchema),
     defaultValues: {
-      sp: obra.sp,
+      cod_obra: obra.cod_obra,
       ano: obra.ano,
       bairro: obra.bairro,
       tipo_logo: obra.tipo_logo as Logradouro,
-      cliente: obra.cliente,
+      cliente: obra.cliente.nome,
       complemento: obra.complemento_logo || "",
       logradouro: obra.logradouro,
       lote: obra.lote || "",
       metros_sp_sondagem: obra.metros_sp_sondagem || undefined,
       num_obra: obra.num_obra || undefined,
-      proprietario: obra.proprietario || "",
+      proprietario: obra.proprietario.nome || "",
       quadra: obra.quadra || "",
       sp_sondagem: obra.sp_sondagem || undefined,
-      STTrado: obra.STTrado || undefined,
-      STTradoml: obra.STTradoml || undefined,
-      data_inicio: obra.data_inicio as unknown as Date,
-      data_fim: obra.data_fim as unknown as Date,
+      st_trado: obra.st_trado || undefined,
+      st_trado_ml: obra.st_trado_ml || undefined,
+      data_inicio: obra.data_inicio,
+      data_fim: obra.data_fim,
     },
   });
 
@@ -114,7 +112,7 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
     fetchSelects().catch((error) => console.log(error));
   }, []);
 
-  const watchCodSP = watch("sp", obra.sp);
+  const watchCodSP = watch("cod_obra", obra.cod_obra);
   const watchUf = watch("uf", obra.uf);
 
   useEffect(() => {
@@ -142,13 +140,13 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
     }
   }, [watchCodSP, setValue]);
 
-  const submitHandler = (formData: Obra) => {
+  const submitHandler = (formData: ObraSchema) => {
     startTransition(async () => {
       const response = await updateObra(obra.id, formData);
       if (response.success) {
         if (entry) {
-          const row = tableData.at(entry.tableIndex) as unknown as Obra;
-          row.sp = formData.sp;
+          const row = tableData.at(entry.tableIndex) as unknown as ObraSchema;
+          row.cod_obra = formData.cod_obra;
           row.ano = formData.ano;
           row.tipo_logo = formData.tipo_logo;
           row.logradouro = formData.logradouro;
@@ -182,9 +180,9 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
           <div className="flex flex-col gap-y-4">
             <Field.Input
               label="Código SP"
-              isInvalid={!!errors.sp}
-              errorMessage={errors.sp?.message}
-              {...register("sp")}
+              isInvalid={!!errors.cod_obra}
+              errorMessage={errors.cod_obra?.message}
+              {...register("cod_obra")}
             />
             <Field.Input
               label="Número SP"
@@ -210,16 +208,16 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
             <Field.Input
               label="Trado"
               defaultValue={0}
-              isInvalid={!!errors.STTrado}
-              errorMessage={errors.STTrado?.message}
-              {...register("STTrado")}
+              isInvalid={!!errors.st_trado}
+              errorMessage={errors.st_trado?.message}
+              {...register("st_trado")}
             />
             <Field.Input
               label="Total Metros Trado"
               defaultValue={0}
-              isInvalid={!!errors.STTradoml}
-              errorMessage={errors.STTradoml?.message}
-              {...register("STTradoml")}
+              isInvalid={!!errors.st_trado_ml}
+              errorMessage={errors.st_trado_ml?.message}
+              {...register("st_trado_ml")}
             />
           </aside>
         </section>

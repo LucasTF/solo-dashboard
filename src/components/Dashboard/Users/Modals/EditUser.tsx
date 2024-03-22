@@ -13,7 +13,7 @@ import { UserEditModalSchema } from "@/schemas";
 import { updateUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
 
-type UserForm = Omit<User, "id" | "image" | "password">;
+type UserForm = Omit<User, "id" | "password">;
 
 type EditUserProps = {
   user: User;
@@ -31,7 +31,6 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
     resolver: zodResolver(UserEditModalSchema),
     defaultValues: {
       name: user.name,
-      surname: user.surname,
       email: user.email,
       isAdmin: user.isAdmin,
     },
@@ -63,13 +62,6 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
           errorMessage={errors.name?.message}
           placeholder="Nome"
           {...register("name")}
-        />
-        <Field.Input
-          label="Sobrenome"
-          isInvalid={!!errors.surname}
-          errorMessage={errors.surname?.message}
-          placeholder="Sobrenome"
-          {...register("surname")}
         />
         <Field.Input
           label="Email"

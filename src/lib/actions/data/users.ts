@@ -19,7 +19,6 @@ export async function getAllUsers() {
       select: {
         id: true,
         name: true,
-        surname: true,
         email: true,
         isAdmin: true,
       },
@@ -38,7 +37,6 @@ export async function searchUsers(searchFilters: SearchFilters) {
       select: {
         id: true,
         name: true,
-        surname: true,
         email: true,
         isAdmin: true,
       },
@@ -81,7 +79,6 @@ export async function getUserById(id: number) {
       select: {
         id: true,
         name: true,
-        surname: true,
         email: true,
         isAdmin: true,
       },
@@ -103,7 +100,6 @@ export async function createNewUser(
 
     const data = {
       name: user.name,
-      surname: user.surname,
       email: user.email,
       password: hashedPassword,
       isAdmin: user.isAdmin,
