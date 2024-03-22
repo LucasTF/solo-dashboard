@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { User } from "@/types/data/User";
+import { User } from "@prisma/client";
 
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";

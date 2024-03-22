@@ -5,17 +5,17 @@ import bcrypt from "bcrypt";
 import { db } from "@/lib/db";
 import { SearchFilters } from "@/types/SearchFilters";
 import { ServerResponse } from "@/types/ServerResponse";
-import { User, UserNopass } from "@/types/data/User";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 import { z } from "zod";
 import { UserEditModalSchema } from "@/schemas";
 import { DataResponse } from "@/types/ServerResponse";
+import { User } from "@prisma/client";
 
 type UserUpdateData = z.infer<typeof UserEditModalSchema>;
 
 export async function getAllUsers() {
   try {
-    const users: UserNopass[] = await db.user.findMany({
+    const users: Omit<User, "password">[] = await db.user.findMany({
       select: {
         id: true,
         name: true,
@@ -34,7 +34,7 @@ export async function getAllUsers() {
 
 export async function searchUsers(searchFilters: SearchFilters) {
   try {
-    const users: UserNopass[] = await db.user.findMany({
+    const users: Omit<User, "password">[] = await db.user.findMany({
       select: {
         id: true,
         name: true,

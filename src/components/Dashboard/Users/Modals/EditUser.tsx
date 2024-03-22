@@ -1,17 +1,17 @@
 "use client";
 
 import { useTransition } from "react";
+import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { User } from "@/types/data/User";
+import { User } from "@prisma/client";
 
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { UserEditModalSchema } from "@/schemas";
 import { updateUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
-import { toast } from "react-toastify";
 
 type UserForm = Omit<User, "id" | "image" | "password">;
 

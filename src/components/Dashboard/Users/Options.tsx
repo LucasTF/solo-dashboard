@@ -1,6 +1,9 @@
 "use client";
 
 import { Suspense, lazy, useState } from "react";
+import { createPortal } from "react-dom";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 import { tv } from "tailwind-variants";
 import {
   ArrowLeftIcon,
@@ -9,21 +12,19 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 
+import { User } from "@prisma/client";
+
+import { useEntryStore } from "@/lib/stores/entry";
+import { useSessionStore } from "@/lib/stores/session";
+
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
-
-import { useEntryStore } from "@/lib/stores/entry";
-import { usePathname } from "next/navigation";
-import { TitledDivider } from "@/components/ui/TitledDivider";
-import { useTheme } from "next-themes";
-import { User } from "@/types/data/User";
-import ResetPassword from "./Modals/ResetPassword";
-import { createPortal } from "react-dom";
-import { useSessionStore } from "@/lib/stores/session";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { TitledDivider } from "@/components/ui/TitledDivider";
 
 const EditUserForm = lazy(() => import("./Modals/EditUser"));
+const ResetPasswordForm = lazy(() => import("./Modals/ResetPassword"));
 const DeleteUser = lazy(() => import("./Modals/DeleteUser"));
 
 enum ModalState {
@@ -68,7 +69,7 @@ export const UsersOptions = () => {
         return <DeleteUser closeModal={() => setModal(ModalState.Off)} />;
       case ModalState.ResetPassword:
         return (
-          <ResetPassword
+          <ResetPasswordForm
             userId={user.id}
             closeModal={() => setModal(ModalState.Off)}
           />

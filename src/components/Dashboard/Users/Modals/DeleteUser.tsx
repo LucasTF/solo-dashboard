@@ -1,14 +1,16 @@
 "use client";
 
-import Button from "@/components/ui/Button";
-import { TrashIcon } from "@heroicons/react/24/outline";
 import { useTransition } from "react";
-import Loading from "@/components/ui/Loading";
 import { toast } from "react-toastify";
+import { User } from "@prisma/client";
+import { TrashIcon } from "@heroicons/react/24/outline";
+
 import { useEntryStore } from "@/lib/stores/entry";
-import { User } from "@/types/data/User";
 import { deleteUser } from "@/lib/actions/data/users";
 import { useTableStore } from "@/lib/stores/table";
+
+import Button from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
 
 type DeleteUserProps = {
   closeModal: Function;

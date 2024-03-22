@@ -1,4 +1,4 @@
-import { User } from "./data/User";
+import { User } from "@prisma/client";
 
 type SuccessLoginResponse = {
   success: true;

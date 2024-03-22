@@ -4,15 +4,15 @@ import { Tables } from "@/lib/structures";
 import { getObraById, searchObras } from "./obras";
 import { ObrasSearchFiltersSchema, UsersSearchFiltersSchema } from "@/schemas";
 import { SearchFilters } from "@/types/SearchFilters";
-import { UserNopass } from "@/types/data/User";
 import { getAllUsers, getUserById, searchUsers } from "./users";
 import { DataResponse } from "@/types/ServerResponse";
 import { Obra } from "@/types/data/Obra";
+import { User } from "@prisma/client";
 
 export async function getTableData(
   table: Tables,
   searchFilters: SearchFilters
-): Promise<DataResponse<Obra[] | UserNopass[]>> {
+): Promise<DataResponse<Obra[] | Omit<User, "password">[]>> {
   let schema;
 
   switch (table) {
@@ -39,7 +39,7 @@ export async function getTableData(
 
 export async function getAllData(
   table: Tables
-): Promise<DataResponse<UserNopass[]>> {
+): Promise<DataResponse<Omit<User, "password">[]>> {
   switch (table) {
     case Tables.Users:
       const data = await getAllUsers();
