@@ -14,7 +14,6 @@ export const LoginSchema = z.object({
   password: z.string().min(1, INVALID_PASSWORD),
 });
 
-// TODO: Add validation for sondagem types
 export const ObraModalSchema = z.object({
   cod_obra: z
     .string()
@@ -42,6 +41,25 @@ export const ObraModalSchema = z.object({
   quadra: z.string().max(40),
   proprietario: z.string().max(60),
   cliente: z.string().min(1, CANNOT_BE_EMPTY).max(60),
+  sondagem_percussao: z.optional(
+    z.object({
+      furos: z.number().int().min(1, GREATER_THAN_0),
+      metros: z.number().min(0, POSITIVE),
+    })
+  ),
+  sondagem_trado: z.optional(
+    z.object({
+      furos: z.number().int().min(1, GREATER_THAN_0),
+      metros: z.number().min(0, POSITIVE),
+    })
+  ),
+  sondagem_rotativa: z.optional(
+    z.object({
+      furos: z.number().int().min(1, GREATER_THAN_0),
+      metros_solo: z.number().min(0, POSITIVE),
+      metros_rocha: z.number().min(0, POSITIVE),
+    })
+  ),
 });
 
 export const ObrasSearchFiltersSchema = z.object({
