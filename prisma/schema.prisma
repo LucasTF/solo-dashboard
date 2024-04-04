@@ -22,14 +22,14 @@ model User {
 
 model Cliente {
   id                    Int             @id @default(autoincrement())
-  nome                  String          @db.VarChar(100)
+  nome                  String          @db.VarChar(120)
   apelido               String?         @db.VarChar(40)
-  cpf                   String?         @db.VarChar(14)
-  cnpj                  String?         @db.VarChar(18)
+  cpf                   String?         @unique @db.VarChar(14)
+  cnpj                  String?         @unique @db.VarChar(18)
   tipo_logo             String?         @db.VarChar(20)
-  logradouro            String?         @db.VarChar(100)
+  logradouro            String?         @db.VarChar(120)
   complemento           String?         @db.VarChar(40)
-  bairro                String?         @db.VarChar(40)
+  bairro                String?         @db.VarChar(80)
   cidade                String?         @db.VarChar(40)
   uf                    String?         @db.Char(2)
   cep                   String?         @db.Char(9)
@@ -52,32 +52,39 @@ model Arquivo {
 }
 
 model Obra {
-  id                    Int         @id @default(autoincrement())
-  cod_obra              String      @unique @db.VarChar(11)
+  id                    Int                               @id @default(autoincrement())
+  cod_obra              String                            @unique @db.VarChar(11)
   num_obra              Int
   ano                   Int
-  data_inicio           DateTime    @db.Date
-  data_fim              DateTime    @db.Date
-  tipo_logo             String      @db.VarChar(20)
-  logradouro            String      @db.VarChar(100)
+  data_inicio           DateTime                          @db.Date
+  data_fim              DateTime                          @db.Date
+  tipo_logo             String?                           @db.VarChar(20)
+  logradouro            String                            @db.VarChar(120)
   lote                  String?
   quadra                String?
-  bairro                String      @db.VarChar(40)
-  cidade                String      @db.VarChar(40)
-  uf                    String      @db.Char(2)
-  cep                   String?     @db.Char(9)
-  complemento_logo      String?     @db.VarChar(30)
+  bairro                String                            @db.VarChar(80)
+  cidade                String                            @db.VarChar(40)
+  uf                    String                            @db.Char(2)
+  cep                   String?                           @db.Char(9)
+  complemento_logo      String?                           @db.VarChar(120)
   sondagem_percussao    Sondagem_Percussao?
   sondagem_trado        Sondagem_Trado?
   sondagem_rotativa     Sondagem_Rotativa?
-  cliente               Cliente   @relation(name: "Cliente", fields: [clienteId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  cliente               Cliente                           @relation(name: "Cliente", fields: [clienteId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   clienteId             Int
-  proprietario          Cliente   @relation(name: "Proprietario",fields: [proprietarioId], references: [id], onDelete: NoAction, onUpdate: Cascade)
-  proprietarioId        Int
+  proprietario          Cliente?                          @relation(name: "Proprietario",fields: [proprietarioId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  proprietarioId        Int?
   arquivos              Arquivo[]
 
   @@index([cod_obra, num_obra, ano, data_inicio, data_fim, logradouro, bairro, cidade, uf, complemento_logo])
 
+}
+
+model Obra_Cancelada {
+  id                    Int         @id @default(autoincrement())
+  cod_obra              String      @unique @db.VarChar(11)
+  num_obra              Int
+  ano                   Int
 }
 
 model Sondagem_Percussao {
