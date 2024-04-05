@@ -65,12 +65,12 @@ export const ObraModalSchema = z.object({
 export const ObrasSearchFiltersSchema = z.object({
   search: z.string().min(1).max(40),
   column: z.enum([
-    "cod",
+    "cod_obra",
     "cidade",
     "bairro",
     "logradouro",
-    "cliente",
-    "proprietario",
+    "cliente.nome",
+    "proprietario.nome",
   ]),
 });
 

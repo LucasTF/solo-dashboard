@@ -21,7 +21,7 @@ export default async function ObrasPage({ searchParams }: PageProps) {
 
       <Dashboard.Options.Obras />
 
-      <Dashboard.TableConstructor
+      <Dashboard.TableArea
         tableStructure={obrasStructure}
         searchFilters={{
           column: searchParams.column,

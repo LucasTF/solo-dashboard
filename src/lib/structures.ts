@@ -17,8 +17,8 @@ export const obrasStructure: TableStructure = {
     { name: "UF", value: "uf", searchable: false },
     { name: "Cidade", value: "cidade", searchable: true },
     { name: "Bairro", value: "bairro", searchable: true },
-    { name: "Cliente", value: "cliente", searchable: true },
-    { name: "Proprietário", value: "proprietario", searchable: true },
+    { name: "Cliente", value: "cliente.nome", searchable: true },
+    { name: "Proprietário", value: "proprietario.nome", searchable: true },
   ],
 };
 

@@ -16,7 +16,7 @@ export type TableObra = Pick<
   };
   proprietario: {
     nome: string;
-  };
+  } | null;
 };
 
 // TODO: Add options for sondagem type
@@ -40,5 +40,5 @@ export type EntryObra = Omit<Obra, "clienteId" | "proprietarioId"> & {
   proprietario: {
     id: number;
     nome: string;
-  };
+  } | null;
 };

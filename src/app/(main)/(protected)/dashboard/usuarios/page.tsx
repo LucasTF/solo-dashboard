@@ -21,7 +21,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
 
       <Dashboard.Options.Users />
 
-      <Dashboard.TableConstructor
+      <Dashboard.TableArea
         tableStructure={usersStructure}
         searchFilters={{
           column: searchParams.column,

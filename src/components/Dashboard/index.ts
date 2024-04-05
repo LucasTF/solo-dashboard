@@ -1,5 +1,5 @@
-import { DashboardTable } from "./Table";
 import { TableConstructor } from "./TableConstructor";
+import { TableArea } from "./TableArea";
 import { ObrasOptions } from "./Obras/Options";
 import { ObrasHeader } from "./Obras/Header";
 import { UsersHeader } from "./Users/Header";
@@ -24,8 +24,8 @@ export const Dashboard = {
     Obras: ObrasManager,
     Users: UsersManager,
   },
+  TableArea: TableArea,
   TableConstructor: TableConstructor,
-  Table: DashboardTable,
   Options: {
     Obras: ObrasOptions,
     Users: UsersOptions,

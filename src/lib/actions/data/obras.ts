@@ -5,12 +5,13 @@ import { cookies } from "next/headers";
 
 import { SearchFilters } from "@/types/SearchFilters";
 import { ServerResponse } from "@/types/ServerResponse";
+import { EntryObra, TableObra } from "@/types/data/Obra";
 
 import { db } from "@/lib/db";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 import { verifyJwt } from "@/lib/jwt";
 import { ObraModalSchema } from "@/schemas";
-import { EntryObra, TableObra } from "@/types/data/Obra";
+import { dbWhereMapper } from "@/lib/utils/objectMapper";
 
 export async function getTableObras() {
   try {
@@ -95,11 +96,9 @@ export async function searchObras(searchFilters: SearchFilters) {
           },
         },
       },
-      where: {
-        [searchFilters.column]: {
-          contains: searchFilters.search,
-        },
-      },
+      where: dbWhereMapper(searchFilters.column, {
+        contains: searchFilters.search,
+      }),
       orderBy: {
         cod_obra: "desc",
       },

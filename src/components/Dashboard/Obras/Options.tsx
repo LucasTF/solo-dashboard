@@ -153,7 +153,7 @@ export const ObrasOptions = () => {
             Relatório
           </ButtonLink>
 
-          {obra.arquivos && obra.arquivos.length > 0 && (
+          {obra && obra.arquivos && obra.arquivos.length > 0 && (
             <>
               <TitledDivider title="Arquivos" />
 
