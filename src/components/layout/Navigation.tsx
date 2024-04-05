@@ -19,7 +19,7 @@ import { logout } from "@/lib/actions/auth/logout";
 import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
 import ThemeSwitcher from "@/components/ui/Navigation/ThemeSwitcher";
 import NavLink from "@/components/ui/Navigation/NavLink";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Backdrop from "../ui/Backdrop";
 import Spinner from "../ui/Spinner";
 import { useScrollDirection } from "@/lib/hooks/scrollDirection";
@@ -113,6 +113,7 @@ const Navigation = () => {
           <ThemeSwitcher size={6} />
         </div>
       </header>
+
       <nav className={drawerNav({ open: drawer })}>
         <p className={ulTitle()}>Sessão</p>
         {session && !isPending ? (
@@ -137,7 +138,9 @@ const Navigation = () => {
             <Spinner size="sm" />
           </div>
         )}
+
         <p className={ulTitle()}>Navegação</p>
+
         <ul className={ul()}>
           <li onClick={() => onNavigationHandler()}>
             <NavLink href="/dashboard">
@@ -145,12 +148,7 @@ const Navigation = () => {
               <span>Início</span>
             </NavLink>
           </li>
-          <li onClick={() => onNavigationHandler()}>
-            <NavLink href="/dashboard/obras">
-              <BuildingOffice2Icon className={icon()} />
-              <span>Obras</span>
-            </NavLink>
-          </li>
+
           <li onClick={() => onNavigationHandler()}>
             <NavLink href="/dashboard/clientes">
               <GlobeAmericasIcon className={icon()} />
@@ -158,6 +156,24 @@ const Navigation = () => {
             </NavLink>
           </li>
         </ul>
+
+        <p className={ulTitle()}>Obras</p>
+
+        <ul className={ul()}>
+          <li onClick={() => onNavigationHandler()}>
+            <NavLink href="/dashboard/obras">
+              <BuildingOffice2Icon className={icon()} />
+              <span>Obras</span>
+            </NavLink>
+          </li>
+          <li onClick={() => onNavigationHandler()}>
+            <NavLink href="/dashboard/obras/new">
+              <PlusIcon className={icon()} />
+              <span>Cadastrar obra</span>
+            </NavLink>
+          </li>
+        </ul>
+
         {session && session.isAdmin && (
           <>
             <p className={ulTitle()}>Administrativo</p>

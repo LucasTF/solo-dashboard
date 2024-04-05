@@ -110,6 +110,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
+      console.log(formData);
       const response = await insertNewObra(formData);
       if (response.success) {
         toast(response.message, { type: "success" });
@@ -301,7 +302,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
           </section>
         </section>
 
-        <aside className="space-y-2">
+        <aside className="space-y-2 max-lg:mt-4">
           <TitledDivider title="Sondagens" />
           <div className="grid grid-cols-2 gap-2">
             <Button
