@@ -10,7 +10,7 @@ export const ObrasManager = () => {
         color="green"
         fontStrength="semibold"
         type="button"
-        className="ml-auto w-fit"
+        className="w-fit"
       >
         <PlusCircleIcon className="size-6" />
         Nova Obra

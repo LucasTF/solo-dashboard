@@ -11,7 +11,7 @@ import { ObraModalSchema } from "@/schemas";
 import { Logradouro } from "@/enums/Logradouro";
 
 import Button from "@/components/ui/Button";
-import { Field } from "@/components/ui/Field";
+import { Field } from "@/components/ui/Fields";
 import Loading from "@/components/ui/Loading";
 import { updateObra } from "@/lib/actions/data/obras";
 import { useTableStore } from "@/lib/stores/table";
@@ -79,7 +79,7 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
       logradouro: obra.logradouro,
       lote: obra.lote || "",
       num_obra: obra.num_obra || undefined,
-      proprietario: obra.proprietario.nome || "",
+      proprietario: obra.proprietario?.nome || "",
       quadra: obra.quadra || "",
       data_inicio: obra.data_inicio,
       data_fim: obra.data_fim,

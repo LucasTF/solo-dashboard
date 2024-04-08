@@ -163,27 +163,27 @@ export async function insertNewObra(obra: ObraData): Promise<ServerResponse> {
   try {
     // TODO: Change clienteId & proprietarioId to actual values
     // TODO: Insert sondagem type with new obra
-    const data = {
-      cod_obra: obra.cod_obra,
-      num_obra: obra.num_obra,
-      data_inicio: formatYYYYMMDD(obra.data_inicio),
-      data_fim: formatYYYYMMDD(obra.data_fim),
-      ano: obra.ano,
-      tipo_logo: obra.tipo_logo,
-      cidade: obra.cidade,
-      uf: obra.uf,
-      logradouro: obra.logradouro,
-      complemento_logo: obra.complemento,
-      bairro: obra.bairro,
-      lote: obra.lote,
-      quadra: obra.quadra,
-      clienteId: 1,
-      proprietarioId: 1,
-    };
+    // const data = {
+    //   cod_obra: obra.cod_obra,
+    //   num_obra: obra.num_obra,
+    //   data_inicio: formatYYYYMMDD(obra.data_inicio),
+    //   data_fim: formatYYYYMMDD(obra.data_fim),
+    //   ano: obra.ano,
+    //   tipo_logo: obra.tipo_logo,
+    //   cidade: obra.cidade,
+    //   uf: obra.uf,
+    //   logradouro: obra.logradouro,
+    //   complemento_logo: obra.complemento,
+    //   bairro: obra.bairro,
+    //   lote: obra.lote,
+    //   quadra: obra.quadra,
+    //   clienteId: 1,
+    //   proprietarioId: 1,
+    // };
 
-    await db.obra.create({
-      data,
-    });
+    // await db.obra.create({
+    //   data,
+    // });
 
     return { success: true, message: "Obra criada com sucesso!" };
   } catch (error) {

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { User } from "@prisma/client";
 
 import Button from "@/components/ui/Button";
-import { Field } from "@/components/ui/Field";
+import { Field } from "@/components/ui/Fields";
 import { UserEditModalSchema } from "@/schemas";
 import { updateUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";

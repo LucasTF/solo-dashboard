@@ -13,7 +13,7 @@ import { insertNewObra } from "@/lib/actions/data/obras";
 import { ObraModalSchema } from "@/schemas";
 
 import Loading from "@/components/ui/Loading";
-import { Field } from "@/components/ui/Field";
+import { Field } from "@/components/ui/Fields";
 import Button from "@/components/ui/Button";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import { getMunicipios } from "@/lib/actions/data/external/ibge";
@@ -111,14 +111,14 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
       console.log(formData);
-      const response = await insertNewObra(formData);
-      if (response.success) {
-        toast(response.message, { type: "success" });
-        reset();
-      } else {
-        console.error(response.error);
-        toast(response.error, { type: "error" });
-      }
+      // const response = await insertNewObra(formData);
+      // if (response.success) {
+      //   toast(response.message, { type: "success" });
+      //   reset();
+      // } else {
+      //   console.error(response.error);
+      //   toast(response.error, { type: "error" });
+      // }
     });
   };
 
@@ -281,7 +281,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
           <hr className="m-4 dark:border-zinc-700" />
 
           <section className="grid gap-4">
-            <Field.Input
+            <Field.SuggestionInput
               label="Cliente"
               isInvalid={!!errors.cliente}
               errorMessage={errors.cliente?.message}

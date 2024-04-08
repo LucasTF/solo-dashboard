@@ -140,7 +140,7 @@ export default async function Report({ params }: ReportProps) {
           <h3 className="text-2xl font-bold">
             Proprietário:{" "}
             <span className="font-normal">
-              {obra.proprietario.nome || "N/A"}
+              {obra.proprietario?.nome || "N/A"}
             </span>
           </h3>
         </section>

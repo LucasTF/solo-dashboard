@@ -8,7 +8,7 @@ import { DataResponse } from "@/types/ServerResponse";
 import {
   registerFilesToDatabase,
   uploadFilesToServer,
-} from "@/lib/services/filesServices";
+} from "@/lib/services/FilesService";
 
 export async function POST(
   request: NextRequest,
