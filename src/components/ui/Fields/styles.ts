@@ -5,7 +5,8 @@ export const field = tv({
     root: "flex flex-col w-full gap-2",
     checkbox: "flex w-full gap-2",
     label: "font-bold flex gap-2",
-    input: "rounded-md p-4 border border-slate-300 dark:border-slate-700",
+    input:
+      "rounded-md p-4 border border-slate-300 dark:border-slate-700 outline-none",
     select: "rounded-md p-4 border border-slate-900 dark:border-slate-300",
     errorParagraph: "text-sm font-semibold",
   },

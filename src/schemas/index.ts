@@ -40,7 +40,7 @@ export const ObraModalSchema = z.object({
   lote: z.string().max(40),
   quadra: z.string().max(40),
   proprietario: z.string().max(60),
-  cliente: z.string().min(1, CANNOT_BE_EMPTY).max(60),
+  cliente: z.string().min(1, CANNOT_BE_EMPTY).max(120),
   sondagem_percussao: z.optional(
     z.object({
       furos: z.number().int().min(1, GREATER_THAN_0),

@@ -285,12 +285,16 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
               label="Cliente"
               isInvalid={!!errors.cliente}
               errorMessage={errors.cliente?.message}
+              registerName="cliente"
+              setValue={setValue}
               {...register("cliente")}
             />
-            <Field.Input
+            <Field.SuggestionInput
               label="Proprietário"
               isInvalid={!!errors.proprietario}
               errorMessage={errors.proprietario?.message}
+              registerName="proprietario"
+              setValue={setValue}
               {...register("proprietario")}
             />
           </section>
