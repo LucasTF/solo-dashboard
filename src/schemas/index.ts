@@ -62,17 +62,7 @@ export const ObraModalSchema = z.object({
   ),
 });
 
-export const ObrasSearchFiltersSchema = z.object({
-  search: z.string().min(1).max(40),
-  column: z.enum([
-    "cod_obra",
-    "cidade",
-    "bairro",
-    "logradouro",
-    "cliente.nome",
-    "proprietario.nome",
-  ]),
-});
+export const SearchSchema = z.string().min(1).max(100);
 
 export const UserModalSchema = z
   .object({
@@ -114,8 +104,3 @@ export const ResetPasswordModalSchema = z
     message: "As senhas não coincidem.",
     path: ["confirmPassword"],
   });
-
-export const UsersSearchFiltersSchema = z.object({
-  search: z.string().min(1).max(40),
-  column: z.enum(["name", "email"]),
-});

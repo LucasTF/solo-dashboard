@@ -3,7 +3,6 @@
 import * as z from "zod";
 import { cookies } from "next/headers";
 
-import { SearchFilters } from "@/types/SearchFilters";
 import { ServerResponse } from "@/types/ServerResponse";
 import { EntryObra, TableObra } from "@/types/data/Obra";
 
@@ -11,7 +10,6 @@ import { db } from "@/lib/db";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 import { verifyJwt } from "@/lib/jwt";
 import { ObraModalSchema } from "@/schemas";
-import { dbWhereMapper } from "@/lib/utils/objectMapper";
 
 export async function getTableObras() {
   try {
@@ -73,7 +71,7 @@ export async function getObraById(id: number) {
   }
 }
 
-export async function searchObras(searchFilters: SearchFilters) {
+export async function searchObras(searchString: string) {
   try {
     const obras: TableObra[] = await db.obra.findMany({
       select: {
@@ -96,12 +94,45 @@ export async function searchObras(searchFilters: SearchFilters) {
           },
         },
       },
-      where: dbWhereMapper(searchFilters.column, {
-        contains: searchFilters.search,
-      }),
-      orderBy: {
-        cod_obra: "desc",
+      where: {
+        OR: [
+          {
+            cod_obra: {
+              contains: searchString,
+            },
+          },
+          {
+            logradouro: {
+              contains: searchString,
+            },
+          },
+          {
+            cidade: {
+              contains: searchString,
+            },
+          },
+          {
+            bairro: {
+              contains: searchString,
+            },
+          },
+          {
+            cliente: {
+              nome: {
+                contains: searchString,
+              },
+            },
+          },
+          {
+            proprietario: {
+              nome: {
+                contains: searchString,
+              },
+            },
+          },
+        ],
       },
+      orderBy: [{ ano: "desc" }, { cod_obra: "desc" }],
     });
 
     return obras;

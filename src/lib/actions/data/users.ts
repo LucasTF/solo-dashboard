@@ -3,7 +3,6 @@
 import bcrypt from "bcrypt";
 
 import { db } from "@/lib/db";
-import { SearchFilters } from "@/types/SearchFilters";
 import { ServerResponse } from "@/types/ServerResponse";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 import { z } from "zod";
@@ -31,7 +30,7 @@ export async function getAllUsers() {
   }
 }
 
-export async function searchUsers(searchFilters: SearchFilters) {
+export async function searchUsers(searchString: string) {
   try {
     const users: Omit<User, "password">[] = await db.user.findMany({
       select: {
@@ -41,9 +40,18 @@ export async function searchUsers(searchFilters: SearchFilters) {
         isAdmin: true,
       },
       where: {
-        [searchFilters.column]: {
-          contains: searchFilters.search,
-        },
+        OR: [
+          {
+            name: {
+              contains: searchString,
+            },
+          },
+          {
+            email: {
+              contains: searchString,
+            },
+          },
+        ],
       },
     });
 

@@ -1,21 +1,20 @@
 import { getAllData, getTableData } from "@/lib/actions/data";
 import { TableConstructor } from "./TableConstructor";
-import { SearchFilters } from "@/types/SearchFilters";
 import { TableStructure } from "@/types/TableStructure";
 import { TableCellsIcon } from "@heroicons/react/24/outline";
 
 type TableAreaProps = {
   tableStructure: TableStructure;
-  searchFilters: SearchFilters;
+  searchString: string;
   showAllData?: boolean;
 };
 
 export const TableArea = async ({
   tableStructure,
-  searchFilters,
+  searchString,
   showAllData = false,
 }: TableAreaProps) => {
-  const response = await getTableData(tableStructure.table, searchFilters);
+  const response = await getTableData(tableStructure.table, searchString);
 
   if (response.success) {
     return (
