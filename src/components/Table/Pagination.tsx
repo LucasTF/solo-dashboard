@@ -31,7 +31,7 @@ export const Pagination = ({ numOfRows }: PaginationProps) => {
 
   const page = searchParams.get("page") || "1";
 
-  const rowsPerPage = Number(searchParams.get("numRows") || "10");
+  const rowsPerPage = Number(searchParams.get("numRows") || "50");
 
   const totalPages = Math.ceil(numOfRows / rowsPerPage);
 

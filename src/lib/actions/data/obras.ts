@@ -20,6 +20,7 @@ export async function getTableObras() {
         ano: true,
         tipo_logo: true,
         logradouro: true,
+        complemento_logo: true,
         cidade: true,
         bairro: true,
         uf: true,
@@ -36,7 +37,24 @@ export async function getTableObras() {
       },
     });
 
-    return obras;
+    const formattedObras: TableObra[] = obras.map((obra) => {
+      const tipo = obra.tipo_logo || "";
+      const complemento = obra.complemento_logo || "";
+      const proprietario = obra.proprietario?.nome || "";
+      return {
+        id: obra.id,
+        cod_obra: obra.cod_obra,
+        ano: obra.ano,
+        endereco: tipo + " " + obra.logradouro + " " + complemento,
+        bairro: obra.bairro,
+        cidade: obra.cidade,
+        uf: obra.uf,
+        cliente: obra.cliente.nome,
+        proprietario,
+      };
+    });
+
+    return formattedObras;
   } catch (error) {
     console.log(error);
     return [];
@@ -73,13 +91,14 @@ export async function getObraById(id: number) {
 
 export async function searchObras(searchString: string) {
   try {
-    const obras: TableObra[] = await db.obra.findMany({
+    const obras = await db.obra.findMany({
       select: {
         id: true,
         cod_obra: true,
         ano: true,
         tipo_logo: true,
         logradouro: true,
+        complemento_logo: true,
         cidade: true,
         bairro: true,
         uf: true,
@@ -103,6 +122,11 @@ export async function searchObras(searchString: string) {
           },
           {
             logradouro: {
+              contains: searchString,
+            },
+          },
+          {
+            complemento_logo: {
               contains: searchString,
             },
           },
@@ -135,7 +159,24 @@ export async function searchObras(searchString: string) {
       orderBy: [{ ano: "desc" }, { cod_obra: "desc" }],
     });
 
-    return obras;
+    const formattedObras: TableObra[] = obras.map((obra) => {
+      const tipo = obra.tipo_logo || "";
+      const complemento = obra.complemento_logo || "";
+      const proprietario = obra.proprietario?.nome || "";
+      return {
+        id: obra.id,
+        cod_obra: obra.cod_obra,
+        ano: obra.ano,
+        endereco: tipo + " " + obra.logradouro + " " + complemento,
+        bairro: obra.bairro,
+        cidade: obra.cidade,
+        uf: obra.uf,
+        cliente: obra.cliente.nome,
+        proprietario,
+      };
+    });
+
+    return formattedObras;
   } catch (error) {
     console.log(error);
     return [];

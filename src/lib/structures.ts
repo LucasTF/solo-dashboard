@@ -8,26 +8,24 @@ export enum Tables {
 
 export const obrasStructure: TableStructure = {
   table: Tables.Obras,
-  overrideSearchOrder: [3],
   columns: [
-    { name: "SP", value: "cod_obra", searchable: true },
-    { name: "Ano", value: "ano", searchable: false },
-    { name: "Tipo Log.", value: "tipo_logo", searchable: false },
-    { name: "Logradouro", value: "logradouro", searchable: true },
-    { name: "UF", value: "uf", searchable: false },
-    { name: "Cidade", value: "cidade", searchable: true },
-    { name: "Bairro", value: "bairro", searchable: true },
-    { name: "Cliente", value: "cliente.nome", searchable: true },
-    { name: "Proprietário", value: "proprietario.nome", searchable: true },
+    { name: "SP", value: "cod_obra" },
+    { name: "Ano", value: "ano" },
+    { name: "Endereço", value: "endereco" },
+    { name: "UF", value: "uf" },
+    { name: "Cidade", value: "cidade" },
+    { name: "Bairro", value: "bairro" },
+    { name: "Cliente", value: "cliente" },
+    { name: "Proprietário", value: "proprietario" },
   ],
 };
 
 export const usersStructure: TableStructure = {
   table: Tables.Users,
   columns: [
-    { name: "Nome", value: "name", searchable: true },
-    { name: "Email", value: "email", searchable: true },
-    { name: "Administrador", value: "isAdmin", searchable: false },
+    { name: "Nome", value: "name" },
+    { name: "Email", value: "email" },
+    { name: "Administrador", value: "isAdmin" },
   ],
 };
 

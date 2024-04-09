@@ -26,7 +26,7 @@ export const TableConstructor = ({
   const [isPending, startTransition] = useTransition();
 
   const page = Number(searchParams.get("page") || "1");
-  const rowsPerPage = Number(searchParams.get("numRows") || "10");
+  const rowsPerPage = Number(searchParams.get("numRows") || "50");
 
   useEffect(() => {
     startTransition(() => {

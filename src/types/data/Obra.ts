@@ -1,6 +1,18 @@
 import { Arquivo, Obra } from "@prisma/client";
 
-export type TableObra = Pick<
+export type TableObra = {
+  id: number;
+  cod_obra: string;
+  ano: number;
+  endereco: string;
+  bairro: string;
+  cidade: string;
+  uf: string;
+  cliente: string;
+  proprietario: string | null;
+};
+
+export type BaseObra = Pick<
   Obra,
   | "id"
   | "cod_obra"
@@ -20,7 +32,7 @@ export type TableObra = Pick<
 };
 
 // TODO: Add options for sondagem type
-export type ModifyObra = TableObra &
+export type ModifyObra = BaseObra &
   Pick<
     Obra,
     | "complemento_logo"
