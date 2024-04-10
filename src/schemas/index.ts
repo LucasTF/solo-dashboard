@@ -35,7 +35,7 @@ export const ObraModalSchema = z.object({
   cidade: z.string().max(40),
   tipo_logo: z.nativeEnum(Logradouro),
   logradouro: z.string().min(1, CANNOT_BE_EMPTY).max(100),
-  complemento: z.string().max(30),
+  complemento_logo: z.string().max(30),
   bairro: z.string().min(1, CANNOT_BE_EMPTY).max(40),
   lote: z.string().max(40),
   quadra: z.string().max(40),

@@ -111,14 +111,14 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
       console.log(formData);
-      // const response = await insertNewObra(formData);
-      // if (response.success) {
-      //   toast(response.message, { type: "success" });
-      //   reset();
-      // } else {
-      //   console.error(response.error);
-      //   toast(response.error, { type: "error" });
-      // }
+      const response = await insertNewObra(formData);
+      if (response.success) {
+        toast(response.message, { type: "success" });
+        reset();
+      } else {
+        console.error(response.error);
+        toast(response.error, { type: "error" });
+      }
     });
   };
 
@@ -194,7 +194,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
               >
                 {Object.values(Logradouro)
                   .filter((v) => isNaN(Number(v)))
-                  .map((log, index) => {
+                  .map((log) => {
                     const indexLog = Object.values(Logradouro).indexOf(
                       log as unknown as Logradouro
                     );
@@ -250,9 +250,9 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                 />
                 <Field.Input
                   label="Complemento"
-                  isInvalid={!!errors.complemento}
-                  errorMessage={errors.complemento?.message}
-                  {...register("complemento")}
+                  isInvalid={!!errors.complemento_logo}
+                  errorMessage={errors.complemento_logo?.message}
+                  {...register("complemento_logo")}
                 />
               </div>
               <Field.Input
@@ -308,7 +308,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
 
         <aside className="space-y-2 max-lg:mt-4">
           <TitledDivider title="Sondagens" />
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 xl:grid-rows-3 xl:grid-cols-1">
             <Button
               className="justify-start"
               color={sonPercussao ? "red" : "green"}

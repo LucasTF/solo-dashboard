@@ -29,3 +29,38 @@ export async function searchClientes(
     };
   }
 }
+
+export async function getClienteByName(name: string): Promise<Cliente | null> {
+  try {
+    const cliente: Cliente | null = await db.cliente.findFirst({
+      select: {
+        id: true,
+        nome: true,
+      },
+      where: {
+        nome: name,
+      },
+    });
+
+    return cliente;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function insertNewCliente(
+  clienteEntry: Omit<Cliente, "id">
+): Promise<DataResponse<Cliente>> {
+  // TODO: Add zod parsing
+  try {
+    const newCliente = await db.cliente.create({
+      data: clienteEntry,
+    });
+
+    return { success: true, data: newCliente };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "Não foi possível criar o cliente." };
+  }
+}
