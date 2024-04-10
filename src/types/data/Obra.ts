@@ -1,4 +1,7 @@
+import * as z from "zod";
+
 import { Arquivo, Obra } from "@prisma/client";
+import { ObraFormSchema } from "@/schemas";
 
 export type TableObra = {
   id: number;
@@ -10,6 +13,20 @@ export type TableObra = {
   uf: string;
   cliente: string;
   proprietario: string | null;
+};
+
+export type FormObra = z.infer<typeof ObraFormSchema>;
+
+export type InsertionObra = Omit<
+  FormObra,
+  | "cliente"
+  | "proprietario"
+  | "sondagem_percussao"
+  | "sondagem_rotativa"
+  | "sondagem_trado"
+> & {
+  clienteId: number;
+  proprietarioId: number | null;
 };
 
 export type BaseObra = Pick<

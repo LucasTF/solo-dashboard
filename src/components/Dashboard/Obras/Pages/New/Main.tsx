@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import { insertNewObra } from "@/lib/actions/data/obras";
-import { ObraModalSchema } from "@/schemas";
+import { ObraFormSchema } from "@/schemas";
 
 import Loading from "@/components/ui/Loading";
 import { Field } from "@/components/ui/Fields";
@@ -24,7 +24,7 @@ type NewObraMainProps = {
   ufs: UF[];
 };
 
-type Obra = z.infer<typeof ObraModalSchema>;
+type Obra = z.infer<typeof ObraFormSchema>;
 
 export const NewObraMain = ({ ufs }: NewObraMainProps) => {
   const year = new Date().getFullYear();
@@ -47,7 +47,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
     setValue,
     formState: { errors },
   } = useForm<Obra>({
-    resolver: zodResolver(ObraModalSchema),
+    resolver: zodResolver(ObraFormSchema),
   });
 
   const watchCodObra = watch("cod_obra", "");

@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import * as z from "zod";
 
 import { ModifyObra } from "@/types/data/Obra";
-import { ObraModalSchema } from "@/schemas";
+import { ObraFormSchema } from "@/schemas";
 import { Logradouro } from "@/enums/Logradouro";
 
 import Button from "@/components/ui/Button";
@@ -47,7 +47,7 @@ type EditObraFormProps = {
   closeModal: Function;
 };
 
-type ObraSchema = z.infer<typeof ObraModalSchema>;
+type ObraSchema = z.infer<typeof ObraFormSchema>;
 
 const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
   const year = new Date().getFullYear();
@@ -68,14 +68,14 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
     setValue,
     formState: { errors },
   } = useForm<ObraSchema>({
-    resolver: zodResolver(ObraModalSchema),
+    resolver: zodResolver(ObraFormSchema),
     defaultValues: {
       cod_obra: obra.cod_obra,
       ano: obra.ano,
       bairro: obra.bairro,
       tipo_logo: obra.tipo_logo as Logradouro,
       cliente: obra.cliente.nome,
-      complemento: obra.complemento_logo || "",
+      complemento_logo: obra.complemento_logo || "",
       logradouro: obra.logradouro,
       lote: obra.lote || "",
       num_obra: obra.num_obra || undefined,
@@ -288,9 +288,9 @@ const EditObraForm = ({ obra, closeModal }: EditObraFormProps) => {
               />
               <Field.Input
                 label="Complemento"
-                isInvalid={!!errors.complemento}
-                errorMessage={errors.complemento?.message}
-                {...register("complemento")}
+                isInvalid={!!errors.complemento_logo}
+                errorMessage={errors.complemento_logo?.message}
+                {...register("complemento_logo")}
               />
             </div>
             <Field.Input

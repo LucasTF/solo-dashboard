@@ -14,7 +14,7 @@ export const LoginSchema = z.object({
   password: z.string().min(1, INVALID_PASSWORD),
 });
 
-export const ObraModalSchema = z.object({
+export const ObraFormSchema = z.object({
   cod_obra: z
     .string()
     .min(8, "Deve conter apenas 8 caracteres")

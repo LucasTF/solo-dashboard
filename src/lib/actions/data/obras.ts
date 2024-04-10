@@ -1,20 +1,21 @@
 "use server";
 
-import * as z from "zod";
 import { cookies } from "next/headers";
 
 import { ServerResponse } from "@/types/ServerResponse";
-import { EntryObra, TableObra } from "@/types/data/Obra";
+import {
+  EntryObra,
+  FormObra,
+  InsertionObra,
+  TableObra,
+} from "@/types/data/Obra";
 
 import { db } from "@/lib/db";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 import { verifyJwt } from "@/lib/jwt";
-import { ObraModalSchema } from "@/schemas";
-import { getClienteByName, insertNewCliente } from "./clientes";
-import { Obra } from "@prisma/client";
+import { ObraFormSchema } from "@/schemas";
+import { getClienteByName } from "./clientes";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-
-type ObraData = z.infer<typeof ObraModalSchema>;
 
 export async function getTableObras() {
   try {
@@ -190,7 +191,7 @@ export async function searchObras(searchString: string) {
 
 export async function updateObra(
   id: number,
-  obra: ObraData
+  obra: FormObra
 ): Promise<ServerResponse> {
   const adminToken = cookies().get("adminJwt");
 
@@ -235,10 +236,10 @@ export async function updateObra(
 }
 
 export async function insertNewObra(
-  obraEntry: ObraData
+  obraEntry: FormObra
 ): Promise<ServerResponse> {
   try {
-    ObraModalSchema.parse(obraEntry);
+    ObraFormSchema.parse(obraEntry);
 
     let clienteId: number | null = null;
     let proprietarioId: number | null | undefined = undefined;
@@ -270,17 +271,7 @@ export async function insertNewObra(
         proprietarioId = newProprietario.id;
       } else if (proprietarioId === undefined) proprietarioId = null;
 
-      const data: Omit<
-        ObraData,
-        | "cliente"
-        | "proprietario"
-        | "sondagem_percussao"
-        | "sondagem_rotativa"
-        | "sondagem_trado"
-      > & {
-        clienteId: number;
-        proprietarioId: number | null;
-      } = {
+      const data: InsertionObra = {
         cod_obra: obraEntry.cod_obra,
         ano: obraEntry.ano,
         bairro: obraEntry.bairro,
