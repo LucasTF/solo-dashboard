@@ -12,9 +12,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 
-import { User } from "@prisma/client";
-
-import { useEntryStore } from "@/lib/stores/entry";
+import { EntryState, useEntryStore } from "@/lib/stores/entry";
 import { useSessionStore } from "@/lib/stores/session";
 
 import Modal from "@/components/ui/Modal";
@@ -22,6 +20,7 @@ import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { TitledDivider } from "@/components/ui/TitledDivider";
+import { EntryUser } from "@/types/data/User";
 
 const EditUserForm = lazy(() => import("./Modals/EditUser"));
 const ResetPasswordForm = lazy(() => import("./Modals/ResetPassword"));
@@ -52,16 +51,14 @@ export const UsersOptions = () => {
   const pathname = usePathname();
 
   const { session } = useSessionStore();
-  const { entry, clearEntry } = useEntryStore();
-
-  const user = entry?.data as User;
+  const { entry, clearEntry } = useEntryStore() as EntryState<EntryUser>;
 
   const modalBuilder = () => {
     switch (modal) {
       case ModalState.Edit:
         return (
           <EditUserForm
-            user={user}
+            user={entry!.data!}
             closeModal={() => setModal(ModalState.Off)}
           />
         );
@@ -70,24 +67,24 @@ export const UsersOptions = () => {
       case ModalState.ResetPassword:
         return (
           <ResetPasswordForm
-            userId={user.id}
+            userId={entry!.data!.id}
             closeModal={() => setModal(ModalState.Off)}
           />
         );
     }
   };
 
-  return (
-    <aside className={options({ open: entry !== null })}>
-      {entry && entry?.table === pathname && (
-        <div className="flex flex-col gap-4 m-4">
+  const optionsContent = () => {
+    if (entry && entry.table === pathname) {
+      return (
+        <>
           <button type="button" className="w-fit" onClick={() => clearEntry()}>
             <ArrowLeftIcon className="size-6" />
           </button>
           <div>
             <p className="text-center font-semibold">Usuário</p>
             <h2 className="font-bold text-center text-2xl">
-              {user ? user.name : <Skeleton className="h-9 w-full" />}
+              {entry.data?.name || <Skeleton className="h-9 w-full" />}
             </h2>
           </div>
 
@@ -97,7 +94,7 @@ export const UsersOptions = () => {
             color={resolvedTheme === "dark" ? "lightindigo" : "lightblue"}
             fontStrength="semibold"
             type="button"
-            disabled={!user}
+            disabled={!entry.data}
             onClick={() => setModal(ModalState.Edit)}
           >
             <PencilSquareIcon className="size-6" />
@@ -108,7 +105,7 @@ export const UsersOptions = () => {
             color={resolvedTheme === "dark" ? "lightindigo" : "lightblue"}
             fontStrength="semibold"
             type="button"
-            disabled={!user}
+            disabled={!entry.data}
             onClick={() => setModal(ModalState.ResetPassword)}
           >
             <LockClosedIcon className="size-6" />
@@ -119,19 +116,27 @@ export const UsersOptions = () => {
             color="red"
             fontStrength="semibold"
             type="button"
-            disabled={!user}
+            disabled={!entry.data}
             onClick={() => setModal(ModalState.Delete)}
           >
             <TrashIcon className="size-6" />
             Deletar usuário
           </Button>
-        </div>
+        </>
+      );
+    }
+  };
+
+  return (
+    <aside className={options({ open: entry !== null })}>
+      {entry && entry?.table === pathname && (
+        <div className="flex flex-col gap-4 m-4">{optionsContent()}</div>
       )}
 
       {session &&
         createPortal(
           <Modal
-            title={`${user?.email} - ${modal.toString()}`}
+            title={`${entry?.data?.email} - ${modal.toString()}`}
             visible={modal !== ModalState.Off}
             onClose={() => setModal(ModalState.Off)}
           >

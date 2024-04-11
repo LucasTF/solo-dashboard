@@ -20,22 +20,13 @@ type DeleteFileProps = {
 const DeleteFile = ({ file, closeModal }: DeleteFileProps) => {
   const [isPending, startTransition] = useTransition();
 
-  const { updateEntry } = useEntryStore();
+  const { refreshEntry } = useEntryStore();
 
   const deleteFileHandler = () => {
     startTransition(async () => {
       const response = await deleteFile(file.id);
       if (response.success) {
-        updateEntry((prevState) => {
-          if (prevState) {
-            const data = prevState.data as EntryObra;
-            if (data.arquivos) {
-              const index = data.arquivos.indexOf(file);
-              data.arquivos.splice(index, 1);
-            }
-            return { ...prevState, data };
-          } else return prevState;
-        });
+        refreshEntry();
         toast(response.message, { type: "success" });
       } else toast(response.error, { type: "error" });
       closeModal();

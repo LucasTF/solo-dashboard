@@ -14,11 +14,13 @@ export const LoginSchema = z.object({
   password: z.string().min(1, INVALID_PASSWORD),
 });
 
+export const CodObraSchema = z
+  .string()
+  .min(8, "Deve conter, no mínimo, 8 caracteres.")
+  .max(11, "Deve conter, no máximo, 11 caracteres.");
+
 export const ObraFormSchema = z.object({
-  cod_obra: z
-    .string()
-    .min(8, "Deve conter apenas 8 caracteres")
-    .max(8, "Deve conter apenas 8 caracteres"),
+  cod_obra: CodObraSchema,
   num_obra: z.coerce.number().int().min(1, GREATER_THAN_0).max(999),
   ano: z.coerce.number().int().positive().min(1980),
   data_inicio: z.coerce.date({

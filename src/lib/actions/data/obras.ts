@@ -13,7 +13,7 @@ import {
 import { db } from "@/lib/db";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 import { verifyJwt } from "@/lib/jwt";
-import { ObraFormSchema } from "@/schemas";
+import { CodObraSchema, ObraFormSchema } from "@/schemas";
 import { getClienteByName } from "./clientes";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
@@ -71,6 +71,36 @@ export async function getObraById(id: number) {
   try {
     const obra: EntryObra | null = await db.obra.findUnique({
       where: { id },
+      include: {
+        cliente: {
+          select: {
+            id: true,
+            nome: true,
+          },
+        },
+        proprietario: {
+          select: {
+            id: true,
+            nome: true,
+          },
+        },
+        arquivos: true,
+      },
+    });
+
+    return obra;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getObraByCod(cod_obra: string) {
+  try {
+    CodObraSchema.parse(cod_obra);
+
+    const obra: EntryObra | null = await db.obra.findUnique({
+      where: { cod_obra },
       include: {
         cliente: {
           select: {

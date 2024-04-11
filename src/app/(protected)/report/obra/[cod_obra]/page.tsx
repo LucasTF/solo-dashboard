@@ -1,21 +1,18 @@
-import { getObraById } from "@/lib/actions/data/obras";
+import { getObraByCod } from "@/lib/actions/data/obras";
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
 type ReportProps = {
-  params: { id: string };
+  params: { cod_obra: string };
 };
 
 export async function generateMetadata({
   params,
 }: ReportProps): Promise<Metadata> {
-  const id = Number(params.id);
-  if (isNaN(id)) {
-    return { title: "Relatório não encontrado." };
-  }
+  const codObra = params.cod_obra;
 
-  const obra = await getObraById(Number(id));
+  const obra = await getObraByCod(decodeURIComponent(codObra));
 
   if (obra) {
     return {
@@ -27,11 +24,9 @@ export async function generateMetadata({
 }
 
 export default async function Report({ params }: ReportProps) {
-  const id = Number(params.id);
+  const codObra = params.cod_obra;
 
-  if (isNaN(id)) notFound();
-
-  const obra = await getObraById(Number(params.id));
+  const obra = await getObraByCod(decodeURIComponent(codObra));
 
   if (!obra) notFound();
 
@@ -56,7 +51,7 @@ export default async function Report({ params }: ReportProps) {
             Endereço:{" "}
             <span className="font-normal">{`${obra.tipo_logo} ${
               obra.logradouro || "N/A"
-            }`}</span>
+            } ${obra.complemento_logo}`}</span>
           </h3>
           <h3 className="text-2xl font-bold">
             Bairro: <span className="font-normal">{obra.bairro || "N/A"}</span>

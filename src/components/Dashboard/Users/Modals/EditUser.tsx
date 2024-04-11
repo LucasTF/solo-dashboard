@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { User } from "@prisma/client";
+import { EntryUser, FormEditUser } from "@/types/data/User";
 
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Fields";
@@ -13,10 +13,8 @@ import { UserEditModalSchema } from "@/schemas";
 import { updateUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
 
-type UserForm = Omit<User, "id" | "password">;
-
 type EditUserProps = {
-  user: User;
+  user: EntryUser;
   closeModal: Function;
 };
 
@@ -27,7 +25,7 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserForm>({
+  } = useForm<FormEditUser>({
     resolver: zodResolver(UserEditModalSchema),
     defaultValues: {
       name: user.name,
@@ -36,7 +34,7 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
     },
   });
 
-  const submitHandler = (formData: UserForm) => {
+  const submitHandler = (formData: FormEditUser) => {
     startTransition(async () => {
       const response = await updateUser(user.id, formData);
       if (response.success) {

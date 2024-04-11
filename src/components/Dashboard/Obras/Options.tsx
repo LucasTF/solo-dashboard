@@ -14,9 +14,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-import { Arquivo, Obra } from "@prisma/client";
+import { Arquivo } from "@prisma/client";
 
-import { useEntryStore } from "@/lib/stores/entry";
+import { EntryState, useEntryStore } from "@/lib/stores/entry";
 import { useSessionStore } from "@/lib/stores/session";
 
 import Button, { ButtonLink } from "@/components/ui/Button";
@@ -57,22 +57,24 @@ export const ObrasOptions = () => {
   const pathname = usePathname();
 
   const { session } = useSessionStore();
-  const { entry, clearEntry } = useEntryStore();
 
-  const obra = entry?.data as EntryObra;
+  const { entry, clearEntry } = useEntryStore() as EntryState<EntryObra>;
 
   const modalBuilder = () => {
     switch (modal) {
       case ModalState.Edit:
         return (
           <EditObraForm
-            obra={obra}
+            obra={entry!.data!}
             closeModal={() => setModal(ModalState.Off)}
           />
         );
       case ModalState.Upload:
         return (
-          <Upload obra={obra} closeModal={() => setModal(ModalState.Off)} />
+          <Upload
+            obra={entry!.data!}
+            closeModal={() => setModal(ModalState.Off)}
+          />
         );
       case ModalState.DeleteFile:
         return (
@@ -84,10 +86,10 @@ export const ObrasOptions = () => {
     }
   };
 
-  return (
-    <aside className={options({ open: entry !== null })}>
-      {entry && entry?.table === pathname && (
-        <div className="flex flex-col gap-4 m-4">
+  const optionsContent = () => {
+    if (entry && entry.table === pathname) {
+      return (
+        <>
           <button type="button" className="w-fit" onClick={() => clearEntry()}>
             <ArrowLeftIcon className="size-6" />
           </button>
@@ -95,7 +97,11 @@ export const ObrasOptions = () => {
           <div>
             <p className="text-center font-semibold">Obra</p>
             <h2 className="font-bold text-center text-4xl lg:text-2xl xl:text-3xl">
-              {obra ? obra.cod_obra : <Skeleton className="w-full" />}
+              {entry.data ? (
+                entry.data.cod_obra
+              ) : (
+                <Skeleton className="w-full" />
+              )}
             </h2>
           </div>
 
@@ -107,7 +113,7 @@ export const ObrasOptions = () => {
                 color={resolvedTheme === "dark" ? "lightindigo" : "lightblue"}
                 fontStrength="semibold"
                 type="button"
-                disabled={!obra}
+                disabled={!entry.data}
                 onClick={() => setModal(ModalState.Edit)}
               >
                 <PencilSquareIcon className="size-6" />
@@ -118,7 +124,7 @@ export const ObrasOptions = () => {
                 color="red"
                 fontStrength="semibold"
                 type="button"
-                disabled={!obra}
+                disabled={!entry.data}
                 onClick={() => setModal(ModalState.Upload)}
               >
                 <ArrowUpOnSquareStackIcon className="size-6" />
@@ -132,9 +138,9 @@ export const ObrasOptions = () => {
           <ButtonLink
             color="green"
             fontStrength="semibold"
-            disabled={!obra}
+            disabled={!entry.data}
             href={`https://maps.google.com/?q=${encodeURIComponent(
-              obra?.tipo_logo + " " + obra?.logradouro
+              entry.data?.tipo_logo + " " + entry.data?.logradouro
             )}`}
             rel="noopener noreferrer"
             target="_blank"
@@ -146,25 +152,28 @@ export const ObrasOptions = () => {
           <ButtonLink
             color={resolvedTheme === "dark" ? "indigo" : "blue"}
             fontStrength="semibold"
-            href={`/report/obra/${entry.id}`}
+            disabled={!entry.data}
+            href={`/report/obra/${encodeURIComponent(
+              entry.data?.cod_obra as string
+            )}`}
             target="_blank"
           >
             <DocumentTextIcon className="size-6" />
             Relatório
           </ButtonLink>
 
-          {obra && obra.arquivos && obra.arquivos.length > 0 && (
+          {entry.data?.arquivos && entry.data.arquivos.length > 0 && (
             <>
               <TitledDivider title="Arquivos" />
 
               <ul>
-                {obra?.arquivos.map((arquivo) => (
+                {entry.data.arquivos.map((arquivo) => (
                   <li key={arquivo.id}>
                     <div className="flex justify-between items-center gap-2">
                       <FileLink
                         title={arquivo.nome}
                         href={`${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${
-                          obra.ano
+                          entry.data?.ano
                         }/${encodeURIComponent(arquivo.nome)}`}
                         className="text-xs"
                       />
@@ -183,13 +192,19 @@ export const ObrasOptions = () => {
               </ul>
             </>
           )}
-        </div>
-      )}
+        </>
+      );
+    }
+  };
+
+  return (
+    <aside className={options({ open: entry !== null })}>
+      <div className="flex flex-col gap-4 m-4">{optionsContent()}</div>
 
       {session &&
         createPortal(
           <Modal
-            title={`Obra ${obra?.cod_obra} - ${modal.toString()}`}
+            title={`Obra ${entry?.data?.cod_obra} - ${modal.toString()}`}
             visible={modal !== ModalState.Off}
             onClose={() => setModal(ModalState.Off)}
           >

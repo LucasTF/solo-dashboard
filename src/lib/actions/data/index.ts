@@ -59,5 +59,7 @@ export async function getEntryData(table: Tables, id: number) {
     case Tables.Users:
       const user = await getUserById(id);
       return user;
+    default:
+      return null;
   }
 }

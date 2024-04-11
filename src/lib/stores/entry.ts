@@ -1,22 +1,32 @@
-import { Entry } from "@/types/Entry";
 import { create } from "zustand";
 import { getEntryData } from "../actions/data";
-import { Tables } from "@/lib/structures";
+import { Tables } from "../structures";
 
-type EntryState = {
-  entry: Entry | null;
+export type Entry<T> = {
+  table: Tables;
+  id: number;
+  tableIndex: number;
+  data: T | null;
+};
+
+export type EntryState<T> = {
+  entry: Entry<T> | null;
   setEntry: (table: Tables, id: number, tableIndex: number) => void;
-  updateEntry: (fn: (prevState: Entry | null) => Entry | null) => void;
+  refreshEntry: () => void;
   clearEntry: () => void;
 };
 
-export const useEntryStore = create<EntryState>((set, get) => ({
+export const useEntryStore = create<EntryState<unknown>>((set, get) => ({
   entry: null,
   setEntry: async (table, id, tableIndex) => {
-    set({ entry: { id, table, tableIndex } });
+    set({ entry: { id, table, tableIndex, data: null } });
     const data = await getEntryData(table, id);
     if (data) set({ entry: { id, table, tableIndex, data } });
   },
-  updateEntry: (fn) => set((state) => ({ entry: fn(state.entry) })),
+  refreshEntry: () => {
+    const currEntry = get().entry;
+    if (!currEntry) return;
+    get().setEntry(currEntry.table, currEntry.id, currEntry.tableIndex);
+  },
   clearEntry: () => set((state) => ({ entry: null })),
 }));

@@ -20,7 +20,7 @@ const Upload = ({ obra, closeModal }: UploadProps) => {
   const [fileList, setFileList] = useState<FileList | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const { updateEntry } = useEntryStore();
+  const { refreshEntry } = useEntryStore();
 
   const files = fileList ? [...fileList] : [];
 
@@ -48,18 +48,7 @@ const Upload = ({ obra, closeModal }: UploadProps) => {
 
       if (resJson.success) {
         console.log(resJson.data);
-        updateEntry((prevState) => {
-          if (prevState) {
-            const entryData = prevState.data as EntryObra;
-            entryData.arquivos = resJson.data;
-            return {
-              id: prevState.id,
-              table: prevState.table,
-              tableIndex: prevState.tableIndex,
-              data: entryData,
-            };
-          } else return prevState;
-        });
+        refreshEntry();
         setFileList(null);
         toast(resJson.message, { type: "success" });
       } else {
