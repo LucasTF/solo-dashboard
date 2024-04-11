@@ -25,10 +25,17 @@ export async function generateMetadata({
 
 export default async function Report({ params }: ReportProps) {
   const codObra = params.cod_obra;
-
   const obra = await getObraByCod(decodeURIComponent(codObra));
-
   if (!obra) notFound();
+
+  const fullAddress = () => {
+    let fullAddress = "";
+    if (obra.tipo_logo) fullAddress = obra.tipo_logo;
+    fullAddress = fullAddress + " " + obra.logradouro;
+    if (obra.complemento_logo)
+      fullAddress = fullAddress + " " + obra.complemento_logo;
+    return fullAddress;
+  };
 
   return (
     <div className="bg-white block m-4 overflow-hidden divide-y-2 divide-black w-[210mm] h-[297mm]">
@@ -43,90 +50,75 @@ export default async function Report({ params }: ReportProps) {
         <h1 className="font-serif text-4xl">Consulta de Obras Executadas</h1>
       </header>
       <main className="divide-y-2 divide-black">
-        <section className="p-8 space-y-4">
+        <section className="py-4 px-8 space-y-4">
+          <h2 className="text-4xl text-center font-semibold">
+            {obra.cod_obra}
+          </h2>
           <h3 className="text-2xl font-bold">
-            Cidade: <span className="font-normal">{obra.cidade || "N/A"}</span>
+            Cidade:{" "}
+            <span className="font-normal">
+              {obra.cidade} - {obra.uf}
+            </span>
           </h3>
           <h3 className="text-2xl font-bold">
-            Endereço:{" "}
-            <span className="font-normal">{`${obra.tipo_logo} ${
-              obra.logradouro || "N/A"
-            } ${obra.complemento_logo}`}</span>
+            Endereço: <span className="font-normal">{fullAddress()}</span>
           </h3>
           <h3 className="text-2xl font-bold">
-            Bairro: <span className="font-normal">{obra.bairro || "N/A"}</span>
+            Bairro: <span className="font-normal">{obra.bairro}</span>
           </h3>
         </section>
 
-        <section className="p-8 grid grid-cols-2 grid-rows-2 gap-4">
-          <aside className="space-y-4">
-            <h3 className="text-2xl font-bold">
-              SP:{" "}
-              <span className="font-normal">
-                {/* TODO: Get Sondagem data */}
-              </span>
-            </h3>
-            <h3 className="text-2xl font-bold">
-              SR:{" "}
-              <span className="font-normal">
-                {/* TODO: Get Sondagem data */}
-              </span>
-            </h3>
-          </aside>
+        {obra.sondagem_percussao && (
+          <section className="p-8 space-y-4">
+            <h2 className="text-2xl font-bold">Sondagem Percussão</h2>
+            <div className="grid grid-flow-col gap-4 text-xl">
+              <div className="flex space-x-4">
+                <p className="font-bold">Furos:</p>
+                <span>{obra.sondagem_percussao.furos}</span>
+              </div>
+              <div className="flex space-x-4">
+                <p className="font-bold">Metros:</p>
+                <span>{obra.sondagem_percussao.metros}</span>
+              </div>
+            </div>
+          </section>
+        )}
 
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold">
-              Metros:{" "}
-              <span className="font-normal">
-                {/* TODO: Get Sondagem data */}
-              </span>
-            </h3>
-            {/* TODO: Get Sondagem data */}
-            {/* {obra.sp_sondagem! > 0 && (
-              <h3 className="text-2xl font-bold">
-                Média:{" "}
-                <span className="font-normal">
-                  {(obra.metros_sp_sondagem! / obra.sp_sondagem!).toPrecision(
-                    4
-                  )}
-                </span>
-              </h3>
-            )} */}
-            <h3 className="text-2xl font-bold">
-              Metros Solo:{" "}
-              <span className="font-normal">
-                {/* TODO: Get Sondagem data */}
-              </span>
-            </h3>
-            <h3 className="text-2xl font-bold">
-              Metros Rocha:{" "}
-              <span className="font-normal">
-                {/* TODO: Get Sondagem data */}
-              </span>
-            </h3>
-          </div>
+        {obra.sondagem_trado && (
+          <section className="p-8 space-y-4">
+            <h2 className="text-2xl font-bold">Sondagem Trado</h2>
+            <div className="grid grid-flow-col gap-4 text-xl">
+              <div className="flex space-x-4">
+                <p className="font-bold">Furos:</p>
+                <span>{obra.sondagem_trado.furos}</span>
+              </div>
+              <div className="flex space-x-4">
+                <p className="font-bold">Metros:</p>
+                <span>{obra.sondagem_trado.metros}</span>
+              </div>
+            </div>
+          </section>
+        )}
 
-          <aside className="space-y-4">
-            <h3 className="text-2xl font-bold">
-              Ponteiras: <span className="font-normal">{"N/A"}</span>
-            </h3>
-            <h3 className="text-2xl font-bold">
-              Tirantes: <span className="font-normal">{"N/A"}</span>
-            </h3>
-          </aside>
-
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold">
-              Equipamentos: <span className="font-normal">{"N/A"}</span>
-            </h3>
-            <h3 className="text-2xl font-bold">
-              Tipo: <span className="font-normal">{"N/A"}</span>
-            </h3>
-            <h3 className="text-2xl font-bold">
-              Carga: <span className="font-normal">{"N/A"}</span>
-            </h3>
-          </div>
-        </section>
+        {obra.sondagem_rotativa && (
+          <section className="p-8 space-y-4">
+            <h2 className="text-2xl font-bold">Sondagem Rotativa</h2>
+            <div className="grid grid-flow-col gap-4 text-xl">
+              <div className="flex space-x-4">
+                <p className="font-bold">Furos:</p>
+                <span>{obra.sondagem_rotativa.furos}</span>
+              </div>
+              <div className="flex space-x-4">
+                <p className="font-bold">Metros Solo:</p>
+                <span>{obra.sondagem_rotativa.metros_solo}</span>
+              </div>
+              <div className="flex space-x-4">
+                <p className="font-bold">Metros Rocha:</p>
+                <span>{obra.sondagem_rotativa.metros_rocha}</span>
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="p-8 space-y-4">
           <h3 className="text-2xl font-bold">

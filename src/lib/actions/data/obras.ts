@@ -99,7 +99,7 @@ export async function getObraByCod(cod_obra: string) {
   try {
     CodObraSchema.parse(cod_obra);
 
-    const obra: EntryObra | null = await db.obra.findUnique({
+    const obra = await db.obra.findUnique({
       where: { cod_obra },
       include: {
         cliente: {
@@ -115,6 +115,9 @@ export async function getObraByCod(cod_obra: string) {
           },
         },
         arquivos: true,
+        sondagem_percussao: true,
+        sondagem_trado: true,
+        sondagem_rotativa: true,
       },
     });
 
