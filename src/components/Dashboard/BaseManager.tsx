@@ -31,7 +31,6 @@ export const BaseManager = ({
         fontStrength="semibold"
         type="button"
         onClick={() => toggleModal(true)}
-        className="ml-auto"
       >
         <PlusCircleIcon className="size-6" />
         {title}

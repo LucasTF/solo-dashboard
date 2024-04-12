@@ -1,15 +1,18 @@
 "use client";
 
 import { Municipio, UF } from "@/types/data/Ibge";
+import { FullObra } from "@/types/data/Obra";
 import { Logradouro } from "@/enums/Logradouro";
+import { Sondagem } from "@/enums/Sondagem";
 
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import * as z from "zod";
 
-import { insertNewObra } from "@/lib/actions/data/obras";
+import { insertNewObra, updateObra } from "@/lib/actions/data/obras";
 import { ObraFormSchema } from "@/schemas";
 
 import Loading from "@/components/ui/Loading";
@@ -17,24 +20,24 @@ import { Field } from "@/components/ui/Fields";
 import Button from "@/components/ui/Button";
 import { TitledDivider } from "@/components/ui/TitledDivider";
 import { getMunicipios } from "@/lib/actions/data/external/ibge";
-import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
-import { Sondagem } from "@/enums/Sondagem";
+import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 
 type NewObraMainProps = {
   ufs: UF[];
+  obra: FullObra;
 };
 
-type Obra = z.infer<typeof ObraFormSchema>;
+type OFSchema = z.infer<typeof ObraFormSchema>;
 
-export const NewObraMain = ({ ufs }: NewObraMainProps) => {
+export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
   const year = new Date().getFullYear();
   const years = Array.from(new Array(45), (_, index) => year - index);
 
   const [municipios, setMunicipios] = useState<Municipio[]>([]);
 
-  const [sonPercussao, setSonPercussao] = useState(true);
-  const [sonTrado, setSonTrado] = useState(false);
-  const [sonRotativa, setSonRotativa] = useState(false);
+  const [sonPercussao, setSonPercussao] = useState(!!obra.sondagem_percussao);
+  const [sonTrado, setSonTrado] = useState(!!obra.sondagem_trado);
+  const [sonRotativa, setSonRotativa] = useState(!!obra.sondagem_rotativa);
 
   const [isPending, startTransition] = useTransition();
 
@@ -46,8 +49,24 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<Obra>({
+  } = useForm<OFSchema>({
     resolver: zodResolver(ObraFormSchema),
+    defaultValues: {
+      ano: obra.ano,
+      bairro: obra.bairro,
+      uf: obra.uf,
+      cod_obra: obra.cod_obra,
+      tipo_logo: (obra.tipo_logo || "") as unknown as Logradouro,
+      complemento_logo: obra.complemento_logo || "",
+      cliente: obra.cliente.nome,
+      proprietario: obra.proprietario?.nome || "",
+      data_inicio: formatYYYYMMDD(obra.data_inicio) as unknown as Date,
+      data_fim: formatYYYYMMDD(obra.data_fim) as unknown as Date,
+      logradouro: obra.logradouro,
+      lote: obra.lote || "",
+      quadra: obra.quadra || "",
+      num_obra: obra.num_obra,
+    },
   });
 
   const watchCodObra = watch("cod_obra", "");
@@ -104,10 +123,10 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
     }
   };
 
-  const submitHandler = (formData: Obra) => {
+  const submitHandler = (formData: OFSchema) => {
     startTransition(async () => {
       console.log(formData);
-      const response = await insertNewObra(formData);
+      const response = await updateObra(obra.id, formData);
       if (response.success) {
         toast(response.message, { type: "success" });
         reset();
@@ -223,11 +242,11 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                 errorMessage={errors.cidade?.message}
                 {...register("cidade")}
               >
-                {watchUf === "SP" && (
-                  <option value="São Paulo">São Paulo</option>
+                {watchUf === obra.uf && (
+                  <option value={obra.cidade}>{obra.cidade}</option>
                 )}
                 {municipios.map((municipio) => {
-                  if (municipio.nome === "São Paulo") return;
+                  if (municipio.nome === obra.cidade) return;
                   return (
                     <option key={municipio.id} value={municipio.nome}>
                       {municipio.nome}
@@ -297,7 +316,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
 
           <section className="max-xl:hidden flex flex-row-reverse mt-4">
             <Button color="green" fontStrength="semibold" type="submit">
-              Cadastrar nova obra
+              Confirmar alterações
             </Button>
           </section>
         </section>
@@ -360,6 +379,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                   {...register("sondagem_percussao.furos", {
                     valueAsNumber: true,
                   })}
+                  defaultValue={obra.sondagem_percussao?.furos}
                 />
                 <Field.Input
                   label="Metros"
@@ -368,6 +388,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                   {...register("sondagem_percussao.metros", {
                     valueAsNumber: true,
                   })}
+                  defaultValue={obra.sondagem_percussao?.metros}
                 />
               </div>
             </>
@@ -383,6 +404,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                   {...register("sondagem_trado.furos", {
                     valueAsNumber: true,
                   })}
+                  defaultValue={obra.sondagem_trado?.furos}
                 />
                 <Field.Input
                   label="Metros"
@@ -391,6 +413,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                   {...register("sondagem_trado.metros", {
                     valueAsNumber: true,
                   })}
+                  defaultValue={obra.sondagem_trado?.metros}
                 />
               </div>
             </>
@@ -406,6 +429,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                   {...register("sondagem_rotativa.furos", {
                     valueAsNumber: true,
                   })}
+                  defaultValue={obra.sondagem_rotativa?.furos}
                 />
                 <Field.Input
                   label="Metros Solo"
@@ -414,6 +438,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                   {...register("sondagem_rotativa.metros_solo", {
                     valueAsNumber: true,
                   })}
+                  defaultValue={obra.sondagem_rotativa?.metros_solo}
                 />
                 <Field.Input
                   label="Metros Rocha"
@@ -422,6 +447,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                   {...register("sondagem_rotativa.metros_rocha", {
                     valueAsNumber: true,
                   })}
+                  defaultValue={obra.sondagem_rotativa?.metros_rocha}
                 />
               </div>
             </>
@@ -429,7 +455,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
         </aside>
         <section className="xl:hidden flex flex-row-reverse mt-4">
           <Button color="green" fontStrength="semibold" type="submit">
-            Cadastrar nova obra
+            Confirmar alterações
           </Button>
         </section>
       </form>

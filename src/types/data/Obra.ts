@@ -1,6 +1,13 @@
 import * as z from "zod";
 
-import { Arquivo, Obra } from "@prisma/client";
+import {
+  Arquivo,
+  Cliente,
+  Obra,
+  Sondagem_Percussao,
+  Sondagem_Rotativa,
+  Sondagem_Trado,
+} from "@prisma/client";
 import { ObraFormSchema } from "@/schemas";
 
 export type TableObra = {
@@ -29,37 +36,6 @@ export type InsertionObra = Omit<
   proprietarioId: number | null;
 };
 
-export type BaseObra = Pick<
-  Obra,
-  | "id"
-  | "cod_obra"
-  | "ano"
-  | "tipo_logo"
-  | "logradouro"
-  | "cidade"
-  | "bairro"
-  | "uf"
-> & {
-  cliente: {
-    nome: string;
-  };
-  proprietario: {
-    nome: string;
-  } | null;
-};
-
-// TODO: Add options for sondagem type
-export type ModifyObra = BaseObra &
-  Pick<
-    Obra,
-    | "complemento_logo"
-    | "quadra"
-    | "num_obra"
-    | "data_inicio"
-    | "data_fim"
-    | "lote"
-  >;
-
 export type EntryObra = Omit<Obra, "clienteId" | "proprietarioId"> & {
   arquivos: Arquivo[] | null;
   cliente: {
@@ -70,4 +46,13 @@ export type EntryObra = Omit<Obra, "clienteId" | "proprietarioId"> & {
     id: number;
     nome: string;
   } | null;
+};
+
+export type FullObra = Obra & {
+  cliente: Cliente;
+  proprietario: Cliente | null;
+  arquivos: Arquivo[];
+  sondagem_percussao: Sondagem_Percussao | null;
+  sondagem_trado: Sondagem_Trado | null;
+  sondagem_rotativa: Sondagem_Rotativa | null;
 };

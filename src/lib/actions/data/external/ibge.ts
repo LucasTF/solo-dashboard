@@ -1,9 +1,8 @@
 "use server";
 
-import { DataResponse } from "@/types/ServerResponse";
 import { Municipio, UF } from "@/types/data/Ibge";
 
-export async function getUfs(): Promise<DataResponse<UF[]>> {
+export async function getUfs(): Promise<UF[]> {
   try {
     const ufData = await fetch(
       "https://servicodados.ibge.gov.br/api/v1/localidades/estados",
@@ -12,19 +11,14 @@ export async function getUfs(): Promise<DataResponse<UF[]>> {
 
     const ufJson = await ufData.json();
 
-    return { success: true, data: ufJson };
+    return ufJson;
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      error: "Não foi possível recuperar os dados de estados.",
-    };
+    return [];
   }
 }
 
-export async function getMunicipios(
-  uf: string
-): Promise<DataResponse<Municipio[]>> {
+export async function getMunicipios(uf: string): Promise<Municipio[]> {
   try {
     const muniData = await fetch(
       `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`,
@@ -33,12 +27,9 @@ export async function getMunicipios(
 
     const muniJson = await muniData.json();
 
-    return { success: true, data: muniJson };
+    return muniJson;
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      error: "Não foi possível recuperar os dados de Municípios.",
-    };
+    return [];
   }
 }

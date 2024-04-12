@@ -28,12 +28,10 @@ import { TitledDivider } from "@/components/ui/TitledDivider";
 import { EntryObra } from "@/types/data/Obra";
 
 const DeleteFile = lazy(() => import("./Modals/DeleteFile"));
-const EditObraForm = lazy(() => import("./Modals/EditObra"));
 const Upload = lazy(() => import("./Modals/Upload"));
 
 enum ModalState {
   Off,
-  Edit = "Editar Obra",
   Upload = "Upload de arquivos",
   DeleteFile = "Deletar arquivo",
 }
@@ -62,13 +60,6 @@ export const ObrasOptions = () => {
 
   const modalBuilder = () => {
     switch (modal) {
-      case ModalState.Edit:
-        return (
-          <EditObraForm
-            obra={entry!.data!}
-            closeModal={() => setModal(ModalState.Off)}
-          />
-        );
       case ModalState.Upload:
         return (
           <Upload
@@ -109,16 +100,19 @@ export const ObrasOptions = () => {
             <>
               <TitledDivider title="Opções" />
 
-              <Button
+              <ButtonLink
                 color={resolvedTheme === "dark" ? "lightindigo" : "lightblue"}
                 fontStrength="semibold"
                 type="button"
                 disabled={!entry.data}
-                onClick={() => setModal(ModalState.Edit)}
+                onClick={() => clearEntry()}
+                href={`/dashboard/obras/edit/${encodeURIComponent(
+                  entry.data?.cod_obra as string
+                )}`}
               >
                 <PencilSquareIcon className="size-6" />
                 Editar obra
-              </Button>
+              </ButtonLink>
 
               <Button
                 color="red"
