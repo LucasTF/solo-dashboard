@@ -24,7 +24,7 @@ export const BaseSearch = ({
 }: SearchProps) => {
   return (
     <form
-      className="flex gap-4 relative max-h-12"
+      className="flex gap-4 relative max-h-12 md:max-w-[32rem] md:flex-grow"
       onSubmit={onSubmit}
       {...rest}
     >
