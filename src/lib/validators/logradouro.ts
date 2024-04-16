@@ -13,7 +13,8 @@ export function isValidLogradouro(logradouro: string): boolean {
 }
 
 export function isValidNumberedLogradouro(logradouro: string): boolean {
-  const logNumRegex = /^[a-zA-Z\u00C0-\u024F\s\-']+,\s*\d+$/;
+  const logNumRegex =
+    /^[a-zA-Z\u00C0-\u024F\s\-\p{Nd}]+,\s\d+\s*(?:\s*\/\s*\d+)*$/;
 
   if (logNumRegex.test(logradouro)) {
     return true;
@@ -25,9 +26,10 @@ export function isValidNumberedLogradouro(logradouro: string): boolean {
 export function splitAddress(logradouro: string): [string, number] {
   if (isValidNumberedLogradouro(logradouro)) {
     const splitString = logradouro.split(",");
-    let logNumber = splitString[1];
-    logNumber = logNumber.trim();
-    return [splitString[0], Number(logNumber)];
+    let logNumbers = splitString[1];
+    logNumbers = logNumbers.trim();
+    const logNumbersList = logNumbers.split("/");
+    return [splitString[0], Number(logNumbersList[0])];
   }
 
   throw new Error("Invalid string.");
