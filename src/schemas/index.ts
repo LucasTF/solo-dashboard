@@ -39,6 +39,7 @@ export const ObraFormSchema = z.object({
   logradouro: z.string().min(1, CANNOT_BE_EMPTY).max(100),
   complemento_logo: z.string().max(30),
   bairro: z.string().min(1, CANNOT_BE_EMPTY).max(40),
+  cep: z.string().min(9, CANNOT_BE_EMPTY).max(9),
   lote: z.string().max(40),
   quadra: z.string().max(40),
   proprietario: z.string().max(60),

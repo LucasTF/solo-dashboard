@@ -36,7 +36,7 @@ export const TableArea = async ({
 
   if (!showAllData) {
     return (
-      <main className="h-48 rounded-md mt-4 flex flex-col items-center justify-center text-gray-400">
+      <main className="h-48 rounded-md mt-4 flex flex-col items-center justify-center text-gray-400 select-none">
         <TableCellsIcon className="size-24" />
         <p>Faça uma busca para começar</p>
       </main>
