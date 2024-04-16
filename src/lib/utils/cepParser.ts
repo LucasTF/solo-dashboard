@@ -1,27 +1,32 @@
 import { Viacep } from "@/types/data/Viacep";
 
-export function identifyCep(vceps: Viacep[], numEndereco: number): string {
-  if (vceps.length === 1) return vceps[0].cep;
+export function identifyCep(
+  vceps: Viacep[],
+  numEndereco: number
+): Viacep | null {
+  if (vceps.length === 1) return vceps[0];
 
-  let returnCep;
+  let returnCep: Viacep | null = null;
   for (let i = 0; i < vceps.length; i++) {
     const vcep = vceps[i];
     const cepNum = Number(vcep.complemento);
-    if (!isNaN(cepNum) && cepNum === numEndereco) return vcep.cep;
+    if (!isNaN(cepNum) && cepNum === numEndereco) return vcep;
+
+    if (vcep.complemento.length === 0) return vcep;
 
     if (
       vcep.complemento.startsWith("até") &&
       withinStartRange(vcep, numEndereco)
     )
-      returnCep = vcep.cep;
+      returnCep = vcep;
     else if (
       vcep.complemento.startsWith("de") &&
       withinRange(vcep, numEndereco)
     )
-      return (returnCep = vcep.cep);
+      return (returnCep = vcep);
   }
 
-  return returnCep || "";
+  return returnCep || null;
 }
 
 function withinStartRange(vcep: Viacep, numEndereco: number): boolean {
@@ -88,11 +93,3 @@ function getNumbers(sampleString: string): number[] {
 
   return numbers;
 }
-
-// de X a Y - COMPLETED
-// de X/Y a W/Z - COMPLETED
-// de X/Y ao fim
-// X - COMPLETED
-// até X/Y - COMPLETED
-// Vazio - COMPLETED
-// lado impar/par - COMPLETED

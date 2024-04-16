@@ -14,12 +14,18 @@ import * as z from "zod";
 
 import { insertNewObra } from "@/lib/actions/data/obras";
 import { getMunicipios } from "@/lib/actions/data/external/ibge";
+import { identifyCep } from "@/lib/utils/cepParser";
 import { ObraFormSchema } from "@/schemas";
+import {
+  splitAddress,
+  isValidNumberedLogradouro,
+} from "@/lib/validators/logradouro";
 
 import Loading from "@/components/ui/Loading";
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Fields";
 import { TitledDivider } from "@/components/ui/TitledDivider";
+import { Viacep } from "@/types/data/Viacep";
 
 type NewObraMainProps = {
   ufs: UF[];
@@ -79,7 +85,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
     const fetchCep = async () => {
       debouncedFetchCep.cancel();
       if (watchLog.length >= 3) {
-        debouncedFetchCep(watchLog);
+        await debouncedFetchCep(watchLog);
       }
     };
 
@@ -87,20 +93,33 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
   }, [watchLog]);
 
   const debouncedFetchCep = useCallback(
-    lodash.debounce(async (address) => {
-      const splitAddress: string[] = address.split("/[, ]/g");
-      if (splitAddress[0].length > 0) {
-        const cepReq = await fetch(
-          `https://viacep.com.br/ws/${getValues("uf")}/${getValues("cidade")}/${
-            splitAddress[0]
-          }/json/`
-        );
-        if (cepReq.status === 200) {
-          const cepData = await cepReq.json();
-          console.log(cepData);
+    lodash.debounce(async (address: string) => {
+      if (address.length >= 3 && isValidNumberedLogradouro(address)) {
+        try {
+          const [log, logNum] = splitAddress(address);
+          const cepReq = await fetch(
+            `https://viacep.com.br/ws/${getValues("uf")}/${getValues(
+              "cidade"
+            )}/${log}/json/`
+          );
+          if (cepReq.status === 200) {
+            const vceps: Viacep[] = await cepReq.json();
+            if (logNum > 0) {
+              const vcep = identifyCep(vceps, logNum);
+              if (vcep) {
+                setValue("cep", vcep.cep);
+                setValue("bairro", vcep.bairro);
+              } else {
+                setValue("cep", "");
+                setValue("bairro", "");
+              }
+            }
+          }
+        } catch (error) {
+          console.error(error);
         }
       }
-    }),
+    }, 500),
     []
   );
 
