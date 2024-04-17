@@ -1,7 +1,5 @@
 "use server";
 
-import { cookies } from "next/headers";
-
 import { ServerResponse } from "@/types/ServerResponse";
 import {
   EntryObra,
@@ -10,18 +8,17 @@ import {
   InsertionObra,
   TableObra,
 } from "@/types/data/Obra";
-
-import { db } from "@/lib/db";
-import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
-import { verifyJwt } from "@/lib/jwt";
-import { CodObraSchema, ObraFormSchema } from "@/schemas";
-import { getClienteByName } from "./clientes";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import {
   Sondagem_Percussao,
   Sondagem_Rotativa,
   Sondagem_Trado,
 } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+
+import { db } from "@/lib/db";
+import { CodObraSchema, ObraFormSchema } from "@/schemas";
+
+import { getClienteByName } from "./clientes";
 
 export async function getTableObras() {
   try {
@@ -68,7 +65,7 @@ export async function getTableObras() {
 
     return formattedObras;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 }
@@ -213,7 +210,7 @@ export async function searchObras(searchString: string) {
 
     return formattedObras;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 }
@@ -265,6 +262,7 @@ export async function updateObra(
         complemento_logo: obraEntry.complemento_logo,
         data_inicio: obraEntry.data_inicio,
         data_fim: obraEntry.data_fim,
+        cep: obraEntry.cep,
         uf: obraEntry.uf,
         num_obra: obraEntry.num_obra,
         lote: obraEntry.lote,
@@ -434,6 +432,7 @@ export async function insertNewObra(
         complemento_logo: obraEntry.complemento_logo,
         data_inicio: obraEntry.data_inicio,
         data_fim: obraEntry.data_fim,
+        cep: obraEntry.cep,
         uf: obraEntry.uf,
         num_obra: obraEntry.num_obra,
         lote: obraEntry.lote,
@@ -479,8 +478,6 @@ export async function insertNewObra(
 
       return [newObra];
     });
-
-    console.log(newObra);
 
     return { success: true, message: "Obra criada com sucesso!" };
   } catch (error) {

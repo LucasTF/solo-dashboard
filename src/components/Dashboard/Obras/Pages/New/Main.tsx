@@ -1,6 +1,7 @@
 "use client";
 
 import { Municipio, UF } from "@/types/data/Ibge";
+import { Viacep } from "@/types/data/Viacep";
 import { Logradouro } from "@/enums/Logradouro";
 import { Sondagem } from "@/enums/Sondagem";
 
@@ -15,17 +16,16 @@ import * as z from "zod";
 import { insertNewObra } from "@/lib/actions/data/obras";
 import { getMunicipios } from "@/lib/actions/data/external/ibge";
 import { identifyCep } from "@/lib/utils/cepParser";
-import { ObraFormSchema } from "@/schemas";
 import {
   splitAddress,
   isValidNumberedLogradouro,
 } from "@/lib/validators/logradouro";
+import { ObraFormSchema } from "@/schemas";
 
 import Loading from "@/components/ui/Loading";
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Fields";
 import { TitledDivider } from "@/components/ui/TitledDivider";
-import { Viacep } from "@/types/data/Viacep";
 
 type NewObraMainProps = {
   ufs: UF[];
@@ -157,7 +157,6 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
-      console.log(formData);
       const response = await insertNewObra(formData);
       if (response.success) {
         toast(response.message, { type: "success" });

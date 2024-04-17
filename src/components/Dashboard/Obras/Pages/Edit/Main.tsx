@@ -5,22 +5,29 @@ import { FullObra } from "@/types/data/Obra";
 import { Logradouro } from "@/enums/Logradouro";
 import { Sondagem } from "@/enums/Sondagem";
 
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import lodash from "lodash";
 import * as z from "zod";
 
-import { insertNewObra, updateObra } from "@/lib/actions/data/obras";
+import { updateObra } from "@/lib/actions/data/obras";
+import { getMunicipios } from "@/lib/actions/data/external/ibge";
+import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
+import {
+  isValidNumberedLogradouro,
+  splitAddress,
+} from "@/lib/validators/logradouro";
+import { identifyCep } from "@/lib/utils/cepParser";
 import { ObraFormSchema } from "@/schemas";
 
 import Loading from "@/components/ui/Loading";
-import { Field } from "@/components/ui/Fields";
 import Button from "@/components/ui/Button";
+import { Field } from "@/components/ui/Fields";
 import { TitledDivider } from "@/components/ui/TitledDivider";
-import { getMunicipios } from "@/lib/actions/data/external/ibge";
-import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
+import { Viacep } from "@/types/data/Viacep";
 
 type NewObraMainProps = {
   ufs: UF[];
@@ -47,6 +54,7 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
     reset,
     unregister,
     watch,
+    getValues,
     setValue,
     formState: { errors },
   } = useForm<OFSchema>({
@@ -54,6 +62,7 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
     defaultValues: {
       ano: obra.ano,
       bairro: obra.bairro,
+      cep: obra.cep || "",
       uf: obra.uf,
       cod_obra: obra.cod_obra,
       tipo_logo: (obra.tipo_logo || "") as unknown as Logradouro,
@@ -71,6 +80,7 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
 
   const watchCodObra = watch("cod_obra", "");
   const watchUf = watch("uf", "SP");
+  const watchLog = watch("logradouro", "");
 
   useEffect(() => {
     const fetchMunicipios = async () => {
@@ -90,6 +100,48 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
       }
     }
   }, [watchCodObra, setValue]);
+
+  useEffect(() => {
+    const fetchCep = async () => {
+      debouncedFetchCep.cancel();
+      if (watchLog.length >= 3) {
+        await debouncedFetchCep(watchLog);
+      }
+    };
+
+    fetchCep();
+  }, [watchLog]);
+
+  const debouncedFetchCep = useCallback(
+    lodash.debounce(async (address: string) => {
+      if (address.length >= 3 && isValidNumberedLogradouro(address)) {
+        try {
+          const [log, logNum] = splitAddress(address);
+          const cepReq = await fetch(
+            `https://viacep.com.br/ws/${getValues("uf")}/${getValues(
+              "cidade"
+            )}/${log}/json/`
+          );
+          if (cepReq.status === 200) {
+            const vceps: Viacep[] = await cepReq.json();
+            if (logNum > 0) {
+              const vcep = identifyCep(vceps, logNum);
+              if (vcep) {
+                setValue("cep", vcep.cep);
+                setValue("bairro", vcep.bairro);
+              } else {
+                setValue("cep", "");
+                setValue("bairro", "");
+              }
+            }
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }, 500),
+    []
+  );
 
   const sondagemReducer = (sondagem: Sondagem) => {
     switch (sondagem) {
@@ -255,41 +307,43 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
                 })}
               </Field.Select>
             </aside>
-            <section className="grid gap-4 lg:col-span-2">
-              <div className="grid lg:grid-flow-col gap-4">
-                <Field.Input
-                  label="Logradouro"
-                  isInvalid={!!errors.logradouro}
-                  errorMessage={errors.logradouro?.message}
-                  {...register("logradouro")}
-                />
-                <Field.Input
-                  label="Complemento"
-                  isInvalid={!!errors.complemento_logo}
-                  errorMessage={errors.complemento_logo?.message}
-                  {...register("complemento_logo")}
-                />
-              </div>
+            <section className="grid gap-4 lg:grid-cols-2 lg:col-span-2">
+              <Field.Input
+                label="Logradouro"
+                isInvalid={!!errors.logradouro}
+                errorMessage={errors.logradouro?.message}
+                {...register("logradouro")}
+              />
+              <Field.Input
+                label="Complemento"
+                isInvalid={!!errors.complemento_logo}
+                errorMessage={errors.complemento_logo?.message}
+                {...register("complemento_logo")}
+              />
               <Field.Input
                 label="Bairro"
                 isInvalid={!!errors.bairro}
                 errorMessage={errors.bairro?.message}
                 {...register("bairro")}
               />
-              <div className="grid lg:grid-flow-col gap-4">
-                <Field.Input
-                  label="Lote"
-                  isInvalid={!!errors.lote}
-                  errorMessage={errors.lote?.message}
-                  {...register("lote")}
-                />
-                <Field.Input
-                  label="Quadra"
-                  isInvalid={!!errors.quadra}
-                  errorMessage={errors.quadra?.message}
-                  {...register("quadra")}
-                />
-              </div>
+              <Field.Input
+                label="CEP"
+                isInvalid={!!errors.cep}
+                errorMessage={errors.cep?.message}
+                {...register("cep")}
+              />
+              <Field.Input
+                label="Lote"
+                isInvalid={!!errors.lote}
+                errorMessage={errors.lote?.message}
+                {...register("lote")}
+              />
+              <Field.Input
+                label="Quadra"
+                isInvalid={!!errors.quadra}
+                errorMessage={errors.quadra?.message}
+                {...register("quadra")}
+              />
             </section>
           </section>
 
