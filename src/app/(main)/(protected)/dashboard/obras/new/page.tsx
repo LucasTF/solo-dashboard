@@ -7,8 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NewObraPage() {
-  const ufReq = await getUfs();
-  const ufData = ufReq.success ? ufReq.data : [];
+  const ufData = await getUfs();
 
   return (
     <>

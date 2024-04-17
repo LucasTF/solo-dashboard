@@ -201,7 +201,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
 
           <section className="grid lg:grid-cols-3 gap-4">
             <Field.Select
-              label="Ano da Obra"
+              label="Ano"
               isInvalid={!!errors.ano}
               errorMessage={errors.ano?.message}
               {...register("ano")}
@@ -291,6 +291,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                 label="Logradouro"
                 isInvalid={!!errors.logradouro}
                 errorMessage={errors.logradouro?.message}
+                placeholder="Logradouro, 111"
                 {...register("logradouro")}
               />
               <Field.Input
@@ -310,6 +311,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                 label="CEP"
                 isInvalid={!!errors.cep}
                 errorMessage={errors.cep?.message}
+                placeholder="00000-000"
                 {...register("cep")}
               />
 

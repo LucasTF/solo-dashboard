@@ -1,13 +1,23 @@
-import { Logradouro } from "@/enums/Logradouro";
 import * as z from "zod";
 
-const NUMBER = "Valor deve ser um número.";
-const POSITIVE = "Valor deve ser maior ou igual a 0.";
-const GREATER_THAN_0 = "Valor deve ser maior que 0.";
+import { Logradouro } from "@/enums/Logradouro";
+
+import { isValidLogradouro } from "@/lib/validators/logradouro";
+
+const NUMBER = "Deve ser um número.";
+const NOT_NEGATIVE = "Deve ser maior ou igual a 0.";
+const GREATER_THAN_0 = "Deve ser maior que 0.";
 const CANNOT_BE_EMPTY = "Campo obrigatório.";
 const INVALID_DATE = "Data inválida.";
 const INVALID_EMAIL = "Email inválido.";
 const INVALID_PASSWORD = "Senha inválida.";
+const MAX_NUMBER = (maxNum: number) => `Valor deve ser menor que ${maxNum}`;
+const MIN_CHARACTERS = (minChar: number) =>
+  `Deve conter, no mínimo, ${minChar} caracteres.`;
+const MAX_CHARACTERS = (maxChar: number) =>
+  `Deve conter, no máximo, ${maxChar} caracteres.`;
+const CORRECT_LENGTH = (strLen: number) =>
+  `Deve conter, exatamente, ${strLen} caracteres.`;
 
 export const LoginSchema = z.object({
   email: z.string().email(INVALID_EMAIL),
@@ -16,12 +26,17 @@ export const LoginSchema = z.object({
 
 export const CodObraSchema = z
   .string()
-  .min(8, "Deve conter, no mínimo, 8 caracteres.")
-  .max(11, "Deve conter, no máximo, 11 caracteres.");
+  .min(8, MIN_CHARACTERS(8))
+  .max(11, MAX_CHARACTERS(11))
+  .regex(/^[A-Z]{2,3}\d{3}\/\d{2}$/gm, "Deve estar no formato 'SP000/00'");
 
 export const ObraFormSchema = z.object({
   cod_obra: CodObraSchema,
-  num_obra: z.coerce.number().int().min(1, GREATER_THAN_0).max(999),
+  num_obra: z.coerce
+    .number()
+    .int()
+    .min(1, GREATER_THAN_0)
+    .max(999, MAX_NUMBER(999)),
   ano: z.coerce.number().int().positive().min(1980),
   data_inicio: z.coerce.date({
     errorMap: (issue, { defaultError }) => ({
@@ -34,33 +49,60 @@ export const ObraFormSchema = z.object({
     }),
   }),
   uf: z.string().min(2).max(2),
-  cidade: z.string().max(40),
+  cidade: z.string().max(40, MAX_CHARACTERS(40)),
   tipo_logo: z.nativeEnum(Logradouro),
-  logradouro: z.string().min(1, CANNOT_BE_EMPTY).max(100),
-  complemento_logo: z.string().max(30),
-  bairro: z.string().min(1, CANNOT_BE_EMPTY).max(40),
-  cep: z.string().min(9, CANNOT_BE_EMPTY).max(9),
-  lote: z.string().max(40),
-  quadra: z.string().max(40),
-  proprietario: z.string().max(60),
-  cliente: z.string().min(1, CANNOT_BE_EMPTY).max(120),
+  logradouro: z
+    .string()
+    .min(1, CANNOT_BE_EMPTY)
+    .max(100, MAX_CHARACTERS(100))
+    .refine(
+      (value) => isValidLogradouro(value),
+      "Deve estar no formato 'Logradouro, numero' ou 'Logradouro'"
+    ),
+  complemento_logo: z.string().max(30, MAX_CHARACTERS(30)),
+  bairro: z.string().min(1, CANNOT_BE_EMPTY).max(40, MAX_CHARACTERS(40)),
+  cep: z
+    .string()
+    .length(9, CORRECT_LENGTH(9))
+    .regex(/^\d{5}-\d{3}$/, "Deve estar no formato '00000-000'"),
+  lote: z.string().max(40, MAX_CHARACTERS(40)),
+  quadra: z.string().max(40, MAX_CHARACTERS(40)),
+  proprietario: z.string().max(60, MAX_CHARACTERS(60)),
+  cliente: z.string().min(1, CANNOT_BE_EMPTY).max(120, MAX_CHARACTERS(120)),
   sondagem_percussao: z.optional(
     z.object({
-      furos: z.number().int().min(1, GREATER_THAN_0),
-      metros: z.number().min(0, POSITIVE),
+      furos: z.coerce
+        .number({ invalid_type_error: NUMBER })
+        .int()
+        .min(1, GREATER_THAN_0),
+      metros: z.coerce
+        .number({ invalid_type_error: NUMBER })
+        .min(0, NOT_NEGATIVE),
     })
   ),
   sondagem_trado: z.optional(
     z.object({
-      furos: z.number().int().min(1, GREATER_THAN_0),
-      metros: z.number().min(0, POSITIVE),
+      furos: z.coerce
+        .number({ invalid_type_error: NUMBER })
+        .int()
+        .min(1, GREATER_THAN_0),
+      metros: z.coerce
+        .number({ invalid_type_error: NUMBER })
+        .min(0, NOT_NEGATIVE),
     })
   ),
   sondagem_rotativa: z.optional(
     z.object({
-      furos: z.number().int().min(1, GREATER_THAN_0),
-      metros_solo: z.number().min(0, POSITIVE),
-      metros_rocha: z.number().min(0, POSITIVE),
+      furos: z.coerce
+        .number({ invalid_type_error: NUMBER })
+        .int()
+        .min(1, GREATER_THAN_0),
+      metros_solo: z.coerce
+        .number({ invalid_type_error: NUMBER })
+        .min(0, NOT_NEGATIVE),
+      metros_rocha: z.coerce
+        .number({ invalid_type_error: NUMBER })
+        .min(0, NOT_NEGATIVE),
     })
   ),
 });
