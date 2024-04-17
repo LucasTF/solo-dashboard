@@ -20,56 +20,6 @@ import { CodObraSchema, ObraFormSchema } from "@/schemas";
 
 import { getClienteByName } from "./clientes";
 
-export async function getTableObras() {
-  try {
-    const obras = await db.obra.findMany({
-      select: {
-        id: true,
-        cod_obra: true,
-        ano: true,
-        tipo_logo: true,
-        logradouro: true,
-        complemento_logo: true,
-        cidade: true,
-        bairro: true,
-        uf: true,
-        cliente: {
-          select: {
-            nome: true,
-          },
-        },
-        proprietario: {
-          select: {
-            nome: true,
-          },
-        },
-      },
-    });
-
-    const formattedObras: TableObra[] = obras.map((obra) => {
-      const tipo = obra.tipo_logo || "";
-      const complemento = obra.complemento_logo || "";
-      const proprietario = obra.proprietario?.nome || "";
-      return {
-        id: obra.id,
-        cod_obra: obra.cod_obra,
-        ano: obra.ano,
-        endereco: tipo + " " + obra.logradouro + " " + complemento,
-        bairro: obra.bairro,
-        cidade: obra.cidade,
-        uf: obra.uf,
-        cliente: obra.cliente.nome,
-        proprietario,
-      };
-    });
-
-    return formattedObras;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
-
 export async function getObraById(id: number) {
   try {
     const obra: EntryObra | null = await db.obra.findUnique({
@@ -123,92 +73,17 @@ export async function getObraByCod(cod_obra: string) {
 
 export async function searchObras(searchString: string) {
   try {
-    const obras = await db.obra.findMany({
-      select: {
-        id: true,
-        cod_obra: true,
-        ano: true,
-        tipo_logo: true,
-        logradouro: true,
-        complemento_logo: true,
-        cidade: true,
-        bairro: true,
-        uf: true,
-        cliente: {
-          select: {
-            nome: true,
-          },
-        },
-        proprietario: {
-          select: {
-            nome: true,
-          },
-        },
-      },
-      where: {
-        OR: [
-          {
-            cod_obra: {
-              contains: searchString,
-            },
-          },
-          {
-            logradouro: {
-              contains: searchString,
-            },
-          },
-          {
-            complemento_logo: {
-              contains: searchString,
-            },
-          },
-          {
-            cidade: {
-              contains: searchString,
-            },
-          },
-          {
-            bairro: {
-              contains: searchString,
-            },
-          },
-          {
-            cliente: {
-              nome: {
-                contains: searchString,
-              },
-            },
-          },
-          {
-            proprietario: {
-              nome: {
-                contains: searchString,
-              },
-            },
-          },
-        ],
-      },
-      orderBy: [{ ano: "desc" }, { cod_obra: "desc" }],
-    });
+    const obras: TableObra[] =
+      await db.$queryRaw`SELECT ob.id, ob.cod_obra, ob.ano, CONCAT_WS(' ', ob.tipo_logo, ob.logradouro, ob.complemento_logo) as endereco, ob.cidade, ob.bairro, ob.uf, cl.nome as cliente, pr.nome as proprietario
+    FROM Obra ob
+    INNER JOIN Cliente cl
+    ON clienteId = cl.id
+    INNER JOIN Cliente pr
+    ON proprietarioId = pr.id
+    WHERE CONCAT_WS(' ', ob.tipo_logo, ob.logradouro, ob.complemento_logo) LIKE CONCAT('%', ${searchString}, '%') OR ob.cod_obra LIKE CONCAT('%', ${searchString}, '%') OR ob.cidade LIKE CONCAT('%', ${searchString}, '%') OR ob.bairro LIKE CONCAT('%', ${searchString}, '%') OR cl.nome LIKE CONCAT('%', ${searchString}, '%') OR pr.nome LIKE CONCAT('%', ${searchString}, '%')
+    ORDER BY ob.ano DESC, ob.cod_obra DESC;`;
 
-    const formattedObras: TableObra[] = obras.map((obra) => {
-      const tipo = obra.tipo_logo || "";
-      const complemento = obra.complemento_logo || "";
-      const proprietario = obra.proprietario?.nome || "";
-      return {
-        id: obra.id,
-        cod_obra: obra.cod_obra,
-        ano: obra.ano,
-        endereco: tipo + " " + obra.logradouro + " " + complemento,
-        bairro: obra.bairro,
-        cidade: obra.cidade,
-        uf: obra.uf,
-        cliente: obra.cliente.nome,
-        proprietario,
-      };
-    });
-
-    return formattedObras;
+    return obras;
   } catch (error) {
     console.error(error);
     return [];
@@ -237,7 +112,7 @@ export async function updateObra(
       }
     }
 
-    const [updatedObra] = await db.$transaction(async (db) => {
+    await db.$transaction(async (db) => {
       if (clienteId === null) {
         const newCliente = await db.cliente.create({
           data: { nome: obraEntry.cliente },
@@ -407,7 +282,7 @@ export async function insertNewObra(
       }
     }
 
-    const [newObra] = await db.$transaction(async (db) => {
+    await db.$transaction(async (db) => {
       if (clienteId === null) {
         const newCliente = await db.cliente.create({
           data: { nome: obraEntry.cliente },
