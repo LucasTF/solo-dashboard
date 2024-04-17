@@ -26,12 +26,20 @@ export type FormObra = z.infer<typeof ObraFormSchema>;
 
 export type InsertionObra = Omit<
   FormObra,
+  | "cep"
+  | "lote"
+  | "quadra"
+  | "complemento_logo"
   | "cliente"
   | "proprietario"
   | "sondagem_percussao"
   | "sondagem_rotativa"
   | "sondagem_trado"
 > & {
+  cep: string | null;
+  lote: string | null;
+  quadra: string | null;
+  complemento_logo: string | null;
   clienteId: number;
   proprietarioId: number | null;
 };
