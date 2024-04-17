@@ -24,7 +24,7 @@ export const BaseSearch = ({
 }: SearchProps) => {
   return (
     <form
-      className="flex gap-4 relative max-h-12"
+      className="flex gap-4 relative max-h-12 md:max-w-[32rem] md:flex-grow"
       onSubmit={onSubmit}
       {...rest}
     >
@@ -36,35 +36,6 @@ export const BaseSearch = ({
         {...register("search")}
       />
       <MagnifyingGlassIcon className="size-6 absolute top-3 left-4 text-gray-400 dark:text-gray-300" />
-
-      <select
-        className="px-2 rounded-md shadow-lg border border-zinc-500 dark:border-slate-300"
-        {...register("column")}
-      >
-        {tableStructure.overrideSearchOrder &&
-          tableStructure.overrideSearchOrder.map((colIndex) => {
-            const column = tableStructure.columns[colIndex];
-            return (
-              <option key={column.name} value={column.value}>
-                {column.name}
-              </option>
-            );
-          })}
-        {tableStructure.columns.map((column, index) => {
-          if (column.searchable) {
-            if (
-              tableStructure.overrideSearchOrder &&
-              tableStructure.overrideSearchOrder.includes(index)
-            )
-              return;
-            return (
-              <option key={column.name} value={column.value}>
-                {column.name}
-              </option>
-            );
-          }
-        })}
-      </select>
 
       <Button type="submit" color="green" shape="rectangle">
         <ArrowRightIcon className="size-6" />

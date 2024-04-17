@@ -1,58 +1,42 @@
 "use server";
 
-import * as z from "zod";
-
-import { db } from "@/lib/db";
-import { ObraModalSchema } from "@/schemas";
-import { SearchFilters } from "@/types/SearchFilters";
-import { Obra } from "@/types/data/Obra";
-import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 import { ServerResponse } from "@/types/ServerResponse";
 import {
-  getObraByIdLegacy,
-  getTableObrasLegacy,
-  insertNewObraLegacy,
-  searchObrasLegacy,
-  updateObraLegacy,
-} from "./legacy/obras";
-import { cookies } from "next/headers";
-import { verifyJwt } from "@/lib/jwt";
+  EntryObra,
+  FormObra,
+  FullObra,
+  InsertionObra,
+  TableObra,
+} from "@/types/data/Obra";
+import {
+  Sondagem_Percussao,
+  Sondagem_Rotativa,
+  Sondagem_Trado,
+} from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-const isLegacy = process.env.USE_LEGACY_TABLES === "true";
+import { db } from "@/lib/db";
+import { CodObraSchema, ObraFormSchema } from "@/schemas";
 
-export async function getTableObras() {
-  try {
-    if (isLegacy) return await getTableObrasLegacy();
-
-    const obras: Obra[] = await db.obra.findMany({
-      select: {
-        id: true,
-        sp: true,
-        ano: true,
-        tipo_logo: true,
-        logradouro: true,
-        cidade: true,
-        bairro: true,
-        uf: true,
-        cliente: true,
-        proprietario: true,
-      },
-    });
-
-    return obras;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-}
+import { getClienteByName } from "./clientes";
 
 export async function getObraById(id: number) {
   try {
-    if (isLegacy) return await getObraByIdLegacy(id);
-
-    const obra = await db.obra.findUnique({
+    const obra: EntryObra | null = await db.obra.findUnique({
       where: { id },
       include: {
+        cliente: {
+          select: {
+            id: true,
+            nome: true,
+          },
+        },
+        proprietario: {
+          select: {
+            id: true,
+            nome: true,
+          },
+        },
         arquivos: true,
       },
     });
@@ -64,84 +48,211 @@ export async function getObraById(id: number) {
   }
 }
 
-export async function searchObras(searchFilters: SearchFilters) {
+export async function getObraByCod(cod_obra: string) {
   try {
-    if (isLegacy) return await searchObrasLegacy(searchFilters);
+    CodObraSchema.parse(cod_obra);
 
-    const obras: Obra[] = await db.obra.findMany({
-      select: {
-        id: true,
-        sp: true,
-        ano: true,
-        tipo_logo: true,
-        logradouro: true,
-        cidade: true,
-        bairro: true,
-        uf: true,
+    const obra = await db.obra.findUnique({
+      where: { cod_obra },
+      include: {
         cliente: true,
         proprietario: true,
-      },
-      where: {
-        [searchFilters.column]: {
-          contains: searchFilters.search,
-        },
-      },
-      orderBy: {
-        sp: "desc",
+        arquivos: true,
+        sondagem_percussao: true,
+        sondagem_trado: true,
+        sondagem_rotativa: true,
       },
     });
 
+    return obra as FullObra;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function searchObras(searchString: string) {
+  try {
+    const obras: TableObra[] =
+      await db.$queryRaw`SELECT ob.id, ob.cod_obra, ob.ano, CONCAT_WS(' ', ob.tipo_logo, ob.logradouro, ob.complemento_logo) as endereco, ob.cidade, ob.bairro, ob.uf, cl.nome as cliente, pr.nome as proprietario
+    FROM Obra ob
+    INNER JOIN Cliente cl
+    ON clienteId = cl.id
+    INNER JOIN Cliente pr
+    ON proprietarioId = pr.id
+    WHERE CONCAT_WS(' ', ob.tipo_logo, ob.logradouro, ob.complemento_logo) LIKE CONCAT('%', ${searchString}, '%') OR ob.cod_obra LIKE CONCAT('%', ${searchString}, '%') OR ob.cidade LIKE CONCAT('%', ${searchString}, '%') OR ob.bairro LIKE CONCAT('%', ${searchString}, '%') OR cl.nome LIKE CONCAT('%', ${searchString}, '%') OR pr.nome LIKE CONCAT('%', ${searchString}, '%')
+    ORDER BY ob.ano DESC, ob.cod_obra DESC;`;
+
     return obras;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 }
 
-type ObraData = z.infer<typeof ObraModalSchema>;
-
 export async function updateObra(
   id: number,
-  obra: ObraData
+  obraEntry: FormObra
 ): Promise<ServerResponse> {
-  const adminToken = cookies().get("adminJwt");
-
-  if (!adminToken)
-    return { success: false, error: "Autorização insuficiente." };
-  const isValidAdmin = (await verifyJwt(adminToken.value, true)) !== null;
-  if (!isValidAdmin)
-    return { success: false, error: "Autorização insuficiente." };
-
   try {
-    if (isLegacy) return await updateObraLegacy(id, obra);
+    ObraFormSchema.parse(obraEntry);
 
-    const data = {
-      sp: obra.sp,
-      num_obra: obra.num_obra,
-      sp_sondagem: obra.sp_sondagem,
-      metros_sp_sondagem: obra.metros_sp_sondagem,
-      STTrado: obra.STTrado,
-      STTradoml: obra.STTradoml,
-      data_inicio: formatYYYYMMDD(obra.data_inicio),
-      data_fim: formatYYYYMMDD(obra.data_fim),
-      ano: obra.ano,
-      tipo_logo: obra.tipo_logo,
-      cidade: obra.cidade,
-      uf: obra.uf,
-      logradouro: obra.logradouro,
-      complemento_logo: obra.complemento,
-      bairro: obra.bairro,
-      lote: obra.lote,
-      quadra: obra.quadra,
-      cliente: obra.cliente,
-      proprietario: obra.proprietario,
-    };
+    let clienteId: number | null = null;
+    let proprietarioId: number | null | undefined = undefined;
+    const cliente = await getClienteByName(obraEntry.cliente);
+    if (cliente) clienteId = cliente.id;
 
-    await db.obra.update({
-      data,
-      where: {
-        id,
-      },
+    if (obraEntry.proprietario) {
+      if (obraEntry.proprietario === obraEntry.cliente)
+        proprietarioId = clienteId;
+      else {
+        const proprietario = await getClienteByName(obraEntry.proprietario);
+        if (proprietario) proprietarioId = proprietario.id;
+        else proprietarioId = null;
+      }
+    }
+
+    await db.$transaction(async (db) => {
+      if (clienteId === null) {
+        const newCliente = await db.cliente.create({
+          data: { nome: obraEntry.cliente },
+        });
+        clienteId = newCliente.id;
+      }
+
+      if (proprietarioId === null) {
+        const newProprietario = await db.cliente.create({
+          data: { nome: obraEntry.proprietario },
+        });
+        proprietarioId = newProprietario.id;
+      } else if (proprietarioId === undefined) proprietarioId = null;
+
+      const data: InsertionObra = {
+        cod_obra: obraEntry.cod_obra,
+        ano: obraEntry.ano,
+        bairro: obraEntry.bairro,
+        cidade: obraEntry.cidade,
+        tipo_logo: obraEntry.tipo_logo,
+        logradouro: obraEntry.logradouro,
+        complemento_logo: obraEntry.complemento_logo || null,
+        data_inicio: obraEntry.data_inicio,
+        data_fim: obraEntry.data_fim,
+        cep: obraEntry.cep || null,
+        uf: obraEntry.uf,
+        num_obra: obraEntry.num_obra,
+        lote: obraEntry.lote || null,
+        quadra: obraEntry.quadra || null,
+        clienteId: clienteId,
+        proprietarioId: proprietarioId,
+      };
+
+      const updatedObra = await db.obra.update({
+        data,
+        where: {
+          id,
+        },
+        include: {
+          sondagem_percussao: true,
+          sondagem_trado: true,
+          sondagem_rotativa: true,
+        },
+      });
+
+      let sonPercussao: Sondagem_Percussao | null = null;
+      if (obraEntry.sondagem_percussao) {
+        if (updatedObra.sondagem_percussao) {
+          if (
+            obraEntry.sondagem_percussao.furos !==
+              updatedObra.sondagem_percussao.furos ||
+            obraEntry.sondagem_percussao.metros !==
+              updatedObra.sondagem_percussao.metros
+          ) {
+            sonPercussao = await db.sondagem_Percussao.update({
+              data: {
+                furos: obraEntry.sondagem_percussao.furos,
+                metros: obraEntry.sondagem_percussao.metros,
+              },
+              where: {
+                id: updatedObra.sondagem_percussao.id,
+              },
+            });
+          }
+        } else {
+          sonPercussao = await db.sondagem_Percussao.create({
+            data: {
+              obraId: updatedObra.id,
+              metros: obraEntry.sondagem_percussao.metros,
+              furos: obraEntry.sondagem_percussao.furos,
+            },
+          });
+        }
+      }
+
+      let sonTrado: Sondagem_Trado | null = null;
+      if (obraEntry.sondagem_trado) {
+        if (updatedObra.sondagem_trado) {
+          if (
+            obraEntry.sondagem_trado.furos !==
+              updatedObra.sondagem_trado.furos ||
+            obraEntry.sondagem_trado.metros !==
+              updatedObra.sondagem_trado.metros
+          ) {
+            sonTrado = await db.sondagem_Trado.update({
+              data: {
+                furos: obraEntry.sondagem_trado.furos,
+                metros: obraEntry.sondagem_trado.metros,
+              },
+              where: {
+                id: updatedObra.sondagem_trado.id,
+              },
+            });
+          }
+        } else {
+          sonTrado = await db.sondagem_Trado.create({
+            data: {
+              obraId: updatedObra.id,
+              metros: obraEntry.sondagem_trado.metros,
+              furos: obraEntry.sondagem_trado.furos,
+            },
+          });
+        }
+      }
+
+      let sonRotativa: Sondagem_Rotativa | null = null;
+      if (obraEntry.sondagem_rotativa) {
+        if (updatedObra.sondagem_rotativa) {
+          if (
+            obraEntry.sondagem_rotativa.furos !==
+              updatedObra.sondagem_rotativa.furos ||
+            obraEntry.sondagem_rotativa.metros_solo !==
+              updatedObra.sondagem_rotativa.metros_solo ||
+            obraEntry.sondagem_rotativa.metros_rocha !==
+              updatedObra.sondagem_rotativa.metros_rocha
+          ) {
+            sonRotativa = await db.sondagem_Rotativa.update({
+              data: {
+                furos: obraEntry.sondagem_rotativa.furos,
+                metros_solo: obraEntry.sondagem_rotativa.metros_solo,
+                metros_rocha: obraEntry.sondagem_rotativa.metros_rocha,
+              },
+              where: {
+                id: updatedObra.sondagem_rotativa.id,
+              },
+            });
+          }
+        } else {
+          sonRotativa = await db.sondagem_Rotativa.create({
+            data: {
+              obraId: updatedObra.id,
+              furos: obraEntry.sondagem_rotativa.furos,
+              metros_solo: obraEntry.sondagem_rotativa.metros_solo,
+              metros_rocha: obraEntry.sondagem_rotativa.metros_rocha,
+            },
+          });
+        }
+      }
+
+      return [updatedObra];
     });
 
     return { success: true, message: "Obra atualizada com sucesso." };
@@ -150,38 +261,108 @@ export async function updateObra(
   }
 }
 
-export async function insertNewObra(obra: ObraData): Promise<ServerResponse> {
+export async function insertNewObra(
+  obraEntry: FormObra
+): Promise<ServerResponse> {
   try {
-    if (isLegacy) return await insertNewObraLegacy(obra);
+    ObraFormSchema.parse(obraEntry);
 
-    const data = {
-      sp: obra.sp,
-      num_obra: obra.num_obra,
-      sp_sondagem: obra.sp_sondagem,
-      metros_sp_sondagem: obra.metros_sp_sondagem,
-      STTrado: obra.STTrado,
-      STTradoml: obra.STTradoml,
-      data_inicio: formatYYYYMMDD(obra.data_inicio),
-      data_fim: formatYYYYMMDD(obra.data_fim),
-      ano: obra.ano,
-      tipo_logo: obra.tipo_logo,
-      cidade: obra.cidade,
-      uf: obra.uf,
-      logradouro: obra.logradouro,
-      complemento_logo: obra.complemento,
-      bairro: obra.bairro,
-      lote: obra.lote,
-      quadra: obra.quadra,
-      cliente: obra.cliente,
-      proprietario: obra.proprietario,
-    };
+    let clienteId: number | null = null;
+    let proprietarioId: number | null | undefined = undefined;
+    const cliente = await getClienteByName(obraEntry.cliente);
+    if (cliente) clienteId = cliente.id;
 
-    await db.obra.create({
-      data,
+    if (obraEntry.proprietario) {
+      if (obraEntry.proprietario === obraEntry.cliente)
+        proprietarioId = clienteId;
+      else {
+        const proprietario = await getClienteByName(obraEntry.proprietario);
+        if (proprietario) proprietarioId = proprietario.id;
+        else proprietarioId = null;
+      }
+    }
+
+    await db.$transaction(async (db) => {
+      if (clienteId === null) {
+        const newCliente = await db.cliente.create({
+          data: { nome: obraEntry.cliente },
+        });
+        clienteId = newCliente.id;
+      }
+
+      if (proprietarioId === null) {
+        const newProprietario = await db.cliente.create({
+          data: { nome: obraEntry.proprietario },
+        });
+        proprietarioId = newProprietario.id;
+      } else if (proprietarioId === undefined) proprietarioId = null;
+
+      const data: InsertionObra = {
+        cod_obra: obraEntry.cod_obra,
+        ano: obraEntry.ano,
+        bairro: obraEntry.bairro,
+        cidade: obraEntry.cidade,
+        tipo_logo: obraEntry.tipo_logo,
+        logradouro: obraEntry.logradouro,
+        complemento_logo: obraEntry.complemento_logo || null,
+        data_inicio: obraEntry.data_inicio,
+        data_fim: obraEntry.data_fim,
+        cep: obraEntry.cep || null,
+        uf: obraEntry.uf,
+        num_obra: obraEntry.num_obra,
+        lote: obraEntry.lote || null,
+        quadra: obraEntry.quadra || null,
+        clienteId: clienteId,
+        proprietarioId: proprietarioId,
+      };
+
+      const newObra = await db.obra.create({
+        data,
+      });
+
+      if (obraEntry.sondagem_percussao) {
+        await db.sondagem_Percussao.create({
+          data: {
+            obraId: newObra.id,
+            metros: obraEntry.sondagem_percussao.metros,
+            furos: obraEntry.sondagem_percussao.furos,
+          },
+        });
+      }
+
+      if (obraEntry.sondagem_trado) {
+        await db.sondagem_Trado.create({
+          data: {
+            obraId: newObra.id,
+            metros: obraEntry.sondagem_trado.metros,
+            furos: obraEntry.sondagem_trado.furos,
+          },
+        });
+      }
+
+      if (obraEntry.sondagem_rotativa) {
+        await db.sondagem_Rotativa.create({
+          data: {
+            obraId: newObra.id,
+            metros_rocha: obraEntry.sondagem_rotativa.metros_rocha,
+            metros_solo: obraEntry.sondagem_rotativa.metros_solo,
+            furos: obraEntry.sondagem_rotativa.furos,
+          },
+        });
+      }
+
+      return [newObra];
     });
 
     return { success: true, message: "Obra criada com sucesso!" };
   } catch (error) {
-    return { success: false, error: "Erro ao criar a obra." };
+    let errorMsg = "Erro ao cadastrar obra.";
+    console.error(error);
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        errorMsg = `Erro ao cadastrar obra! Código SP ${obraEntry.num_obra} já está em uso!`;
+      }
+    }
+    return { success: false, error: errorMsg };
   }
 }

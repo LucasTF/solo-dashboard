@@ -1,14 +1,16 @@
 "use client";
 
-import Button from "@/components/ui/Button";
-import { deleteFile } from "@/lib/actions/data/arquivos";
-import { Arquivo } from "@/types/data/Arquivo";
-import { TrashIcon } from "@heroicons/react/24/outline";
 import { useTransition } from "react";
-import Loading from "@/components/ui/Loading";
 import { toast } from "react-toastify";
+import { TrashIcon } from "@heroicons/react/24/outline";
+
+import { Arquivo } from "@prisma/client";
+import { EntryObra } from "@/types/data/Obra";
+
+import { deleteFile } from "@/lib/actions/data/arquivos";
 import { useEntryStore } from "@/lib/stores/entry";
-import { ObraWithFiles } from "@/types/data/Obra";
+import Button from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
 
 type DeleteFileProps = {
   file: Arquivo;
@@ -18,20 +20,13 @@ type DeleteFileProps = {
 const DeleteFile = ({ file, closeModal }: DeleteFileProps) => {
   const [isPending, startTransition] = useTransition();
 
-  const { updateEntry } = useEntryStore();
+  const { refreshEntry } = useEntryStore();
 
   const deleteFileHandler = () => {
     startTransition(async () => {
       const response = await deleteFile(file.id);
       if (response.success) {
-        updateEntry((prevState) => {
-          if (prevState) {
-            const data = prevState.data as ObraWithFiles;
-            const index = data.arquivos.indexOf(file);
-            data.arquivos.splice(index, 1);
-            return { ...prevState, data };
-          } else return prevState;
-        });
+        refreshEntry();
         toast(response.message, { type: "success" });
       } else toast(response.error, { type: "error" });
       closeModal();

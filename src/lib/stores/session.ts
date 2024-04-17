@@ -1,16 +1,15 @@
 import { create } from "zustand";
 
-type UserDataType = {
+type UserData = {
   name: string;
-  surname: string;
   email: string;
   isAdmin: boolean;
 };
 
 type SessionState = {
-  session: UserDataType | null;
+  session: UserData | null;
   restoreSession: () => void;
-  createSession: (credentials: UserDataType) => void;
+  createSession: (credentials: UserData) => void;
   dropSession: () => void;
 };
 
@@ -20,7 +19,7 @@ export const useSessionStore = create<SessionState>((set) => ({
     set((state) => ({
       session: JSON.parse(localStorage.getItem("userData")!),
     })),
-  createSession: (credentials: UserDataType) => {
+  createSession: (credentials: UserData) => {
     localStorage.setItem("userData", JSON.stringify(credentials));
     set((state) => ({ session: credentials }));
   },

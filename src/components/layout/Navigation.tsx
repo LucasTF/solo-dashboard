@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import {
   ArrowLeftEndOnRectangleIcon,
   BuildingOffice2Icon,
-  GlobeAmericasIcon,
+  ChevronDoubleRightIcon,
   HomeIcon,
   UserCircleIcon,
   UsersIcon,
@@ -19,7 +19,7 @@ import { logout } from "@/lib/actions/auth/logout";
 import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
 import ThemeSwitcher from "@/components/ui/Navigation/ThemeSwitcher";
 import NavLink from "@/components/ui/Navigation/NavLink";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Backdrop from "../ui/Backdrop";
 import Spinner from "../ui/Spinner";
 import { useScrollDirection } from "@/lib/hooks/scrollDirection";
@@ -46,10 +46,18 @@ const header = tv({
 
 const list = tv({
   slots: {
-    ul: "space-y-4 px-2",
+    ul: "space-y-4 px-2 [&>li]:text-sm",
     ulTitle:
-      "ml-2 text-sm text-zinc-600 dark:text-zinc-400 font-semibold select-none",
-    icon: "size-5",
+      "flex gap-1 ml-2 text-zinc-600 dark:text-zinc-400 font-semibold select-none",
+  },
+});
+
+const icon = tv({
+  base: "size-5",
+  variants: {
+    item_icon: {
+      true: "size-3",
+    },
   },
 });
 
@@ -63,7 +71,7 @@ const Navigation = () => {
 
   const scrollDirection = useScrollDirection();
 
-  const { ul, ulTitle, icon } = list();
+  const { ul, ulTitle } = list();
 
   useEffect(() => {
     restoreSession();
@@ -113,8 +121,8 @@ const Navigation = () => {
           <ThemeSwitcher size={6} />
         </div>
       </header>
+
       <nav className={drawerNav({ open: drawer })}>
-        <p className={ulTitle()}>Sessão</p>
         {session && !isPending ? (
           <ul className={ul()}>
             <li className="flex items-center gap-2 pl-2 select-none">
@@ -137,35 +145,49 @@ const Navigation = () => {
             <Spinner size="sm" />
           </div>
         )}
-        <p className={ulTitle()}>Navegação</p>
+
+        <hr className="border-slate-400 dark:border-slate-700" />
+
+        <p className="mx-2" onClick={() => onNavigationHandler()}>
+          <NavLink href="/dashboard">
+            <HomeIcon className={icon()} />
+            <span>Início</span>
+          </NavLink>
+        </p>
+
+        <p className={ulTitle()}>
+          <BuildingOffice2Icon className={icon()} />
+          <span>Obras</span>
+        </p>
+
         <ul className={ul()}>
           <li onClick={() => onNavigationHandler()}>
-            <NavLink href="/dashboard">
-              <HomeIcon className={icon()} />
-              <span>Início</span>
-            </NavLink>
-          </li>
-          <li onClick={() => onNavigationHandler()}>
             <NavLink href="/dashboard/obras">
-              <BuildingOffice2Icon className={icon()} />
-              <span>Obras</span>
+              <ChevronDoubleRightIcon className={icon({ item_icon: true })} />
+              <span>Listagem</span>
             </NavLink>
           </li>
           <li onClick={() => onNavigationHandler()}>
-            <NavLink href="/dashboard/clientes">
-              <GlobeAmericasIcon className={icon()} />
-              <span>Clientes</span>
+            <NavLink href="/dashboard/obras/new">
+              <ChevronDoubleRightIcon className={icon({ item_icon: true })} />
+              <span>Cadastro</span>
             </NavLink>
           </li>
         </ul>
+
         {session && session.isAdmin && (
           <>
-            <p className={ulTitle()}>Administrativo</p>
+            <p className={ulTitle()}>
+              <UsersIcon className={icon()} />
+              <span>Usuários</span>
+            </p>
             <ul className={ul()}>
               <li onClick={() => onNavigationHandler()}>
                 <NavLink href="/dashboard/usuarios">
-                  <UsersIcon className={icon()} />
-                  <span>Usuários</span>
+                  <ChevronDoubleRightIcon
+                    className={icon({ item_icon: true })}
+                  />
+                  <span>Listagem</span>
                 </NavLink>
               </li>
             </ul>

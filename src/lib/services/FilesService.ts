@@ -5,8 +5,6 @@ import { db } from "../db";
 import { ServerResponse } from "@/types/ServerResponse";
 import { writeFile } from "fs/promises";
 
-const isLegacy = process.env.USE_LEGACY_TABLES === "true";
-
 export async function uploadFilesToServer(
   ano: number,
   files: File[]
@@ -43,8 +41,6 @@ export async function registerFilesToDatabase(
   files: File[]
 ): Promise<ServerResponse> {
   try {
-    if (isLegacy) return registerFilesToDatabaseLegacy(obraId, files);
-
     const dbData: Prisma.ArquivoCreateManyInput[] = files.map((file) => {
       const extStart = file.name.lastIndexOf(".");
       const extension = file.name.slice(extStart + 1, file.name.length);
@@ -71,29 +67,4 @@ export async function registerFilesToDatabase(
       error: "Não foi possível registrar o(s) arquivo(s).",
     };
   }
-}
-
-async function registerFilesToDatabaseLegacy(
-  obraId: number,
-  files: File[]
-): Promise<ServerResponse> {
-  const dbData: Prisma.tbarquivosCreateManyInput[] = files.map((file) => {
-    const extStart = file.name.lastIndexOf(".");
-    const extension = file.name.slice(extStart + 1, file.name.length);
-    return {
-      obraId,
-      nome: file.name,
-      formato: extension.toUpperCase(),
-      criado_em: new Date(),
-    };
-  });
-
-  await db.tbarquivos.createMany({
-    data: dbData,
-  });
-
-  return {
-    success: true,
-    message: "Arquivo(s) registrados com sucesso!",
-  };
 }

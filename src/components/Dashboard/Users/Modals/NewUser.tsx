@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { User } from "@prisma/client";
 
 import Button from "@/components/ui/Button";
-import { Field } from "@/components/ui/Field";
+import { Field } from "@/components/ui/Fields";
 import { UserModalSchema } from "@/schemas";
 import { createNewUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
@@ -42,7 +42,6 @@ const NewUser = ({ closeModal }: NewUserProps) => {
           const newData = {
             id: response.data.id,
             name: response.data.name,
-            surname: response.data.surname,
             email: response.data.email,
             isAdmin: response.data.isAdmin,
           };
@@ -73,13 +72,6 @@ const NewUser = ({ closeModal }: NewUserProps) => {
           errorMessage={errors.name?.message}
           placeholder="Nome"
           {...register("name")}
-        />
-        <Field.Input
-          label="Sobrenome"
-          isInvalid={!!errors.surname}
-          errorMessage={errors.surname?.message}
-          placeholder="Sobrenome"
-          {...register("surname")}
         />
         <Field.Input
           label="Email"

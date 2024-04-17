@@ -21,7 +21,7 @@ export const Results = ({ numOfResults = 0 }: ResultsProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const rowsPerPage = Number(searchParams.get("numRows") || "10");
+  const rowsPerPage = Number(searchParams.get("numRows") || "50");
 
   const rowsPerPageHandler = (numRows: number) => {
     let newPath = pathname + "?";

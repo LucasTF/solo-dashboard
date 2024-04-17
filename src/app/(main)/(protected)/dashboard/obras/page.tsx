@@ -2,10 +2,11 @@ import { Metadata } from "next";
 
 import { Dashboard } from "@/components/Dashboard";
 import { obrasStructure } from "@/lib/structures";
-import { SearchFilters } from "@/types/SearchFilters";
 
 type PageProps = {
-  searchParams: SearchFilters;
+  searchParams: {
+    search: string;
+  };
 };
 
 export const metadata: Metadata = {
@@ -21,12 +22,9 @@ export default async function ObrasPage({ searchParams }: PageProps) {
 
       <Dashboard.Options.Obras />
 
-      <Dashboard.TableConstructor
+      <Dashboard.TableArea
         tableStructure={obrasStructure}
-        searchFilters={{
-          column: searchParams.column,
-          search: searchParams.search,
-        }}
+        searchString={searchParams.search}
       />
     </>
   );

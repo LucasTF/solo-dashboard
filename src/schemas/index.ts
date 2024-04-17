@@ -14,26 +14,14 @@ export const LoginSchema = z.object({
   password: z.string().min(1, INVALID_PASSWORD),
 });
 
-export const ObraModalSchema = z.object({
-  sp: z
-    .string()
-    .min(8, "Deve conter apenas 8 caracteres")
-    .max(8, "Deve conter apenas 8 caracteres"),
+export const CodObraSchema = z
+  .string()
+  .min(8, "Deve conter, no mínimo, 8 caracteres.")
+  .max(11, "Deve conter, no máximo, 11 caracteres.");
+
+export const ObraFormSchema = z.object({
+  cod_obra: CodObraSchema,
   num_obra: z.coerce.number().int().min(1, GREATER_THAN_0).max(999),
-  sp_sondagem: z.coerce
-    .number({ invalid_type_error: NUMBER })
-    .int()
-    .nonnegative(POSITIVE),
-  metros_sp_sondagem: z.coerce
-    .number({ invalid_type_error: NUMBER })
-    .nonnegative(POSITIVE),
-  STTrado: z.coerce
-    .number({ invalid_type_error: NUMBER })
-    .int()
-    .nonnegative(POSITIVE),
-  STTradoml: z.coerce
-    .number({ invalid_type_error: NUMBER })
-    .nonnegative(POSITIVE),
   ano: z.coerce.number().int().positive().min(1980),
   data_inicio: z.coerce.date({
     errorMap: (issue, { defaultError }) => ({
@@ -49,30 +37,39 @@ export const ObraModalSchema = z.object({
   cidade: z.string().max(40),
   tipo_logo: z.nativeEnum(Logradouro),
   logradouro: z.string().min(1, CANNOT_BE_EMPTY).max(100),
-  complemento: z.string().max(30),
+  complemento_logo: z.string().max(30),
   bairro: z.string().min(1, CANNOT_BE_EMPTY).max(40),
+  cep: z.string().min(9, CANNOT_BE_EMPTY).max(9),
   lote: z.string().max(40),
   quadra: z.string().max(40),
   proprietario: z.string().max(60),
-  cliente: z.string().min(1, CANNOT_BE_EMPTY).max(60),
+  cliente: z.string().min(1, CANNOT_BE_EMPTY).max(120),
+  sondagem_percussao: z.optional(
+    z.object({
+      furos: z.number().int().min(1, GREATER_THAN_0),
+      metros: z.number().min(0, POSITIVE),
+    })
+  ),
+  sondagem_trado: z.optional(
+    z.object({
+      furos: z.number().int().min(1, GREATER_THAN_0),
+      metros: z.number().min(0, POSITIVE),
+    })
+  ),
+  sondagem_rotativa: z.optional(
+    z.object({
+      furos: z.number().int().min(1, GREATER_THAN_0),
+      metros_solo: z.number().min(0, POSITIVE),
+      metros_rocha: z.number().min(0, POSITIVE),
+    })
+  ),
 });
 
-export const ObrasSearchFiltersSchema = z.object({
-  search: z.string().min(1).max(40),
-  column: z.enum([
-    "sp",
-    "cidade",
-    "bairro",
-    "logradouro",
-    "cliente",
-    "proprietario",
-  ]),
-});
+export const SearchSchema = z.string().min(1).max(100);
 
 export const UserModalSchema = z
   .object({
     name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
-    surname: z.string().min(1, CANNOT_BE_EMPTY).max(40),
     email: z.string().email(INVALID_EMAIL).max(40),
     password: z
       .string()
@@ -91,7 +88,6 @@ export const UserModalSchema = z
 
 export const UserEditModalSchema = z.object({
   name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
-  surname: z.string().min(1, CANNOT_BE_EMPTY).max(40),
   email: z.string().email(INVALID_EMAIL).max(40),
   isAdmin: z.boolean(),
 });
@@ -111,8 +107,3 @@ export const ResetPasswordModalSchema = z
     message: "As senhas não coincidem.",
     path: ["confirmPassword"],
   });
-
-export const UsersSearchFiltersSchema = z.object({
-  search: z.string().min(1).max(40),
-  column: z.enum(["name", "surname", "email"]),
-});

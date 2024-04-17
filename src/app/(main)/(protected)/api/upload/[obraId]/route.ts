@@ -1,11 +1,14 @@
+import { NextRequest, NextResponse } from "next/server";
+
 import { db } from "@/lib/db";
+
+import { Arquivo } from "@prisma/client";
+import { DataResponse } from "@/types/ServerResponse";
+
 import {
   registerFilesToDatabase,
   uploadFilesToServer,
-} from "@/lib/services/filesServices";
-import { DataResponse } from "@/types/ServerResponse";
-import { Arquivo } from "@/types/data/Arquivo";
-import { NextRequest, NextResponse } from "next/server";
+} from "@/lib/services/FilesService";
 
 export async function POST(
   request: NextRequest,
@@ -47,29 +50,16 @@ export async function POST(
 
   let ano: number;
   try {
-    if (process.env.USE_LEGACY_TABLES === "true") {
-      const anoDb = await db.tbobras.findUnique({
-        select: { anoobra: true },
-        where: { codobra: Number(obraId) },
-      });
-      if (anoDb === null)
-        return NextResponse.json(
-          { success: false, error: "Código de obra não encontrado!" },
-          { status: 400 }
-        );
-      ano = anoDb.anoobra;
-    } else {
-      const anoDb = await db.obra.findUnique({
-        select: { ano: true },
-        where: { id: Number(obraId) },
-      });
-      if (anoDb === null)
-        return NextResponse.json(
-          { success: false, error: "Código de obra não encontrado!" },
-          { status: 400 }
-        );
-      ano = anoDb.ano;
-    }
+    const anoDb = await db.obra.findUnique({
+      select: { ano: true },
+      where: { id: Number(obraId) },
+    });
+    if (anoDb === null)
+      return NextResponse.json(
+        { success: false, error: "Código de obra não encontrado!" },
+        { status: 400 }
+      );
+    ano = anoDb.ano;
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -92,20 +82,11 @@ export async function POST(
       return NextResponse.json(resultRegister, { status: 400 });
   }
 
-  let registeredFiles;
-  if (process.env.USE_LEGACY_TABLES === "true") {
-    registeredFiles = await db.tbarquivos.findMany({
-      where: {
-        obraId: Number(obraId),
-      },
-    });
-  } else {
-    registeredFiles = await db.arquivo.findMany({
-      where: {
-        obraId: Number(obraId),
-      },
-    });
-  }
+  const registeredFiles = await db.arquivo.findMany({
+    where: {
+      obraId: Number(obraId),
+    },
+  });
 
   return NextResponse.json({
     success: true,

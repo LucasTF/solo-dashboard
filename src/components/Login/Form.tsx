@@ -17,7 +17,7 @@ import { useSessionStore } from "@/lib/stores/session";
 import { useRouter } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import Button from "../ui/Button";
-import { Field } from "../ui/Field";
+import { Field } from "../ui/Fields";
 import { login } from "@/lib/actions/auth/login";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "react-toastify";
@@ -57,8 +57,8 @@ const LoginForm = () => {
       try {
         const response = await login(credentials);
         if (response.success) {
-          const { email, name, surname, isAdmin } = response.user;
-          createSession({ email, name, surname, isAdmin });
+          const { email, name, isAdmin } = response.user;
+          createSession({ email, name, isAdmin });
           toast("Login realizado com sucesso!", {
             type: "success",
           });

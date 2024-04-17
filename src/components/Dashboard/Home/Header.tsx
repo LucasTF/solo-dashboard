@@ -11,7 +11,7 @@ export const HomeHeader = () => {
     <BaseHeader
       title={
         session ? (
-          `Bem-Vindo, ${session.name} ${session.surname}`
+          `Bem-Vindo, ${session.name}`
         ) : (
           <div className="flex items-center">
             Bem-Vindo,

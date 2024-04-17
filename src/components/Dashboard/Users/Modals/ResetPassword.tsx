@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/ui/Button";
-import { Field } from "@/components/ui/Field";
+import { Field } from "@/components/ui/Fields";
 import { ResetPasswordModalSchema } from "@/schemas";
 import { resetUserPassword } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";

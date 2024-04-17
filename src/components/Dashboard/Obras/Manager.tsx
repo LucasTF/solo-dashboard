@@ -1,16 +1,20 @@
-"use client";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
-import { lazy, useState } from "react";
-import { BaseManager } from "../BaseManager";
-
-const NewObraForm = lazy(() => import("./Modals/NewObra"));
+import { ButtonLink } from "@/components/ui/Button";
 
 export const ObrasManager = () => {
-  const [modal, toggleModal] = useState(false);
-
   return (
-    <BaseManager title="Nova obra" modalState={modal} toggleModal={toggleModal}>
-      <NewObraForm closeModal={() => toggleModal(false)} />
-    </BaseManager>
+    <section className="m-4">
+      <ButtonLink
+        href="/dashboard/obras/new"
+        color="green"
+        fontStrength="semibold"
+        type="button"
+        className="w-fit"
+      >
+        <PlusCircleIcon className="size-6" />
+        Nova Obra
+      </ButtonLink>
+    </section>
   );
 };

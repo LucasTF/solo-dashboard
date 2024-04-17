@@ -5,18 +5,16 @@ import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { User } from "@prisma/client";
+import { EntryUser, FormEditUser } from "@/types/data/User";
 
 import Button from "@/components/ui/Button";
-import { Field } from "@/components/ui/Field";
+import { Field } from "@/components/ui/Fields";
 import { UserEditModalSchema } from "@/schemas";
 import { updateUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
 
-type UserForm = Omit<User, "id" | "image" | "password">;
-
 type EditUserProps = {
-  user: User;
+  user: EntryUser;
   closeModal: Function;
 };
 
@@ -27,17 +25,16 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserForm>({
+  } = useForm<FormEditUser>({
     resolver: zodResolver(UserEditModalSchema),
     defaultValues: {
       name: user.name,
-      surname: user.surname,
       email: user.email,
       isAdmin: user.isAdmin,
     },
   });
 
-  const submitHandler = (formData: UserForm) => {
+  const submitHandler = (formData: FormEditUser) => {
     startTransition(async () => {
       const response = await updateUser(user.id, formData);
       if (response.success) {
@@ -63,13 +60,6 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
           errorMessage={errors.name?.message}
           placeholder="Nome"
           {...register("name")}
-        />
-        <Field.Input
-          label="Sobrenome"
-          isInvalid={!!errors.surname}
-          errorMessage={errors.surname?.message}
-          placeholder="Sobrenome"
-          {...register("surname")}
         />
         <Field.Input
           label="Email"

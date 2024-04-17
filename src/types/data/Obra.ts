@@ -1,48 +1,66 @@
-import { Arquivo } from "./Arquivo";
+import * as z from "zod";
 
-export type Obra = {
+import {
+  Arquivo,
+  Cliente,
+  Obra,
+  Sondagem_Percussao,
+  Sondagem_Rotativa,
+  Sondagem_Trado,
+} from "@prisma/client";
+import { ObraFormSchema } from "@/schemas";
+
+export type TableObra = {
   id: number;
-  cod_prop?: string | null;
-  sp: string;
-  num_obra?: number | null;
+  cod_obra: string;
   ano: number;
-  data_inicio?: string | null;
-  data_fim?: string | null;
-  tipo_logo: string;
-  logradouro: string;
-  lote?: string | null;
-  quadra?: string | null;
-  num_logo?: string | null;
+  endereco: string;
   bairro: string;
   cidade: string;
   uf: string;
-  cep?: string | null;
-  complemento_logo?: string | null;
-  sp_sondagem?: number | null;
-  metros_sp_sondagem?: number | null;
-  sr_sondagem?: string | null;
-  metros_sr_solo?: string | null;
-  metros_sr_rocha?: string | null;
-  rb_ponteiras?: string | null;
-  rb_equipamentos?: string | null;
-  rb_data_inicial?: string | null;
-  rb_data_termino?: string | null;
-  TITirantes?: string | null;
-  tipo_tirantes?: string | null;
-  carga_tirantes?: string | null;
-  micro_estaca_1?: string | null;
-  micro_estaca_2?: string | null;
-  micro_estaca_3?: string | null;
-  tb_tubulao?: string | null;
-  tb_cota_apoio?: string | null;
-  tb_cota_apoio_A?: string | null;
-  tb_taxa_solo?: string | null;
-  STTrado?: number | null;
-  STTradoml?: number | null;
   cliente: string;
-  proprietario?: string | null;
+  proprietario: string | null;
 };
 
-export type ObraWithFiles = Obra & {
+export type FormObra = z.infer<typeof ObraFormSchema>;
+
+export type InsertionObra = Omit<
+  FormObra,
+  | "cep"
+  | "lote"
+  | "quadra"
+  | "complemento_logo"
+  | "cliente"
+  | "proprietario"
+  | "sondagem_percussao"
+  | "sondagem_rotativa"
+  | "sondagem_trado"
+> & {
+  cep: string | null;
+  lote: string | null;
+  quadra: string | null;
+  complemento_logo: string | null;
+  clienteId: number;
+  proprietarioId: number | null;
+};
+
+export type EntryObra = Omit<Obra, "clienteId" | "proprietarioId"> & {
+  arquivos: Arquivo[] | null;
+  cliente: {
+    id: number;
+    nome: string;
+  };
+  proprietario: {
+    id: number;
+    nome: string;
+  } | null;
+};
+
+export type FullObra = Obra & {
+  cliente: Cliente;
+  proprietario: Cliente | null;
   arquivos: Arquivo[];
+  sondagem_percussao: Sondagem_Percussao | null;
+  sondagem_trado: Sondagem_Trado | null;
+  sondagem_rotativa: Sondagem_Rotativa | null;
 };
