@@ -33,6 +33,7 @@ export const BaseSearch = ({
         autoComplete="off"
         placeholder="Buscar"
         className="w-full pl-12 rounded-md shadow-lg dark:border-zinc-900 dark:border dark:border-solid placeholder:dark:text-gray-300"
+        autoFocus
         {...register("search")}
       />
       <MagnifyingGlassIcon className="size-6 absolute top-3 left-4 text-gray-400 dark:text-gray-300" />

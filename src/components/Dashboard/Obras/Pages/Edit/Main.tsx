@@ -208,6 +208,7 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
                 .getFullYear()
                 .toString()
                 .substr(-2)}`}
+              autoFocus
               {...register("cod_obra")}
             />
             <Field.Input
@@ -222,7 +223,7 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
 
           <section className="grid lg:grid-cols-3 gap-4">
             <Field.Select
-              label="Ano da Obra"
+              label="Ano"
               isInvalid={!!errors.ano}
               errorMessage={errors.ano?.message}
               {...register("ano")}

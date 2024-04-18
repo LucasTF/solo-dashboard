@@ -187,6 +187,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
                 .getFullYear()
                 .toString()
                 .substr(-2)}`}
+              autoFocus
               {...register("cod_obra")}
             />
             <Field.Input

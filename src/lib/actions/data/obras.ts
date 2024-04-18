@@ -78,7 +78,7 @@ export async function searchObras(searchString: string) {
     FROM Obra ob
     INNER JOIN Cliente cl
     ON clienteId = cl.id
-    INNER JOIN Cliente pr
+    LEFT JOIN Cliente pr
     ON proprietarioId = pr.id
     WHERE CONCAT_WS(' ', ob.tipo_logo, ob.logradouro, ob.complemento_logo) LIKE CONCAT('%', ${searchString}, '%') OR ob.cod_obra LIKE CONCAT('%', ${searchString}, '%') OR ob.cidade LIKE CONCAT('%', ${searchString}, '%') OR ob.bairro LIKE CONCAT('%', ${searchString}, '%') OR cl.nome LIKE CONCAT('%', ${searchString}, '%') OR pr.nome LIKE CONCAT('%', ${searchString}, '%')
     ORDER BY ob.ano DESC, ob.cod_obra DESC;`;
