@@ -38,7 +38,7 @@ export const HomeMain = async () => {
           <Card.Container>
             <Card.BackgroundIcon icon={<GlobeAmericasIcon />} />
             <Card.Title title="Nº de Clientes" />
-            <p className={cardText()}>-</p>
+            <p className={cardText()}>{homeData.data.totalClientes}</p>
           </Card.Container>
 
           <div className="col-span-3 lg:col-span-3 xl:col-span-1 text-black border border-slate-400 dark:border-zinc-700 rounded-lg p-4">

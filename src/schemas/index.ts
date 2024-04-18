@@ -17,8 +17,6 @@ const MIN_CHARACTERS = (minChar: number) =>
   `Deve conter, no mínimo, ${minChar} caracteres.`;
 const MAX_CHARACTERS = (maxChar: number) =>
   `Deve conter, no máximo, ${maxChar} caracteres.`;
-const CORRECT_LENGTH = (strLen: number) =>
-  `Deve conter, exatamente, ${strLen} caracteres.`;
 
 export const LoginSchema = z.object({
   email: z.string().email(INVALID_EMAIL),
@@ -111,16 +109,16 @@ export const SearchSchema = z.string().min(1).max(100);
 
 export const UserModalSchema = z
   .object({
-    name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
-    email: z.string().email(INVALID_EMAIL).max(40),
+    name: z.string().min(1, CANNOT_BE_EMPTY).max(30, MAX_CHARACTERS(30)),
+    email: z.string().email(INVALID_EMAIL).max(40, MAX_CHARACTERS(40)),
     password: z
       .string()
-      .min(6, "Deve possuir no mínimo 6 caracteres.")
-      .max(100),
+      .min(6, MIN_CHARACTERS(6))
+      .max(100, MAX_CHARACTERS(100)),
     confirmPassword: z
       .string()
-      .min(6, "Deve possuir no mínimo 6 caracteres.")
-      .max(100),
+      .min(6, MIN_CHARACTERS(6))
+      .max(100, MAX_CHARACTERS(100)),
     isAdmin: z.boolean(),
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
@@ -129,8 +127,8 @@ export const UserModalSchema = z
   });
 
 export const UserEditModalSchema = z.object({
-  name: z.string().min(1, CANNOT_BE_EMPTY).max(30),
-  email: z.string().email(INVALID_EMAIL).max(40),
+  name: z.string().min(1, CANNOT_BE_EMPTY).max(100, MAX_CHARACTERS(100)),
+  email: z.string().email(INVALID_EMAIL).max(40, MAX_CHARACTERS(40)),
   isAdmin: z.boolean(),
 });
 
@@ -138,12 +136,12 @@ export const ResetPasswordModalSchema = z
   .object({
     password: z
       .string()
-      .min(6, "Deve possuir no mínimo 6 caracteres.")
-      .max(100),
+      .min(6, MIN_CHARACTERS(6))
+      .max(100, MAX_CHARACTERS(100)),
     confirmPassword: z
       .string()
-      .min(6, "Deve possuir no mínimo 6 caracteres.")
-      .max(100),
+      .min(6, MIN_CHARACTERS(6))
+      .max(100, MAX_CHARACTERS(100)),
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     message: "As senhas não coincidem.",
