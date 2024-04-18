@@ -80,6 +80,16 @@ export default async function Report({ params }: ReportProps) {
                 <p className="font-bold">Metros:</p>
                 <span>{obra.sondagem_percussao.metros}</span>
               </div>
+              <div className="flex space-x-4">
+                <p className="font-bold">Média:</p>
+                <span>
+                  {(
+                    obra.sondagem_percussao.metros /
+                    obra.sondagem_percussao.furos
+                  ).toFixed(2)}
+                  m
+                </span>
+              </div>
             </div>
           </section>
         )}
