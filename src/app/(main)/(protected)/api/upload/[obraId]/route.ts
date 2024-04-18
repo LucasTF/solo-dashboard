@@ -9,6 +9,7 @@ import {
   registerFilesToDatabase,
   uploadFilesToServer,
 } from "@/lib/services/FilesService";
+import { FileCategory } from "@/enums/FileCategory";
 
 export async function POST(
   request: NextRequest,
@@ -21,13 +22,15 @@ export async function POST(
   const obraId = params.obraId;
 
   let files: File[];
+  let categories: FileCategory[];
 
   if (isNaN(Number(obraId)))
     return NextResponse.json({ success: false, error: "ID inválido." });
 
   try {
     const data = await request.formData();
-    files = data.getAll("obra-file") as unknown as File[];
+    files = data.getAll("file") as unknown as File[];
+    categories = data.getAll("file-category") as unknown as FileCategory[];
 
     if (files.length === 0)
       return NextResponse.json(
@@ -77,7 +80,11 @@ export async function POST(
 
   // Register uploaded files onto the database
   if (noDb !== "true") {
-    const resultRegister = await registerFilesToDatabase(Number(obraId), files);
+    const resultRegister = await registerFilesToDatabase(
+      Number(obraId),
+      files,
+      categories
+    );
     if (!resultRegister.success)
       return NextResponse.json(resultRegister, { status: 400 });
   }

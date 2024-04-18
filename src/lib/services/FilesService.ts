@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { db } from "../db";
 import { ServerResponse } from "@/types/ServerResponse";
 import { writeFile } from "fs/promises";
+import { FileCategory } from "@/enums/FileCategory";
 
 export async function uploadFilesToServer(
   ano: number,
@@ -38,15 +39,17 @@ export async function uploadFilesToServer(
 
 export async function registerFilesToDatabase(
   obraId: number,
-  files: File[]
+  files: File[],
+  categories: FileCategory[]
 ): Promise<ServerResponse> {
   try {
-    const dbData: Prisma.ArquivoCreateManyInput[] = files.map((file) => {
+    const dbData: Prisma.ArquivoCreateManyInput[] = files.map((file, index) => {
       const extStart = file.name.lastIndexOf(".");
       const extension = file.name.slice(extStart + 1, file.name.length);
       return {
         obraId,
         nome: file.name,
+        tipo: categories[index],
         formato: extension.toUpperCase(),
         criado_em: new Date(),
       };

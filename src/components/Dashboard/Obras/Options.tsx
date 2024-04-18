@@ -160,7 +160,7 @@ export const ObrasOptions = () => {
             <>
               <TitledDivider title="Arquivos" />
 
-              <ul>
+              <ul className="space-y-2">
                 {entry.data.arquivos.map((arquivo) => (
                   <li key={arquivo.id}>
                     <div className="flex justify-between items-center gap-2">
