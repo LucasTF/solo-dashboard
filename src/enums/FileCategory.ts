@@ -1,4 +1,4 @@
 export enum FileCategory {
-  Planta = "Planta",
-  DWG = "DWG",
+  Planta = "planta",
+  DWG = "dwg",
 }

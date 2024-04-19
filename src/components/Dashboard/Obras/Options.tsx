@@ -168,10 +168,9 @@ export const ObrasOptions = () => {
                         title={arquivo.nome}
                         href={`${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${
                           entry.data?.ano
-                        }/${entry.data?.cod_obra.replaceAll(
-                          "/",
-                          "-"
-                        )}/${encodeURIComponent(arquivo.nome)}`}
+                        }/${entry.data?.cod_obra.replaceAll("/", "-")}/${
+                          arquivo.tipo
+                        }/${encodeURIComponent(arquivo.nome)}`}
                         className="text-xs"
                       />
                       {session?.isAdmin && (

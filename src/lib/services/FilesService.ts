@@ -16,25 +16,25 @@ export async function uploadFilesToServer(
     for (let i = 0; i < files.length; i++) {
       const bytes = await files[i].arrayBuffer();
       const buffer = Buffer.from(bytes);
-      let path = process.env.UPLOADED_FILES_PATH.concat(
+      let uploadPath = process.env.UPLOADED_FILES_PATH.concat(
         `/${ano}`,
         `/${codObra.replaceAll("/", "-")}`
       );
 
       switch (categories[i]) {
         case FileCategory.Planta:
-          path.concat("/plantas");
+          uploadPath = uploadPath.concat("/plantas");
           break;
         case FileCategory.DWG:
-          path.concat("/dwgs");
+          uploadPath = uploadPath.concat("/dwgs");
           break;
       }
 
-      if (!fs.existsSync(path)) {
-        fs.mkdirSync(path, { recursive: true });
+      if (!fs.existsSync(uploadPath)) {
+        fs.mkdirSync(uploadPath, { recursive: true });
       }
 
-      await writeFile(path + `/${files[i].name}`, buffer);
+      await writeFile(uploadPath + `/${files[i].name}`, buffer);
     }
 
     return {
