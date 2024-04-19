@@ -8,21 +8,34 @@ import { FileCategory } from "@/enums/FileCategory";
 
 export async function uploadFilesToServer(
   ano: number,
-  files: File[]
+  codObra: string,
+  files: File[],
+  categories: FileCategory[]
 ): Promise<ServerResponse> {
   try {
-    files.forEach(async (file) => {
-      const bytes = await file.arrayBuffer();
+    for (let i = 0; i < files.length; i++) {
+      const bytes = await files[i].arrayBuffer();
       const buffer = Buffer.from(bytes);
+      let path = process.env.UPLOADED_FILES_PATH.concat(
+        `/${ano}`,
+        `/${codObra}`
+      );
 
-      const path = `${process.env.UPLOADED_FILES_PATH}/${ano}`;
+      switch (categories[i]) {
+        case FileCategory.Planta:
+          path.concat("/plantas");
+          break;
+        case FileCategory.DWG:
+          path.concat("dwgs");
+          break;
+      }
 
       if (!fs.existsSync(path)) {
         fs.mkdirSync(path, { recursive: true });
       }
 
-      await writeFile(path + `/${file.name}`, buffer);
-    });
+      await writeFile(path + `/${files[i].name}`, buffer);
+    }
 
     return {
       success: true,

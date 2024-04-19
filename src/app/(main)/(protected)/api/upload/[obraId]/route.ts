@@ -50,19 +50,17 @@ export async function POST(
       { status: 400 }
     );
   }
-
-  let ano: number;
+  let dbInfo: { ano: number; cod_obra: string } | null;
   try {
-    const anoDb = await db.obra.findUnique({
-      select: { ano: true },
+    dbInfo = await db.obra.findUnique({
+      select: { cod_obra: true, ano: true },
       where: { id: Number(obraId) },
     });
-    if (anoDb === null)
+    if (dbInfo === null)
       return NextResponse.json(
         { success: false, error: "Código de obra não encontrado!" },
         { status: 400 }
       );
-    ano = anoDb.ano;
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -73,7 +71,12 @@ export async function POST(
 
   // Uploads files to the static files server
   if (noWrite !== "true") {
-    const resultUpload = await uploadFilesToServer(ano, files);
+    const resultUpload = await uploadFilesToServer(
+      dbInfo.ano,
+      dbInfo.cod_obra,
+      files,
+      categories
+    );
     if (!resultUpload.success)
       return NextResponse.json(resultUpload, { status: 400 });
   }
