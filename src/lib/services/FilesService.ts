@@ -18,7 +18,7 @@ export async function uploadFilesToServer(
       const buffer = Buffer.from(bytes);
       let path = process.env.UPLOADED_FILES_PATH.concat(
         `/${ano}`,
-        `/${codObra}`
+        `/${codObra.replaceAll("/", "-")}`
       );
 
       switch (categories[i]) {
@@ -26,7 +26,7 @@ export async function uploadFilesToServer(
           path.concat("/plantas");
           break;
         case FileCategory.DWG:
-          path.concat("dwgs");
+          path.concat("/dwgs");
           break;
       }
 
