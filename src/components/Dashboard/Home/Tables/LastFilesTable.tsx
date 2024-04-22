@@ -16,9 +16,7 @@ export const LastFilesTable = ({ latestFiles }: LastFilesTableProps) => {
           <Table.Cell>
             <FileLink
               title={row.fileName}
-              href={`${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${
-                row.ano
-              }/${encodeURIComponent(row.fileName)}`}
+              href={`${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${row.filePath}/${row.fileName}`}
             />
           </Table.Cell>
           <Table.Cell>{row.obra}</Table.Cell>
