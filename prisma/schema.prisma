@@ -49,6 +49,7 @@ model Arquivo {
   nome                  String    @db.VarChar(40)
   tipo                  String    @db.VarChar(40)
   formato               String    @db.VarChar(5)
+  caminho               String    @db.VarChar(100)
   criado_em             DateTime
 
   @@index([nome, tipo, formato])

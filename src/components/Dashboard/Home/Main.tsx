@@ -56,5 +56,5 @@ export const HomeMain = async () => {
       </main>
     );
 
-  return <h2>Não foi possível recuperar os dados.</h2>;
+  return <h2 className="ml-4">Não foi possível recuperar os dados.</h2>;
 };

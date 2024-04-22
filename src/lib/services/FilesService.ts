@@ -5,6 +5,7 @@ import { db } from "../db";
 import { ServerResponse } from "@/types/ServerResponse";
 import { writeFile } from "fs/promises";
 import { FileCategory } from "@/enums/FileCategory";
+import { generateFilePath, generateFileURI } from "../utils/pathParser";
 
 export async function uploadFilesToServer(
   ano: number,
@@ -16,19 +17,7 @@ export async function uploadFilesToServer(
     for (let i = 0; i < files.length; i++) {
       const bytes = await files[i].arrayBuffer();
       const buffer = Buffer.from(bytes);
-      let uploadPath = process.env.UPLOADED_FILES_PATH.concat(
-        `/${ano}`,
-        `/${codObra.replaceAll("/", "-")}`
-      );
-
-      switch (categories[i]) {
-        case FileCategory.Planta:
-          uploadPath = uploadPath.concat("/plantas");
-          break;
-        case FileCategory.DWG:
-          uploadPath = uploadPath.concat("/dwgs");
-          break;
-      }
+      const uploadPath = generateFileURI(codObra, ano, categories[i]);
 
       if (!fs.existsSync(uploadPath)) {
         fs.mkdirSync(uploadPath, { recursive: true });
@@ -52,6 +41,8 @@ export async function uploadFilesToServer(
 
 export async function registerFilesToDatabase(
   obraId: number,
+  ano: number,
+  codObra: string,
   files: File[],
   categories: FileCategory[]
 ): Promise<ServerResponse> {
@@ -64,6 +55,7 @@ export async function registerFilesToDatabase(
         nome: file.name,
         tipo: categories[index],
         formato: extension.toUpperCase(),
+        caminho: generateFilePath(codObra, ano, categories[index]),
         criado_em: new Date(),
       };
     });

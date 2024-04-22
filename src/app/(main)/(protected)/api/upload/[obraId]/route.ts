@@ -85,6 +85,8 @@ export async function POST(
   if (noDb !== "true") {
     const resultRegister = await registerFilesToDatabase(
       Number(obraId),
+      dbInfo.ano,
+      dbInfo.cod_obra,
       files,
       categories
     );

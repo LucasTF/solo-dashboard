@@ -166,11 +166,7 @@ export const ObrasOptions = () => {
                     <div className="flex justify-between items-center gap-2">
                       <FileLink
                         title={arquivo.nome}
-                        href={`${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${
-                          entry.data?.ano
-                        }/${entry.data?.cod_obra.replaceAll("/", "-")}/${
-                          arquivo.tipo
-                        }/${encodeURIComponent(arquivo.nome)}`}
+                        href={`${process.env.NEXT_PUBLIC_STATIC_SERVER_URI}/${arquivo.caminho}/${arquivo.nome}`}
                         className="text-xs"
                       />
                       {session?.isAdmin && (
