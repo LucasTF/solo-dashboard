@@ -91,21 +91,21 @@ const cepSample: Viacep[] = [
 
 describe("Identify CEP from multiple samples", () => {
   test("Should identify specific special cep number 656", () => {
-    expect(identifyCep(cepSample, 656)).toBe("02088-900");
+    expect(identifyCep(cepSample, 656)).toHaveProperty("cep", "02088-900");
   });
   test("Should identify cep defined by 'até' keyword", () => {
-    expect(identifyCep(cepSample, 1200)).toBe("02033-000");
+    expect(identifyCep(cepSample, 1200)).toHaveProperty("cep", "02033-000");
   });
   test("Should identify cep defined by 'de' keyword with one range", () => {
-    expect(identifyCep(cepSample, 1600)).toBe("02033-020");
+    expect(identifyCep(cepSample, 1600)).toHaveProperty("cep", "02033-020");
   });
   test("Should identify cep defined by 'de' keyword with two ranges", () => {
-    expect(identifyCep(cepSample, 1200)).toBe("02033-000");
+    expect(identifyCep(cepSample, 1200)).toHaveProperty("cep", "02033-000");
   });
   test("Should identify cep with 'ao fim' keyword with two ranges", () => {
-    expect(identifyCep(cepSample, 3684)).toBe("02242-002");
+    expect(identifyCep(cepSample, 3684)).toHaveProperty("cep", "02242-002");
   });
   test.fails("Should fail when using an even number on an odd range.", () => {
-    expect(identifyCep(cepSample, 1550)).toBe("02033-010");
+    expect(identifyCep(cepSample, 1550)).toHaveProperty("cep", "02033-010");
   });
 });

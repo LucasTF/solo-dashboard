@@ -2,15 +2,16 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+const tz = dayjs.tz.guess();
+
 const padTo2Digits = (num: number) => {
   return num.toString().padStart(2, "0");
 };
 
 export const formatLocalTime = (date: Date) => {
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  const tz = dayjs.tz.guess();
-  let utcDate = dayjs(date);
+  const utcDate = dayjs(date);
   const tzDate = utcDate.tz(tz, true).format("DD/MM/YYYY HH:mm:ss");
 
   return tzDate;
