@@ -3,6 +3,7 @@ import format, {
   formatYYYYMMDD,
   formatDDMMYYYY,
   formatTime,
+  formatLocalTime,
 } from "@/lib/utils/dateFormatter";
 
 // Date: 18/02/2024
@@ -61,5 +62,11 @@ describe("DateTime Formatting", () => {
     expect(format(dateWithoutTime, "YYYYMMDD", true)).toBe(
       "2024-02-18 00:00:00"
     );
+  });
+});
+
+describe("Localtime Parsing", () => {
+  test("Should format date to brazilian time", () => {
+    expect(formatLocalTime(dateWithTime)).toBe("17/02/2024 17:30:20");
   });
 });

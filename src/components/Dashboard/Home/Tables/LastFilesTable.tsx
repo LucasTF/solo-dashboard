@@ -2,7 +2,7 @@ import { Table } from "@/components/Table";
 import { FileLink } from "@/components/ui/FileLink";
 import { LatestFile } from "@/lib/actions/data/home";
 
-import format from "@/lib/utils/dateFormatter";
+import { formatLocalTime } from "@/lib/utils/dateFormatter";
 
 type LastFilesTableProps = {
   latestFiles: LatestFile[];
@@ -20,9 +20,7 @@ export const LastFilesTable = ({ latestFiles }: LastFilesTableProps) => {
             />
           </Table.Cell>
           <Table.Cell>{row.obra}</Table.Cell>
-          <Table.Cell>
-            {format(row.createdAt, "DDMMYYYY", true, "/")}
-          </Table.Cell>
+          <Table.Cell>{formatLocalTime(row.createdAt)}</Table.Cell>
         </Table.Row>
       ))}
     </Table.Base>

@@ -16,7 +16,7 @@ type YearlyObras = {
   total: string;
 };
 
-type HomeData = {
+export type HomeData = {
   totalObras: number;
   totalFiles: number;
   totalClientes: number;
