@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BuildingOffice2Icon,
   DocumentIcon,
@@ -7,12 +5,11 @@ import {
 } from "@heroicons/react/24/solid";
 import { tv } from "tailwind-variants";
 
-import { DataResponse } from "@/types/ServerResponse";
+import { getHomeData } from "@/lib/actions/data/home";
 
 import { Card } from "@/components/ui/Card";
 import { ObrasPerYearChart } from "./Charts/ObrasPerYear";
 import { LastFilesTable } from "./Tables/LastFilesTable";
-import { HomeData } from "@/lib/actions/data/home";
 
 const mainStyles = tv({
   slots: {
@@ -20,11 +17,9 @@ const mainStyles = tv({
   },
 });
 
-type HomeMainProps = {
-  homeData: DataResponse<HomeData>;
-};
+export const HomeMain = async () => {
+  const homeData = await getHomeData();
 
-export const HomeMain = async ({ homeData }: HomeMainProps) => {
   const { cardText } = mainStyles();
 
   if (homeData.success)

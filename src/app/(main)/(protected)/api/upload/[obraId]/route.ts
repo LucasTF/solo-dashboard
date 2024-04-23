@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
 
@@ -99,6 +100,8 @@ export async function POST(
       obraId: Number(obraId),
     },
   });
+
+  revalidatePath("/dashboard");
 
   return NextResponse.json({
     success: true,

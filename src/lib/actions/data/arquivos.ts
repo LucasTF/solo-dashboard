@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { db } from "@/lib/db";
 import { ServerResponse } from "@/types/ServerResponse";
 import { cookies } from "next/headers";
@@ -16,6 +18,8 @@ export async function deleteFile(fileId: number): Promise<ServerResponse> {
 
   try {
     await db.arquivo.delete({ where: { id: fileId } });
+
+    revalidatePath("/dashboard");
 
     return { success: true, message: "Arquivo deletado com sucesso!" };
   } catch (error) {

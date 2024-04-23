@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { ServerResponse } from "@/types/ServerResponse";
 import {
   EntryObra,
@@ -353,6 +355,8 @@ export async function insertNewObra(
 
       return [newObra];
     });
+
+    revalidatePath("/dashboard");
 
     return { success: true, message: "Obra criada com sucesso!" };
   } catch (error) {
