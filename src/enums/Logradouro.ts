@@ -20,6 +20,7 @@ export enum Logradouro {
   Lagoa = "Lagoa",
   Largo = "Largo",
   Loteamento = "Loteamento",
+  Marginal = "Marginal",
   Nucleo = "Núcleo",
   Parque = "Parque",
   Passarela = "Passarela",
