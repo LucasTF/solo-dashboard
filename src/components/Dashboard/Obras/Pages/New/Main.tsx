@@ -58,7 +58,8 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
     resolver: zodResolver(ObraFormSchema),
   });
 
-  const watchCodObra = watch("cod_obra", "");
+  const watchNumObra = watch("num_obra", 0);
+  const watchAno = watch("ano");
   const watchUf = watch("uf", "SP");
   const watchLog = watch("logradouro", "");
 
@@ -70,29 +71,28 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
     fetchMunicipios().catch((error) => console.error(error));
   }, [watchUf]);
 
+  // TODO: Take Trado and Rotativa into account when creating string
   useEffect(() => {
-    if (watchCodObra.length >= 6) {
-      let numObra = Number(watchCodObra.slice(2, 5));
-      if (!Number.isNaN(numObra)) {
-        setValue("num_obra", numObra);
-      } else {
-        setValue("num_obra", 0);
-      }
+    if (!isNaN(watchNumObra) && watchNumObra > 0 && watchNumObra <= 999) {
+      let spNum = Number(watchNumObra).toString();
+      spNum = spNum.padStart(3, "0");
+      const twoYear = watchAno.toString().slice(-2);
+      setValue("cod_obra", `SP${spNum}/${twoYear}`);
     }
-  }, [watchCodObra, setValue]);
+  }, [watchNumObra, watchAno, setValue]);
 
   useEffect(() => {
-    const fetchCep = async () => {
-      debouncedFetchCep.cancel();
+    const fetchCepBairro = async () => {
+      debouncedFetchCepBairro.cancel();
       if (watchLog.length >= 3) {
-        await debouncedFetchCep(watchLog);
+        await debouncedFetchCepBairro(watchLog);
       }
     };
 
-    fetchCep();
+    fetchCepBairro();
   }, [watchLog]);
 
-  const debouncedFetchCep = useCallback(
+  const debouncedFetchCepBairro = useCallback(
     lodash.debounce(async (address: string) => {
       if (address.length >= 3 && isValidNumberedLogradouro(address)) {
         try {
@@ -180,21 +180,18 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
         <section className="col-span-4">
           <section className="grid lg:grid-cols-2 gap-4">
             <Field.Input
-              label="Código SP"
-              isInvalid={!!errors.cod_obra}
-              errorMessage={errors.cod_obra?.message}
-              placeholder={`SP000/${new Date()
-                .getFullYear()
-                .toString()
-                .substr(-2)}`}
-              autoFocus
-              {...register("cod_obra")}
-            />
-            <Field.Input
               label="Número SP"
               isInvalid={!!errors.num_obra}
               errorMessage={errors.num_obra?.message}
+              autoFocus
               {...register("num_obra")}
+            />
+            <Field.Input
+              label="Código SP"
+              isInvalid={!!errors.cod_obra}
+              errorMessage={errors.cod_obra?.message}
+              disabled
+              {...register("cod_obra")}
             />
           </section>
 

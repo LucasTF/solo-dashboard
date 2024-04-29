@@ -78,7 +78,8 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
     },
   });
 
-  const watchCodObra = watch("cod_obra", "");
+  const watchNumObra = watch("num_obra", 0);
+  const watchAno = watch("ano");
   const watchUf = watch("uf", "SP");
   const watchLog = watch("logradouro", "");
 
@@ -91,28 +92,26 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
   }, [watchUf]);
 
   useEffect(() => {
-    if (watchCodObra.length >= 6) {
-      let numObra = Number(watchCodObra.slice(2, 5));
-      if (!Number.isNaN(numObra)) {
-        setValue("num_obra", numObra);
-      } else {
-        setValue("num_obra", 0);
-      }
+    if (!isNaN(watchNumObra) && watchNumObra > 0 && watchNumObra <= 999) {
+      let spNum = Number(watchNumObra).toString();
+      spNum = spNum.padStart(3, "0");
+      const twoYear = watchAno.toString().slice(-2);
+      setValue("cod_obra", `SP${spNum}/${twoYear}`);
     }
-  }, [watchCodObra, setValue]);
+  }, [watchNumObra, watchAno, setValue]);
 
   useEffect(() => {
-    const fetchCep = async () => {
-      debouncedFetchCep.cancel();
-      if (watchLog.length >= 3) {
-        await debouncedFetchCep(watchLog);
+    const fetchCepBairro = async () => {
+      debouncedFetchCepBairro.cancel();
+      if (watchLog.length >= 3 && getValues("bairro").length === 0) {
+        await debouncedFetchCepBairro(watchLog);
       }
     };
 
-    fetchCep();
+    fetchCepBairro();
   }, [watchLog]);
 
-  const debouncedFetchCep = useCallback(
+  const debouncedFetchCepBairro = useCallback(
     lodash.debounce(async (address: string) => {
       if (address.length >= 3 && isValidNumberedLogradouro(address)) {
         try {
@@ -201,21 +200,18 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
         <section className="col-span-4">
           <section className="grid lg:grid-cols-2 gap-4">
             <Field.Input
-              label="Código SP"
-              isInvalid={!!errors.cod_obra}
-              errorMessage={errors.cod_obra?.message}
-              placeholder={`SP000/${new Date()
-                .getFullYear()
-                .toString()
-                .substr(-2)}`}
-              autoFocus
-              {...register("cod_obra")}
-            />
-            <Field.Input
               label="Número SP"
               isInvalid={!!errors.num_obra}
               errorMessage={errors.num_obra?.message}
+              autoFocus
               {...register("num_obra")}
+            />
+            <Field.Input
+              label="Código SP"
+              isInvalid={!!errors.cod_obra}
+              errorMessage={errors.cod_obra?.message}
+              disabled
+              {...register("cod_obra")}
             />
           </section>
 
