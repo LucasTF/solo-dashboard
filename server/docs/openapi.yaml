@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Solo Dashboard API
+  description: |-
+    Descrição das rotas e funcionalidades disponíveis na API
+  version: 0.1.0
+
+servers:
+  - url: http://127.0.0.1:5000/api
+    description: Test/Staging server
+
+tags:
+  - name: Auth
+    description: Rotas associadas à autenticação.
+  - name: Obras
+    description: Rotas associadas a obras.
+  - name: Arquivos
+    description: Rotas associadas a arquivos.
+  - name: Clientes
+    description: Rotas associadas a clientes.
+  - name: Usuários
+    description: Rotas associadas a usuários.
+
+paths:
+  /obras:
+    get:
+      tags:
+        - Obras
+      summary: Retorna uma lista de obras paginadas
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+          description: Número da página a ser recuperada.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 100
+          description: Número de obras a serem recuperadas por página (máximo 100).
+      responses:
+        '200':
+          description: Um objeto contendo o número total de obras, número total de páginas e um array de obras limitados, por padrão, a 50.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_obras:
+                    type: integer
+                    example: 50
+                  total_pages:
+                    type: integer
+                    example: 1
+                  data:
+                    type: array
+                    items:
+                      type: object
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 40
+        isAdmin:
+          type: boolean
+          default: false
+    Arquivo:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        obraId:
+          type: integer
+          minimum: 1
+        nome:
+          type: string
+          maxLength: 40
+        formato:
+          type: string
+          maxLength: 5
+        criado_em:
+          type: string
+          format: date-time
+        tipo:
+          type: string
+          maxLength: 40
+        caminho:
+          type: string
+          maxLength: 10
+    Cliente:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        nome:
+          type: string
+          maxLength: 120
+    Obra:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        cod_obra:
+          type: string
+          minLength: 6
+          maxLength: 11
+        num_obra:
+          type: integer
+          minimum: 1
+          maximum: 999
+        ano:
+          type: integer
+        data_inicio:
+          type: string
+          format: date
+        data_fim:
+          type: string
+          format: date
+        tipo_logo:
+          type: string
+          nullable: true
+          maxLength: 20
+        logradouro:
+          type: string
+          maxLength: 120
+        lote:
+          type: string
+          nullable: true
+        quadra:
+          type: string
+          nullable: true
+        bairro:
+          type: string
+          maxLength: 80
+        cidade:
+          type: string
+          maxLength: 40
+        uf:
+          type: string
+          minLength: 2
+          maxLength: 2
+        cep:
+          type: string
+          nullable: true
+          minLength: 9
+          maxLength: 9
+        complemento_logo:
+          type: string
+          nullable: true
+          maxLength: 120
+          
