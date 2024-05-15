@@ -4,16 +4,12 @@ import { useTransition } from "react";
 import { toast } from "react-toastify";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
-import { Arquivo } from "@prisma/client";
-import { EntryObra } from "@/types/data/Obra";
-
-import { deleteFile } from "@/lib/actions/data/arquivos";
 import { useEntryStore } from "@/lib/stores/entry";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 
 type DeleteFileProps = {
-  file: Arquivo;
+  file: any; //TODO: Replace with Arquivo Type
   closeModal: Function;
 };
 
@@ -24,11 +20,8 @@ const DeleteFile = ({ file, closeModal }: DeleteFileProps) => {
 
   const deleteFileHandler = () => {
     startTransition(async () => {
-      const response = await deleteFile(file.id);
-      if (response.success) {
-        refreshEntry();
-        toast(response.message, { type: "success" });
-      } else toast(response.error, { type: "error" });
+      // TODO: Use Flask API implementation
+      toast("Arquivo deletado com sucesso.");
       closeModal();
     });
   };

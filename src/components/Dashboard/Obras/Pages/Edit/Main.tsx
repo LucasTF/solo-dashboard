@@ -13,8 +13,6 @@ import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import lodash from "lodash";
 import * as z from "zod";
 
-import { updateObra } from "@/lib/actions/data/obras";
-import { getMunicipios } from "@/lib/actions/data/external/ibge";
 import { formatYYYYMMDD } from "@/lib/utils/dateFormatter";
 import {
   isValidNumberedLogradouro,
@@ -85,8 +83,7 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
 
   useEffect(() => {
     const fetchMunicipios = async () => {
-      const municipiosData = await getMunicipios(watchUf);
-      setMunicipios(municipiosData);
+      // TODO: Use IBGE API to get municipios
     };
     fetchMunicipios().catch((error) => console.error(error));
   }, [watchUf]);
@@ -176,15 +173,7 @@ export const EditObraMain = ({ ufs, obra }: NewObraMainProps) => {
 
   const submitHandler = (formData: OFSchema) => {
     startTransition(async () => {
-      console.log(formData);
-      const response = await updateObra(obra.id, formData);
-      if (response.success) {
-        toast(response.message, { type: "success" });
-        reset();
-      } else {
-        console.error(response.error);
-        toast(response.error, { type: "error" });
-      }
+      // TODO: Use Flask API do update Obra
     });
   };
 

@@ -1,15 +1,14 @@
 "use client";
 
+import User from "@/types/data/User";
+
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { User } from "@prisma/client";
-
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Fields";
 import { UserModalSchema } from "@/schemas";
-import { createNewUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
 import { toast } from "react-toastify";
 import { useTableStore } from "@/lib/stores/table";
@@ -36,25 +35,7 @@ const NewUser = ({ closeModal }: NewUserProps) => {
 
   const submitHandler = (formData: UserForm) => {
     startTransition(async () => {
-      const response = await createNewUser(formData);
-      if (response.success) {
-        setTableData((prevState) => {
-          const newData = {
-            id: response.data.id,
-            name: response.data.name,
-            email: response.data.email,
-            isAdmin: response.data.isAdmin,
-          };
-          prevState.push(newData);
-          return prevState;
-        });
-        reset();
-        toast("Usuário criado com sucesso!", { type: "success" });
-      } else {
-        console.error(response.error);
-        toast(response.error, { type: "error" });
-      }
-      closeModal(true);
+      // TODO: Use Flask API to create new user
     });
   };
 

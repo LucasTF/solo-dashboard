@@ -1,8 +1,8 @@
-import { User } from "@prisma/client";
+import User from "./data/User";
 
 type SuccessLoginResponse = {
   success: true;
-  user: Omit<User, "id" | "image" | "password">;
+  user: Omit<User, "id" | "password">;
 };
 
 type ErrorLoginResponse = {

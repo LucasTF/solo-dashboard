@@ -1,11 +1,10 @@
 import { Table } from "@/components/Table";
 import { FileLink } from "@/components/ui/FileLink";
-import { LatestFile } from "@/lib/actions/data/home";
 
 import { formatLocalTime } from "@/lib/utils/dateFormatter";
 
 type LastFilesTableProps = {
-  latestFiles: LatestFile[];
+  latestFiles: any[]; // TODO: Replace with LatestFiles Type
 };
 
 export const LastFilesTable = ({ latestFiles }: LastFilesTableProps) => {

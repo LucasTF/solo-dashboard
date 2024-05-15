@@ -1,5 +1,4 @@
 import { Obras } from "@/components/Dashboard/Obras/Pages";
-import { getUfs } from "@/lib/actions/data/external/ibge";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,13 +6,11 @@ export const metadata: Metadata = {
 };
 
 export default async function NewObraPage() {
-  const ufData = await getUfs();
+  // TODO: Get UFs from IBGE API
 
   return (
     <>
-      <Obras.New.Header />
-
-      <Obras.New.Main ufs={ufData} />
+      <h1>Under Construction</h1>
     </>
   );
 }

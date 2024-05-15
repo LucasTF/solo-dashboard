@@ -5,8 +5,6 @@ import {
 } from "@heroicons/react/24/solid";
 import { tv } from "tailwind-variants";
 
-import { getHomeData } from "@/lib/actions/data/home";
-
 import { Card } from "@/components/ui/Card";
 import { ObrasPerYearChart } from "./Charts/ObrasPerYear";
 import { LastFilesTable } from "./Tables/LastFilesTable";
@@ -18,7 +16,17 @@ const mainStyles = tv({
 });
 
 export const HomeMain = async () => {
-  const homeData = await getHomeData();
+  // TODO: Get Home Data from Flask API
+  const homeData = {
+    success: false,
+    data: {
+      totalObras: 0,
+      totalFiles: 0,
+      totalClientes: 0,
+      obrasPerYear: [],
+      latestFiles: [],
+    },
+  };
 
   const { cardText } = mainStyles();
 

@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { getEntryData } from "../actions/data";
 import { Tables } from "../structures";
 
 export type Entry<T> = {
@@ -20,8 +19,7 @@ export const useEntryStore = create<EntryState<unknown>>((set, get) => ({
   entry: null,
   setEntry: async (table, id, tableIndex) => {
     set({ entry: { id, table, tableIndex, data: null } });
-    const data = await getEntryData(table, id);
-    if (data) set({ entry: { id, table, tableIndex, data } });
+    // TODO: Get entry from Flask API
   },
   refreshEntry: () => {
     const currEntry = get().entry;

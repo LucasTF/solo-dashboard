@@ -10,7 +10,6 @@ import { EntryUser, FormEditUser } from "@/types/data/User";
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Fields";
 import { UserEditModalSchema } from "@/schemas";
-import { updateUser } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
 
 type EditUserProps = {
@@ -36,12 +35,7 @@ const EditUser = ({ user, closeModal }: EditUserProps) => {
 
   const submitHandler = (formData: FormEditUser) => {
     startTransition(async () => {
-      const response = await updateUser(user.id, formData);
-      if (response.success) {
-        toast(response.message, { type: "success" });
-      } else {
-        toast(response.error, { type: "error" });
-      }
+      // TODO: Use Flask API to update user
       closeModal();
     });
   };

@@ -1,15 +1,33 @@
 import * as z from "zod";
 
+import { ObraFormSchema } from "@/schemas";
+import Arquivo from "./Arquivo";
+import Cliente from "./Cliente";
 import {
-  Arquivo,
-  Cliente,
-  Obra,
   Sondagem_Percussao,
   Sondagem_Rotativa,
   Sondagem_Trado,
-} from "@prisma/client";
-import { ObraFormSchema } from "@/schemas";
+} from "./Sondagem";
 
+export type Obra = {
+  id: number;
+  cod_obra: string;
+  num_obra: number;
+  ano: number;
+  data_inicio: Date;
+  data_fim: Date;
+  tipo_logo: string | null;
+  logradouro: string;
+  lote: string | null;
+  quadra: string | null;
+  bairro: string;
+  cidade: string;
+  uf: string;
+  cep: string | null;
+  complemento_logo: string | null;
+};
+
+// TODO: Deprecate Type
 export type TableObra = {
   id: number;
   cod_obra: string;

@@ -13,7 +13,6 @@ import lodash from "lodash";
 
 import { Input } from "./Input";
 import { Cliente } from "@/types/data/Cliente";
-import { searchClientes } from "@/lib/actions/data/clientes";
 import Spinner from "../Spinner";
 import { UseFormSetValue } from "react-hook-form";
 
@@ -66,13 +65,7 @@ export const SuggestionInput = forwardRef<
 
     const debouncedSearch = useCallback(
       lodash.debounce(async (searchArgs) => {
-        const clientes = await searchClientes(searchArgs);
-
-        if (clientes.success) {
-          setSearching(false);
-          setSuggestions(clientes.data);
-          setVisible(true);
-        }
+        // TODO: Use Flask API implementation for Cliente Search
       }, 500),
       []
     );

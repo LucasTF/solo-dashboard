@@ -14,8 +14,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-import { Arquivo } from "@prisma/client";
-
 import { EntryState, useEntryStore } from "@/lib/stores/entry";
 import { useSessionStore } from "@/lib/stores/session";
 
@@ -48,7 +46,7 @@ const options = tv({
 
 export const ObrasOptions = () => {
   const [modal, setModal] = useState<ModalState>(ModalState.Off);
-  const [file, setFile] = useState<Arquivo>();
+  const [file, setFile] = useState<any>(); // TODO: Replace 'any' with Arquivo Type
 
   const { resolvedTheme } = useTheme();
 

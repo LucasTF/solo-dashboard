@@ -15,10 +15,8 @@ import {
 import { LoginSchema } from "@/schemas";
 import { useSessionStore } from "@/lib/stores/session";
 import { useRouter } from "next/navigation";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import Button from "../ui/Button";
 import { Field } from "../ui/Fields";
-import { login } from "@/lib/actions/auth/login";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../ui/Spinner";
@@ -54,19 +52,8 @@ const LoginForm = () => {
 
   const loginHandler = (credentials: LoginCredentials) => {
     startTransition(async () => {
-      try {
-        const response = await login(credentials);
-        if (response.success) {
-          const { email, name, isAdmin } = response.user;
-          createSession({ email, name, isAdmin });
-          toast("Login realizado com sucesso!", {
-            type: "success",
-          });
-          router.push(DEFAULT_LOGIN_REDIRECT);
-        } else toast(response.message, { type: "error" });
-      } catch (error) {
-        console.log(error);
-      }
+      // TODO: Reimplementation with Flask routing
+      toast("Login realizado.");
     });
   };
 

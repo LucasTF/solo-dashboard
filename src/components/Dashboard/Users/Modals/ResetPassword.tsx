@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import Button from "@/components/ui/Button";
 import { Field } from "@/components/ui/Fields";
 import { ResetPasswordModalSchema } from "@/schemas";
-import { resetUserPassword } from "@/lib/actions/data/users";
 import Loading from "@/components/ui/Loading";
 import { toast } from "react-toastify";
 
@@ -31,13 +30,7 @@ const ResetPassword = ({ userId, closeModal }: EditUserProps) => {
 
   const submitHandler = (formData: ResetPasswordForm) => {
     startTransition(async () => {
-      const response = await resetUserPassword(userId, formData.password);
-      if (response.success) {
-        toast(response.message, { type: "success" });
-      } else {
-        toast(response.error, { type: "error" });
-      }
-      closeModal();
+      // TODO: Use Flask API to reset password
     });
   };
 

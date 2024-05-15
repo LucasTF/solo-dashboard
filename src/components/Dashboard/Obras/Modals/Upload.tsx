@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-import { Arquivo } from "@prisma/client";
 import { EntryObra } from "@/types/data/Obra";
 import { DataResponse } from "@/types/ServerResponse";
 import { FileCategory } from "@/enums/FileCategory";
@@ -59,7 +58,7 @@ const Upload = ({ obra, closeModal }: UploadProps) => {
         }
       );
 
-      const resJson: DataResponse<Arquivo[]> = await res.json();
+      const resJson: DataResponse<any[]> = await res.json(); // TODO: Replace 'any' with File Type
 
       if (resJson.success) {
         console.log(resJson.data);

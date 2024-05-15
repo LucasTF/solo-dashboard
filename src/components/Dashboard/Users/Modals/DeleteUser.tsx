@@ -2,11 +2,9 @@
 
 import { useTransition } from "react";
 import { toast } from "react-toastify";
-import { User } from "@prisma/client";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 import { useEntryStore } from "@/lib/stores/entry";
-import { deleteUser } from "@/lib/actions/data/users";
 import { useTableStore } from "@/lib/stores/table";
 
 import Button from "@/components/ui/Button";
@@ -22,23 +20,9 @@ const DeleteUser = ({ closeModal }: DeleteUserProps) => {
   const { entry, clearEntry } = useEntryStore();
   const { setTableData } = useTableStore();
 
-  const user = entry?.data as User;
-
   const deleteUserHandler = () => {
     startTransition(async () => {
-      const response = await deleteUser(user.id);
-      if (response.success) {
-        setTableData((prevState) => {
-          if (entry) {
-            console.log(entry.tableIndex);
-            prevState.splice(entry.tableIndex, 1);
-          }
-          return prevState;
-        });
-        toast(response.message, { type: "success" });
-        clearEntry();
-      } else toast(response.error, { type: "error" });
-      closeModal();
+      // TODO: Use Flask API to delete user
     });
   };
 
@@ -46,10 +30,11 @@ const DeleteUser = ({ closeModal }: DeleteUserProps) => {
     if (isPending) return <Loading />;
     return (
       <div className="p-4 space-y-4">
+        {/* TODO: Replace 'email_placeholder' with email from User Type */}
         <p>
           Você tem certeza que deseja deletar o usuário{" "}
-          <span className="font-semibold underline">{user.email}</span>? Essa
-          ação não pode ser revertida.
+          <span className="font-semibold underline">email_placeholder</span>?
+          Essa ação não pode ser revertida.
         </p>
         <Button
           color="red"

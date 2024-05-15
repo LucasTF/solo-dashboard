@@ -1,4 +1,3 @@
-import { getAllData, getTableData } from "@/lib/actions/data";
 import { TableConstructor } from "./TableConstructor";
 import { TableStructure } from "@/types/TableStructure";
 import { TableCellsIcon } from "@heroicons/react/24/outline";
@@ -14,7 +13,8 @@ export const TableArea = async ({
   searchString,
   showAllData = false,
 }: TableAreaProps) => {
-  const response = await getTableData(tableStructure.table, searchString);
+  // TODO: Get Table Data from Flask API
+  const response = { success: true, data: [] };
 
   if (response.success) {
     return (
@@ -23,7 +23,6 @@ export const TableArea = async ({
   }
 
   if (showAllData) {
-    const response = await getAllData(tableStructure.table);
     if (response.success) {
       return (
         <TableConstructor

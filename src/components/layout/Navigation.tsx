@@ -15,8 +15,6 @@ import {
 } from "@heroicons/react/24/solid";
 
 import { useSessionStore } from "@/lib/stores/session";
-import { logout } from "@/lib/actions/auth/logout";
-import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/routes";
 import ThemeSwitcher from "@/components/ui/Navigation/ThemeSwitcher";
 import NavLink from "@/components/ui/Navigation/NavLink";
 import { Bars3Icon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -79,9 +77,7 @@ const Navigation = () => {
 
   const logoutHandler = () => {
     startTransition(async () => {
-      await logout();
-      dropSession();
-      router.push(DEFAULT_UNAUTHENTICATED_REDIRECT);
+      // TODO: Use Flask API to Logout
     });
   };
 

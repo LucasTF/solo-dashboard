@@ -13,8 +13,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { insertNewObra } from "@/lib/actions/data/obras";
-import { getMunicipios } from "@/lib/actions/data/external/ibge";
 import { identifyCep } from "@/lib/utils/cepParser";
 import {
   splitAddress,
@@ -65,8 +63,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
 
   useEffect(() => {
     const fetchMunicipios = async () => {
-      const municipiosData = await getMunicipios(watchUf);
-      setMunicipios(municipiosData);
+      // TODO: Use IBGE API
     };
     fetchMunicipios().catch((error) => console.error(error));
   }, [watchUf]);
@@ -157,14 +154,7 @@ export const NewObraMain = ({ ufs }: NewObraMainProps) => {
 
   const submitHandler = (formData: Obra) => {
     startTransition(async () => {
-      const response = await insertNewObra(formData);
-      if (response.success) {
-        toast(response.message, { type: "success" });
-        reset();
-      } else {
-        console.error(response.error);
-        toast(response.error, { type: "error" });
-      }
+      // TODO: Use Flask API to create new obra
     });
   };
 
