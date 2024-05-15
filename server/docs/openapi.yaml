@@ -42,7 +42,7 @@ paths:
             maximum: 100
           description: Número de obras a serem recuperadas por página (máximo 100).
       responses:
-        '200':
+        "200":
           description: Um objeto contendo o número total de obras, número total de páginas e um array de obras limitados, por padrão, a 50.
           content:
             application/json:
@@ -166,4 +166,3 @@ components:
           type: string
           nullable: true
           maxLength: 120
-          
