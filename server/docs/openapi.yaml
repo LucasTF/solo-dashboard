@@ -22,10 +22,68 @@ tags:
     description: Rotas associadas a usuários.
 
 paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Faz a autenticação do usuário na Dashboard via token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+      responses:
+        "200":
+          description: Retorna um objeto contendo uma mensagem de sucesso em adição a um cookie de autenticação JWT.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: session=abcde12345; Path=/; HttpOnly
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Login realizado com sucesso."
+  /logout:
+    get:
+      tags:
+        - Auth
+      security:
+        - cookieAuth: []
+      summary: Faz o logout do usuário
+      responses:
+        "200":
+          description: Termina a sessão do usuário.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Logout realizado com sucesso."
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autorizado."
+      
   /obras:
     get:
       tags:
         - Obras
+      security:
+        - cookieAuth: []
       summary: Retorna uma lista de obras paginadas
       parameters:
         - name: page
@@ -43,7 +101,7 @@ paths:
           description: Número de obras a serem recuperadas por página (máximo 100).
       responses:
         "200":
-          description: Um objeto contendo o número total de obras, número total de páginas e um array de obras limitados, por padrão, a 50.
+          description: Retorna um objeto contendo o número total de obras, número total de páginas e um array de obras limitados, por padrão, a 50.
           content:
             application/json:
               schema:
@@ -61,7 +119,22 @@ paths:
                       type: object
 
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+
   schemas:
+    Auth:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
     User:
       type: object
       properties:
