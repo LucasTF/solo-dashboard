@@ -3,7 +3,7 @@ info:
   title: Solo Dashboard API
   description: |-
     Descrição das rotas e funcionalidades disponíveis na API
-  version: 0.1.0
+  version: 0.4.2
 
 servers:
   - url: http://127.0.0.1:5000/api
@@ -76,7 +76,31 @@ paths:
               properties:
                 message:
                   type: string
-                  example: "Usuário não está autorizado."
+                  example: "Usuário não está autenticado."
+  /session:
+    get:
+      tags:
+        - Auth
+      security:
+        - cookieAuth: []
+      summary: Retorna informações da sessão do usuário
+      responses:
+        "200":
+          description: Retorna um objeto contendo as informações da sessão do usuário.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
       
   /obras:
     get:
@@ -116,7 +140,272 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
+                      $ref: '#/components/schemas/Obra'
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
+                      
+  /arquivos/latest:
+    get:
+      tags:
+        - Arquivos
+      security:
+        - cookieAuth: []
+      summary: Retorna uma lista com os 5 últimos arquivos registrados
+      responses:
+        "200":
+          description: Retorna uma lista com os 5 últimos arquivos registrados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Arquivo'
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
+  /arquivos/{obraId}:
+    get:
+      tags:
+        - Arquivos
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: obraId
+          schema:
+            type: integer
+          required: true
+          description: ID da obra a qual o arquivo está associado
+      summary: Retorna uma lista de arquivos associados ao ID da obra especificada
+      responses:
+        "200":
+          description: Retorna uma lista de arquivos associados ao ID da obra especificada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Arquivo'
+        "404":
+          description: Obra não encontrada.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Obra não encontrada."
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
+    post:
+      tags:
+        - Arquivos
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: obraId
+          schema:
+            type: integer
+          required: true
+          description: ID da obra a qual o arquivo será associado
+      summary: Insere um arquivo relacionado a uma obra com o ID especificado
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                filename:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                tipo:
+                  type: string
+      responses:
+        "201":
+          description: Salva o arquivo no servidor de arquivos estáticos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Arquivo salvo com sucesso."
+        "400":
+          description: Arquivo inválido.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "O arquivo enviado não é válido."
+        "404":
+          description: Obra não encontrada.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Obra não encontrada."
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
+        "403":
+          description: Usuário não está autorizado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autorizado a realizar essa operação."
+  /arquivos/{arquivoId}:
+    delete:
+      tags:
+        - Arquivos
+      security:
+        - cookieAuth: []
+      summary: Deleta um arquivo com o ID especificado
+      parameters:
+        - in: path
+          name: arquivoId
+          schema:
+            type: integer
+          required: true
+          description: ID do arquivo a ser deletado
+      responses:
+        "200":
+          description: Deleta o arquivo com ID especificado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Arquivo deletado com sucesso."
+        "404":
+          description: Arquivo não encontrado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Arquivo não encontrado."
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
+        "403":
+          description: Usuário não está autorizado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autorizado a realizar essa operação."
+                  
+  /users/{userId}:
+    get:
+      tags:
+        - Usuários
+      security:
+        - cookieAuth: []
+      summary: Retorna informações referentes ao usuário com o ID especificado
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: ID do usuário
+      responses:
+        "200":
+          description: Retorna um objeto com os dados de um usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: Usuário não encontrado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não encontrado."
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
+        "403":
+          description: Usuário não está autorizado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autorizado a realizar essa operação."
 
 components:
   securitySchemes:
@@ -173,9 +462,9 @@ components:
         tipo:
           type: string
           maxLength: 40
-        caminho:
+        link:
           type: string
-          maxLength: 10
+          format: uri
     Cliente:
       type: object
       properties:
@@ -239,3 +528,40 @@ components:
           type: string
           nullable: true
           maxLength: 120
+        sondagem_percussao:
+          type: object
+          nullable: true
+          properties:
+            furos:
+              type: integer
+              minimum: 0
+            metros:
+              type: number
+              minimum: 0
+        sondagem_trado:
+          type: object
+          nullable: true
+          properties:
+            furos:
+              type: integer
+              minimum: 0
+            metros:
+              type: number
+              minimum: 0
+        sondagem_rotativa:
+          type: object
+          nullable: true
+          properties:
+            furos:
+              type: integer
+              minimum: 0
+            metros_solo:
+              type: number
+              minimum: 0
+            metros_rocha:
+              type: number
+              minimum: 0
+        arquivos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Arquivo'
