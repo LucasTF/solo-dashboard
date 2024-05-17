@@ -3,7 +3,7 @@ info:
   title: Solo Dashboard API
   description: |-
     Descrição das rotas e funcionalidades disponíveis na API
-  version: 0.4.2
+  version: 0.4.4
 
 servers:
   - url: http://127.0.0.1:5000/api
@@ -49,6 +49,16 @@ paths:
                   message:
                     type: string
                     example: "Login realizado com sucesso."
+        "401":
+          description: Email/senha não condizem com dados registrados no banco de dados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Credenciais inválidas."
   /logout:
     get:
       tags:
@@ -110,6 +120,20 @@ paths:
         - cookieAuth: []
       summary: Retorna uma lista de obras paginadas
       parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 100
+          description: String de busca para parâmetros (cod_obra, tipo_logo, logradouro, complemento_logo, bairro & cidade).
+        - name: filter
+          in: query
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 100
+          description: String de filtro para indicar quais campos devem ser usados na busca (cod_obra, endereco, bairro & cidade), separados por ';'.
         - name: page
           in: query
           schema:
