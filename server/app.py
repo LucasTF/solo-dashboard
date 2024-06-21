@@ -18,6 +18,14 @@ def login_page():
 def dashboard_page():
     return render_template('dashboard.html')
 
+@app.route('/dashboard/obras', methods=['GET'])
+def dashboard_obras_page():
+    return render_template('dashboard/obras.html')
+
+@app.route('/dashboard/obras/new', methods=['GET'])
+def dashboard_new_obra_page():
+    return render_template('dashboard/obras/new.html')
+
 # Error Handler
 @app.errorhandler(404)
 def not_found(error):

@@ -3,7 +3,7 @@ info:
   title: Solo Dashboard API
   description: |-
     Descrição das rotas e funcionalidades disponíveis na API
-  version: 0.4.4
+  version: 0.5.0
 
 servers:
   - url: http://127.0.0.1:5000/api
@@ -164,7 +164,9 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Obra'
+                      allOf:
+                        - $ref: '#/components/schemas/NumId'
+                        - $ref: '#/components/schemas/Obra'
         "401":
           description: Usuário não está autenticado.
           content:
@@ -379,6 +381,115 @@ paths:
                   type: string
                   example: "Usuário não está autorizado a realizar essa operação."
                   
+  /users:
+    get:
+      tags:
+        - Usuários
+      security:
+        - cookieAuth: []
+      summary: Retorna uma lista de usuários cadastrados paginada
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 100
+          description: String de busca para parâmetros (nome, email).
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+          description: Número da página a ser recuperada.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 100
+          description: Número de usuários a serem recuperadas por página (máximo 100).
+      responses:
+        "200":
+          description: Retorna um objeto contendo o número total de usuários, número total de páginas e um array de usuários limitados, por padrão, a 50.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_obras:
+                    type: integer
+                    example: 50
+                  total_pages:
+                    type: integer
+                    example: 1
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/NumId'
+                        - $ref: '#/components/schemas/User'
+                
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            example:
+              message: "Usuário não está autenticado."
+    post:
+      tags:
+        - Usuários
+      security:
+        - cookieAuth: []
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/User'
+                - type: object
+                  properties:
+                    password:
+                      type: string
+                      minLength: 6
+      responses:
+        "201":
+          description: Novo usuário criado com sucesso.
+          content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            example:
+              message: "Usuário registrado com sucesso."
+        "400":
+          description: Email/Senha inserido é inválido.
+          content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            example:
+              message: "Email/Senha inválido."
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            example:
+              message: "Usuário não está autenticado."
+        "403":
+          description: Usuário não está autorizado.
+          content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            example:
+              message: "Usuário não está autorizado a realizar essa operação."
+                  
   /users/{userId}:
     get:
       tags:
@@ -399,7 +510,131 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                allOf:
+                  - $ref: '#/components/schemas/NumId'
+                  - $ref: '#/components/schemas/User'
+        "404":
+          description: Usuário não encontrado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não encontrado."
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
+        "403":
+          description: Usuário não está autorizado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autorizado a realizar essa operação."
+    put:
+      tags:
+        - Usuários
+      security:
+        - cookieAuth: []
+      summary: Atualiza dados básicos do usuário com o ID especificado
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: ID do usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                isAdmin:
+                  type: boolean
+      responses:
+        "200":
+          description: Usuário atualizado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário atualizado com sucesso."
+        "404":
+          description: Usuário não encontrado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não encontrado."
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autenticado."
+        "403":
+          description: Usuário não está autorizado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário não está autorizado a realizar essa operação."
+    delete:
+      tags:
+        - Usuários
+      security:
+        - cookieAuth: []
+      summary: Deleta usuário com o ID especificado
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: ID do usuário
+      responses:
+        "200":
+          description: Usuário deletado.
+          content:
+           application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Usuário deletado com sucesso."
         "404":
           description: Usuário não encontrado.
           content:
@@ -451,9 +686,6 @@ components:
     User:
       type: object
       properties:
-        id:
-          type: integer
-          minimum: 1
         name:
           type: string
           minLength: 3
@@ -501,9 +733,6 @@ components:
     Obra:
       type: object
       properties:
-        id:
-          type: integer
-          minimum: 1
         cod_obra:
           type: string
           minLength: 6
@@ -589,3 +818,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Arquivo'
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+    NumId:
+      type: object
+      properties:
+        id:
+          type: number
+          minimum: 1
