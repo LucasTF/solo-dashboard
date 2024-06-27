@@ -3,7 +3,7 @@ info:
   title: Solo Dashboard API
   description: |-
     Descrição das rotas e funcionalidades disponíveis na API
-  version: 0.5.1
+  version: 0.5.2
 
 servers:
   - url: http://127.0.0.1:5000/api
@@ -381,13 +381,70 @@ paths:
                   type: string
                   example: "Usuário não está autorizado a realizar essa operação."
                   
+  /clientes:
+    get:
+      tags:
+        - Clientes
+      security:
+        - cookieAuth: []
+      summary: Retorna uma lista de clientes paginados
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 100
+          description: String de busca para parâmetros (nome, email).
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+          description: Número da página a ser recuperada.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 100
+          description: Número de usuários a serem recuperadas por página (máximo 100).
+      responses:
+        "200":
+          description: Retorna um objeto contendo o número total de clientes, número total de páginas e um array de clientes limitados, por padrão, a 50.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_obras:
+                    type: integer
+                    example: 50
+                  total_pages:
+                    type: integer
+                    example: 1
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/NumId'
+                        - $ref: '#/components/schemas/Cliente'
+        "401":
+          description: Usuário não está autenticado.
+          content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            example:
+              message: "Usuário não está autenticado."
+                  
   /users:
     get:
       tags:
         - Usuários
       security:
         - cookieAuth: []
-      summary: Retorna uma lista de usuários cadastrados paginada
+      summary: Retorna uma lista de usuários cadastrados paginados
       parameters:
         - name: search
           in: query
@@ -797,9 +854,6 @@ components:
     Cliente:
       type: object
       properties:
-        id:
-          type: integer
-          minimum: 1
         nome:
           type: string
           maxLength: 120
