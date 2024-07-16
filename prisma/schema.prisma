@@ -28,7 +28,7 @@ model Cliente {
   cnpj                  String?         @unique @db.VarChar(18)
   tipo_logo             String?         @db.VarChar(20)
   logradouro            String?         @db.VarChar(120)
-  complemento           String?         @db.VarChar(40)
+  complemento           String?         @db.VarChar(120)
   bairro                String?         @db.VarChar(80)
   cidade                String?         @db.VarChar(40)
   uf                    String?         @db.Char(2)
