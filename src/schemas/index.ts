@@ -2,7 +2,6 @@ import * as z from "zod";
 
 import { Logradouro } from "@/enums/Logradouro";
 
-import { isValidLogradouro } from "@/lib/validators/logradouro";
 import { isValidCep } from "@/lib/validators/cep";
 
 const NUMBER = "Deve ser um número.";
