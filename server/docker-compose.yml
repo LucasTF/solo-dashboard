@@ -1,0 +1,18 @@
+services:
+  db:
+    container_name: "solo-dashboard-db"
+    image: bitnami/mysql:latest
+    environment:
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'admin123'
+      MYSQL_DATABASE: 'soloapp_test'
+      MYSQL_ROOT_PASSWORD: 'admin123'
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+    volumes:
+      - solo-dashboard-db:/var/lib/mysql
+volumes:
+  solo-dashboard-db:
+    name: "solo-dashboard-db-vol"
