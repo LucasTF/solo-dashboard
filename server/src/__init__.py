@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 
-from routes.static import static_content
+from src.core.routes.static import static_content
 
 app = Flask(__name__, template_folder='out', static_folder='out/_next')
 app.register_blueprint(static_content)
