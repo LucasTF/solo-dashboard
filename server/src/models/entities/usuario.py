@@ -13,4 +13,4 @@ class Usuario(Base):
     is_admin: Mapped[bool] = mapped_column(Boolean(), server_default=false())
 
     def __repr__(self) -> str:
-        return f"<Usuario | id={self.id} | name={self.name} | email={self.email} | is_admin={self.is_admin}"
+        return f"<Usuario | id={self.id} | name={self.name} | email={self.email} | is_admin={self.is_admin}>"
