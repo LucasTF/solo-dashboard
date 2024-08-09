@@ -16,3 +16,18 @@ class UsuarioRepository:
                 return usuarios
             except NoResultFound:
                 return []
+            
+    def delete_usuario(self, id: int) -> None:
+        with self.__db_connector as conn:
+            try:
+                (
+                    conn.session
+                        .query(Usuario)
+                        .filter(Usuario.id == id)
+                        .delete()
+                )
+                conn.session.commit()
+            except Exception as exc:
+                conn.session.rollback()
+                raise exc
+
