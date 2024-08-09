@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, String
+from sqlalchemy import Boolean, String, false
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.models.entities.base import Base
@@ -10,7 +10,7 @@ class Usuario(Base):
     name: Mapped[str] = mapped_column(String(100), index=True)
     email: Mapped[str] = mapped_column(String(100), unique=True, index=True)
     password: Mapped[str] = mapped_column(String(100))
-    is_admin: Mapped[bool] = mapped_column(Boolean(), default=False)
+    is_admin: Mapped[bool] = mapped_column(Boolean(), server_default=false())
 
     def __repr__(self) -> str:
         return f"<Usuario | id={self.id} | name={self.name} | email={self.email} | is_admin={self.is_admin}"
