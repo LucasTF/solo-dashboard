@@ -24,6 +24,13 @@ class UsuarioRepository:
             usuario = conn.session.scalar(query)
 
         return usuario
+    
+    def get_usuario_by_email(self, email: str) -> Usuario:
+        query = select(Usuario).where(Usuario.email == email)
+        with self.__db_connector as conn:
+            usuario = conn.session.scalar(query)
+
+        return usuario
             
     def delete_usuario(self, id: int) -> None:
         query = delete(Usuario).where(Usuario.id == id)
