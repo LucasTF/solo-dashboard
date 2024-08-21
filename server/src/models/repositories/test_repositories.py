@@ -3,6 +3,9 @@ import pytest
 from src.database.connector import db_connector
 from src.models.repositories.usuario_repository import UsuarioRepository
 
+# Personal test cases for usage with specific setup database
+# Should not be run as legitimate tests
+
 @pytest.mark.skip(reason="Tests directly into the real database.")
 class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
 
@@ -26,3 +29,13 @@ class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
 
         self.assertNotEqual(num_usuarios, num_usuarios_new)
         self.assertEqual(num_usuarios + 1, num_usuarios_new)
+
+    def test_repo_search_usuarios(self):
+        usuarios = self.repo.search_usuarios('Doe')
+
+        self.assertEqual(len(usuarios), 2)
+
+        usuarios = self.repo.search_usuarios('teste@')
+
+        self.assertEqual(len(usuarios), 1)
+        self.assertEqual(usuarios[0].name, 'John Doe')

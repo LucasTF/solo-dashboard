@@ -1,5 +1,5 @@
 from typing import List
-from sqlalchemy import delete, insert, select
+from sqlalchemy import delete, insert, or_, select
 
 from src.database.connector import DBConnector
 from src.models.entities.usuario import Usuario
@@ -31,6 +31,20 @@ class UsuarioRepository:
             usuario = conn.session.scalar(query)
 
         return usuario
+    
+    def search_usuarios(self, search_string: str) -> List[Usuario]:
+        query = select(Usuario).where(
+            or_(
+                Usuario.email.contains(search_string), 
+                Usuario.name.contains(search_string)
+                )
+            )
+        results : List[Usuario] = []
+        with self.__db_connector as conn:
+            for usuario in conn.session.scalars(query):
+                results.append(usuario)
+
+        return results
             
     def delete_usuario(self, id: int) -> None:
         query = delete(Usuario).where(Usuario.id == id)
