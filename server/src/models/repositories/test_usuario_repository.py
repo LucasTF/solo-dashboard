@@ -46,8 +46,3 @@ class UsuarioRepositoryTestCase(unittest.TestCase):
         mock_delete.assert_called_once_with(Usuario)
 
         self.mock_connector.session.execute.assert_called_once()
-        # mock_connector.session.query.assert_called_once_with(Usuario)
-        # mock_connector.session.query.filter.assert_called_once_with(Usuario.id == 1)
-        # mock_connector.session.query.filter.delete.assert_called_once()
-
-

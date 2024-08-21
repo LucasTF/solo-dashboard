@@ -1,5 +1,5 @@
 from typing import List
-from sqlalchemy import delete, select
+from sqlalchemy import delete, insert, select
 
 from src.database.connector import DBConnector
 from src.models.entities.usuario import Usuario
@@ -21,5 +21,25 @@ class UsuarioRepository:
     def delete_usuario(self, id: int) -> None:
         query = delete(Usuario).where(Usuario.id == id)
         with self.__db_connector as conn:
-            conn.session.execute(query)
+            try:
+                conn.session.execute(query)
+                conn.session.commit()
+            except Exception as exc:
+                conn.session.rollback()
+                raise exc
 
+    def insert_usuario(self, name: str, email: str, password: str, is_admin: bool = False):
+        query = insert(Usuario).values(
+            name=name, 
+            email=email, 
+            password=password, 
+            is_admin=is_admin
+            )
+        
+        with self.__db_connector as conn:
+            try:
+                conn.session.execute(query)
+                conn.session.commit()
+            except Exception as exc:
+                conn.session.rollback()
+                raise exc
