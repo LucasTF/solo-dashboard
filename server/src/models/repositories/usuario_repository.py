@@ -17,6 +17,13 @@ class UsuarioRepository:
                 results.append(usuario)
             
         return results
+    
+    def get_usuario_by_id(self, id: int) -> Usuario:
+        query = select(Usuario).where(Usuario.id == id)
+        with self.__db_connector as conn:
+            usuario = conn.session.scalar(query)
+
+        return usuario
             
     def delete_usuario(self, id: int) -> None:
         query = delete(Usuario).where(Usuario.id == id)
