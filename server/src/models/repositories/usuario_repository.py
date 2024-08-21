@@ -3,8 +3,9 @@ from sqlalchemy import delete, insert, or_, select
 
 from src.database.connector import DBConnector
 from src.models.entities.usuario import Usuario
+from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
 
-class UsuarioRepository:
+class UsuarioRepository(UsuarioRepositoryInterface):
 
     def __init__(self, db_connector: DBConnector) -> None:
         self.__db_connector = db_connector
