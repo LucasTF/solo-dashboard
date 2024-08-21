@@ -46,3 +46,14 @@ class UsuarioRepositoryTestCase(unittest.TestCase):
         mock_delete.assert_called_once_with(Usuario)
 
         self.mock_connector.session.execute.assert_called_once()
+        self.mock_connector.session.commit.assert_called_once()
+
+    @mock.patch('src.models.repositories.usuario_repository.insert')
+    def test_insert_usuario(self, mock_insert):
+
+        self.repo.insert_usuario('Test User', 'test3@test.com', '123456', False)
+
+        mock_insert.assert_called_once_with(Usuario)
+
+        self.mock_connector.session.execute.assert_called_once()
+        self.mock_connector.session.commit.assert_called_once()

@@ -28,7 +28,7 @@ class UsuarioRepository:
                 conn.session.rollback()
                 raise exc
 
-    def insert_usuario(self, name: str, email: str, password: str, is_admin: bool = False):
+    def insert_usuario(self, name: str, email: str, password: str, is_admin: bool = False) -> None:
         query = insert(Usuario).values(
             name=name, 
             email=email, 
