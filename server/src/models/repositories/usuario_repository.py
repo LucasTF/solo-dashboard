@@ -1,5 +1,5 @@
 from typing import List
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy import delete, select
 
 from src.database.connector import DBConnector
 from src.models.entities.usuario import Usuario
@@ -10,24 +10,16 @@ class UsuarioRepository:
         self.__db_connector = db_connector
 
     def list_usuarios(self) -> List[Usuario]:
+        query = select(Usuario).order_by(Usuario.id)
+        results : List[Usuario] = []
         with self.__db_connector as conn:
-            try:
-                usuarios = conn.session.query(Usuario).all()
-                return usuarios
-            except NoResultFound:
-                return []
+            for usuario in conn.session.scalars(query):
+                results.append(usuario)
+            
+        return results
             
     def delete_usuario(self, id: int) -> None:
+        query = delete(Usuario).where(Usuario.id == id)
         with self.__db_connector as conn:
-            try:
-                (
-                    conn.session
-                        .query(Usuario)
-                        .filter(Usuario.id == id)
-                        .delete()
-                )
-                conn.session.commit()
-            except Exception as exc:
-                conn.session.rollback()
-                raise exc
+            conn.session.execute(query)
 
