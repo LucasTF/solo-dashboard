@@ -2,7 +2,6 @@ import * as z from "zod";
 
 import { Logradouro } from "@/enums/Logradouro";
 
-import { isValidLogradouro } from "@/lib/validators/logradouro";
 import { isValidCep } from "@/lib/validators/cep";
 
 const NUMBER = "Deve ser um número.";
@@ -50,15 +49,8 @@ export const ObraFormSchema = z.object({
   uf: z.string().min(2).max(2),
   cidade: z.string().max(40, MAX_CHARACTERS(40)),
   tipo_logo: z.nativeEnum(Logradouro),
-  logradouro: z
-    .string()
-    .min(1, CANNOT_BE_EMPTY)
-    .max(100, MAX_CHARACTERS(100))
-    .refine(
-      (value) => isValidLogradouro(value),
-      "Deve estar no formato 'Logradouro, numero' ou 'Logradouro'"
-    ),
-  complemento_logo: z.string().max(30, MAX_CHARACTERS(30)),
+  logradouro: z.string().min(1, CANNOT_BE_EMPTY).max(120, MAX_CHARACTERS(120)),
+  complemento_logo: z.string().max(120, MAX_CHARACTERS(120)),
   bairro: z.string().min(1, CANNOT_BE_EMPTY).max(40, MAX_CHARACTERS(40)),
   cep: z
     .string()
