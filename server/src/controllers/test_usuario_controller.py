@@ -38,3 +38,33 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
         self.assertIsInstance(result, SerialResponse)
         self.assertEqual(result.message, 'Usuário criado com sucesso.')
+
+    def test_create_with_invalid_name(self):
+
+        # Names cannot contain numbers
+        sample_dict = {
+            "name": "John95 Asp",
+            "email": "john@test.com",
+            "password": "123456"
+        }
+
+        result = self.__controller.create(sample_dict)
+
+        self.assertIsInstance(result, SerialResponse)
+        self.assertNotEqual(result.message, 'Usuário criado com sucesso.')
+        self.assertEqual(result.details, 'Dados inválidos.')
+
+    def test_create_with_invalid_email(self):
+
+        # Email in the wrong format
+        sample_dict = {
+            "name": "John Doe",
+            "email": "notvalidemail",
+            "password": "123456"
+        }
+
+        result = self.__controller.create(sample_dict)
+
+        self.assertIsInstance(result, SerialResponse)
+        self.assertNotEqual(result.message, 'Usuário criado com sucesso.')
+        self.assertEqual(result.details, 'Dados inválidos.')

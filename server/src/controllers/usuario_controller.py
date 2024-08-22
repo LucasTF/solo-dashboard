@@ -1,6 +1,9 @@
 import bcrypt
 from typing import Dict
 
+from email_validator import EmailNotValidError
+from pydantic import ValidationError
+
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
 from src.models.serials.serial_response import SerialResponse
 from src.models.serials.serial_usuario import SerialUsuario
@@ -21,6 +24,11 @@ class UsuarioController:
             )
 
             return SerialResponse(message='Usuário criado com sucesso.')
+        except ValidationError:
+            return SerialResponse(
+                message='Não foi possível criar o usuário.',
+                details='Dados inválidos.'
+                )
         except Exception as exc:
             print(exc)
             return SerialResponse(message='Não foi possível criar o usuário.')
