@@ -10,7 +10,7 @@ class SerialUsuario(BaseModel):
     id: Annotated[Optional[PositiveInt], Field(default=None)]
     name: Annotated[str, Field(max_length=MAX_USUARIO_NAME_LENGTH)]
     email: Annotated[EmailStr, Field(max_length=MAX_USUARIO_EMAIL_LENGTH)]
-    password: Annotated[str, Field(min_length=6, max_length=MAX_USUARIO_PASSWORD_LENGTH)]
+    password: Annotated[str, Field(min_length=6, max_length=MAX_USUARIO_PASSWORD_LENGTH, exclude=True)]
     is_admin: Annotated[Optional[StrictBool], Field(default=False)]
 
     @field_validator('name')

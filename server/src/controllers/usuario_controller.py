@@ -1,7 +1,6 @@
 import bcrypt
 from typing import Dict
 
-from email_validator import EmailNotValidError
 from pydantic import ValidationError
 
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
