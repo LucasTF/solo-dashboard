@@ -3,6 +3,7 @@ from typing import Dict
 
 from pydantic import ValidationError
 
+from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
 from src.models.serials.serial_response import SerialResponse
 from src.models.serials.serial_usuario import SerialUsuario
@@ -23,7 +24,8 @@ class UsuarioController:
             )
 
             return SerialResponse(message='Usuário criado com sucesso.')
-        except ValidationError:
+        except ValidationError as ve:
+            print(ve)
             return SerialResponse(
                 message='Não foi possível criar o usuário.',
                 details='Dados inválidos.'
@@ -31,6 +33,33 @@ class UsuarioController:
         except Exception as exc:
             print(exc)
             return SerialResponse(message='Não foi possível criar o usuário.')
+        
+    def find_by_id(self, user_id: int) -> SerialUsuario | None:
+        usuario = self.__usuario_repository.get_usuario_by_id(user_id)
+
+        if not usuario:
+            return None
+        
+        return self.__serialize(usuario)
+    
+    def find_by_email(self, user_email: str) -> SerialUsuario | None:
+        usuario = self.__usuario_repository.get_usuario_by_email(user_email)
+
+        if not usuario:
+            return None
+        
+        return self.__serialize(usuario)
+
+    def __serialize(self, usuario: Usuario) -> SerialUsuario:
+        serial_usuario = SerialUsuario(
+            id=usuario.id,
+            name=usuario.name,
+            email=usuario.email,
+            password=usuario.password,
+            is_admin=usuario.is_admin
+        )
+
+        return serial_usuario
     
     def __validate_usuario(self, usuario_dict: Dict) -> SerialUsuario:
         try:

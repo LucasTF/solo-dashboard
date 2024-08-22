@@ -23,4 +23,4 @@ class SerialUsuario(BaseModel):
         if bool(regex.match(pattern, v)):
             return v
         
-        raise ValueError('Name must have, at least, one letter and contain only letters and whitespaces.')
+        raise ValueError('Nome deve conter, pelo menos, uma letra e deve conter apenas letras e espaços.')

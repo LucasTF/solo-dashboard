@@ -19,14 +19,14 @@ class UsuarioRepository(UsuarioRepositoryInterface):
             
         return results
     
-    def get_usuario_by_id(self, id: int) -> Usuario:
+    def get_usuario_by_id(self, id: int) -> Usuario | None:
         query = select(Usuario).where(Usuario.id == id)
         with self.__db_connector as conn:
             usuario = conn.session.scalar(query)
 
         return usuario
     
-    def get_usuario_by_email(self, email: str) -> Usuario:
+    def get_usuario_by_email(self, email: str) -> Usuario | None:
         query = select(Usuario).where(Usuario.email == email)
         with self.__db_connector as conn:
             usuario = conn.session.scalar(query)
