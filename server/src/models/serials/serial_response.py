@@ -1,7 +1,8 @@
 from typing import Optional
-from pydantic import BaseModel
+from typing_extensions import Annotated
+from pydantic import BaseModel, Field
 
 class SerialResponse(BaseModel):
 
     message: str
-    details: Optional[str]
+    details: Annotated[Optional[str], Field(default=None)]
