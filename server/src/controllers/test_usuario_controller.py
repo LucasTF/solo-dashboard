@@ -145,3 +145,12 @@ class UsuarioControllerTestCase(unittest.TestCase):
         self.assertEqual(result[0].name, 'John Doe')
         self.assertIsInstance(result[1], SerialUsuario)
         self.assertEqual(result[1].name, 'Jane Doe')
+
+    def test_list_empty(self):
+
+        self.__repository.list_usuarios.return_value = []
+
+        result = self.__controller.list()
+
+        self.__repository.list_usuarios.assert_called_once()
+        self.assertEqual(len(result), 0)
