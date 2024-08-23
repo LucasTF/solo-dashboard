@@ -154,3 +154,11 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
         self.__repository.list_usuarios.assert_called_once()
         self.assertEqual(len(result), 0)
+
+    def test_delete(self):
+
+        usuario_id = 1
+
+        self.__controller.delete(usuario_id)
+
+        self.__repository.delete_usuario.assert_called_once_with(usuario_id)
