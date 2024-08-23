@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import Mock
 
 from src.controllers.usuario_controller import UsuarioController
+from src.models.entities.usuario import Usuario
 from src.models.serials.serial_response import SerialResponse
 from src.models.serials.serial_usuario import SerialUsuario
 
@@ -126,3 +127,21 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
         self.__repository.get_usuario_by_email.assert_called_once_with(sample_email)
         self.assertIsNone(result)
+
+    def test_list(self):
+
+        sample_usuarios = [
+            Usuario(id=1, name='John Doe', email='john_doe@email.com', password='123456', is_admin=False),
+            Usuario(id=2, name='Jane Doe', email='jane_doe@email.com', password='123456', is_admin=True)
+        ]
+
+        self.__repository.list_usuarios.return_value = sample_usuarios
+
+        result = self.__controller.list()
+
+        self.__repository.list_usuarios.assert_called_once()
+        self.assertEqual(len(result), 2)
+        self.assertIsInstance(result[0], SerialUsuario)
+        self.assertEqual(result[0].name, 'John Doe')
+        self.assertIsInstance(result[1], SerialUsuario)
+        self.assertEqual(result[1].name, 'Jane Doe')
