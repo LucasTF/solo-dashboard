@@ -1,5 +1,5 @@
 import bcrypt
-from typing import Dict
+from typing import Dict, List
 
 from pydantic import ValidationError
 
@@ -49,6 +49,15 @@ class UsuarioController:
             return None
         
         return self.__serialize(usuario)
+
+    def list(self) -> List[SerialUsuario]:
+        serial_usuarios = []
+        usuarios = self.__usuario_repository.list_usuarios()
+
+        for usuario in usuarios:
+            serial_usuarios.append(self.__serialize(usuario))
+
+        return serial_usuarios
 
     def __serialize(self, usuario: Usuario) -> SerialUsuario:
         serial_usuario = SerialUsuario(
