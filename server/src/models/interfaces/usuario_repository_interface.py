@@ -26,5 +26,13 @@ class UsuarioRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def insert_usuario(self, name: str, email: str, password: str, is_admin: bool = False) -> None:
+    def update_usuario(self, id: int, name: str = None, email: str = None, is_admin: bool = None) -> None:
+        pass
+
+    @abstractmethod
+    def update_usuario_password(self, id: int, new_password: bytes) -> None:
+        pass
+
+    @abstractmethod
+    def insert_usuario(self, name: str, email: str, password: bytes, is_admin: bool = False) -> None:
         pass

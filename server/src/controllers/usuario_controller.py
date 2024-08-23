@@ -11,12 +11,12 @@ from src.models.serials.serial_usuario import SerialUsuario
 class UsuarioController:
 
     def __init__(self, usuario_repository: UsuarioRepositoryInterface) -> None:
-        self.__usuario_repository = usuario_repository
+        self.__repository = usuario_repository
 
     def create(self, user_info: Dict) -> SerialResponse:
         try:
             val_usuario = self.__validate_usuario(user_info)
-            self.__usuario_repository.insert_usuario(
+            self.__repository.insert_usuario(
                 name=val_usuario.name,
                 email=val_usuario.email,
                 password=self.__hash_password(val_usuario.password),
@@ -35,7 +35,7 @@ class UsuarioController:
             return SerialResponse(message='Não foi possível criar o usuário.')
         
     def find_by_id(self, user_id: int) -> SerialUsuario | None:
-        usuario = self.__usuario_repository.get_usuario_by_id(user_id)
+        usuario = self.__repository.get_usuario_by_id(user_id)
 
         if not usuario:
             return None
@@ -43,7 +43,7 @@ class UsuarioController:
         return self.__serialize(usuario)
     
     def find_by_email(self, user_email: str) -> SerialUsuario | None:
-        usuario = self.__usuario_repository.get_usuario_by_email(user_email)
+        usuario = self.__repository.get_usuario_by_email(user_email)
 
         if not usuario:
             return None
@@ -52,7 +52,7 @@ class UsuarioController:
 
     def list(self) -> List[SerialUsuario]:
         serial_usuarios = []
-        usuarios = self.__usuario_repository.list_usuarios()
+        usuarios = self.__repository.list_usuarios()
 
         for usuario in usuarios:
             serial_usuarios.append(self.__serialize(usuario))
@@ -61,9 +61,19 @@ class UsuarioController:
     
     def delete(self, user_id: int) -> None:
         try:
-            self.__usuario_repository.delete_usuario(user_id)
+            self.__repository.delete_usuario(user_id)
         except Exception as exc:
             print(exc)
+
+    def update_password(self, user_id: int, new_password: str) -> SerialResponse:
+        try:
+            hashed_password = self.__hash_password(new_password)
+            self.__repository.update_usuario_password(user_id, hashed_password)
+
+            return SerialResponse(message="Senha atualizada com sucesso!")
+        except Exception as exc:
+            print(exc)
+            return SerialResponse(message="Não foi possível atualizar a senha.")
 
     def __serialize(self, usuario: Usuario) -> SerialUsuario:
         serial_usuario = SerialUsuario(
