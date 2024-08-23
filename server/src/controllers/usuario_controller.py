@@ -1,8 +1,6 @@
 import bcrypt
 from typing import Dict, List
 
-from pydantic import ValidationError
-
 from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
 from src.models.serials.serial_response import SerialResponse
@@ -13,7 +11,7 @@ class UsuarioController:
     def __init__(self, usuario_repository: UsuarioRepositoryInterface) -> None:
         self.__repository = usuario_repository
 
-    def create(self, user_info: Dict) -> SerialResponse:
+    def create(self, user_info: Dict) -> None:
         try:
             val_usuario = self.__validate_usuario(user_info)
             self.__repository.insert_usuario(
@@ -24,15 +22,8 @@ class UsuarioController:
             )
 
             return SerialResponse(message='Usuário criado com sucesso.')
-        except ValidationError as ve:
-            print(ve)
-            return SerialResponse(
-                message='Não foi possível criar o usuário.',
-                details='Dados inválidos.'
-                )
-        except Exception as exc:
-            print(exc)
-            return SerialResponse(message='Não foi possível criar o usuário.')
+        except Exception:
+            raise Exception
         
     def find_by_id(self, user_id: int) -> SerialUsuario | None:
         usuario = self.__repository.get_usuario_by_id(user_id)
@@ -62,18 +53,15 @@ class UsuarioController:
     def delete(self, user_id: int) -> None:
         try:
             self.__repository.delete_usuario(user_id)
-        except Exception as exc:
-            print(exc)
+        except Exception:
+            raise Exception
 
-    def update_password(self, user_id: int, new_password: str) -> SerialResponse:
+    def update_password(self, user_id: int, new_password: str) -> None:
         try:
             hashed_password = self.__hash_password(new_password)
             self.__repository.update_usuario_password(user_id, hashed_password)
-
-            return SerialResponse(message="Senha atualizada com sucesso!")
-        except Exception as exc:
-            print(exc)
-            return SerialResponse(message="Não foi possível atualizar a senha.")
+        except Exception:
+            raise Exception
 
     def __serialize(self, usuario: Usuario) -> SerialUsuario:
         serial_usuario = SerialUsuario(
@@ -95,8 +83,8 @@ class UsuarioController:
             is_admin=(usuario_dict['is_admin'] if 'is_admin' in usuario_dict else False)
             )
             return serialized_usuario
-        except Exception as exc:
-            raise exc
+        except Exception:
+            raise Exception
         
     def __hash_password(self, password: str) -> bytes:
         hashed_password = bcrypt.hashpw(str.encode(password), bcrypt.gensalt())

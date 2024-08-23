@@ -2,6 +2,8 @@ import unittest
 from unittest import mock
 from unittest.mock import Mock
 
+import pytest
+
 from src.controllers.usuario_controller import UsuarioController
 from src.models.entities.usuario import Usuario
 from src.models.serials.serial_response import SerialResponse
@@ -52,11 +54,9 @@ class UsuarioControllerTestCase(unittest.TestCase):
             "password": "123456"
         }
 
-        result = self.__controller.create(sample_dict)
+        with pytest.raises(Exception):
+            self.__controller.create(sample_dict)
 
-        self.assertIsInstance(result, SerialResponse)
-        self.assertNotEqual(result.message, 'Usuário criado com sucesso.')
-        self.assertEqual(result.details, 'Dados inválidos.')
 
     def test_create_with_invalid_email(self):
 
@@ -67,11 +67,9 @@ class UsuarioControllerTestCase(unittest.TestCase):
             "password": "123456"
         }
 
-        result = self.__controller.create(sample_dict)
+        with pytest.raises(Exception):
+            self.__controller.create(sample_dict)
 
-        self.assertIsInstance(result, SerialResponse)
-        self.assertNotEqual(result.message, 'Usuário criado com sucesso.')
-        self.assertEqual(result.details, 'Dados inválidos.')
 
     def test_find_by_id(self):
 
