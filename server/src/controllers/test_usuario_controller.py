@@ -1,4 +1,5 @@
 import unittest
+from unittest import mock
 from unittest.mock import Mock
 
 from src.controllers.usuario_controller import UsuarioController
@@ -162,3 +163,16 @@ class UsuarioControllerTestCase(unittest.TestCase):
         self.__controller.delete(usuario_id)
 
         self.__repository.delete_usuario.assert_called_once_with(usuario_id)
+
+    def test_update_password(self):
+
+        usuario_id = 1
+        new_password = 'newpassword'
+        hashed_new_password = 'hashedpassword'
+
+        with mock.patch.object(self.__controller, '_UsuarioController__hash_password', return_value=hashed_new_password) as hash_method:
+            self.__controller.update_password(usuario_id, new_password)
+
+            hash_method.assert_called_once_with(new_password)
+
+            self.__repository.update_usuario_password.assert_called_once_with(usuario_id, hashed_new_password)

@@ -39,3 +39,13 @@ class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
 
         self.assertEqual(len(usuarios), 1)
         self.assertEqual(usuarios[0].name, 'John Doe')
+
+    def test_update_usuario_password(self):
+
+        new_password = 'newpassword'
+
+        self.repo.update_usuario_password(1, str.encode(new_password))
+
+        usuario = self.repo.get_usuario_by_id(1)
+
+        self.assertEqual(usuario.password, new_password)
