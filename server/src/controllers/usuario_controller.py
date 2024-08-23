@@ -58,6 +58,12 @@ class UsuarioController:
             serial_usuarios.append(self.__serialize(usuario))
 
         return serial_usuarios
+    
+    def delete(self, user_id: int) -> None:
+        try:
+            self.__usuario_repository.delete_usuario(user_id)
+        except Exception as exc:
+            print(exc)
 
     def __serialize(self, usuario: Usuario) -> SerialUsuario:
         serial_usuario = SerialUsuario(
