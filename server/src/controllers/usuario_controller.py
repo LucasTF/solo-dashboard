@@ -23,30 +23,26 @@ class UsuarioController(UsuarioControllerInterface):
         except Exception:
             raise Exception
         
-    def find_by_id(self, user_id: int) -> SerialUsuario | None:
+    def find_by_id(self, user_id: int) -> Usuario | None:
         usuario = self.__repository.get_usuario_by_id(user_id)
 
         if not usuario:
             return None
         
-        return self.__serialize(usuario)
+        return usuario
     
-    def find_by_email(self, user_email: str) -> SerialUsuario | None:
+    def find_by_email(self, user_email: str) -> Usuario | None:
         usuario = self.__repository.get_usuario_by_email(user_email)
 
         if not usuario:
             return None
         
-        return self.__serialize(usuario)
+        return usuario
 
-    def list(self) -> List[SerialUsuario]:
-        serial_usuarios = []
+    def list(self) -> List[Usuario]:
         usuarios = self.__repository.list_usuarios()
 
-        for usuario in usuarios:
-            serial_usuarios.append(self.__serialize(usuario))
-
-        return serial_usuarios
+        return usuarios
     
     def delete(self, user_id: int) -> None:
         try:
@@ -64,17 +60,6 @@ class UsuarioController(UsuarioControllerInterface):
     def update(self, user_info: Dict) -> None:
         # TODO: Implement this.
         pass
-
-    def __serialize(self, usuario: Usuario) -> SerialUsuario:
-        serial_usuario = SerialUsuario(
-            id=usuario.id,
-            name=usuario.name,
-            email=usuario.email,
-            password=usuario.password,
-            is_admin=usuario.is_admin
-        )
-
-        return serial_usuario
     
     def __validate_usuario(self, usuario_dict: Dict) -> SerialUsuario:
         try:

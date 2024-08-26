@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict, List
 
-from src.models.serials.serial_usuario import SerialUsuario
+from src.models.entities.usuario import Usuario
 
 class UsuarioControllerInterface(ABC):
 
@@ -10,15 +10,15 @@ class UsuarioControllerInterface(ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self, user_id: int) -> SerialUsuario | None:
+    def find_by_id(self, user_id: int) -> Usuario | None:
         pass
 
     @abstractmethod
-    def find_by_email(self, user_email: str) -> SerialUsuario | None:
+    def find_by_email(self, user_email: str) -> Usuario | None:
         pass
 
     @abstractmethod
-    def list(self) -> List[SerialUsuario]:
+    def list(self) -> List[Usuario]:
         pass
 
     @abstractmethod
