@@ -1,12 +1,12 @@
 import bcrypt
 from typing import Dict, List
 
+from src.controllers.interfaces.usuario_controller_interface import UsuarioControllerInterface
 from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
-from src.models.serials.serial_response import SerialResponse
 from src.models.serials.serial_usuario import SerialUsuario
 
-class UsuarioController:
+class UsuarioController(UsuarioControllerInterface):
 
     def __init__(self, usuario_repository: UsuarioRepositoryInterface) -> None:
         self.__repository = usuario_repository
@@ -20,8 +20,6 @@ class UsuarioController:
                 password=self.__hash_password(val_usuario.password),
                 is_admin=val_usuario.is_admin
             )
-
-            return SerialResponse(message='Usuário criado com sucesso.')
         except Exception:
             raise Exception
         
@@ -62,6 +60,10 @@ class UsuarioController:
             self.__repository.update_usuario_password(user_id, hashed_password)
         except Exception:
             raise Exception
+        
+    def update(self, user_info: Dict) -> None:
+        # TODO: Implement this.
+        pass
 
     def __serialize(self, usuario: Usuario) -> SerialUsuario:
         serial_usuario = SerialUsuario(
