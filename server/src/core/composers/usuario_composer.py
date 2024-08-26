@@ -15,7 +15,7 @@ class UsuarioAction(Enum):
     UPDATE_PASSWORD = 6,
     UPDATE = 7
 
-def compose(action: UsuarioAction) -> ViewInterface:
+def compose_usuario(action: UsuarioAction) -> ViewInterface:
 
     repository = UsuarioRepository(db_connector)
     controller = UsuarioController(repository)

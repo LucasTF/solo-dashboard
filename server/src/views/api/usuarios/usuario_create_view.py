@@ -14,6 +14,6 @@ class UsuarioCreateView(ViewInterface):
         user_info = http_request.body
         self.__controller.create(user_info)
 
-        body_response = SerialResponse(message="Usuário criado com sucesso.").model_dump()
+        body_response = SerialResponse(message="Usuário criado com sucesso.").model_dump(exclude_none=True)
 
         return HttpResponse(status_code=201, body=body_response)
