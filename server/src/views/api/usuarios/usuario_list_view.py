@@ -15,14 +15,14 @@ class UsuarioListView(ViewInterface):
 
     def handle(self, http_request: HttpRequest) -> HttpResponse:
         page = http_request.params['page']
-        usuarios_per_page = http_request.params['usuarios_per_page']
+        entries_per_page = http_request.params['entries_per_page']
 
         usuarios = self.__controller.list()
 
         total_usuarios = len(usuarios)
-        total_pages = math.ceil(total_usuarios / usuarios_per_page)
+        total_pages = math.ceil(total_usuarios / entries_per_page)
 
-        paginated_usuarios = paginate(usuarios, page, usuarios_per_page)
+        paginated_usuarios = paginate(usuarios, page, entries_per_page)
 
         data : List[SerialUsuario] = []
 
