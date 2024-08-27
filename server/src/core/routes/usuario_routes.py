@@ -26,4 +26,14 @@ def create_usuario():
     view = compose_usuario(UsuarioAction.CREATE)
     http_response = view.handle(http_request)
 
-    return jsonify(http_response.body), http_response.status_code 
+    return jsonify(http_response.body), http_response.status_code
+
+@usuario_route.route("/api/usuarios/<int:id>", methods=["DELETE"])
+def delete_usuario(id : int):
+    http_request = HttpRequest(params={
+        "id": id
+    })
+    view = compose_usuario(UsuarioAction.DELETE)
+    http_response = view.handle(http_request)
+
+    return "", http_response.status_code
