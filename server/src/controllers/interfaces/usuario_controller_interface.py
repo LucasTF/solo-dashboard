@@ -32,3 +32,7 @@ class UsuarioControllerInterface(ABC):
     @abstractmethod
     def update(self, user_info: Dict) -> None:
         pass
+
+    @abstractmethod
+    def search(self, search_string: str) -> List[Usuario]:
+        pass

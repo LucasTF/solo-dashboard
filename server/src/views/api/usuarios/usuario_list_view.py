@@ -16,8 +16,14 @@ class UsuarioListView(ViewInterface):
     def handle(self, http_request: HttpRequest) -> HttpResponse:
         page = http_request.params['page']
         entries_per_page = http_request.params['entries_per_page']
+        search = http_request.params['search']
 
-        usuarios = self.__controller.list()
+        usuarios = []
+
+        if search is None:
+            usuarios = self.__controller.list()
+        else:
+            usuarios = self.__controller.search(search)
 
         total_usuarios = len(usuarios)
         total_pages = math.ceil(total_usuarios / entries_per_page)

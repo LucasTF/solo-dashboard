@@ -11,9 +11,11 @@ usuario_route = Blueprint("usuario_routes", __name__)
 def list_usuarios():
     page = request.args.get("page")
     entries_per_page = request.args.get("entries_per_page")
+    search = request.args.get("search")
     http_request = HttpRequest(params={
         "page": get_positive_query_param(page, 1),
-        "entries_per_page": get_positive_query_param(entries_per_page, DEFAULT_ENTRIES_PER_PAGE)
+        "entries_per_page": get_positive_query_param(entries_per_page, DEFAULT_ENTRIES_PER_PAGE),
+        "search": search
     })
     view = compose_usuario(UsuarioAction.LIST)
     http_response = view.handle(http_request)

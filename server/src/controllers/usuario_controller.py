@@ -60,6 +60,11 @@ class UsuarioController(UsuarioControllerInterface):
     def update(self, user_info: Dict) -> None:
         # TODO: Implement this.
         pass
+
+    def search(self, search_string: str) -> List[Usuario]:
+        usuarios = self.__repository.search_usuarios(search_string)
+
+        return usuarios
     
     def __validate_usuario(self, usuario_dict: Dict) -> SerialUsuario:
         try:
