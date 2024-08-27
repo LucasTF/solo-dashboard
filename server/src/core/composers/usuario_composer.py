@@ -5,6 +5,7 @@ from src.database.connector import db_connector
 from src.models.repositories.usuario_repository import UsuarioRepository
 from src.views.api.interfaces.view_interface import ViewInterface
 from src.views.api.usuarios.usuario_create_view import UsuarioCreateView
+from src.views.api.usuarios.usuario_list_view import UsuarioListView
 
 class UsuarioAction(Enum):
     CREATE = 1,
@@ -28,7 +29,7 @@ def compose_usuario(action: UsuarioAction) -> ViewInterface:
         case UsuarioAction.FIND_BY_EMAIL:
             raise NotImplementedError('Ação não implementada.')
         case UsuarioAction.LIST:
-            raise NotImplementedError('Ação não implementada.')
+            return UsuarioListView(controller)
         case UsuarioAction.DELETE:
             raise NotImplementedError('Ação não implementada.')
         case UsuarioAction.UPDATE_PASSWORD:

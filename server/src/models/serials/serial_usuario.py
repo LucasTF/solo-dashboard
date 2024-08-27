@@ -3,6 +3,7 @@ from typing import Optional
 from typing_extensions import Annotated
 from pydantic import BaseModel, EmailStr, Field, PositiveInt, StrictBool, field_validator
 
+from src.models.entities.usuario import Usuario
 from src.utils.constants import MAX_USUARIO_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
 
 class SerialUsuario(BaseModel):
@@ -24,3 +25,15 @@ class SerialUsuario(BaseModel):
             return v
         
         raise ValueError('Nome deve conter, pelo menos, uma letra e deve conter apenas letras e espaços.')
+    
+    @classmethod
+    def serialize(cls, usuario: Usuario):
+        serial_usuario = SerialUsuario(
+            id=usuario.id,
+            name=usuario.name,
+            email=usuario.email,
+            password=usuario.password,
+            is_admin=usuario.is_admin
+        )
+
+        return serial_usuario

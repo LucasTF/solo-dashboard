@@ -1,3 +1,7 @@
+# Pagination
+
+DEFAULT_ENTRIES_PER_PAGE = 50
+
 # Usuario Model
 
 MAX_USUARIO_NAME_LENGTH = 100
