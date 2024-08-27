@@ -6,7 +6,6 @@ import pytest
 
 from src.controllers.usuario_controller import UsuarioController
 from src.models.entities.usuario import Usuario
-from src.models.serials.serial_response import SerialResponse
 from src.models.serials.serial_usuario import SerialUsuario
 
 
@@ -26,10 +25,18 @@ class UsuarioControllerTestCase(unittest.TestCase):
             "is_admin": False
         }
 
-        result = self.__controller.create(sample_dict)
+        sample_serial = SerialUsuario(
+            name=sample_dict["name"],
+            email=sample_dict["email"],
+            password=sample_dict["password"],
+            is_admin=sample_dict["is_admin"]
+            )
 
-        self.assertIsInstance(result, SerialResponse)
-        self.assertEqual(result.message, 'Usuário criado com sucesso.')
+        with mock.patch.object(self.__controller, '_UsuarioController__validate_usuario', return_value=sample_serial) as validate_method:
+            self.__controller.create(sample_dict)
+
+            validate_method.assert_called_once_with(sample_dict)
+            self.__repository.insert_usuario.assert_called_once()
 
     def test_create_without_is_admin_and_id(self):
 
@@ -40,10 +47,17 @@ class UsuarioControllerTestCase(unittest.TestCase):
             "password": "123456"
         }
 
-        result = self.__controller.create(sample_dict)
+        sample_serial = SerialUsuario(
+            name=sample_dict["name"],
+            email=sample_dict["email"],
+            password=sample_dict["password"],
+            )
 
-        self.assertIsInstance(result, SerialResponse)
-        self.assertEqual(result.message, 'Usuário criado com sucesso.')
+        with mock.patch.object(self.__controller, '_UsuarioController__validate_usuario', return_value=sample_serial) as validate_method:
+            self.__controller.create(sample_dict)
+
+            validate_method.assert_called_once_with(sample_dict)
+            self.__repository.insert_usuario.assert_called_once()
 
     def test_create_with_invalid_name(self):
 
@@ -73,7 +87,7 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
     def test_find_by_id(self):
 
-        sample_usuario = SerialUsuario(
+        sample_usuario = Usuario(
             id=1,
             name="John Doe",
             email="email@test.com",
@@ -101,7 +115,7 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
         sample_email = "email@test.com"
 
-        sample_usuario = SerialUsuario(
+        sample_usuario = Usuario(
             id=1,
             name="John Doe",
             email=sample_email,
@@ -140,9 +154,9 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
         self.__repository.list_usuarios.assert_called_once()
         self.assertEqual(len(result), 2)
-        self.assertIsInstance(result[0], SerialUsuario)
+        self.assertIsInstance(result[0], Usuario)
         self.assertEqual(result[0].name, 'John Doe')
-        self.assertIsInstance(result[1], SerialUsuario)
+        self.assertIsInstance(result[1], Usuario)
         self.assertEqual(result[1].name, 'Jane Doe')
 
     def test_list_empty(self):
