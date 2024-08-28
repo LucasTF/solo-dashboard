@@ -8,6 +8,7 @@ from src.views.api.interfaces.view_interface import ViewInterface
 from src.views.api.usuarios.usuario_create_view import UsuarioCreateView
 from src.views.api.usuarios.usuario_delete_view import UsuarioDeleteView
 from src.views.api.usuarios.usuario_list_view import UsuarioListView
+from src.views.api.usuarios.usuario_update_view import UsuarioUpdateView
 
 
 class UsuarioAction(Enum):
@@ -38,6 +39,6 @@ def compose_usuario(action: UsuarioAction) -> ViewInterface:
         case UsuarioAction.UPDATE_PASSWORD:
             raise NotImplementedError('Ação não implementada.')
         case UsuarioAction.UPDATE:
-            raise NotImplementedError('Ação não implementada.')
+            return UsuarioUpdateView(controller)
         case _:
             raise Exception('Ação para <Usuario> não encontrada.')

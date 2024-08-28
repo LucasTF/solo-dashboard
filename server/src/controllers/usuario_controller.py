@@ -51,15 +51,25 @@ class UsuarioController(UsuarioControllerInterface):
             raise Exception
 
     def update_password(self, user_id: int, new_password: str) -> None:
-        try:
-            hashed_password = self.__hash_password(new_password)
-            self.__repository.update_usuario_password(user_id, hashed_password)
-        except Exception:
-            raise Exception
+        hashed_password = self.__hash_password(new_password)
+        self.__repository.update_usuario_password(user_id, hashed_password)
         
-    def update(self, user_info: Dict) -> None:
-        # TODO: Implement this.
-        pass
+    def update(self, user_id: int, user_info: Dict) -> None:
+        complete_user = {
+            "name": user_info['name'] if user_info.get("name") is not None else "fill name",
+            "email": user_info['email'] if user_info.get("email") is not None else "email@fill.com",
+            "is_admin": user_info['is_admin'] if user_info.get("is_admin") is not None else False,
+            "password": "fillerpassword"
+        }
+
+        self.__validate_usuario(complete_user)
+
+        self.__repository.update_usuario(
+            id=user_id, 
+            name=user_info.get("name"), 
+            email=user_info.get("email"), 
+            is_admin=user_info.get("is_admin")
+            )
 
     def search(self, search_string: str) -> List[Usuario]:
         usuarios = self.__repository.search_usuarios(search_string)
@@ -67,16 +77,14 @@ class UsuarioController(UsuarioControllerInterface):
         return usuarios
     
     def __validate_usuario(self, usuario_dict: Dict) -> SerialUsuario:
-        try:
-            serialized_usuario = SerialUsuario(
+        serialized_usuario = SerialUsuario(
             name=usuario_dict['name'], 
             email=usuario_dict['email'],
             password=usuario_dict['password'],
             is_admin=(usuario_dict['is_admin'] if 'is_admin' in usuario_dict else False)
-            )
-            return serialized_usuario
-        except Exception:
-            raise Exception
+        )
+
+        return serialized_usuario
         
     def __hash_password(self, password: str) -> bytes:
         hashed_password = bcrypt.hashpw(str.encode(password), bcrypt.gensalt())

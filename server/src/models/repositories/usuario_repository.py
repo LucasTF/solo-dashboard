@@ -58,7 +58,25 @@ class UsuarioRepository(UsuarioRepositoryInterface):
                 raise exc
             
     def update_usuario(self, id: int, name: str = None, email: str = None, is_admin: bool = None) -> None:
-        pass
+        query = select(Usuario).where(Usuario.id == id)
+        with self.__db_connector as conn:
+            try:
+                usuario = conn.session.scalar(query)
+
+                if not usuario:
+                    raise Exception(f'Usuário com id <{id}> não existe.')
+                
+                if name is not None:
+                    usuario.name = name
+                if email is not None:
+                    usuario.email = email
+                if is_admin is not None:
+                    usuario.is_admin = is_admin
+                    
+                conn.session.commit()
+            except Exception:
+                conn.session.rollback()
+                raise Exception
 
     def update_usuario_password(self, id: int, new_password: bytes) -> None:
         query = select(Usuario).where(Usuario.id == id)

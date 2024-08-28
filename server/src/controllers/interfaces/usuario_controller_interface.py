@@ -30,7 +30,7 @@ class UsuarioControllerInterface(ABC):
         pass
 
     @abstractmethod
-    def update(self, user_info: Dict) -> None:
+    def update(self, user_id: int, user_info: Dict) -> None:
         pass
 
     @abstractmethod

@@ -31,11 +31,22 @@ def create_usuario():
     return jsonify(http_response.body), http_response.status_code
 
 @usuario_route.route("/api/usuarios/<int:id>", methods=["DELETE"])
-def delete_usuario(id : int):
+def delete_usuario(id: int):
     http_request = HttpRequest(params={
         "id": id
     })
     view = compose_usuario(UsuarioAction.DELETE)
+    http_response = view.handle(http_request)
+
+    return "", http_response.status_code
+
+@usuario_route.route("/api/usuarios/<int:id>", methods=["PUT"])
+def update_usuario(id: int):
+    http_request = HttpRequest(params={
+        "id": id
+    }, 
+    body=request.json)
+    view = compose_usuario(UsuarioAction.UPDATE)
     http_response = view.handle(http_request)
 
     return "", http_response.status_code
