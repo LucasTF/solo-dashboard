@@ -30,6 +30,16 @@ def create_usuario():
 
     return jsonify(http_response.body), http_response.status_code
 
+@usuario_route.route("/api/usuarios/<string:identifier>", methods=["GET"])
+def find_usuario(identifier: str):
+    http_request = HttpRequest(params={
+        "identifier": identifier
+    })
+    view = compose_usuario(UsuarioAction.FIND)
+    http_response = view.handle(http_request)
+
+    return http_response.body, http_response.status_code
+
 @usuario_route.route("/api/usuarios/<int:id>", methods=["DELETE"])
 def delete_usuario(id: int):
     http_request = HttpRequest(params={

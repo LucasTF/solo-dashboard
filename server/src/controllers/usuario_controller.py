@@ -12,16 +12,13 @@ class UsuarioController(UsuarioControllerInterface):
         self.__repository = usuario_repository
 
     def create(self, user_info: Dict) -> None:
-        try:
-            val_usuario = self.__validate_usuario(user_info)
-            self.__repository.insert_usuario(
-                name=val_usuario.name,
-                email=val_usuario.email,
-                password=self.__hash_password(val_usuario.password),
-                is_admin=val_usuario.is_admin
-            )
-        except Exception:
-            raise Exception
+        val_usuario = self.__validate_usuario(user_info)
+        self.__repository.insert_usuario(
+            name=val_usuario.name,
+            email=val_usuario.email,
+            password=self.__hash_password(val_usuario.password),
+            is_admin=val_usuario.is_admin
+        )
         
     def find_by_id(self, user_id: int) -> Usuario | None:
         usuario = self.__repository.get_usuario_by_id(user_id)
@@ -45,10 +42,7 @@ class UsuarioController(UsuarioControllerInterface):
         return usuarios
     
     def delete(self, user_id: int) -> None:
-        try:
-            self.__repository.delete_usuario(user_id)
-        except Exception:
-            raise Exception
+        self.__repository.delete_usuario(user_id)
 
     def update_password(self, user_id: int, new_password: str) -> None:
         hashed_password = self.__hash_password(new_password)
