@@ -37,7 +37,7 @@ class UsuarioListView(ViewInterface):
             data.append(serial_user.model_dump())
 
         body_response = {
-            "total_usuarios": total_usuarios,
+            "total_entries": total_usuarios,
             "total_pages": total_pages,
             "data": data
         }
