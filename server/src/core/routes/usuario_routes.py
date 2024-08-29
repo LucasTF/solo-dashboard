@@ -60,3 +60,14 @@ def update_usuario(id: int):
     http_response = view.handle(http_request)
 
     return "", http_response.status_code
+
+@usuario_route.route("/api/usuarios/chpass/<int:id>", methods=["PUT"])
+def update_usuario_password(id: int):
+    http_request = HttpRequest(params={
+        "id": id
+    }, 
+    body=request.json)
+    view = compose_usuario(UsuarioAction.UPDATE_PASSWORD)
+    http_response = view.handle(http_request)
+
+    return "", http_response.status_code

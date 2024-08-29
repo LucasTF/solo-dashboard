@@ -9,6 +9,7 @@ from src.views.api.usuarios.usuario_create_view import UsuarioCreateView
 from src.views.api.usuarios.usuario_delete_view import UsuarioDeleteView
 from src.views.api.usuarios.usuario_find_view import UsuarioFindView
 from src.views.api.usuarios.usuario_list_view import UsuarioListView
+from src.views.api.usuarios.usuario_update_password_view import UsuarioUpdatePasswordView
 from src.views.api.usuarios.usuario_update_view import UsuarioUpdateView
 
 
@@ -17,8 +18,8 @@ class UsuarioAction(Enum):
     FIND = 2,
     LIST = 3,
     DELETE = 4,
-    UPDATE_PASSWORD = 5,
-    UPDATE = 6
+    UPDATE = 5,
+    UPDATE_PASSWORD = 6,
 
 def compose_usuario(action: UsuarioAction) -> ViewInterface:
 
@@ -34,9 +35,9 @@ def compose_usuario(action: UsuarioAction) -> ViewInterface:
             return UsuarioListView(controller)
         case UsuarioAction.DELETE:
             return UsuarioDeleteView(controller)
-        case UsuarioAction.UPDATE_PASSWORD:
-            raise NotImplementedError('Ação não implementada.')
         case UsuarioAction.UPDATE:
             return UsuarioUpdateView(controller)
+        case UsuarioAction.UPDATE_PASSWORD:
+            return UsuarioUpdatePasswordView(controller)
         case _:
             raise Exception('Ação para <Usuario> não encontrada.')
