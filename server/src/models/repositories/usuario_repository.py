@@ -2,6 +2,7 @@ from typing import List
 from sqlalchemy import delete, insert, or_, select
 
 from src.database.connector import DBConnector
+from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
 
@@ -19,17 +20,23 @@ class UsuarioRepository(UsuarioRepositoryInterface):
             
         return results
     
-    def get_usuario_by_id(self, id: int) -> Usuario | None:
+    def get_usuario_by_id(self, id: int) -> Usuario:
         query = select(Usuario).where(Usuario.id == id)
         with self.__db_connector as conn:
             usuario = conn.session.scalar(query)
 
+        if not usuario:
+            raise UnavailableResourceError("Usuário")
+
         return usuario
     
-    def get_usuario_by_email(self, email: str) -> Usuario | None:
+    def get_usuario_by_email(self, email: str) -> Usuario:
         query = select(Usuario).where(Usuario.email == email)
         with self.__db_connector as conn:
             usuario = conn.session.scalar(query)
+
+        if not usuario:
+            raise UnavailableResourceError("Usuário")
 
         return usuario
     
@@ -64,7 +71,7 @@ class UsuarioRepository(UsuarioRepositoryInterface):
                 usuario = conn.session.scalar(query)
 
                 if not usuario:
-                    raise Exception(f'Usuário com id <{id}> não existe.')
+                    raise UnavailableResourceError("Usuário")
                 
                 if name is not None:
                     usuario.name = name
@@ -74,6 +81,8 @@ class UsuarioRepository(UsuarioRepositoryInterface):
                     usuario.is_admin = is_admin
                     
                 conn.session.commit()
+            except UnavailableResourceError as exc:
+                raise exc
             except Exception:
                 conn.session.rollback()
                 raise Exception
@@ -85,10 +94,12 @@ class UsuarioRepository(UsuarioRepositoryInterface):
                 usuario = conn.session.scalar(query)
 
                 if not usuario:
-                    raise Exception(f'Usuário com id <{id}> não existe.')
+                    raise UnavailableResourceError("Usuário")
 
                 usuario.password = new_password
                 conn.session.commit()
+            except UnavailableResourceError as exc:
+                raise exc
             except Exception as exc:
                 conn.session.rollback()
                 raise exc
