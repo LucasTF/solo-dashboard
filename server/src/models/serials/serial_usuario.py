@@ -3,7 +3,6 @@ from typing import Optional
 from typing_extensions import Annotated
 from pydantic import BaseModel, EmailStr, Field, PositiveInt, StrictBool, field_validator
 
-from src.errors.invalid_request_body_field_error import InvalidRequestBodyFieldError
 from src.models.entities.usuario import Usuario
 from src.utils.constants import MAX_USUARIO_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
 
@@ -25,9 +24,7 @@ class SerialUsuario(BaseModel):
         if bool(regex.match(pattern, v)):
             return v
         
-        # raise InvalidRequestBodyFieldError("nome", "Nome deve conter, pelo menos, uma letra e deve conter apenas letras e espaços.")
-
-        raise ValueError('Nome deve conter, pelo menos, uma letra e deve conter apenas letras e espaços.')
+        raise ValueError("Nome deve conter, pelo menos, uma letra e deve conter apenas letras e espaços.")
     
     @classmethod
     def serialize(cls, usuario: Usuario):

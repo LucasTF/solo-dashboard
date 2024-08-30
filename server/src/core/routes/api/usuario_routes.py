@@ -7,7 +7,7 @@ from src.views.api.types.http_request import HttpRequest
 
 usuario_route = Blueprint("usuario_routes", __name__)
 
-@usuario_route.route("/api/usuarios", methods=["GET"])
+@usuario_route.route("/usuarios", methods=["GET"])
 def list_usuarios():
     page = request.args.get("page")
     entries_per_page = request.args.get("entries_per_page")
@@ -22,7 +22,7 @@ def list_usuarios():
 
     return jsonify(http_response.body), http_response.status_code 
 
-@usuario_route.route("/api/usuarios", methods=["POST"])
+@usuario_route.route("/usuarios", methods=["POST"])
 def create_usuario():
     http_request = HttpRequest(body=request.json)
     view = compose_usuario(UsuarioAction.CREATE)
@@ -30,7 +30,7 @@ def create_usuario():
 
     return jsonify(http_response.body), http_response.status_code
 
-@usuario_route.route("/api/usuarios/<string:identifier>", methods=["GET"])
+@usuario_route.route("/usuarios/<string:identifier>", methods=["GET"])
 def find_usuario(identifier: str):
     http_request = HttpRequest(params={
         "identifier": identifier
@@ -40,7 +40,7 @@ def find_usuario(identifier: str):
 
     return http_response.body, http_response.status_code
 
-@usuario_route.route("/api/usuarios/<int:id>", methods=["DELETE"])
+@usuario_route.route("/usuarios/<int:id>", methods=["DELETE"])
 def delete_usuario(id: int):
     http_request = HttpRequest(params={
         "id": id
@@ -50,7 +50,7 @@ def delete_usuario(id: int):
 
     return "", http_response.status_code
 
-@usuario_route.route("/api/usuarios/<int:id>", methods=["PUT"])
+@usuario_route.route("/usuarios/<int:id>", methods=["PUT"])
 def update_usuario(id: int):
     http_request = HttpRequest(params={
         "id": id
@@ -61,7 +61,7 @@ def update_usuario(id: int):
 
     return "", http_response.status_code
 
-@usuario_route.route("/api/usuarios/chpass/<int:id>", methods=["PUT"])
+@usuario_route.route("/usuarios/chpass/<int:id>", methods=["PUT"])
 def update_usuario_password(id: int):
     http_request = HttpRequest(params={
         "id": id
