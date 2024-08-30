@@ -1,17 +1,9 @@
-from flask import jsonify
-import werkzeug.exceptions
+from src.errors.base_error import BaseError
 
+class UnavailableResourceError(BaseError):
 
-class UnavailableResourceError(werkzeug.exceptions.HTTPException):
-    code = 404
-    description = "Recurso não encontrado."
-
-    def __init__(self, resource_name: str | None = None) -> None:
-        if resource_name:
-            self.description = f"{resource_name} não encontrado."
-
-    @classmethod
-    def handle(self, error):
-        return jsonify({
-            "message": error.description
-        }), error.code
+    def __init__(self, resource_name: str = None) -> None:
+        title = "Recurso não encontrado."
+        description = f"{resource_name} não encontrado(s)." if resource_name else "Recurso(s) não encontrado(s)."
+        code = 404
+        super().__init__(title, description, code)
