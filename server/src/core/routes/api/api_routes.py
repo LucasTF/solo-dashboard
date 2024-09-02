@@ -1,6 +1,7 @@
 from flask import Blueprint
 from pydantic_core import ValidationError
 
+from src.errors.generic_api_error import GenericApiError
 from src.errors.invalid_request_body_field_error import InvalidRequestBodyFieldError
 from src.errors.unavailable_resource_error import UnavailableResourceError
 
@@ -14,5 +15,6 @@ api_route = Blueprint("api_routes", __name__, url_prefix="/api")
 api_route.register_error_handler(UnavailableResourceError, UnavailableResourceError.handle)
 api_route.register_error_handler(InvalidRequestBodyFieldError, InvalidRequestBodyFieldError.handle)
 api_route.register_error_handler(ValidationError, InvalidRequestBodyFieldError.handle)
+api_route.register_error_handler(Exception, GenericApiError.handle)
 
 api_route.register_blueprint(usuario_route)
