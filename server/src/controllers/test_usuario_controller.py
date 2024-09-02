@@ -5,6 +5,7 @@ from unittest.mock import Mock
 import pytest
 
 from src.controllers.usuario_controller import UsuarioController
+from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.serials.serial_usuario import SerialUsuario
 
@@ -106,10 +107,10 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
         self.__repository.get_usuario_by_id.return_value = None
 
-        result = self.__controller.find_by_id(1)
+        with pytest.raises(UnavailableResourceError):
+            self.__controller.find_by_id(1)
 
-        self.__repository.get_usuario_by_id.assert_called_once_with(1)
-        self.assertIsNone(result)
+            self.__repository.get_usuario_by_id.assert_called_once_with(1)
 
     def test_find_by_email(self):
 
@@ -136,10 +137,10 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
         self.__repository.get_usuario_by_email.return_value = None
 
-        result = self.__controller.find_by_email(sample_email)
+        with pytest.raises(UnavailableResourceError):
+            self.__controller.find_by_email(sample_email)
 
-        self.__repository.get_usuario_by_email.assert_called_once_with(sample_email)
-        self.assertIsNone(result)
+            self.__repository.get_usuario_by_email.assert_called_once_with(sample_email)
 
     def test_list(self):
 
