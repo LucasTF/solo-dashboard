@@ -2,6 +2,7 @@ import bcrypt
 from typing import Dict, List
 
 from src.controllers.interfaces.usuario_controller_interface import UsuarioControllerInterface
+from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
 from src.models.serials.serial_usuario import SerialUsuario
@@ -20,19 +21,19 @@ class UsuarioController(UsuarioControllerInterface):
             is_admin=val_usuario.is_admin
         )
         
-    def find_by_id(self, user_id: int) -> Usuario | None:
+    def find_by_id(self, user_id: int) -> Usuario:
         usuario = self.__repository.get_usuario_by_id(user_id)
 
         if not usuario:
-            return None
+            raise UnavailableResourceError("Usuário")
         
         return usuario
     
-    def find_by_email(self, user_email: str) -> Usuario | None:
+    def find_by_email(self, user_email: str) -> Usuario:
         usuario = self.__repository.get_usuario_by_email(user_email)
 
         if not usuario:
-            return None
+            raise UnavailableResourceError("Usuário")
         
         return usuario
 

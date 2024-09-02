@@ -10,11 +10,11 @@ class UsuarioControllerInterface(ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self, user_id: int) -> Usuario | None:
+    def find_by_id(self, user_id: int) -> Usuario:
         pass
 
     @abstractmethod
-    def find_by_email(self, user_email: str) -> Usuario | None:
+    def find_by_email(self, user_email: str) -> Usuario:
         pass
 
     @abstractmethod
