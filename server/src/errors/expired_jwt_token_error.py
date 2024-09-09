@@ -1,7 +1,7 @@
 from flask import jsonify
 from src.errors.base_error import BaseError
 
-class InvalidJwtTokenError(BaseError):
+class ExpiredJwtTokenError(BaseError):
 
     @classmethod
     def handle(self, _):
@@ -9,7 +9,7 @@ class InvalidJwtTokenError(BaseError):
             "errors": [
                 {
                     "title": "Autorização inválida.",
-                    "description": "O token de autenticação informado não é válido."
+                    "description": "O token de autenticação informado está expirado."
                 }
             ]
         }), 400
