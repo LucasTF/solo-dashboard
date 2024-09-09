@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from unittest.mock import Mock
+from unittest.mock import Mock, PropertyMock
 
 import pytest
 
@@ -8,6 +8,7 @@ from src.controllers.usuario_controller import UsuarioController
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.serials.serial_usuario import SerialUsuario
+from src.services.password_encrypt_service import PasswordEncryptService
 
 
 class UsuarioControllerTestCase(unittest.TestCase):
@@ -181,11 +182,10 @@ class UsuarioControllerTestCase(unittest.TestCase):
 
         usuario_id = 1
         new_password = 'newpassword'
-        hashed_new_password = 'hashedpassword'
-
-        with mock.patch.object(self.__controller, '_UsuarioController__hash_password', return_value=hashed_new_password) as hash_method:
+        hashed_new_password = PasswordEncryptService().hash_password(new_password)
+        
+        with mock.patch.object(self.__controller, '_UsuarioController__password_service', return_value=PropertyMock) as pw_service:
+            pw_service.hash_password.return_value = hashed_new_password
             self.__controller.update_password(usuario_id, new_password)
-
-            hash_method.assert_called_once_with(new_password)
 
             self.__repository.update_usuario_password.assert_called_once_with(usuario_id, hashed_new_password)

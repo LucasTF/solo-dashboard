@@ -1,4 +1,3 @@
-import bcrypt
 from typing import Dict, List
 
 from src.controllers.interfaces.usuario_controller_interface import UsuarioControllerInterface
@@ -6,18 +5,20 @@ from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
 from src.models.serials.serial_usuario import SerialUsuario
+from src.services.password_encrypt_service import PasswordEncryptService
 
 class UsuarioController(UsuarioControllerInterface):
 
     def __init__(self, usuario_repository: UsuarioRepositoryInterface) -> None:
         self.__repository = usuario_repository
+        self.__password_service = PasswordEncryptService()
 
     def create(self, user_info: Dict) -> None:
         val_usuario = self.__validate_usuario(user_info)
         self.__repository.insert_usuario(
             name=val_usuario.name,
             email=val_usuario.email,
-            password=self.__hash_password(val_usuario.password),
+            password=self.__password_service.hash_password(val_usuario.password),
             is_admin=val_usuario.is_admin
         )
         
@@ -46,7 +47,7 @@ class UsuarioController(UsuarioControllerInterface):
         self.__repository.delete_usuario(user_id)
 
     def update_password(self, user_id: int, new_password: str) -> None:
-        hashed_password = self.__hash_password(new_password)
+        hashed_password = self.__password_service.hash_password(new_password)
         self.__repository.update_usuario_password(user_id, hashed_password)
         
     def update(self, user_id: int, user_info: Dict) -> None:
@@ -80,7 +81,3 @@ class UsuarioController(UsuarioControllerInterface):
         )
 
         return serialized_usuario
-        
-    def __hash_password(self, password: str) -> bytes:
-        hashed_password = bcrypt.hashpw(str.encode(password), bcrypt.gensalt())
-        return hashed_password
