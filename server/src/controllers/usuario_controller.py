@@ -1,7 +1,6 @@
 from typing import Dict, List
 
 from src.controllers.interfaces.usuario_controller_interface import UsuarioControllerInterface
-from src.errors.invalid_request_body_error import InvalidRequestBodyError
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
