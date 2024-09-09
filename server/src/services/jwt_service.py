@@ -1,34 +1,24 @@
 from typing import Dict
 import jwt
-import os
 
 from datetime import datetime, timedelta, timezone
-from dotenv import load_dotenv
 
-from src.errors.invalid_jwt_token_error import InvalidJwtTokenError
+from src.config.environment import jwt_env
 
 class JwtService:
-
-    def __init__(self) -> None:
-        load_dotenv()
-
-        self.__secret = os.getenv("JWT_SECRET")
 
     def create_jwt_token(self, body : Dict = {}) -> str:
         token = jwt.encode(
             payload={
-                'exp': datetime.now(timezone.utc) + timedelta(days=30),
+                'exp': datetime.now(timezone.utc) + timedelta(hours=int(jwt_env["JWT_HOURS"])),
                 **body
             },
-            key=self.__secret,
-            algorithm="HS256"
+            key=jwt_env["JWT_SECRET"],
+            algorithm=jwt_env["JWT_ALGORITHM"]
         )
 
         return token
     
     def decode_jwt_token(self, token: str) -> Dict:
-        try:
-            decoded_token = jwt.decode(token, key=self.__secret, algorithms="HS256")
-            return decoded_token
-        except Exception:
-            raise InvalidJwtTokenError()
+        decoded_token = jwt.decode(token, key=jwt_env["JWT_SECRET"], algorithms=jwt_env["JWT_ALGORITHM"])
+        return decoded_token

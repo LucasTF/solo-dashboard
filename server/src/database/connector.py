@@ -1,15 +1,13 @@
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-import os
 
 from sqlalchemy import create_engine
+
+from src.config.environment import db_env
 
 class DBConnector:
     def __init__(self) -> None:
 
-        load_dotenv()
-
-        self.__conection_string = os.getenv("DATABASE_CONN_STRING")
+        self.__conection_string = db_env["DATABASE_CONN_STRING"]
         self.__engine = None
         self.session = None
 
