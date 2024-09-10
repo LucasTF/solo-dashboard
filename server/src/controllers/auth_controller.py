@@ -1,11 +1,11 @@
-from typing import Dict
 from src.controllers.interfaces.auth_controller_interface import AuthControllerInterface
+from src.controllers.types.auth_response_type import AuthResponse
 from src.errors.invalid_credentials_error import InvalidCredentialsError
+from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.repositories.usuario_repository import UsuarioRepository
 from src.services.jwt_service import JwtService
 from src.services.password_encrypt_service import PasswordEncryptService
-
 
 class AuthController(AuthControllerInterface):
 
@@ -14,8 +14,12 @@ class AuthController(AuthControllerInterface):
         self.__password_service = PasswordEncryptService()
         self.__jwt_service = JwtService()
 
-    def login(self, email: str, password: str) -> Dict:
-        user = self.__find_user(email)
+    def authenticate(self, email: str, password: str) -> AuthResponse:
+        try:
+            user = self.__find_user(email)
+        except UnavailableResourceError:
+            raise InvalidCredentialsError()
+        
         self.__compare_passwords(password, user.password)
         token = self.__create_jwt_token(user.id)
 
@@ -23,6 +27,7 @@ class AuthController(AuthControllerInterface):
             "id": user.id,
             "name": user.name,
             "email": user.email,
+            "is_admin": user.is_admin,
             "authorization": token
         }
     
@@ -31,7 +36,7 @@ class AuthController(AuthControllerInterface):
 
         return user
     
-    def __compare_passwords(self, password: str, hashed_password: bytes) -> None:
+    def __compare_passwords(self, password: str, hashed_password: str) -> None:
         if not self.__password_service.check_password(password, hashed_password):
             raise InvalidCredentialsError()
         

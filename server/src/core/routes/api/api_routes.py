@@ -8,6 +8,7 @@ from src.errors.unavailable_resource_error import UnavailableResourceError
 
 # Routes
 from src.core.routes.api.usuario_routes import usuario_route
+from src.core.routes.api.auth_routes import auth_route
 
 
 api_route = Blueprint("api_routes", __name__, url_prefix="/api")
@@ -20,3 +21,4 @@ api_route.register_error_handler(InvalidCredentialsError, InvalidCredentialsErro
 api_route.register_error_handler(Exception, GenericApiError.handle)
 
 api_route.register_blueprint(usuario_route)
+api_route.register_blueprint(auth_route)
