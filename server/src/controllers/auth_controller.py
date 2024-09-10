@@ -4,6 +4,7 @@ from src.errors.invalid_credentials_error import InvalidCredentialsError
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.repositories.usuario_repository import UsuarioRepository
+from src.models.serials.serial_usuario import SerialUsuario
 from src.services.jwt_service import JwtService
 from src.services.password_encrypt_service import PasswordEncryptService
 
@@ -15,6 +16,7 @@ class AuthController(AuthControllerInterface):
         self.__jwt_service = JwtService()
 
     def authenticate(self, email: str, password: str) -> AuthResponse:
+        self.__validate_login(email, password)
         try:
             user = self.__find_user(email)
         except UnavailableResourceError:
@@ -30,6 +32,10 @@ class AuthController(AuthControllerInterface):
             "is_admin": user.is_admin,
             "authorization": token
         }
+    
+    def __validate_login(self, email: str, password: str):
+        SerialUsuario.__pydantic_validator__.validate_assignment(SerialUsuario.model_construct(), "email", email)
+        SerialUsuario.__pydantic_validator__.validate_assignment(SerialUsuario.model_construct(), "password", password)
     
     def __find_user(self, email: str) -> Usuario:
         user = self.__usuario_repository.get_usuario_by_email(email)
