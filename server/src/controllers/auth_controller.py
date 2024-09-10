@@ -16,14 +16,14 @@ class AuthController(AuthControllerInterface):
         self.__jwt_service = JwtService()
 
     def authenticate(self, email: str, password: str) -> AuthResponse:
-        self.__validate_login(email, password)
         try:
+            self.__validate_login(email, password)
             user = self.__find_user(email)
-        except UnavailableResourceError:
+        except (UnavailableResourceError, ValueError):
             raise InvalidCredentialsError()
         
         self.__compare_passwords(password, user.password)
-        token = self.__create_jwt_token(user.id)
+        token = self.__create_jwt_token(user.id, user.is_admin)
 
         return {
             "id": user.id,
@@ -46,9 +46,10 @@ class AuthController(AuthControllerInterface):
         if not self.__password_service.check_password(password, hashed_password):
             raise InvalidCredentialsError()
         
-    def __create_jwt_token(self, id: int) -> str:
+    def __create_jwt_token(self, id: int, is_admin: bool = False) -> str:
         payload = {
-            "id": id
+            "id": id,
+            "is_admin": is_admin
         }
         token = self.__jwt_service.create_jwt_token(payload)
 

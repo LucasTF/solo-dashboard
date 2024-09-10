@@ -21,6 +21,6 @@ def login():
         "email": body.get("email"),
         "is_admin": body.get("is_admin")
     }), response.status_code)
-    resp = create_jwt_cookie(resp, body.get("authorization"), body.get("is_admin"))
+    resp = create_jwt_cookie(resp, body.get("authorization"))
 
     return resp
