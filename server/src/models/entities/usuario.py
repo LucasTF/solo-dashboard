@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, String, false
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.models.entities.base import Base
-from src.utils.constants import MAX_USUARIO_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
+from src.config.constants import MAX_USUARIO_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
 
 class Usuario(Base):
     __tablename__ = 'Usuario'

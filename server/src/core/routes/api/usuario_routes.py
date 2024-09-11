@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from src.core.composers.usuario_composer import UsuarioAction, compose_usuario
 from src.core.middlewares.auth_middleware import check_authentication, check_authorization
-from src.utils.constants import DEFAULT_ENTRIES_PER_PAGE
+from src.config.constants import DEFAULT_ENTRIES_PER_PAGE
 from src.utils.query_treatment import get_positive_query_param
 from src.views.api.types.http_request import HttpRequest
 
