@@ -50,10 +50,11 @@ def find_usuario(identifier: str):
 
 @usuario_route.route("/usuarios/<int:id>", methods=["DELETE"])
 def delete_usuario(id: int):
-    check_authorization()
+    decoded_token = check_authorization()
 
     http_request = HttpRequest(params={
-        "id": id
+        "id": id,
+        "token_id": decoded_token.get("id")
     })
     view = compose_usuario(UsuarioAction.DELETE)
     http_response = view.handle(http_request)
