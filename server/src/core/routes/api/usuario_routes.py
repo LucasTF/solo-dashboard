@@ -63,10 +63,11 @@ def delete_usuario(id: int):
 
 @usuario_route.route("/usuarios/<int:id>", methods=["PUT"])
 def update_usuario(id: int):
-    check_authorization()
+    decoded_token = check_authorization()
 
     http_request = HttpRequest(params={
-        "id": id
+        "id": id,
+        "token_id": decoded_token.get("id")
     }, 
     body=request.json)
     view = compose_usuario(UsuarioAction.UPDATE)
