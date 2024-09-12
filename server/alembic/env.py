@@ -5,6 +5,7 @@ from sqlalchemy import pool, engine_from_config
 from alembic import context
 
 from src.models.entities.usuario import Usuario  # noqa: F401
+from src.models.entities.cliente import Cliente  # noqa: F401
 from src.models.entities.base import Base
 
 # this is the Alembic Config object, which provides

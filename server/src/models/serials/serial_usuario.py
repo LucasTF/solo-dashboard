@@ -4,13 +4,13 @@ from typing_extensions import Annotated
 from pydantic import BaseModel, EmailStr, Field, PositiveInt, StrictBool, field_validator
 
 from src.models.entities.usuario import Usuario
-from src.config.constants import MAX_USUARIO_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
+from src.config.constants import MAX_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
 
 class SerialUsuario(BaseModel):
 
     id: Annotated[Optional[PositiveInt], Field(default=None)]
     name: Annotated[str, Field(max_length=MAX_USUARIO_NAME_LENGTH)]
-    email: Annotated[EmailStr, Field(max_length=MAX_USUARIO_EMAIL_LENGTH)]
+    email: Annotated[EmailStr, Field(max_length=MAX_EMAIL_LENGTH)]
     password: Annotated[str, Field(min_length=6, max_length=MAX_USUARIO_PASSWORD_LENGTH, exclude=True)]
     is_admin: Annotated[Optional[StrictBool], Field(default=False)]
 
