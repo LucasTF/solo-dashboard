@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">
+  <img src="public/img/solo-logo.png" width="128" height="128" alt="Solo-Engenharia-Logo" />
+  <br>
+  Solo Dashboard
+</h1>
 
-## Getting Started
+<h3 align="center">Dashboard e API de gerência de obras, clientes e sondagens da empresa <a href="https://www.soloengenharia.tec.br">Solo Engenharia Ltda</a>.</h3>
 
-First, run the development server:
+<div align="center">
+  <img alt="TypeScript" height="32px" src="https://api.iconify.design/logos:typescript-icon.svg" />
+  <img alt="React" height="32px" src="https://api.iconify.design/logos:react.svg" />
+  <img alt="NextJS" height="32px" src="https://api.iconify.design/logos:nextjs-icon.svg" />
+  <img alt="Python" height="32px" src="https://api.iconify.design/logos:python.svg" />
+  <img alt="Flask" height="32px" src="https://api.iconify.design/logos:flask.svg" />
+  <img alt="MySQL" height="32px" src="https://api.iconify.design/logos:mysql.svg" />
+  <img alt="Docker" height="32px" src="https://api.iconify.design/logos:docker-icon.svg" />
+</div>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<br>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<p align="center">
+  <a href="#features">Características</a> •
+  <a href="#requirements">Requisitos</a> •
+  <a href="#setup">Configuração inicial</a> •
+  <a href="#deploy">Deploy</a> •
+  <a href="#license">Licença</a>
+</p>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
