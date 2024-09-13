@@ -19,11 +19,14 @@
 <br>
 
 <p align="center">
-  <a href="#features">Características</a> •
+  <a href="#features">Funções</a> •
   <a href="#requirements">Requisitos</a> •
+  <a href="#docs">Documentação</a> •
   <a href="#setup">Configuração inicial</a> •
   <a href="#deploy">Deploy</a> •
   <a href="#license">Licença</a>
 </p>
 
----
+<h2 id="features">Funções</h2>
+
+### To be implemented
