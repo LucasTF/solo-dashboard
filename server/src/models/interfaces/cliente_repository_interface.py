@@ -10,7 +10,7 @@ class ClienteRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_cliente_by_id(self, id: int) -> Cliente:
+    def get_cliente_by_id(self, id: int) -> Cliente | None:
         pass
 
     @abstractmethod

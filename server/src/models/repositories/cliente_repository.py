@@ -2,7 +2,6 @@ from typing import List
 
 from sqlalchemy import insert, select
 from src.database.connector import DBConnector
-from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.cliente import Cliente
 from src.models.interfaces.cliente_repository_interface import ClienteRepositoryInterface
 
@@ -25,9 +24,6 @@ class ClienteRepository(ClienteRepositoryInterface):
         query = select(Cliente).where(Cliente.id == id)
         with self.__db_connector as conn:
             cliente = conn.session.scalar(query)
-
-        if not cliente:
-            raise UnavailableResourceError("Cliente")
         
         return cliente
 
