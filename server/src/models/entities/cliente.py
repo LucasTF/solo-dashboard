@@ -24,3 +24,6 @@ class Cliente(Base):
     fone1: Mapped[Optional[int]] = mapped_column()
     fone2: Mapped[Optional[int]] = mapped_column()
 
+    def __repr__(self) -> str:
+        return f"<Cliente | id={self.id} | nome={self.nome} | cpf={self.cpf} | cnpj={self.cnpj} | email={self.email}>"
+
