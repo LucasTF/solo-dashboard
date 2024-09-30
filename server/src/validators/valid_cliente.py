@@ -5,7 +5,7 @@ from pydantic import BaseModel, EmailStr, Field, PositiveInt
 from src.config.constants import CEP_LENGTH, CNPJ_LENGTH, CPF_LENGTH, MAX_BAIRRO_LENGTH, MAX_CIDADE_LENGTH, MAX_CLIENTE_APELIDO_LENGTH, MAX_CLIENTE_NAME_LENGTH, MAX_COMPLEMENTO_LOGO_LENGTH, MAX_EMAIL_LENGTH, MAX_LOGRADOURO_LENGTH, MAX_TIPO_LOGO_LENGTH, UF_LENGTH
 
 
-class SerialCliente(BaseModel):
+class ValidCliente(BaseModel):
 
     id: Annotated[Optional[PositiveInt], Field(default=None)]
     nome: Annotated[str, Field(max_length=MAX_CLIENTE_NAME_LENGTH)]

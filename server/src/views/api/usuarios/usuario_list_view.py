@@ -1,7 +1,7 @@
 import math
 from typing import List
 from src.controllers.interfaces.usuario_controller_interface import UsuarioControllerInterface
-from src.models.serials.serial_usuario import SerialUsuario
+from src.validators.valid_usuario import ValidUsuario
 from src.utils.pagination import paginate
 from src.views.api.interfaces.view_interface import ViewInterface
 from src.views.api.types.http_request import HttpRequest
@@ -30,10 +30,10 @@ class UsuarioListView(ViewInterface):
 
         paginated_usuarios = paginate(usuarios, page, entries_per_page)
 
-        data : List[SerialUsuario] = []
+        data : List[ValidUsuario] = []
 
         for usuario in paginated_usuarios:
-            serial_user = SerialUsuario.serialize(usuario)
+            serial_user = ValidUsuario.serialize(usuario)
             data.append(serial_user.model_dump())
 
         body_response = {

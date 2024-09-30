@@ -4,7 +4,7 @@ from src.errors.invalid_credentials_error import InvalidCredentialsError
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.repositories.usuario_repository import UsuarioRepository
-from src.models.serials.serial_usuario import SerialUsuario
+from src.validators.valid_usuario import ValidUsuario
 from src.services.jwt_service import JwtService
 from src.services.password_encrypt_service import PasswordEncryptService
 
@@ -34,8 +34,8 @@ class AuthController(AuthControllerInterface):
         }
     
     def __validate_login(self, email: str, password: str):
-        SerialUsuario.__pydantic_validator__.validate_assignment(SerialUsuario.model_construct(), "email", email)
-        SerialUsuario.__pydantic_validator__.validate_assignment(SerialUsuario.model_construct(), "password", password)
+        ValidUsuario.__pydantic_validator__.validate_assignment(ValidUsuario.model_construct(), "email", email)
+        ValidUsuario.__pydantic_validator__.validate_assignment(ValidUsuario.model_construct(), "password", password)
     
     def __find_user(self, email: str) -> Usuario:
         user = self.__usuario_repository.get_usuario_by_email(email)

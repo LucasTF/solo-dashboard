@@ -6,7 +6,7 @@ from pydantic import BaseModel, EmailStr, Field, PositiveInt, StrictBool, field_
 from src.models.entities.usuario import Usuario
 from src.config.constants import MAX_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
 
-class SerialUsuario(BaseModel):
+class ValidUsuario(BaseModel):
 
     id: Annotated[Optional[PositiveInt], Field(default=None)]
     name: Annotated[str, Field(max_length=MAX_USUARIO_NAME_LENGTH)]
@@ -28,7 +28,7 @@ class SerialUsuario(BaseModel):
     
     @classmethod
     def serialize(cls, usuario: Usuario):
-        serial_usuario = SerialUsuario(
+        valid_usuario = ValidUsuario(
             id=usuario.id,
             name=usuario.name,
             email=usuario.email,
@@ -36,4 +36,4 @@ class SerialUsuario(BaseModel):
             is_admin=usuario.is_admin
         )
 
-        return serial_usuario
+        return valid_usuario

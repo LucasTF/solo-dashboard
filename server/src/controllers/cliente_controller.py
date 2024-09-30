@@ -3,7 +3,7 @@ from src.controllers.interfaces.cliente_controller_interface import ClienteContr
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.cliente import Cliente
 from src.models.interfaces.cliente_repository_interface import ClienteRepositoryInterface
-from src.models.serials.serial_cliente import SerialCliente
+from src.validators.valid_cliente import ValidCliente
 
 
 class ClienteController(ClienteControllerInterface):
@@ -32,8 +32,8 @@ class ClienteController(ClienteControllerInterface):
 
         return clientes
     
-    def __validate_cliente(self, cliente_dict: Dict) -> SerialCliente:
-        serialized_cliente = SerialCliente(
+    def __validate_cliente(self, cliente_dict: Dict) -> ValidCliente:
+        serialized_cliente = ValidCliente(
             nome=cliente_dict.get('nome'), 
             apelido=cliente_dict.get('apelido'),
             cpf=cliente_dict.get('cpf'),
