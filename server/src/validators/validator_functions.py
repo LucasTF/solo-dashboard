@@ -1,5 +1,7 @@
 import regex
 
+from src.enums.ufs import Uf
+
 
 def validate_at_least_one_letter_and_whitespace(sample: str) -> str:
     """Check if given string contains at least one letter and any number of whitespaces
@@ -62,3 +64,22 @@ def validate_cpf(sample: str) -> str:
         return sample
     
     raise ValueError("CPF deve estar no formato: 'XXX.XXX.XXX-XX', onde X deve ser um número entre 0-9.")
+
+def validate_uf(sample: str) -> str:
+    """Check if given string is within uf enum values.
+
+    Args:
+        sample (str): string of text to be tested.
+
+    Returns:
+        str: string used as the sample argument.
+
+    Exceptions:
+        ValueError: Raises an ValueError exception if sample string is not present in uf enum.
+    """
+
+    if len(sample) == 2:
+        if Uf.has_value(sample):
+            return sample
+    
+    raise ValueError("UF não válida.")

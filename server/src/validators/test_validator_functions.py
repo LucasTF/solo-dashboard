@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pytest
 
-from src.validators.validator_functions import validate_at_least_one_letter_and_whitespace, validate_cep, validate_cpf
+from src.validators.validator_functions import validate_at_least_one_letter_and_whitespace, validate_cep, validate_cpf, validate_uf
 
 
 class ValidatorFunctionsTestCase(TestCase):
@@ -42,3 +42,15 @@ class ValidatorFunctionsTestCase(TestCase):
         for element in samples:
             with pytest.raises(ValueError):
                 self.assertEqual(validate_cpf(element), element)
+
+    def test_validate_uf(self):
+        sample = "SP"
+
+        self.assertEqual(validate_uf(sample), sample)
+
+    def test_validate_uf_with_invalid_strings(self):
+        samples = ["SSP", "HX", "65", "W2"]
+
+        for element in samples:
+            with pytest.raises(ValueError):
+                self.assertEqual(validate_uf(element), element)
