@@ -6,7 +6,6 @@ from src.config.constants import CEP_LENGTH, CNPJ_LENGTH, CPF_LENGTH, MAX_BAIRRO
 from src.models.entities.cliente import Cliente
 from src.validators.validator_functions import validate_cpf, validate_cep, validate_uf
 
-
 class ValidCliente(BaseModel):
 
     id: Annotated[Optional[PositiveInt], Field(default=None)]
