@@ -4,7 +4,7 @@ from pydantic import BaseModel, EmailStr, Field, PositiveInt, field_validator
 
 from src.config.constants import CEP_LENGTH, CNPJ_LENGTH, CPF_LENGTH, MAX_BAIRRO_LENGTH, MAX_CIDADE_LENGTH, MAX_CLIENTE_APELIDO_LENGTH, MAX_CLIENTE_NAME_LENGTH, MAX_COMPLEMENTO_LOGO_LENGTH, MAX_EMAIL_LENGTH, MAX_LOGRADOURO_LENGTH, MAX_TIPO_LOGO_LENGTH, UF_LENGTH
 from src.models.entities.cliente import Cliente
-from src.validators.validator_functions import is_valid_cep
+from src.validators.validator_functions import validate_cpf, validate_cep
 
 
 class ValidCliente(BaseModel):
@@ -27,12 +27,19 @@ class ValidCliente(BaseModel):
 
     @field_validator('cep')
     @classmethod
-    def cep_must_have_only_numbers_and_one_dash(cls, v: str) -> str:
-
-        if is_valid_cep(v):
+    def cep_format(cls, v: str | None) -> str | None:
+        if v is None:
             return v
-
-        raise ValueError("CEP deve estar no formato: XXXXX-XXX, onde X deve ser um número entre 0-9.")
+        
+        return validate_cep(v)
+    
+    @field_validator('cpf')
+    @classmethod
+    def cpf_format(cls, v: str | None) -> str | None:
+        if v is None:
+            return v
+        
+        return validate_cpf(v)
 
     @classmethod
     def serialize(cliente: Cliente):

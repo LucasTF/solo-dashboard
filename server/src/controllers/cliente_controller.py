@@ -33,7 +33,7 @@ class ClienteController(ClienteControllerInterface):
         return clientes
     
     def __validate_cliente(self, cliente_dict: Dict) -> ValidCliente:
-        serialized_cliente = ValidCliente(
+        valid_cliente = ValidCliente(
             nome=cliente_dict.get('nome'), 
             apelido=cliente_dict.get('apelido'),
             cpf=cliente_dict.get('cpf'),
@@ -50,4 +50,4 @@ class ClienteController(ClienteControllerInterface):
             fone2=cliente_dict.get('fone2'),
         )
 
-        return serialized_cliente
+        return valid_cliente

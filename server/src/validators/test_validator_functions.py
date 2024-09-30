@@ -1,28 +1,44 @@
 from unittest import TestCase
 
-from src.validators.validator_functions import contains_at_least_one_letter_and_whitespace, is_valid_cep
+import pytest
+
+from src.validators.validator_functions import validate_at_least_one_letter_and_whitespace, validate_cep, validate_cpf
 
 
 class ValidatorFunctionsTestCase(TestCase):
 
-    def test_contains_at_least_one_letter_and_whitespace(self):
+    def test_validate_at_least_one_letter_and_whitespace(self):
         sample = "Válid String"
 
-        self.assertTrue(contains_at_least_one_letter_and_whitespace(sample))
+        self.assertEqual(validate_at_least_one_letter_and_whitespace(sample), sample)
 
-    def test_contains_at_least_one_letter_and_whitespace_with_invalid_strings(self):
+    def test_validate_at_least_one_letter_and_whitespace_with_invalid_strings(self):
         samples = ["   ", "String with 2 numbers 34", "Sym-bols", "4545"]
 
         for element in samples:
-            self.assertFalse(contains_at_least_one_letter_and_whitespace(element))
+            with pytest.raises(ValueError):
+                validate_at_least_one_letter_and_whitespace(element)
 
-    def test_is_valid_cep(self):
+    def test_validate_cep(self):
         sample = "02154-555"
 
-        self.assertTrue(is_valid_cep(sample))
+        self.assertEqual(validate_cep(sample), sample)
 
-    def test_is_valid_cep_with_invalid_strings(self):
+    def test_validate_cep_with_invalid_strings(self):
         samples = ["xs542-334", "03222589", "02-32-002", "00584_448"]
 
         for element in samples:
-            self.assertFalse(is_valid_cep(element))
+            with pytest.raises(ValueError):
+                self.assertEqual(validate_cep(element), element)
+
+    def test_validate_cpf(self):
+        sample = "002.584.659-12"
+
+        self.assertEqual(validate_cpf(sample), sample)
+
+    def test_validate_cpf_with_invalid_strings(self):
+        samples = ["000.000.x00-52", "121-355-484-12", "325-489-645.22", "---.---.------"]
+
+        for element in samples:
+            with pytest.raises(ValueError):
+                self.assertEqual(validate_cpf(element), element)

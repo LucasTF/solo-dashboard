@@ -4,7 +4,7 @@ from pydantic import BaseModel, EmailStr, Field, PositiveInt, StrictBool, field_
 
 from src.models.entities.usuario import Usuario
 from src.config.constants import MAX_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
-from src.validators.validator_functions import contains_at_least_one_letter_and_whitespace
+from src.validators.validator_functions import validate_at_least_one_letter_and_whitespace
 
 class ValidUsuario(BaseModel):
 
@@ -17,10 +17,7 @@ class ValidUsuario(BaseModel):
     @field_validator('name')
     @classmethod
     def name_must_contain_only_letters_and_whitespace(cls, v: str) -> str:
-        if contains_at_least_one_letter_and_whitespace(v):
-            return v
-        
-        raise ValueError("Nome deve conter, pelo menos, uma letra e deve conter apenas letras e espaços.")
+        return validate_at_least_one_letter_and_whitespace(v)
     
     @classmethod
     def serialize(cls, usuario: Usuario):

@@ -1,32 +1,64 @@
 import regex
 
 
-def contains_at_least_one_letter_and_whitespace(sample: str) -> bool:
+def validate_at_least_one_letter_and_whitespace(sample: str) -> str:
     """Check if given string contains at least one letter and any number of whitespaces
 
     Args:
         sample (str): string of text to be tested.
 
     Returns:
-        bool: Returns True if given string contains at least one letter and any number of whitespaces. Returns False otherwise.
+        str: string used as the sample argument.
+
+    Exceptions:
+        ValueError: Raises an ValueError exception if sample string does not conform to specifications.
     """
 
     # Regular expression pattern to check if the string contains only letters (including diacritics) and whitespace
     # and contains at least one letter.
     pattern = r'^(?=.*\p{L})[\p{L}\s]+$'
 
-    return bool(regex.match(pattern, sample))
+    if bool(regex.match(pattern, sample)):
+        return sample
+        
+    raise ValueError("Nome deve conter, pelo menos, uma letra e deve conter apenas letras e espaços.")
 
-def is_valid_cep(sample: str) -> bool:
+def validate_cep(sample: str) -> str:
     """Check if given string obeys the cep format 'XXXXX-XXX' where X must be a number between 0-9.
 
     Args:
         sample (str): string of text to be tested.
 
     Returns:
-        bool: Returns True if given string obeys the cep format. Returns False otherwise.
+        str: string used as the sample argument.
+
+    Exceptions:
+        ValueError: Raises an ValueError exception if sample string does not conform to cep format.
     """
 
     pattern = r'^\d{5}-\d{3}$'
 
-    return bool(regex.match(pattern, sample))
+    if bool(regex.match(pattern, sample)):
+        return sample
+    
+    raise ValueError("CEP deve estar no formato: 'XXXXX-XXX', onde X deve ser um número entre 0-9.")
+
+def validate_cpf(sample: str) -> str:
+    """Check if given string obeys the cpf format 'XXX.XXX.XXX-XX' where X must be a number between 0-9.
+
+    Args:
+        sample (str): string of text to be tested.
+
+    Returns:
+        str: string used as the sample argument.
+
+    Exceptions:
+        ValueError: Raises an ValueError exception if sample string does not conform to cpf format.
+    """
+
+    pattern = r'^\d{3}\.\d{3}\.\d{3}-\d{2}$'
+
+    if bool(regex.match(pattern, sample)):
+        return sample
+    
+    raise ValueError("CPF deve estar no formato: 'XXX.XXX.XXX-XX', onde X deve ser um número entre 0-9.")
