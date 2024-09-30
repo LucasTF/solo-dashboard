@@ -4,7 +4,7 @@ from pydantic import BaseModel, EmailStr, Field, PositiveInt, field_validator
 
 from src.config.constants import CEP_LENGTH, CNPJ_LENGTH, CPF_LENGTH, MAX_BAIRRO_LENGTH, MAX_CIDADE_LENGTH, MAX_CLIENTE_APELIDO_LENGTH, MAX_CLIENTE_NAME_LENGTH, MAX_COMPLEMENTO_LOGO_LENGTH, MAX_EMAIL_LENGTH, MAX_LOGRADOURO_LENGTH, MAX_TIPO_LOGO_LENGTH, UF_LENGTH
 from src.models.entities.cliente import Cliente
-from src.validators.validator_functions import validate_cnpj, validate_cpf, validate_cep, validate_uf
+from src.validators.validator_functions import validate_cnpj, validate_cpf, validate_cep, validate_tipo_logo, validate_uf
 
 class ValidCliente(BaseModel):
 
@@ -39,6 +39,14 @@ class ValidCliente(BaseModel):
             return v
         
         return validate_cnpj(v)
+    
+    @field_validator('tipo_logo')
+    @classmethod
+    def tipo_logo_format(cls, v: str | None) -> str | None:
+        if v is None:
+            return v
+        
+        return validate_tipo_logo(v)
     
     @field_validator('uf')
     @classmethod

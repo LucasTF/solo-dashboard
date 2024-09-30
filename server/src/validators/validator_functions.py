@@ -1,5 +1,6 @@
 import regex
 
+from src.enums.logradouros import Logradouro
 from src.enums.ufs import Uf
 
 
@@ -82,7 +83,25 @@ def validate_uf(sample: str) -> str:
         if Uf.has_value(sample):
             return sample
     
-    raise ValueError("UF não válida.")
+    raise ValueError("UF inválida.")
+
+def validate_tipo_logo(sample: str) -> str:
+    """Check if given string is within logradouro enum values.
+
+    Args:
+        sample (str): string of text to be tested.
+
+    Returns:
+        str: string used as the sample argument.
+
+    Exceptions:
+        ValueError: Raises an ValueError exception if sample string is not present in logradouro enum.
+    """
+
+    if Logradouro.has_value(sample):
+        return sample
+    
+    raise ValueError("Tipo de logradouro inválido.")
 
 def validate_cnpj(sample: str) -> str:
     """Check if given string obeys the cnpj format 'XX.XXX.XXX/XXXX-XX' where X must be a number between 0-9.
