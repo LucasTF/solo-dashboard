@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pytest
 
-from src.validators.validator_functions import validate_at_least_one_letter_and_whitespace, validate_cep, validate_cnpj, validate_cpf, validate_uf
+from src.validators.validator_functions import validate_at_least_one_letter_and_whitespace, validate_cep, validate_cnpj, validate_cpf, validate_tipo_logo, validate_uf
 
 
 class ValidatorFunctionsTestCase(TestCase):
@@ -66,3 +66,15 @@ class ValidatorFunctionsTestCase(TestCase):
         for element in samples:
             with pytest.raises(ValueError):
                 self.assertEqual(validate_cnpj(element), element)
+
+    def test_validate_tipo_logo(self):
+        sample = "Quadra"
+
+        self.assertEqual(validate_tipo_logo(sample), sample)
+
+    def test_validate_tipo_logo_with_invalid_strings(self):
+        samples = ["Avenida", "Quad", "A v", "Alx"]
+
+        for element in samples:
+            with pytest.raises(ValueError):
+                self.assertEqual(validate_tipo_logo(element), element)
