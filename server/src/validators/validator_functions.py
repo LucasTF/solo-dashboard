@@ -83,3 +83,24 @@ def validate_uf(sample: str) -> str:
             return sample
     
     raise ValueError("UF não válida.")
+
+def validate_cnpj(sample: str) -> str:
+    """Check if given string obeys the cnpj format 'XX.XXX.XXX/XXXX-XX' where X must be a number between 0-9.
+
+    Args:
+        sample (str): string of text to be tested.
+
+    Returns:
+        str: string used as the sample argument.
+
+    Exceptions:
+        ValueError: Raises an ValueError exception if sample string does not conform to cnpj format.
+    """
+
+    pattern = r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$'
+
+    if bool(regex.match(pattern, sample)):
+        return sample
+    
+    raise ValueError("CNPJ deve estar no formato: 'XX.XXX.XXX/XXXX-XX', onde X deve ser um número entre 0-9.")
+

@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pytest
 
-from src.validators.validator_functions import validate_at_least_one_letter_and_whitespace, validate_cep, validate_cpf, validate_uf
+from src.validators.validator_functions import validate_at_least_one_letter_and_whitespace, validate_cep, validate_cnpj, validate_cpf, validate_uf
 
 
 class ValidatorFunctionsTestCase(TestCase):
@@ -54,3 +54,15 @@ class ValidatorFunctionsTestCase(TestCase):
         for element in samples:
             with pytest.raises(ValueError):
                 self.assertEqual(validate_uf(element), element)
+
+    def test_validate_cnpj(self):
+        sample = "12.345.678/0001-95"
+
+        self.assertEqual(validate_cnpj(sample), sample)
+
+    def test_validate_cnpj_with_invalid_strings(self):
+        samples = ["12.34x.678/0001-95", "12.3 6.678/0001-95", "12-345-678/0001.95", "1213451678-0001195"]
+
+        for element in samples:
+            with pytest.raises(ValueError):
+                self.assertEqual(validate_cnpj(element), element)
