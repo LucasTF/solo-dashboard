@@ -1,8 +1,10 @@
 from typing import Optional
 from typing_extensions import Annotated
-from pydantic import BaseModel, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, EmailStr, Field, PositiveInt, field_validator
 
 from src.config.constants import CEP_LENGTH, CNPJ_LENGTH, CPF_LENGTH, MAX_BAIRRO_LENGTH, MAX_CIDADE_LENGTH, MAX_CLIENTE_APELIDO_LENGTH, MAX_CLIENTE_NAME_LENGTH, MAX_COMPLEMENTO_LOGO_LENGTH, MAX_EMAIL_LENGTH, MAX_LOGRADOURO_LENGTH, MAX_TIPO_LOGO_LENGTH, UF_LENGTH
+from src.models.entities.cliente import Cliente
+from src.validators.validator_functions import is_valid_cep
 
 
 class ValidCliente(BaseModel):
@@ -22,3 +24,34 @@ class ValidCliente(BaseModel):
     email: Annotated[Optional[EmailStr], Field(max_length=MAX_EMAIL_LENGTH, default=None)]
     fone1: Annotated[Optional[PositiveInt], Field(default=None)]
     fone2: Annotated[Optional[PositiveInt], Field(default=None)]
+
+    @field_validator('cep')
+    @classmethod
+    def cep_must_have_only_numbers_and_one_dash(cls, v: str) -> str:
+
+        if is_valid_cep(v):
+            return v
+
+        raise ValueError("CEP deve estar no formato: XXXXX-XXX, onde X deve ser um número entre 0-9.")
+
+    @classmethod
+    def serialize(cliente: Cliente):
+        valid_cliente = ValidCliente(
+            id=cliente.id,
+            nome=cliente.nome,
+            apelido=cliente.apelido,
+            cpf=cliente.cpf,
+            cnpj=cliente.cnpj,
+            tipo_logo=cliente.tipo_logo,
+            logradouro=cliente.logradouro,
+            complemento=cliente.complemento,
+            bairro=cliente.bairro,
+            cidade=cliente.cidade,
+            uf=cliente.uf,
+            cep=cliente.cep,
+            email=cliente.email,
+            fone1=cliente.fone1,
+            fone2=cliente.fone2
+        )
+
+        return valid_cliente

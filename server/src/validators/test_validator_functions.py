@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.validators.validator_functions import contains_at_least_one_letter_and_whitespace
+from src.validators.validator_functions import contains_at_least_one_letter_and_whitespace, is_valid_cep
 
 
 class ValidatorFunctionsTestCase(TestCase):
@@ -15,3 +15,14 @@ class ValidatorFunctionsTestCase(TestCase):
 
         for element in samples:
             self.assertFalse(contains_at_least_one_letter_and_whitespace(element))
+
+    def test_is_valid_cep(self):
+        sample = "02154-555"
+
+        self.assertTrue(is_valid_cep(sample))
+
+    def test_is_valid_cep_with_invalid_strings(self):
+        samples = ["xs542-334", "03222589", "02-32-002", "00584_448"]
+
+        for element in samples:
+            self.assertFalse(is_valid_cep(element))
