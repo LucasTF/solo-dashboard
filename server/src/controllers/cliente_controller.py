@@ -12,7 +12,23 @@ class ClienteController(ClienteControllerInterface):
         self.__repository = clienteRepository
 
     def create(self, cliente_info: Dict) -> None:
-        self.__validate_cliente(cliente_info)
+        valid_cliente = self.__validate_cliente(cliente_info)
+        self.__repository.insert_cliente(
+            nome=valid_cliente.nome,
+            apelido=valid_cliente.apelido,
+            cpf=valid_cliente.apelido,
+            cnpj=valid_cliente.cnpj,
+            tipo_logo=valid_cliente.tipo_logo,
+            logradouro=valid_cliente.logradouro,
+            complemento=valid_cliente.complemento,
+            bairro=valid_cliente.bairro,
+            cidade=valid_cliente.cidade,
+            cep=valid_cliente.cep,
+            email=valid_cliente.email,
+            uf=valid_cliente.uf,
+            fone1=valid_cliente.fone1,
+            fone2=valid_cliente.fone2
+        )
 
     def find_by_id(self, cliente_id: int) -> Cliente:
         cliente = self.__repository.get_cliente_by_id(cliente_id)

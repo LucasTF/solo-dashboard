@@ -18,6 +18,8 @@ class ClienteControllerTestCase(TestCase):
     def test_create_with_only_required_params(self):
         self.__controller.create(self.__sample_dict)
 
+        self.__repository.insert_cliente.assert_called_once()
+
     def test_uf(self):
         self.__sample_dict.update({"uf": "SP"})
 
