@@ -1,10 +1,10 @@
-import regex
 from typing import Optional
 from typing_extensions import Annotated
 from pydantic import BaseModel, EmailStr, Field, PositiveInt, StrictBool, field_validator
 
 from src.models.entities.usuario import Usuario
 from src.config.constants import MAX_EMAIL_LENGTH, MAX_USUARIO_NAME_LENGTH, MAX_USUARIO_PASSWORD_LENGTH
+from src.validators.validator_functions import contains_at_least_one_letter_and_whitespace
 
 class ValidUsuario(BaseModel):
 
@@ -17,11 +17,7 @@ class ValidUsuario(BaseModel):
     @field_validator('name')
     @classmethod
     def name_must_contain_only_letters_and_whitespace(cls, v: str) -> str:
-        # Regular expression pattern to check if the string contains only letters (including diacritics) and whitespace
-        # and contains at least one letter.
-        pattern = r'^(?=.*\p{L})[\p{L}\s]+$'
-
-        if bool(regex.match(pattern, v)):
+        if contains_at_least_one_letter_and_whitespace(v):
             return v
         
         raise ValueError("Nome deve conter, pelo menos, uma letra e deve conter apenas letras e espaços.")
