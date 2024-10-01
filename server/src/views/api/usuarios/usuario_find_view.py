@@ -13,7 +13,7 @@ class UsuarioFindView(ViewInterface):
         self.__controller = controller
 
     def handle(self, http_request: HttpRequest) -> HttpResponse:
-        identifier = http_request.params['identifier']
+        identifier = http_request.params.get('identifier')
 
         usuario : Usuario = None
 

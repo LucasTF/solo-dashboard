@@ -65,7 +65,7 @@ class ValidCliente(BaseModel):
         return validate_cep(v)
 
     @classmethod
-    def serialize(cliente: Cliente):
+    def serialize(cls, cliente: Cliente):
         valid_cliente = ValidCliente(
             id=cliente.id,
             nome=cliente.nome,
