@@ -9,6 +9,7 @@ from src.errors.unavailable_resource_error import UnavailableResourceError
 
 # Routes
 from src.core.routes.api.usuario_routes import usuario_route
+from src.core.routes.api.cliente_routes import cliente_route
 from src.core.routes.api.auth_routes import auth_route
 
 
@@ -23,4 +24,5 @@ api_route.register_error_handler(InvalidOperationError, InvalidOperationError.ha
 api_route.register_error_handler(InvalidParamError, InvalidParamError.handle)
 
 api_route.register_blueprint(usuario_route)
+api_route.register_blueprint(cliente_route)
 api_route.register_blueprint(auth_route)
