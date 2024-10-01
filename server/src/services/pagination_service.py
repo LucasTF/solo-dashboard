@@ -14,7 +14,7 @@ class PaginationService(Generic[T]):
     def paginate(self, page: int, items_per_page: int) -> List[T]:
 
         if (page < 1 or items_per_page < 1):
-            raise InvalidParamError("Página e Itens por página devem ser maiores do que 0.")
+            raise InvalidParamError
 
         total_pages = math.ceil(self.__total_items / items_per_page)
 
