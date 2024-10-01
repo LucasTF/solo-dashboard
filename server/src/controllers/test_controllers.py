@@ -5,7 +5,7 @@ from src.controllers.usuario_controller import UsuarioController
 from src.models.repositories.usuario_repository import UsuarioRepository
 
 from src.database.connector import db_connector
-from src.models.serials.serial_response import SerialResponse
+from src.validators.valid_response import ValidResponse
 
 # Personal test cases for usage with specific setup database
 # Should not be run as legitimate tests
@@ -28,5 +28,5 @@ class IntegrationUsuarioControllerTestCase(unittest.TestCase):
 
         result = self.__controller.create(sample_usuario)
 
-        self.assertIsInstance(result, SerialResponse)
+        self.assertIsInstance(result, ValidResponse)
         self.assertEqual(result.message, 'Usuário criado com sucesso.')

@@ -1,6 +1,7 @@
 from enum import Enum
 
 from src.database.connector import db_connector
+from src.errors.invalid_operation_error import InvalidOperationError
 from src.models.repositories.usuario_repository import UsuarioRepository
 from src.controllers.usuario_controller import UsuarioController
 
@@ -40,4 +41,4 @@ def compose_usuario(action: UsuarioAction) -> ViewInterface:
         case UsuarioAction.UPDATE_PASSWORD:
             return UsuarioUpdatePasswordView(controller)
         case _:
-            raise Exception('Ação para <Usuario> não encontrada.')
+            raise InvalidOperationError('Ação para <Usuario> não encontrada.')

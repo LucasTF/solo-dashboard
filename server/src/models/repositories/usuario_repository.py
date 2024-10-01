@@ -25,18 +25,12 @@ class UsuarioRepository(UsuarioRepositoryInterface):
         with self.__db_connector as conn:
             usuario = conn.session.scalar(query)
 
-        if not usuario:
-            raise UnavailableResourceError("Usuário")
-
         return usuario
     
     def get_usuario_by_email(self, email: str) -> Usuario:
         query = select(Usuario).where(Usuario.email == email)
         with self.__db_connector as conn:
             usuario = conn.session.scalar(query)
-
-        if not usuario:
-            raise UnavailableResourceError("Usuário")
 
         return usuario
     

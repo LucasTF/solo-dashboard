@@ -1,7 +1,7 @@
 from src.controllers.interfaces.usuario_controller_interface import UsuarioControllerInterface
 from src.models.entities.usuario import Usuario
-from src.models.serials.serial_response import SerialResponse
-from src.models.serials.serial_usuario import SerialUsuario
+from src.validators.valid_response import ValidResponse
+from src.validators.valid_usuario import ValidUsuario
 from src.views.api.interfaces.view_interface import ViewInterface
 from src.views.api.types.http_request import HttpRequest
 from src.views.api.types.http_response import HttpResponse
@@ -13,7 +13,7 @@ class UsuarioFindView(ViewInterface):
         self.__controller = controller
 
     def handle(self, http_request: HttpRequest) -> HttpResponse:
-        identifier = http_request.params['identifier']
+        identifier = http_request.params.get('identifier')
 
         usuario : Usuario = None
 
@@ -24,10 +24,10 @@ class UsuarioFindView(ViewInterface):
             usuario = self.__controller.find_by_email(identifier)
 
         if usuario is not None:
-            body_response = SerialUsuario.serialize(usuario).model_dump()
+            body_response = ValidUsuario.serialize(usuario).model_dump()
             return HttpResponse(status_code=200, body=body_response)
         
         return HttpResponse(
             status_code=404, 
-            body=SerialResponse(message="Usuário não encontrado.").model_dump(exclude_none=True)
+            body=ValidResponse(message="Usuário não encontrado.").model_dump(exclude_none=True)
         )

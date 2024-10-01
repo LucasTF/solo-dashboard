@@ -18,6 +18,9 @@ db_connector.connect_to_db()
 app = Flask(__name__)
 CORS(app)
 
+# Config Flags
+app.json.sort_keys = False # Stop Flask from sorting JSON response keys alphabetically
+
 # Errors
 app.register_error_handler(DecodeError, InvalidJwtTokenError.handle)
 app.register_error_handler(ExpiredSignatureError, ExpiredJwtTokenError.handle)

@@ -4,7 +4,7 @@ from src.controllers.interfaces.usuario_controller_interface import UsuarioContr
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
-from src.models.serials.serial_usuario import SerialUsuario
+from src.validators.valid_usuario import ValidUsuario
 from src.services.password_encrypt_service import PasswordEncryptService
 
 class UsuarioController(UsuarioControllerInterface):
@@ -72,11 +72,11 @@ class UsuarioController(UsuarioControllerInterface):
 
         return usuarios
     
-    def __validate_usuario(self, usuario_dict: Dict) -> SerialUsuario:
-        serialized_usuario = SerialUsuario(
+    def __validate_usuario(self, usuario_dict: Dict) -> ValidUsuario:
+        validated_usuario = ValidUsuario(
             name=usuario_dict.get('name'), 
             email=usuario_dict.get('email'),
             password=usuario_dict.get('password'),
             is_admin=(usuario_dict.get('is_admin') if 'is_admin' in usuario_dict else False)
         )
-        return serialized_usuario
+        return validated_usuario

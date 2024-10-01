@@ -7,7 +7,7 @@ import pytest
 from src.controllers.usuario_controller import UsuarioController
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
-from src.models.serials.serial_usuario import SerialUsuario
+from src.validators.valid_usuario import ValidUsuario
 from src.services.password_encrypt_service import PasswordEncryptService
 
 
@@ -27,14 +27,14 @@ class UsuarioControllerTestCase(unittest.TestCase):
             "is_admin": False
         }
 
-        sample_serial = SerialUsuario(
+        sample_valid = ValidUsuario(
             name=sample_dict["name"],
             email=sample_dict["email"],
             password=sample_dict["password"],
             is_admin=sample_dict["is_admin"]
             )
 
-        with mock.patch.object(self.__controller, '_UsuarioController__validate_usuario', return_value=sample_serial) as validate_method:
+        with mock.patch.object(self.__controller, '_UsuarioController__validate_usuario', return_value=sample_valid) as validate_method:
             self.__controller.create(sample_dict)
 
             validate_method.assert_called_once_with(sample_dict)
@@ -49,13 +49,13 @@ class UsuarioControllerTestCase(unittest.TestCase):
             "password": "123456"
         }
 
-        sample_serial = SerialUsuario(
+        sample_valid = ValidUsuario(
             name=sample_dict["name"],
             email=sample_dict["email"],
             password=sample_dict["password"],
             )
 
-        with mock.patch.object(self.__controller, '_UsuarioController__validate_usuario', return_value=sample_serial) as validate_method:
+        with mock.patch.object(self.__controller, '_UsuarioController__validate_usuario', return_value=sample_valid) as validate_method:
             self.__controller.create(sample_dict)
 
             validate_method.assert_called_once_with(sample_dict)

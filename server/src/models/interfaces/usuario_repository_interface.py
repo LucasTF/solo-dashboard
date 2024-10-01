@@ -10,11 +10,11 @@ class UsuarioRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_usuario_by_id(self, id: int) -> Usuario:
+    def get_usuario_by_id(self, id: int) -> Usuario | None:
         pass
 
     @abstractmethod
-    def get_usuario_by_email(self, email: str) -> Usuario:
+    def get_usuario_by_email(self, email: str) -> Usuario | None:
         pass
 
     @abstractmethod
