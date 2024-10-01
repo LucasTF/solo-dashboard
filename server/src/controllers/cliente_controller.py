@@ -16,7 +16,7 @@ class ClienteController(ClienteControllerInterface):
         self.__repository.insert_cliente(
             nome=valid_cliente.nome,
             apelido=valid_cliente.apelido,
-            cpf=valid_cliente.apelido,
+            cpf=valid_cliente.cpf,
             cnpj=valid_cliente.cnpj,
             tipo_logo=valid_cliente.tipo_logo,
             logradouro=valid_cliente.logradouro,
