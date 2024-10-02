@@ -1,5 +1,4 @@
-import unittest
-from unittest import mock
+from unittest import mock, TestCase
 from unittest.mock import Mock, PropertyMock
 
 import pytest
@@ -11,7 +10,7 @@ from src.validators.valid_usuario import ValidUsuario
 from src.services.password_encrypt_service import PasswordEncryptService
 
 
-class UsuarioControllerTestCase(unittest.TestCase):
+class UsuarioControllerTestCase(TestCase):
 
     def setUp(self) -> None:
         self.__repository = Mock()

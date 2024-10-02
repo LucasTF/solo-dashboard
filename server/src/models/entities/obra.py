@@ -1,11 +1,10 @@
 from datetime import date
 from typing import Optional
 from sqlalchemy import CHAR, Date, ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from src.config.constants import CEP_LENGTH, MAX_BAIRRO_LENGTH, MAX_CIDADE_LENGTH, MAX_COD_OBRA_LENGTH, MAX_COMPLEMENTO_LOGO_LENGTH, MAX_LOGRADOURO_LENGTH, MAX_LOTE_LENGTH, MAX_QUADRA_LENGTH, MAX_TIPO_LOGO_LENGTH, UF_LENGTH
 from src.models.entities.base import Base
-from src.models.entities.cliente import Cliente
 
 
 class Obra(Base):
@@ -27,9 +26,7 @@ class Obra(Base):
     cep: Mapped[Optional[str]] = mapped_column(CHAR(CEP_LENGTH))
     complemento: Mapped[Optional[str]] = mapped_column(String(MAX_COMPLEMENTO_LOGO_LENGTH), index=True)
     cliente_id: Mapped[int] = mapped_column(ForeignKey("Cliente.id"))
-    cliente: Mapped[Cliente] = relationship()
     proprietario_id: Mapped[Optional[int]] = mapped_column(ForeignKey("Cliente.id"))
-    proprietario: Mapped[Optional[Cliente]] = relationship()
     
     def __repr__(self) -> str:
         return f"<Obra | id={self.id} | cod_obra={self.cod_obra} | ano={self.ano} | data_inicio={self.data_inicio} | data_fim={self.data_fim} | logradouro={self.tipo_logo + " " + self.logradouro}>"

@@ -1,5 +1,4 @@
-import unittest
-from unittest import mock
+from unittest import mock, TestCase
 from unittest.mock import Mock
 
 from src.database.connector import DBConnector
@@ -21,15 +20,15 @@ class MockConnector(DBConnector):
     def __exit__(self, *args):
         pass
 
-class UsuarioRepositoryTestCase(unittest.TestCase):
+class UsuarioRepositoryTestCase(TestCase):
 
     def setUp(self) -> None:
         self.mock_connector = MockConnector()
-        self.repo = UsuarioRepository(self.mock_connector)
+        self.__repo = UsuarioRepository(self.mock_connector)
 
     @mock.patch('src.models.repositories.usuario_repository.select')
     def test_list_usuarios(self, mock_select):
-            usuarios = self.repo.list_usuarios()
+            usuarios = self.__repo.list_usuarios()
 
             mock_select.assert_called_once_with(Usuario)
 
@@ -41,7 +40,7 @@ class UsuarioRepositoryTestCase(unittest.TestCase):
     @mock.patch('src.models.repositories.usuario_repository.delete')
     def test_delete_usuario(self, mock_delete):
         
-        self.repo.delete_usuario(1)
+        self.__repo.delete_usuario(1)
 
         mock_delete.assert_called_once_with(Usuario)
 
@@ -51,7 +50,7 @@ class UsuarioRepositoryTestCase(unittest.TestCase):
     @mock.patch('src.models.repositories.usuario_repository.insert')
     def test_insert_usuario(self, mock_insert):
 
-        self.repo.insert_usuario('Test User', 'test3@test.com', '123456', False)
+        self.__repo.insert_usuario('Test User', 'test3@test.com', '123456', False)
 
         mock_insert.assert_called_once_with(Usuario)
 
