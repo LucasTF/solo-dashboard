@@ -9,10 +9,10 @@ class Cliente(Base):
     __tablename__ = 'Cliente'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    nome: Mapped[str] = mapped_column(String(MAX_CLIENTE_NAME_LENGTH), index=True)
+    nome: Mapped[str] = mapped_column(String(MAX_CLIENTE_NAME_LENGTH), index=True, unique=True)
     apelido: Mapped[Optional[str]] = mapped_column(String(MAX_CLIENTE_APELIDO_LENGTH))
-    cpf: Mapped[Optional[str]] = mapped_column(String(CPF_LENGTH), index=True)
-    cnpj: Mapped[Optional[str]] = mapped_column(String(CNPJ_LENGTH), index=True)
+    cpf: Mapped[Optional[str]] = mapped_column(String(CPF_LENGTH), index=True, unique=True)
+    cnpj: Mapped[Optional[str]] = mapped_column(String(CNPJ_LENGTH), index=True, unique=True)
     tipo_logo: Mapped[Optional[str]] = mapped_column(String(MAX_TIPO_LOGO_LENGTH))
     logradouro: Mapped[Optional[str]] = mapped_column(String(MAX_LOGRADOURO_LENGTH), index=True)
     complemento: Mapped[Optional[str]] = mapped_column(String(MAX_COMPLEMENTO_LOGO_LENGTH))
