@@ -3,7 +3,7 @@ from typing import Optional
 from sqlalchemy import CHAR, Date, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.config.constants import CEP_LENGTH, MAX_BAIRRO_LENGTH, MAX_CIDADE_LENGTH, MAX_COMPLEMENTO_LOGO_LENGTH, MAX_LOGRADOURO_LENGTH, MAX_LOTE_LENGTH, MAX_QUADRA_LENGTH, MAX_TIPO_LOGO_LENGTH, UF_LENGTH
+from src.config.constants import CEP_LENGTH, MAX_BAIRRO_LENGTH, MAX_CIDADE_LENGTH, MAX_COD_OBRA_LENGTH, MAX_COMPLEMENTO_LOGO_LENGTH, MAX_LOGRADOURO_LENGTH, MAX_LOTE_LENGTH, MAX_QUADRA_LENGTH, MAX_TIPO_LOGO_LENGTH, UF_LENGTH
 from src.models.entities.base import Base
 from src.models.entities.cliente import Cliente
 
@@ -12,7 +12,7 @@ class Obra(Base):
     __tablename__ = 'Obra'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    cod_obra: Mapped[int] = mapped_column(index=True)
+    cod_obra: Mapped[str] = mapped_column(String(MAX_COD_OBRA_LENGTH), index=True, unique=True)
     num_obra: Mapped[int] = mapped_column(index=True)
     ano: Mapped[int] = mapped_column(index=True)
     data_inicio: Mapped[date] = mapped_column(Date(), index=True)
