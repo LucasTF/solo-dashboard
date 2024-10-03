@@ -4,6 +4,7 @@ from sqlalchemy import insert, select, text
 from src.database.connector import DBConnector
 from src.errors.internal_processing_error import InternalProcessingError
 from src.errors.unavailable_resource_error import UnavailableResourceError
+from src.models.entities.cliente import Cliente
 from src.models.entities.obra import Obra
 from src.models.interfaces.obra_repository_interface import ObraRepositoryInterface
 
@@ -99,30 +100,53 @@ class ObraRepository(ObraRepositoryInterface):
                 conn.session.rollback()
                 raise InternalProcessingError
 
-    def insert_obra(self, cod_obra: str, num_obra: str, ano: str, data_inicio: str, data_fim: str, uf: str, cidade: str, bairro: str, logradouro: str, cliente_id: int, tipo_logo: str = None, lote: str = None, quadra: str = None, cep: str = None, complemento: str = None, proprietario_id: int = None) -> None:
-        query = insert(Obra).values(
-            cod_obra=cod_obra,
-            num_obra=num_obra,
-            ano=ano,
-            data_inicio=data_inicio, 
-            data_fim=data_fim, 
-            uf=uf, 
-            cidade=cidade, 
-            bairro=bairro, 
-            logradouro=logradouro, 
-            cliente_id=cliente_id, 
-            tipo_logo=tipo_logo, 
-            lote=lote, 
-            quadra=quadra, 
-            cep=cep, 
-            complemento=complemento, 
-            proprietario_id=proprietario_id
-        )
-
+    def insert_obra(self, cod_obra: str, num_obra: str, ano: str, data_inicio: str, data_fim: str, uf: str, cidade: str, bairro: str, logradouro: str, cliente: str, tipo_logo: str = None, lote: str = None, quadra: str = None, cep: str = None, complemento: str = None, proprietario: str = None) -> None:
+        get_cliente_query = select(Cliente).where(Cliente.nome == cliente)
+        
         with self.__db_connector as conn:
             try:
-                conn.session.execute(query)
+                found_cliente = conn.session.scalar(get_cliente_query)
+                
+                if found_cliente:
+                    cliente_id = found_cliente.id
+                else:
+                    create_cliente_query = insert(Cliente).values(nome=cliente)
+                    create_cliente_result = conn.session.execute(create_cliente_query)
+                    cliente_id = create_cliente_result.inserted_primary_key[0]
+
+                if proprietario:
+                    get_proprietario_query = select(Cliente).where(Cliente.nome == proprietario)
+                    found_proprietario = conn.session.scalar(get_proprietario_query)
+                    if found_proprietario:
+                        proprietario_id = found_proprietario.id
+                    else:
+                        create_proprietario_query = insert(Cliente).values(nome=proprietario)
+                        create_proprietario_result = conn.session.execute(create_proprietario_query)
+                        proprietario_id = create_proprietario_result.inserted_primary_key[0]
+
+                insert_obra_query = insert(Obra).values(
+                    cod_obra=cod_obra,
+                    num_obra=num_obra,
+                    ano=ano,
+                    data_inicio=data_inicio, 
+                    data_fim=data_fim, 
+                    uf=uf, 
+                    cidade=cidade, 
+                    bairro=bairro, 
+                    logradouro=logradouro, 
+                    tipo_logo=tipo_logo, 
+                    lote=lote, 
+                    quadra=quadra, 
+                    cep=cep, 
+                    complemento=complemento, 
+                    cliente_id=cliente_id, 
+                    proprietario_id=proprietario_id
+                )
+
+                conn.session.execute(insert_obra_query)
+
                 conn.session.commit()
             except Exception:
                 conn.session.rollback()
                 raise InternalProcessingError
+

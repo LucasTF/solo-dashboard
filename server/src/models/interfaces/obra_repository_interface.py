@@ -53,12 +53,12 @@ class ObraRepositoryInterface(ABC):
                     cidade: str, 
                     bairro: str, 
                     logradouro: str, 
-                    cliente_id: int,
+                    cliente: str,
                     tipo_logo: str = None, 
                     lote: str = None, 
                     quadra: str = None, 
                     cep: str = None, 
                     complemento: str = None,
-                    proprietario_id: int = None,
+                    proprietario: str = None,
                     ) -> None:
         pass
