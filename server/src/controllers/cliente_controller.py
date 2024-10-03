@@ -8,8 +8,8 @@ from src.validators.valid_cliente import ValidCliente
 
 class ClienteController(ClienteControllerInterface):
 
-    def __init__(self, clienteRepository : ClienteRepositoryInterface) -> None:
-        self.__repository = clienteRepository
+    def __init__(self, cliente_repository : ClienteRepositoryInterface) -> None:
+        self.__repository = cliente_repository
 
     def create(self, cliente_info: Dict) -> None:
         valid_cliente = self.__validate_cliente(cliente_info)
