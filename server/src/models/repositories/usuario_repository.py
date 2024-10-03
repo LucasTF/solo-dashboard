@@ -2,6 +2,7 @@ from typing import List
 from sqlalchemy import delete, insert, or_, select
 
 from src.database.connector import DBConnector
+from src.errors.internal_processing_error import InternalProcessingError
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.usuario import Usuario
 from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
@@ -54,9 +55,9 @@ class UsuarioRepository(UsuarioRepositoryInterface):
             try:
                 conn.session.execute(query)
                 conn.session.commit()
-            except Exception as exc:
+            except Exception:
                 conn.session.rollback()
-                raise exc
+                raise InternalProcessingError
             
     def update_usuario(self, id: int, name: str = None, email: str = None, is_admin: bool = None) -> None:
         query = select(Usuario).where(Usuario.id == id)
@@ -79,7 +80,7 @@ class UsuarioRepository(UsuarioRepositoryInterface):
                 raise exc
             except Exception:
                 conn.session.rollback()
-                raise Exception
+                raise InternalProcessingError
 
     def update_usuario_password(self, id: int, new_password: bytes) -> None:
         query = select(Usuario).where(Usuario.id == id)
@@ -94,9 +95,9 @@ class UsuarioRepository(UsuarioRepositoryInterface):
                 conn.session.commit()
             except UnavailableResourceError as exc:
                 raise exc
-            except Exception as exc:
+            except Exception:
                 conn.session.rollback()
-                raise exc
+                raise InternalProcessingError
 
     def insert_usuario(self, name: str, email: str, password: bytes, is_admin: bool = False) -> None:
         query = insert(Usuario).values(
@@ -110,6 +111,6 @@ class UsuarioRepository(UsuarioRepositoryInterface):
             try:
                 conn.session.execute(query)
                 conn.session.commit()
-            except Exception as exc:
+            except Exception:
                 conn.session.rollback()
-                raise exc
+                raise InternalProcessingError

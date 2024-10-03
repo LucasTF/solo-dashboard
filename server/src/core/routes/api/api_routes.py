@@ -1,6 +1,7 @@
 from flask import Blueprint
 from pydantic_core import ValidationError
 
+from src.errors.internal_processing_error import InternalProcessingError
 from src.errors.invalid_credentials_error import InvalidCredentialsError
 from src.errors.invalid_operation_error import InvalidOperationError
 from src.errors.invalid_param_error import InvalidParamError
@@ -22,6 +23,7 @@ api_route.register_error_handler(ValidationError, InvalidRequestBodyFieldError.h
 api_route.register_error_handler(InvalidCredentialsError, InvalidCredentialsError.handle)
 api_route.register_error_handler(InvalidOperationError, InvalidOperationError.handle)
 api_route.register_error_handler(InvalidParamError, InvalidParamError.handle)
+api_route.register_error_handler(InternalProcessingError, InternalProcessingError.handle)
 
 api_route.register_blueprint(usuario_route)
 api_route.register_blueprint(cliente_route)

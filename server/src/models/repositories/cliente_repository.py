@@ -2,6 +2,7 @@ from typing import List
 
 from sqlalchemy import insert, select
 from src.database.connector import DBConnector
+from src.errors.internal_processing_error import InternalProcessingError
 from src.models.entities.cliente import Cliente
 from src.models.interfaces.cliente_repository_interface import ClienteRepositoryInterface
 
@@ -58,7 +59,7 @@ class ClienteRepository(ClienteRepositoryInterface):
             try:
                 conn.session.execute(query)
                 conn.session.commit()
-            except Exception as exc:
+            except Exception:
                 conn.session.rollback()
-                raise exc
+                raise InternalProcessingError
 
