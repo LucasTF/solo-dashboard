@@ -1,5 +1,7 @@
+from typing import List
 import unittest
 import pytest
+from sqlalchemy import text
 from src.database.connector import db_connector
 from src.models.repositories.obra_repository import ObraRepository
 from src.models.repositories.usuario_repository import UsuarioRepository
@@ -7,7 +9,7 @@ from src.models.repositories.usuario_repository import UsuarioRepository
 # Personal test cases for usage with specific setup database
 # Should not be run as legitimate tests
 
-@pytest.mark.skip(reason="Tests directly into the real database.")
+# @pytest.mark.skip(reason="Tests directly into the real database.")
 class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
@@ -22,6 +24,34 @@ class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
         obras = self.__obra_repo.search_obra("Rua Professor")
 
         self.assertEqual(len(obras), 2)
+
+    def test_repo_list_obras(self):
+        obras = self.__obra_repo.list_obras()
+
+        self.assertGreater(len(obras), 0)
+
+        obra = obras[0]
+
+        print(obra)
+
+    def test_obra_query(self):
+        with self.db_connector as conn:
+            query = text("""SELECT ob.id, ob.cod_obra, ob.ano, ob.data_inicio, ob.data_fim, ob.tipo_logo, ob.logradouro, ob.lote, ob.quadra, ob.bairro, ob.cidade, ob.uf, ob.cep, ob.complemento, cl.nome as cliente, pr.nome as proprietario
+                            FROM Obra ob
+                            INNER JOIN Cliente cl
+                            ON ob.cliente_id = cl.id 
+                            INNER JOIN Cliente pr
+                            ON ob.proprietario_id = pr.id 
+                            """)
+            something : List = []
+            rows = conn.session.execute(query)
+            for row in rows:
+                something.append(row)
+
+        self.assertGreater(len(something), 0)
+        value = something[0]
+
+        self.assertIsNotNone(value)
 
     # Usuarios
 

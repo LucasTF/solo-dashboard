@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 from sqlalchemy import insert, select, text
 from src.database.connector import DBConnector
@@ -14,7 +14,7 @@ class ObraRepository(ObraRepositoryInterface):
     def __init__(self, db_connector: DBConnector) -> None:
         self.__db_connector = db_connector
 
-    def list_obras(self) -> List[Obra]:
+    def list_obras(self) -> List[Dict]:
         query = select(Obra).order_by(Obra.id)
         results : List[Obra] = []
         with self.__db_connector as conn:
@@ -37,7 +37,7 @@ class ObraRepository(ObraRepositoryInterface):
 
         return obra
 
-    def search_obra(self, search_string: str) -> List[Obra]:
+    def search_obras(self, search_string: str) -> List[Obra]:
         query = text("""SELECT ob.* 
                      FROM Obra ob 
                      INNER JOIN Cliente cl 
@@ -55,7 +55,7 @@ class ObraRepository(ObraRepositoryInterface):
 
         return results
 
-    def update_obra(self, id: int, ano: str = None, data_inicio: str = None, data_fim: str = None, tipo_logo: str = None, logradouro: str = None, lote: str = None, quadra: str = None, bairro: str = None, cidade: str = None, uf: str = None, cep: str = None, complemento: str = None, cliente_id: int = None, proprietario_id: int = None) -> None:
+    def update_obra(self, id: int, ano: str = None, data_inicio: str = None, data_fim: str = None, tipo_logo: str = None, logradouro: str = None, lote: str = None, quadra: str = None, bairro: str = None, cidade: str = None, uf: str = None, cep: str = None, complemento: str = None, cliente: str = None, proprietario: str = None) -> None:
         query = select(Obra).where(Obra.id == id)
         with self.__db_connector as conn:
             try:
@@ -88,9 +88,9 @@ class ObraRepository(ObraRepositoryInterface):
                     obra.cep = cep
                 if complemento is not None:
                     obra.complemento = complemento
-                if cliente_id is not None:
+                if cliente is not None:
                     obra.cliente_id = cliente_id
-                if proprietario_id is not None:
+                if proprietario is not None:
                     obra.proprietario_id = proprietario_id
 
                 conn.session.commit()

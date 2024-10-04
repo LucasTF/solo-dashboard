@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Dict, List
 
 from src.models.entities.obra import Obra
 
@@ -7,7 +7,7 @@ from src.models.entities.obra import Obra
 class ObraRepositoryInterface(ABC):
 
     @abstractmethod
-    def list_obras(self) -> List[Obra]:
+    def list_obras(self) -> List[Dict]:
         pass
 
     @abstractmethod
@@ -19,7 +19,7 @@ class ObraRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def search_obra(self, search_string: str) -> List[Obra]:
+    def search_obras(self, search_string: str) -> List[Obra]:
         pass
 
     @abstractmethod
@@ -37,8 +37,8 @@ class ObraRepositoryInterface(ABC):
                     uf: str = None, 
                     cep: str = None, 
                     complemento: str = None,
-                    cliente_id: int = None,
-                    proprietario_id: int = None,
+                    cliente: str = None,
+                    proprietario: str = None,
                     ) -> None:
         pass
 
