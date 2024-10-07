@@ -1,25 +1,25 @@
 from abc import ABC, abstractmethod
 from typing import Dict, List
 
-from src.models.entities.obra import Obra
+from src.types.obra_response import ObraResponse
 
 
 class ObraRepositoryInterface(ABC):
 
     @abstractmethod
-    def list_obras(self) -> List[Dict]:
+    def list_obras(self) -> List[ObraResponse]:
         pass
 
     @abstractmethod
-    def get_obra_by_id(self, id: int) -> Obra | None:
+    def get_obra_by_id(self, id: int) -> ObraResponse | None:
         pass
 
     @abstractmethod
-    def get_obra_by_cod(self, cod_obra: str) -> Obra | None:
+    def get_obra_by_cod(self, cod_obra: str) -> ObraResponse | None:
         pass
 
     @abstractmethod
-    def search_obras(self, search_string: str) -> List[Obra]:
+    def search_obras(self, search_string: str) -> List[ObraResponse]:
         pass
 
     @abstractmethod

@@ -1,43 +1,62 @@
-from typing import Dict, List
+from typing import List
 
 from sqlalchemy import insert, select, text
+from sqlalchemy.orm import aliased
+from sqlalchemy.exc import NoResultFound
 from src.database.connector import DBConnector
 from src.errors.internal_processing_error import InternalProcessingError
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.cliente import Cliente
 from src.models.entities.obra import Obra
 from src.models.interfaces.obra_repository_interface import ObraRepositoryInterface
+from src.types.obra_response import ObraResponse
 
 
 class ObraRepository(ObraRepositoryInterface):
-
     def __init__(self, db_connector: DBConnector) -> None:
         self.__db_connector = db_connector
 
-    def list_obras(self) -> List[Dict]:
-        query = select(Obra).order_by(Obra.id)
-        results : List[Obra] = []
+    def list_obras(self) -> List[ObraResponse]:
+        query = self.__select_obras()
+
+        obras: List[ObraResponse] = []
+
         with self.__db_connector as conn:
-            for obra in conn.session.scalars(query):
-                results.append(obra)
+            results = conn.session.execute(query).all()
+            for result in results:
+                row = result.tuple()
+                obras.append(ObraResponse.serialize(row[0], row[1], row[2]))
 
-        return results
+        return obras
 
-    def get_obra_by_id(self, id: int) -> Obra | None:
-        query = select(Obra).where(Obra.id == id)
-        with self.__db_connector as conn:
-            obra = conn.session.scalar(query)
+    def get_obra_by_id(self, id: int) -> ObraResponse | None:
+        query = self.__select_obras().where(Obra.id == id)
 
+        try:
+            with self.__db_connector as conn:
+                result = conn.session.execute(query).one()
+                row = result.tuple()
+
+                obra = ObraResponse.serialize(row[0], row[1], row[2])
+        except NoResultFound:
+            return None
+             
         return obra
 
-    def get_obra_by_cod(self, cod_obra: str) -> Obra | None:
-        query = select(Obra).where(Obra.cod_obra == cod_obra)
-        with self.__db_connector as conn:
-            obra = conn.session.scalar(query)
+    def get_obra_by_cod(self, cod_obra: str) -> ObraResponse | None:
+        query = self.__select_obras().where(Obra.cod_obra == cod_obra)
+        try:
+            with self.__db_connector as conn:
+                result = conn.session.execute(query).one()
+                row = result.tuple()
 
+                obra = ObraResponse.serialize(row[0], row[1], row[2])
+        except NoResultFound:
+            return None
+             
         return obra
 
-    def search_obras(self, search_string: str) -> List[Obra]:
+    def search_obras(self, search_string: str) -> List[ObraResponse]:
         query = text("""SELECT ob.* 
                      FROM Obra ob 
                      INNER JOIN Cliente cl 
@@ -46,16 +65,33 @@ class ObraRepository(ObraRepositoryInterface):
                      ON proprietario_id = pr.id 
                      WHERE CONCAT_WS(' ', ob.tipo_logo, ob.logradouro, ob.complemento) LIKE CONCAT('%', :search_string, '%') OR ob.cod_obra LIKE CONCAT('%', :search_string, '%') OR ob.cidade LIKE CONCAT('%', :search_string, '%') OR ob.bairro LIKE CONCAT('%', :search_string, '%') OR cl.nome LIKE CONCAT('%', :search_string, '%') OR pr.nome LIKE CONCAT('%', :search_string, '%') 
                      ORDER BY ob.ano DESC, ob.cod_obra DESC""")
-        
-        results : List[Obra] = []
-        
+
+        results: List[Obra] = []
+
         with self.__db_connector as conn:
-            for obra in conn.session.scalars(query, {'search_string': search_string}):
+            for obra in conn.session.scalars(query, {"search_string": search_string}):
                 results.append(obra)
 
         return results
 
-    def update_obra(self, id: int, ano: str = None, data_inicio: str = None, data_fim: str = None, tipo_logo: str = None, logradouro: str = None, lote: str = None, quadra: str = None, bairro: str = None, cidade: str = None, uf: str = None, cep: str = None, complemento: str = None, cliente: str = None, proprietario: str = None) -> None:
+    def update_obra(
+        self,
+        id: int,
+        ano: str = None,
+        data_inicio: str = None,
+        data_fim: str = None,
+        tipo_logo: str = None,
+        logradouro: str = None,
+        lote: str = None,
+        quadra: str = None,
+        bairro: str = None,
+        cidade: str = None,
+        uf: str = None,
+        cep: str = None,
+        complemento: str = None,
+        cliente: str = None,
+        proprietario: str = None,
+    ) -> None:
         query = select(Obra).where(Obra.id == id)
         with self.__db_connector as conn:
             try:
@@ -63,7 +99,7 @@ class ObraRepository(ObraRepositoryInterface):
 
                 if not obra:
                     raise UnavailableResourceError("Obra")
-                
+
                 if ano is not None:
                     obra.ano = ano
                 if data_inicio is not None:
@@ -100,13 +136,31 @@ class ObraRepository(ObraRepositoryInterface):
                 conn.session.rollback()
                 raise InternalProcessingError
 
-    def insert_obra(self, cod_obra: str, num_obra: str, ano: str, data_inicio: str, data_fim: str, uf: str, cidade: str, bairro: str, logradouro: str, cliente: str, tipo_logo: str = None, lote: str = None, quadra: str = None, cep: str = None, complemento: str = None, proprietario: str = None) -> None:
+    def insert_obra(
+        self,
+        cod_obra: str,
+        num_obra: str,
+        ano: str,
+        data_inicio: str,
+        data_fim: str,
+        uf: str,
+        cidade: str,
+        bairro: str,
+        logradouro: str,
+        cliente: str,
+        tipo_logo: str = None,
+        lote: str = None,
+        quadra: str = None,
+        cep: str = None,
+        complemento: str = None,
+        proprietario: str = None,
+    ) -> None:
         get_cliente_query = select(Cliente).where(Cliente.nome == cliente)
-        
+
         with self.__db_connector as conn:
             try:
                 found_cliente = conn.session.scalar(get_cliente_query)
-                
+
                 if found_cliente:
                     cliente_id = found_cliente.id
                 else:
@@ -115,32 +169,40 @@ class ObraRepository(ObraRepositoryInterface):
                     cliente_id = create_cliente_result.inserted_primary_key[0]
 
                 if proprietario:
-                    get_proprietario_query = select(Cliente).where(Cliente.nome == proprietario)
+                    get_proprietario_query = select(Cliente).where(
+                        Cliente.nome == proprietario
+                    )
                     found_proprietario = conn.session.scalar(get_proprietario_query)
                     if found_proprietario:
                         proprietario_id = found_proprietario.id
                     else:
-                        create_proprietario_query = insert(Cliente).values(nome=proprietario)
-                        create_proprietario_result = conn.session.execute(create_proprietario_query)
-                        proprietario_id = create_proprietario_result.inserted_primary_key[0]
+                        create_proprietario_query = insert(Cliente).values(
+                            nome=proprietario
+                        )
+                        create_proprietario_result = conn.session.execute(
+                            create_proprietario_query
+                        )
+                        proprietario_id = (
+                            create_proprietario_result.inserted_primary_key[0]
+                        )
 
                 insert_obra_query = insert(Obra).values(
                     cod_obra=cod_obra,
                     num_obra=num_obra,
                     ano=ano,
-                    data_inicio=data_inicio, 
-                    data_fim=data_fim, 
-                    uf=uf, 
-                    cidade=cidade, 
-                    bairro=bairro, 
-                    logradouro=logradouro, 
-                    tipo_logo=tipo_logo, 
-                    lote=lote, 
-                    quadra=quadra, 
-                    cep=cep, 
-                    complemento=complemento, 
-                    cliente_id=cliente_id, 
-                    proprietario_id=proprietario_id
+                    data_inicio=data_inicio,
+                    data_fim=data_fim,
+                    uf=uf,
+                    cidade=cidade,
+                    bairro=bairro,
+                    logradouro=logradouro,
+                    tipo_logo=tipo_logo,
+                    lote=lote,
+                    quadra=quadra,
+                    cep=cep,
+                    complemento=complemento,
+                    cliente_id=cliente_id,
+                    proprietario_id=proprietario_id,
                 )
 
                 conn.session.execute(insert_obra_query)
@@ -149,4 +211,14 @@ class ObraRepository(ObraRepositoryInterface):
             except Exception:
                 conn.session.rollback()
                 raise InternalProcessingError
+            
+    def __select_obras(self):
+        Proprietario = aliased(Cliente)
+        query = (
+            select(Obra, Cliente.nome, Proprietario.nome)
+            .join(Cliente, Obra.cliente_id == Cliente.id)
+            .join(Proprietario, Obra.proprietario_id == Proprietario.id)
+            .order_by(Obra.id)
+        )
 
+        return query
