@@ -17,13 +17,21 @@ from src.core.routes.api.auth_routes import auth_route
 api_route = Blueprint("api_routes", __name__, url_prefix="/api")
 
 # Errors
-api_route.register_error_handler(UnavailableResourceError, UnavailableResourceError.handle)
-api_route.register_error_handler(InvalidRequestBodyFieldError, InvalidRequestBodyFieldError.handle)
+api_route.register_error_handler(
+    UnavailableResourceError, UnavailableResourceError.handle
+)
+api_route.register_error_handler(
+    InvalidRequestBodyFieldError, InvalidRequestBodyFieldError.handle
+)
 api_route.register_error_handler(ValidationError, InvalidRequestBodyFieldError.handle)
-api_route.register_error_handler(InvalidCredentialsError, InvalidCredentialsError.handle)
+api_route.register_error_handler(
+    InvalidCredentialsError, InvalidCredentialsError.handle
+)
 api_route.register_error_handler(InvalidOperationError, InvalidOperationError.handle)
 api_route.register_error_handler(InvalidParamError, InvalidParamError.handle)
-api_route.register_error_handler(InternalProcessingError, InternalProcessingError.handle)
+api_route.register_error_handler(
+    InternalProcessingError, InternalProcessingError.handle
+)
 
 api_route.register_blueprint(usuario_route)
 api_route.register_blueprint(cliente_route)

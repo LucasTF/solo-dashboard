@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Uf(Enum):
     AC = "AC"
     AL = "AL"

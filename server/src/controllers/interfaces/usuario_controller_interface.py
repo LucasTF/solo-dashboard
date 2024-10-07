@@ -3,8 +3,8 @@ from typing import Dict, List
 
 from src.models.entities.usuario import Usuario
 
-class UsuarioControllerInterface(ABC):
 
+class UsuarioControllerInterface(ABC):
     @abstractmethod
     def create(self, user_info: Dict) -> None:
         pass

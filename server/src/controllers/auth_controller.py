@@ -8,8 +8,8 @@ from src.validators.valid_usuario import ValidUsuario
 from src.services.jwt_service import JwtService
 from src.services.password_encrypt_service import PasswordEncryptService
 
-class AuthController(AuthControllerInterface):
 
+class AuthController(AuthControllerInterface):
     def __init__(self, usuario_repository: UsuarioRepository) -> None:
         self.__usuario_repository = usuario_repository
         self.__password_service = PasswordEncryptService()
@@ -21,7 +21,7 @@ class AuthController(AuthControllerInterface):
             user = self.__find_user(email)
         except (UnavailableResourceError, ValueError):
             raise InvalidCredentialsError()
-        
+
         self.__compare_passwords(password, user.password)
         token = self.__create_jwt_token(user.id, user.is_admin)
 
@@ -30,29 +30,28 @@ class AuthController(AuthControllerInterface):
             "name": user.name,
             "email": user.email,
             "is_admin": user.is_admin,
-            "authorization": token
+            "authorization": token,
         }
-    
+
     def __validate_login(self, email: str, password: str):
-        ValidUsuario.__pydantic_validator__.validate_assignment(ValidUsuario.model_construct(), "email", email)
-        ValidUsuario.__pydantic_validator__.validate_assignment(ValidUsuario.model_construct(), "password", password)
-    
+        ValidUsuario.__pydantic_validator__.validate_assignment(
+            ValidUsuario.model_construct(), "email", email
+        )
+        ValidUsuario.__pydantic_validator__.validate_assignment(
+            ValidUsuario.model_construct(), "password", password
+        )
+
     def __find_user(self, email: str) -> Usuario:
         user = self.__usuario_repository.get_usuario_by_email(email)
 
         return user
-    
+
     def __compare_passwords(self, password: str, hashed_password: str) -> None:
         if not self.__password_service.check_password(password, hashed_password):
             raise InvalidCredentialsError()
-        
+
     def __create_jwt_token(self, id: int, is_admin: bool = False) -> str:
-        payload = {
-            "id": id,
-            "is_admin": is_admin
-        }
+        payload = {"id": id, "is_admin": is_admin}
         token = self.__jwt_service.create_jwt_token(payload)
 
         return token
-        
-    

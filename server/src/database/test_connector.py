@@ -1,6 +1,7 @@
 from sqlalchemy import Engine
 from .connector import db_connector
 
+
 def test_connect_to_db():
     assert db_connector.get_engine() is None
 

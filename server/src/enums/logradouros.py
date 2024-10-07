@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Logradouro(Enum):
     Aeroporto = "Aeroporto"
     Alameda = "Al"

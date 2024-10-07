@@ -7,7 +7,6 @@ from src.models.entities.obra import Obra
 
 @dataclass
 class ObraResponse:
-
     id: int
     cod_obra: str
     num_obra: int
@@ -45,5 +44,5 @@ class ObraResponse:
             quadra=obra.quadra,
             cep=obra.cep,
             complemento=obra.complemento,
-            proprietario=proprietario
+            proprietario=proprietario,
         )

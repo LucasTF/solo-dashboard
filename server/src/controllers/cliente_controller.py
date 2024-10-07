@@ -1,14 +1,17 @@
 from typing import Dict, List
-from src.controllers.interfaces.cliente_controller_interface import ClienteControllerInterface
+from src.controllers.interfaces.cliente_controller_interface import (
+    ClienteControllerInterface,
+)
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.cliente import Cliente
-from src.models.interfaces.cliente_repository_interface import ClienteRepositoryInterface
+from src.models.interfaces.cliente_repository_interface import (
+    ClienteRepositoryInterface,
+)
 from src.validators.valid_cliente import ValidCliente
 
 
 class ClienteController(ClienteControllerInterface):
-
-    def __init__(self, cliente_repository : ClienteRepositoryInterface) -> None:
+    def __init__(self, cliente_repository: ClienteRepositoryInterface) -> None:
         self.__repository = cliente_repository
 
     def create(self, cliente_info: Dict) -> None:
@@ -27,7 +30,7 @@ class ClienteController(ClienteControllerInterface):
             email=valid_cliente.email,
             uf=valid_cliente.uf,
             fone1=valid_cliente.fone1,
-            fone2=valid_cliente.fone2
+            fone2=valid_cliente.fone2,
         )
 
     def find_by_id(self, cliente_id: int) -> Cliente:
@@ -35,7 +38,7 @@ class ClienteController(ClienteControllerInterface):
 
         if cliente is None:
             raise UnavailableResourceError("Cliente")
-        
+
         return cliente
 
     def list(self) -> List[Cliente]:
@@ -47,23 +50,23 @@ class ClienteController(ClienteControllerInterface):
         clientes = self.__repository.search_clientes(search_string)
 
         return clientes
-    
+
     def __validate_cliente(self, cliente_dict: Dict) -> ValidCliente:
         valid_cliente = ValidCliente(
-            nome=cliente_dict.get('nome'), 
-            apelido=cliente_dict.get('apelido'),
-            cpf=cliente_dict.get('cpf'),
-            cnpj=cliente_dict.get('cnpj'),
-            tipo_logo=cliente_dict.get('tipo_logo'),
-            logradouro=cliente_dict.get('logradouro'),
-            complemento=cliente_dict.get('complemento'),
-            bairro=cliente_dict.get('bairro'),
-            cidade=cliente_dict.get('cidade'),
-            uf=cliente_dict.get('uf'),
-            cep=cliente_dict.get('cep'),
-            email=cliente_dict.get('email'),
-            fone1=cliente_dict.get('fone1'),
-            fone2=cliente_dict.get('fone2'),
+            nome=cliente_dict.get("nome"),
+            apelido=cliente_dict.get("apelido"),
+            cpf=cliente_dict.get("cpf"),
+            cnpj=cliente_dict.get("cnpj"),
+            tipo_logo=cliente_dict.get("tipo_logo"),
+            logradouro=cliente_dict.get("logradouro"),
+            complemento=cliente_dict.get("complemento"),
+            bairro=cliente_dict.get("bairro"),
+            cidade=cliente_dict.get("cidade"),
+            uf=cliente_dict.get("uf"),
+            cep=cliente_dict.get("cep"),
+            email=cliente_dict.get("email"),
+            fone1=cliente_dict.get("fone1"),
+            fone2=cliente_dict.get("fone2"),
         )
 
         return valid_cliente

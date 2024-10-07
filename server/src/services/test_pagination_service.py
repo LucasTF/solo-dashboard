@@ -4,8 +4,8 @@ import pytest
 from src.errors.invalid_param_error import InvalidParamError
 from src.services.pagination_service import PaginationService
 
-class PaginateTestCase(unittest.TestCase):
 
+class PaginateTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.sample_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.__service = PaginationService(self.sample_list)
@@ -43,5 +43,3 @@ class PaginateTestCase(unittest.TestCase):
     def test_paginate_invalid_items_per_page(self):
         with pytest.raises(InvalidParamError):
             self.__service.paginate(1, 0)
-
-    

@@ -3,8 +3,8 @@ from typing import Dict, List
 
 from src.models.entities.cliente import Cliente
 
-class ClienteControllerInterface(ABC):
 
+class ClienteControllerInterface(ABC):
     @abstractmethod
     def create(self, cliente_info: Dict) -> None:
         pass

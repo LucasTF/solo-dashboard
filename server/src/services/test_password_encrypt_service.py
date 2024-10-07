@@ -4,7 +4,6 @@ from src.services.password_encrypt_service import PasswordEncryptService
 
 
 class PasswordEncryptServiceTestCase(unittest.TestCase):
-
     def setUp(self) -> None:
         self.password_service = PasswordEncryptService()
 
@@ -23,11 +22,17 @@ class PasswordEncryptServiceTestCase(unittest.TestCase):
         hashed_password1 = self.password_service.hash_password(sample_password1)
         hashed_password2 = self.password_service.hash_password(sample_password2)
 
-        check1 = self.password_service.check_password(sample_password1, hashed_password1)
+        check1 = self.password_service.check_password(
+            sample_password1, hashed_password1
+        )
         self.assertTrue(check1)
 
-        check2 = self.password_service.check_password(sample_password2, hashed_password2)
+        check2 = self.password_service.check_password(
+            sample_password2, hashed_password2
+        )
         self.assertTrue(check2)
 
-        check3 = self.password_service.check_password(sample_password1, hashed_password2)
+        check3 = self.password_service.check_password(
+            sample_password1, hashed_password2
+        )
         self.assertFalse(check3)

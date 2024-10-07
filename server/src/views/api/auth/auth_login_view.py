@@ -5,7 +5,6 @@ from src.views.api.types.http_response import HttpResponse
 
 
 class AuthLoginView(ViewInterface):
-
     def __init__(self, auth_controller: AuthControllerInterface) -> None:
         self.__auth_controller = auth_controller
 
@@ -15,6 +14,4 @@ class AuthLoginView(ViewInterface):
 
         response = self.__auth_controller.authenticate(email, password)
 
-        return HttpResponse(status_code=200, body={
-            "data": response
-        })
+        return HttpResponse(status_code=200, body={"data": response})

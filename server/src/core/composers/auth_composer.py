@@ -6,7 +6,6 @@ from src.views.api.interfaces.view_interface import ViewInterface
 
 
 def compose_auth() -> ViewInterface:
-
     repository = UsuarioRepository(db_connector)
     controller = AuthController(repository)
     view = AuthLoginView(controller)

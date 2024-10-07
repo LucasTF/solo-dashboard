@@ -3,8 +3,8 @@ from typing import List
 
 from src.models.entities.cliente import Cliente
 
-class ClienteRepositoryInterface(ABC):
 
+class ClienteRepositoryInterface(ABC):
     @abstractmethod
     def list_clientes(self) -> List[Cliente]:
         pass
@@ -18,20 +18,21 @@ class ClienteRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def insert_cliente(self, 
-                       nome: str, 
-                       apelido: str = None, 
-                       cpf: str = None, 
-                       cnpj: str = None, 
-                       tipo_logo: str = None, 
-                       logradouro: str = None, 
-                       complemento: str = None, 
-                       bairro: str = None, 
-                       cidade: str = None, 
-                       uf: str = None, 
-                       cep: str = None, 
-                       email: str = None, 
-                       fone1: int = None, 
-                       fone2: int = None, 
-                       ):
+    def insert_cliente(
+        self,
+        nome: str,
+        apelido: str = None,
+        cpf: str = None,
+        cnpj: str = None,
+        tipo_logo: str = None,
+        logradouro: str = None,
+        complemento: str = None,
+        bairro: str = None,
+        cidade: str = None,
+        uf: str = None,
+        cep: str = None,
+        email: str = None,
+        fone1: int = None,
+        fone2: int = None,
+    ):
         pass

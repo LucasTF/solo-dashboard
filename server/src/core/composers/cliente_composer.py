@@ -10,13 +10,14 @@ from src.views.api.interfaces.view_interface import ViewInterface
 
 from src.database.connector import db_connector
 
+
 class ClienteAction(Enum):
-    CREATE = 1,
-    FIND_BY_ID = 2,
-    LIST = 3,
+    CREATE = (1,)
+    FIND_BY_ID = (2,)
+    LIST = (3,)
+
 
 def compose_cliente(action: ClienteAction) -> ViewInterface:
-
     repository = ClienteRepository(db_connector)
     controller = ClienteController(repository)
 
@@ -28,4 +29,4 @@ def compose_cliente(action: ClienteAction) -> ViewInterface:
         case ClienteAction.LIST:
             return ClienteListView(controller)
         case _:
-            raise InvalidOperationError('Ação para <Cliente> não encontrada.')
+            raise InvalidOperationError("Ação para <Cliente> não encontrada.")

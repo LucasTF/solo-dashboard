@@ -3,8 +3,8 @@ from typing import List
 
 from src.models.entities.usuario import Usuario
 
-class UsuarioRepositoryInterface(ABC):
 
+class UsuarioRepositoryInterface(ABC):
     @abstractmethod
     def list_usuarios(self) -> List[Usuario]:
         pass
@@ -26,7 +26,9 @@ class UsuarioRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def update_usuario(self, id: int, name: str = None, email: str = None, is_admin: bool = None) -> None:
+    def update_usuario(
+        self, id: int, name: str = None, email: str = None, is_admin: bool = None
+    ) -> None:
         pass
 
     @abstractmethod
@@ -34,5 +36,7 @@ class UsuarioRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def insert_usuario(self, name: str, email: str, password: bytes, is_admin: bool = False) -> None:
+    def insert_usuario(
+        self, name: str, email: str, password: bytes, is_admin: bool = False
+    ) -> None:
         pass

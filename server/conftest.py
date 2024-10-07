@@ -1,7 +1,9 @@
 import pytest
 
+
 def pytest_addoption(parser):
     parser.addoption("--rundb", action="store_true", help="run database tests")
+
 
 def pytest_collection_modifyitems(config, items):
     if config.getoption("--rundb"):

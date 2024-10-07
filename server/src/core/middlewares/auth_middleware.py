@@ -10,11 +10,12 @@ def check_authentication():
 
     if not token:
         raise UnauthenticatedError()
-    
+
     jwt_service = JwtService()
     decoded_token = jwt_service.decode_jwt_token(token)
 
     return decoded_token
+
 
 def check_authorization():
     decoded_token = check_authentication()
@@ -22,5 +23,5 @@ def check_authorization():
 
     if is_authorized == False or is_authorized is None:
         raise UnauthorizedError()
-    
+
     return decoded_token

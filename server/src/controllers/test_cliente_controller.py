@@ -7,13 +7,10 @@ from src.controllers.cliente_controller import ClienteController
 
 
 class ClienteControllerTestCase(TestCase):
-
     def setUp(self) -> None:
         self.__repository = Mock()
         self.__controller = ClienteController(self.__repository)
-        self.__sample_dict = {
-            "nome": "Sample Empresa"
-        }
+        self.__sample_dict = {"nome": "Sample Empresa"}
 
     def test_create_with_only_required_params(self):
         self.__controller.create(self.__sample_dict)

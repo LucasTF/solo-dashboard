@@ -40,7 +40,7 @@ class ObraRepository(ObraRepositoryInterface):
                 obra = ObraResponse.serialize(row[0], row[1], row[2])
         except NoResultFound:
             return None
-             
+
         return obra
 
     def get_obra_by_cod(self, cod_obra: str) -> ObraResponse | None:
@@ -53,7 +53,7 @@ class ObraRepository(ObraRepositoryInterface):
                 obra = ObraResponse.serialize(row[0], row[1], row[2])
         except NoResultFound:
             return None
-             
+
         return obra
 
     def search_obras(self, search_string: str) -> List[ObraResponse]:
@@ -211,7 +211,7 @@ class ObraRepository(ObraRepositoryInterface):
             except Exception:
                 conn.session.rollback()
                 raise InternalProcessingError
-            
+
     def __select_obras(self):
         Proprietario = aliased(Cliente)
         query = (

@@ -5,7 +5,6 @@ from src.models.entities.obra import Obra
 
 
 class ObraControllerInterface(ABC):
-
     @abstractmethod
     def create(self, obra_info: Dict) -> None:
         pass

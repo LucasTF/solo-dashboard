@@ -11,7 +11,6 @@ from src.config.environment import jwt_env
 
 
 class JwtServiceTestCase(unittest.TestCase):
-
     def setUp(self) -> None:
         self.jwt_service = JwtService()
         self.jwt_body = {
@@ -24,11 +23,11 @@ class JwtServiceTestCase(unittest.TestCase):
 
         self.assertIsNotNone(token)
         self.assertIsInstance(token, str)
-        
+
         decoded_token = self.jwt_service.decode_jwt_token(token)
 
-        self.assertEqual(decoded_token['name'], self.jwt_body['name'])
-        self.assertEqual(decoded_token['email'], self.jwt_body['email'])
+        self.assertEqual(decoded_token["name"], self.jwt_body["name"])
+        self.assertEqual(decoded_token["email"], self.jwt_body["email"])
 
     def test_wrong_format_jwt_token(self):
         with pytest.raises(DecodeError):
@@ -36,11 +35,11 @@ class JwtServiceTestCase(unittest.TestCase):
 
     def test_expired_jwt_token(self):
         self.jwt_service.create_jwt_token = Mock()
-        self.jwt_service.create_jwt_token.return_value = jwt.encode(payload={
-            "exp": datetime.now(timezone.utc) + timedelta(days=-2)
-        },
-        key=jwt_env["JWT_SECRET"],
-        algorithm=jwt_env["JWT_ALGORITHM"])
+        self.jwt_service.create_jwt_token.return_value = jwt.encode(
+            payload={"exp": datetime.now(timezone.utc) + timedelta(days=-2)},
+            key=jwt_env["JWT_SECRET"],
+            algorithm=jwt_env["JWT_ALGORITHM"],
+        )
 
         token = self.jwt_service.create_jwt_token()
 
@@ -49,6 +48,3 @@ class JwtServiceTestCase(unittest.TestCase):
 
         with pytest.raises(ExpiredSignatureError):
             self.jwt_service.decode_jwt_token(token)
-    
-
-    

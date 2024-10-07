@@ -1,7 +1,7 @@
 from src.errors.base_error import BaseError
 
-class InvalidCredentialsError(BaseError):
 
+class InvalidCredentialsError(BaseError):
     def __init__(self) -> None:
         title = "Erro ao fazer a autenticação."
         description = "Email ou senha inválida(s)."

@@ -8,19 +8,25 @@ from src.views.api.types.http_request import HttpRequest
 
 auth_route = Blueprint("auth_routes", __name__)
 
+
 @auth_route.route("/login", methods=["POST"])
 def login():
     http_request = HttpRequest(body=request.json)
     view = compose_auth()
     response = view.handle(http_request)
 
-    body : AuthResponse = response.body.get("data")
+    body: AuthResponse = response.body.get("data")
 
-    resp = make_response(jsonify({
-        "name": body.get("name"),
-        "email": body.get("email"),
-        "is_admin": body.get("is_admin")
-    }), response.status_code)
+    resp = make_response(
+        jsonify(
+            {
+                "name": body.get("name"),
+                "email": body.get("email"),
+                "is_admin": body.get("is_admin"),
+            }
+        ),
+        response.status_code,
+    )
     resp = create_jwt_cookie(resp, body.get("authorization"))
 
     return resp

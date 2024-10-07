@@ -4,7 +4,6 @@ from src.utils.query_treatment import get_integer_query_param, get_positive_quer
 
 
 class QueryTreatmentTestCase(unittest.TestCase):
-
     def setUp(self) -> None:
         self.sample_param = "2"
         self.sample_incorrect_param = "text"
@@ -26,7 +25,7 @@ class QueryTreatmentTestCase(unittest.TestCase):
         param = get_integer_query_param(self.sample_zero_param, 1)
 
         self.assertEqual(param, 0)
-        
+
     def test_zero_get_positive_query_param(self):
         default = 1
 
