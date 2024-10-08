@@ -65,9 +65,9 @@ DATABASE_USER=admin
 DATABASE_PASSWORD=admin123
 DATABASE_HOST=localhost
 DATABASE_PORT=3306
-DATABASE_TABLE=soloapp_teste
+DATABASE_NAME=soloapp_teste
 DATABASE_ROOT_PASSWORD=admin123
-DATABASE_CONN_STRING=mysql+pymysql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_TABLE}
+DATABASE_CONN_STRING=mysql+pymysql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
 
 # Authentication
 
@@ -85,7 +85,7 @@ JWT_HOURS=720
 - DATABASE_PASSWORD: Senha do usuário.
 - DATABASE_HOST: Host onde o banco MySQL/MariaDB está sendo executado.
 - DATABASE_PORT: Porta do banco MySQL/MariaDB (padrão 3306).
-- DATABASE_TABLE: Nome do banco de dados onde serão criadas e armazenados os dados tabelados.
+- DATABASE_NAME: Nome do banco de dados onde serão criadas e armazenados os dados tabelados.
 - DATABASE_ROOT_PASSWORD: Senha do usuário root. (Relevante se usar o banco MySQL presente no arquivo `docker-compose.yml`).
 - DATABASE_CONN_STRING: String de conexão a ser usado pelo SQLAlchemy e Alembic (não alterar).
 
