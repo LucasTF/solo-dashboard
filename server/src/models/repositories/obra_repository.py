@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import insert, select, text
+from sqlalchemy import desc, func, insert, or_, select, text
 from sqlalchemy.orm import aliased
 from sqlalchemy.exc import NoResultFound
 from src.database.connector import DBConnector
@@ -40,6 +40,8 @@ class ObraRepository(ObraRepositoryInterface):
                 obra = ObraResponse.serialize(row[0], row[1], row[2])
         except NoResultFound:
             return None
+        except Exception:
+            raise InternalProcessingError
 
         return obra
 
@@ -53,26 +55,41 @@ class ObraRepository(ObraRepositoryInterface):
                 obra = ObraResponse.serialize(row[0], row[1], row[2])
         except NoResultFound:
             return None
+        except Exception:
+            raise InternalProcessingError
 
         return obra
 
     def search_obras(self, search_string: str) -> List[ObraResponse]:
-        query = text("""SELECT ob.* 
-                     FROM Obra ob 
-                     INNER JOIN Cliente cl 
-                     ON cliente_id = cl.id 
-                     LEFT JOIN Cliente pr 
-                     ON proprietario_id = pr.id 
-                     WHERE CONCAT_WS(' ', ob.tipo_logo, ob.logradouro, ob.complemento) LIKE CONCAT('%', :search_string, '%') OR ob.cod_obra LIKE CONCAT('%', :search_string, '%') OR ob.cidade LIKE CONCAT('%', :search_string, '%') OR ob.bairro LIKE CONCAT('%', :search_string, '%') OR cl.nome LIKE CONCAT('%', :search_string, '%') OR pr.nome LIKE CONCAT('%', :search_string, '%') 
-                     ORDER BY ob.ano DESC, ob.cod_obra DESC""")
+        Proprietario = aliased(Cliente)
+        test_query = (
+            select(Obra, Cliente.nome, Proprietario.nome)
+            .join(Cliente, Obra.cliente_id == Cliente.id)
+            .join(Proprietario, Obra.proprietario_id == Proprietario.id, isouter=True)
+            .where(
+                or_(
+                    func.CONCAT_WS(
+                        " ", Obra.tipo_logo, Obra.logradouro, Obra.complemento
+                    ).like("%" + search_string + "%"),
+                    Obra.cod_obra.like("%" + search_string + "%"),
+                    Obra.cidade.like("%" + search_string + "%"),
+                    Obra.bairro.like("%" + search_string + "%"),
+                    Cliente.nome.like("%" + search_string + "%"),
+                    Proprietario.nome.like("%" + search_string + "%"),
+                )
+            )
+            .order_by(desc(Obra.ano), desc(Obra.cod_obra))
+        )
 
-        results: List[Obra] = []
+        obras: List[ObraResponse] = []
 
         with self.__db_connector as conn:
-            for obra in conn.session.scalars(query, {"search_string": search_string}):
-                results.append(obra)
+            results = conn.session.execute(test_query).all()
+            for result in results:
+                row = result.tuple()
+                obras.append(ObraResponse.serialize(row[0], row[1], row[2]))
 
-        return results
+        return obras
 
     def update_obra(
         self,
@@ -125,9 +142,9 @@ class ObraRepository(ObraRepositoryInterface):
                 if complemento is not None:
                     obra.complemento = complemento
                 if cliente is not None:
-                    obra.cliente_id = cliente_id
+                    obra.cliente_id = self.__process_cliente_id(conn, cliente)
                 if proprietario is not None:
-                    obra.proprietario_id = proprietario_id
+                    obra.proprietario_id = self.__process_cliente_id(conn, proprietario)
 
                 conn.session.commit()
             except UnavailableResourceError as exc:
@@ -155,36 +172,14 @@ class ObraRepository(ObraRepositoryInterface):
         complemento: str = None,
         proprietario: str = None,
     ) -> None:
-        get_cliente_query = select(Cliente).where(Cliente.nome == cliente)
 
         with self.__db_connector as conn:
             try:
-                found_cliente = conn.session.scalar(get_cliente_query)
-
-                if found_cliente:
-                    cliente_id = found_cliente.id
-                else:
-                    create_cliente_query = insert(Cliente).values(nome=cliente)
-                    create_cliente_result = conn.session.execute(create_cliente_query)
-                    cliente_id = create_cliente_result.inserted_primary_key[0]
+                cliente_id = self.__process_cliente_id(conn, cliente)
+                proprietario_id = None
 
                 if proprietario:
-                    get_proprietario_query = select(Cliente).where(
-                        Cliente.nome == proprietario
-                    )
-                    found_proprietario = conn.session.scalar(get_proprietario_query)
-                    if found_proprietario:
-                        proprietario_id = found_proprietario.id
-                    else:
-                        create_proprietario_query = insert(Cliente).values(
-                            nome=proprietario
-                        )
-                        create_proprietario_result = conn.session.execute(
-                            create_proprietario_query
-                        )
-                        proprietario_id = (
-                            create_proprietario_result.inserted_primary_key[0]
-                        )
+                    proprietario_id = self.__process_cliente_id(conn, proprietario)
 
                 insert_obra_query = insert(Obra).values(
                     cod_obra=cod_obra,
@@ -222,3 +217,16 @@ class ObraRepository(ObraRepositoryInterface):
         )
 
         return query
+    
+    def __process_cliente_id(self, conn: DBConnector, cliente: str) -> int:
+        get_cliente_query = select(Cliente).where(Cliente.nome == cliente)
+
+        found_cliente = conn.session.scalar(get_cliente_query)
+
+        if found_cliente:
+            return found_cliente.id
+        else:
+            create_cliente_query = insert(Cliente).values(nome=cliente)
+            create_cliente_result = conn.session.execute(create_cliente_query)
+            return create_cliente_result.inserted_primary_key[0]
+

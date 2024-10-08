@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict, List
 
-from src.models.entities.obra import Obra
+from src.types.obra_response import ObraResponse
 
 
 class ObraControllerInterface(ABC):
@@ -10,15 +10,15 @@ class ObraControllerInterface(ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self, obra_id: int) -> Obra:
+    def find_by_id(self, obra_id: int) -> ObraResponse:
         pass
 
     @abstractmethod
-    def find_by_cod(self, obra_cod: int) -> Obra:
+    def find_by_cod(self, obra_cod: int) -> ObraResponse:
         pass
 
     @abstractmethod
-    def list(self) -> List[Obra]:
+    def list(self) -> List[ObraResponse]:
         pass
 
     @abstractmethod
@@ -26,5 +26,5 @@ class ObraControllerInterface(ABC):
         pass
 
     @abstractmethod
-    def search(self, search_string: str) -> List[Obra]:
+    def search(self, search_string: str) -> List[ObraResponse]:
         pass

@@ -1,8 +1,8 @@
 from typing import Dict, List
 from src.controllers.interfaces.obra_controller_interface import ObraControllerInterface
 from src.errors.unavailable_resource_error import UnavailableResourceError
-from src.models.entities.obra import Obra
 from src.models.interfaces.obra_repository_interface import ObraRepositoryInterface
+from src.types.obra_response import ObraResponse
 from src.validators.valid_cliente import ValidCliente
 from src.validators.valid_obra import ValidObra
 
@@ -35,7 +35,7 @@ class ObraController(ObraControllerInterface):
             proprietario=obra_info.get("proprietario"),
         )
 
-    def find_by_id(self, obra_id: int) -> Obra:
+    def find_by_id(self, obra_id: int) -> ObraResponse:
         obra = self.__repository.get_obra_by_id(obra_id)
 
         if obra is None:
@@ -43,7 +43,7 @@ class ObraController(ObraControllerInterface):
 
         return obra
 
-    def find_by_cod(self, obra_cod: int) -> Obra:
+    def find_by_cod(self, obra_cod: int) -> ObraResponse:
         obra = self.__repository.get_obra_by_cod(obra_cod)
 
         if obra is None:
@@ -51,7 +51,7 @@ class ObraController(ObraControllerInterface):
 
         return obra
 
-    def list(self) -> List[Obra]:
+    def list(self) -> List[ObraResponse]:
         obras = self.__repository.list_obras()
 
         return obras
@@ -78,7 +78,7 @@ class ObraController(ObraControllerInterface):
             proprietario=obra_info.get("proprietario"),
         )
 
-    def search(self, search_string: str) -> List[Obra]:
+    def search(self, search_string: str) -> List[ObraResponse]:
         obras = self.__repository.search_obra(search_string)
 
         return obras
