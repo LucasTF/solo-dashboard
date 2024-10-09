@@ -79,7 +79,7 @@ class ObraController(ObraControllerInterface):
         )
 
     def search(self, search_string: str) -> List[ObraResponse]:
-        obras = self.__repository.search_obra(search_string)
+        obras = self.__repository.search_obras(search_string)
 
         return obras
 
