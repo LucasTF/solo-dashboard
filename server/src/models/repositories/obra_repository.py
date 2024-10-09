@@ -212,7 +212,7 @@ class ObraRepository(ObraRepositoryInterface):
         query = (
             select(Obra, Cliente.nome, Proprietario.nome)
             .join(Cliente, Obra.cliente_id == Cliente.id)
-            .join(Proprietario, Obra.proprietario_id == Proprietario.id)
+            .join(Proprietario, Obra.proprietario_id == Proprietario.id, isouter=True)
             .order_by(Obra.id)
         )
 
