@@ -13,7 +13,8 @@ class ObraCreateView(ViewInterface):
         obra_info = http_request.body
         self.__controller.create(obra_info)
 
-        body_response = ValidResponse(message="Obra criada com sucesso.").model_dump(exclude_none=True)
+        body_response = ValidResponse(message="Obra criada com sucesso.").model_dump(
+            exclude_none=True
+        )
 
         return HttpResponse(status_code=201, body=body_response)
-    

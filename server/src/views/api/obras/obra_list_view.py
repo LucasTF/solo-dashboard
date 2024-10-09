@@ -32,7 +32,6 @@ class ObraListView(ViewInterface):
         for obra in paginated_obras:
             data.append(asdict(obra))
 
-        return HttpResponse(status_code=200, body=pag_service.create_paginated_response(data))
-
-
-    
+        return HttpResponse(
+            status_code=200, body=pag_service.create_paginated_response(data)
+        )

@@ -17,6 +17,7 @@ class ObraAction(Enum):
     LIST = 3
     UPDATE = 4
 
+
 def compose_obra(action: ObraAction) -> ViewInterface:
     repository = ObraRepository(db_connector)
     controller = ObraController(repository)

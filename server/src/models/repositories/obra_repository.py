@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import desc, func, insert, or_, select, text
+from sqlalchemy import desc, func, insert, or_, select
 from sqlalchemy.orm import aliased
 from sqlalchemy.exc import NoResultFound
 from src.database.connector import DBConnector
@@ -172,7 +172,6 @@ class ObraRepository(ObraRepositoryInterface):
         complemento: str = None,
         proprietario: str = None,
     ) -> None:
-
         with self.__db_connector as conn:
             try:
                 cliente_id = self.__process_cliente_id(conn, cliente)
@@ -217,7 +216,7 @@ class ObraRepository(ObraRepositoryInterface):
         )
 
         return query
-    
+
     def __process_cliente_id(self, conn: DBConnector, cliente: str) -> int:
         get_cliente_query = select(Cliente).where(Cliente.nome == cliente)
 
@@ -229,4 +228,3 @@ class ObraRepository(ObraRepositoryInterface):
             create_cliente_query = insert(Cliente).values(nome=cliente)
             create_cliente_result = conn.session.execute(create_cliente_query)
             return create_cliente_result.inserted_primary_key[0]
-
