@@ -14,7 +14,8 @@ class ObraController(ObraControllerInterface):
     def create(self, obra_info: Dict) -> None:
         valid_obra = self.__validate_obra(obra_info)
         self.__validate_cliente(obra_info.get("cliente"))
-        self.__validate_cliente(obra_info.get("proprietario"))
+        if obra_info.get("proprietario"):
+            self.__validate_cliente(obra_info.get("proprietario"))
 
         self.__repository.insert_obra(
             cod_obra=valid_obra.cod_obra,
@@ -146,9 +147,12 @@ class ObraController(ObraControllerInterface):
             self.__validate_cliente(obra_info["proprietario"])
 
     def __validate_cliente(self, cliente_name: str) -> None:
-        ValidCliente.__pydantic_validator__.validate_assignment(
-            ValidCliente.model_construct(), "nome", cliente_name
-        )
+        try:
+            ValidCliente.__pydantic_validator__.validate_assignment(
+                ValidCliente.model_construct(), "nome", cliente_name
+            )
+        except ValueError:
+            raise ValueError("Nome do cliente/proprietário é inválido.")
 
     def __validate_obra(self, obra_info: Dict) -> ValidObra:
         valid_obra = ValidObra(
