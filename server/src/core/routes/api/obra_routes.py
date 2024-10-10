@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 
 from src.config.constants import DEFAULT_ENTRIES_PER_PAGE
 from src.core.composers.obra_composer import ObraAction, compose_obra
-from src.core.composers.usuario_composer import UsuarioAction
 from src.core.middlewares.auth_middleware import (
     check_authentication,
     check_authorization,
@@ -43,7 +42,7 @@ def create_obra():
     check_authorization()
 
     http_request = HttpRequest(body=request.json)
-    view = compose_obra(UsuarioAction.CREATE)
+    view = compose_obra(ObraAction.CREATE)
     http_response = view.handle(http_request)
 
     return jsonify(http_response.body), http_response.status_code
