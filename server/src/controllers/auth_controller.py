@@ -44,9 +44,9 @@ class AuthController(AuthControllerInterface):
             ValidUsuario.model_construct(), "password", password
         )
 
-    def __compare_passwords(self, password: str, hashed_password: str) -> None:
+    def __compare_passwords(self, password: str, hashed_password: str | bytes) -> None:
         if not self.__password_service.check_password(password, hashed_password):
-            raise InvalidCredentialsError()
+            raise InvalidCredentialsError
 
     def __create_jwt_token(self, id: int, is_admin: bool = False) -> str:
         payload = {"id": id, "is_admin": is_admin}
