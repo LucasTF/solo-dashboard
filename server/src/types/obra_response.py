@@ -44,7 +44,7 @@ class ObraResponse:
             "lote": self.lote,
             "quadra": self.quadra,
             "cliente": self.cliente,
-            "proprietario": self.proprietario
+            "proprietario": self.proprietario,
         }
 
     @abstractmethod

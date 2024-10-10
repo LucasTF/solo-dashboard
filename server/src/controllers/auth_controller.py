@@ -1,9 +1,9 @@
 from src.controllers.interfaces.auth_controller_interface import AuthControllerInterface
 from src.controllers.types.auth_response_type import AuthResponse
 from src.errors.invalid_credentials_error import InvalidCredentialsError
-from src.errors.unavailable_resource_error import UnavailableResourceError
-from src.models.entities.usuario import Usuario
-from src.models.interfaces.usuario_repository_interface import UsuarioRepositoryInterface
+from src.models.interfaces.usuario_repository_interface import (
+    UsuarioRepositoryInterface,
+)
 from src.validators.valid_usuario import ValidUsuario
 from src.services.jwt_service import JwtService
 from src.services.password_encrypt_service import PasswordEncryptService
