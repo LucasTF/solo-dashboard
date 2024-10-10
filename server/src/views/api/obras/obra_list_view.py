@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from typing import List
 from src.controllers.interfaces.obra_controller_interface import ObraControllerInterface
 from src.services.pagination_service import PaginationService
@@ -30,7 +29,7 @@ class ObraListView(ViewInterface):
         data: List[ObraResponse] = []
 
         for obra in paginated_obras:
-            data.append(asdict(obra))
+            data.append(obra.to_dict())
 
         return HttpResponse(
             status_code=200, body=pag_service.create_paginated_response(data)

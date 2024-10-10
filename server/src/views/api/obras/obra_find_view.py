@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from src.controllers.interfaces.obra_controller_interface import ObraControllerInterface
 from src.types.obra_response import ObraResponse
 from src.views.api.interfaces.view_interface import ViewInterface
@@ -21,5 +20,5 @@ class ObraFindView(ViewInterface):
         except ValueError:
             obra = self.__controller.find_by_cod(identifier)
 
-        body_response = asdict(obra)
+        body_response = obra.to_dict()
         return HttpResponse(status_code=200, body=body_response)

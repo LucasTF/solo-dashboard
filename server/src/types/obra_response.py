@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 from datetime import date
+from typing import Dict
 
 from src.models.entities.obra import Obra
 
@@ -13,17 +14,38 @@ class ObraResponse:
     ano: int
     data_inicio: date
     data_fim: date
-    logradouro: str
-    bairro: str
     cidade: str
     uf: str
+    logradouro: str
+    bairro: str
     cliente: str
     tipo_logo: str = None
+    complemento: str = None
     lote: str = None
     quadra: str = None
     cep: str = None
-    complemento: str = None
     proprietario: str = None
+
+    def to_dict(self) -> Dict:
+        return {
+            "id": self.id,
+            "cod_obra": self.cod_obra,
+            "num_obra": self.num_obra,
+            "ano": self.ano,
+            "data_inicio": self.data_inicio.isoformat(),
+            "data_fim": self.data_fim.isoformat(),
+            "cidade": self.cidade,
+            "uf": self.uf,
+            "tipo_logo": self.tipo_logo,
+            "logradouro": self.logradouro,
+            "complemento": self.complemento,
+            "bairro": self.bairro,
+            "cep": self.cep,
+            "lote": self.lote,
+            "quadra": self.quadra,
+            "cliente": self.cliente,
+            "proprietario": self.proprietario
+        }
 
     @abstractmethod
     def serialize(obra: Obra, cliente: str, proprietario: str = None):

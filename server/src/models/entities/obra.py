@@ -29,19 +29,19 @@ class Obra(Base):
     ano: Mapped[int] = mapped_column(index=True)
     data_inicio: Mapped[date] = mapped_column(Date(), index=True)
     data_fim: Mapped[date] = mapped_column(Date(), index=True)
+    cidade: Mapped[str] = mapped_column(String(MAX_CIDADE_LENGTH), index=True)
+    uf: Mapped[str] = mapped_column(CHAR(UF_LENGTH), index=True)
     tipo_logo: Mapped[Optional[str]] = mapped_column(
         String(MAX_TIPO_LOGO_LENGTH)
     )  # Optional for compatibility reasons
     logradouro: Mapped[str] = mapped_column(String(MAX_LOGRADOURO_LENGTH), index=True)
-    lote: Mapped[Optional[str]] = mapped_column(String(MAX_LOTE_LENGTH))
-    quadra: Mapped[Optional[str]] = mapped_column(String(MAX_QUADRA_LENGTH))
-    bairro: Mapped[str] = mapped_column(String(MAX_BAIRRO_LENGTH), index=True)
-    cidade: Mapped[str] = mapped_column(String(MAX_CIDADE_LENGTH), index=True)
-    uf: Mapped[str] = mapped_column(CHAR(UF_LENGTH), index=True)
-    cep: Mapped[Optional[str]] = mapped_column(CHAR(CEP_LENGTH))
     complemento: Mapped[Optional[str]] = mapped_column(
         String(MAX_COMPLEMENTO_LOGO_LENGTH), index=True
     )
+    bairro: Mapped[str] = mapped_column(String(MAX_BAIRRO_LENGTH), index=True)
+    cep: Mapped[Optional[str]] = mapped_column(CHAR(CEP_LENGTH))
+    lote: Mapped[Optional[str]] = mapped_column(String(MAX_LOTE_LENGTH))
+    quadra: Mapped[Optional[str]] = mapped_column(String(MAX_QUADRA_LENGTH))
     cliente_id: Mapped[int] = mapped_column(ForeignKey("Cliente.id"))
     proprietario_id: Mapped[Optional[int]] = mapped_column(ForeignKey("Cliente.id"))
 
