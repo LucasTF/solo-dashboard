@@ -15,7 +15,7 @@ from src.config.constants import (
     MAX_TIPO_LOGO_LENGTH,
     UF_LENGTH,
 )
-from src.models.entities.obra import Obra
+from src.types.obra_response import ObraResponse
 from src.validators.validator_functions import (
     validate_cep,
     validate_tipo_logo,
@@ -83,7 +83,7 @@ class ValidObra(BaseModel):
         return validate_cep(v)
 
     @classmethod
-    def serialize(cls, obra: Obra):
+    def serialize(cls, obra: ObraResponse):
         valid_obra = ValidObra(
             id=obra.id,
             cod_obra=obra.cod_obra,
