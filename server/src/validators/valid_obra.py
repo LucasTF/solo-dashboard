@@ -7,6 +7,7 @@ from src.config.constants import (
     CEP_LENGTH,
     MAX_BAIRRO_LENGTH,
     MAX_CIDADE_LENGTH,
+    MAX_CLIENTE_NAME_LENGTH,
     MAX_COD_OBRA_LENGTH,
     MAX_COMPLEMENTO_LOGO_LENGTH,
     MAX_LOGRADOURO_LENGTH,
@@ -30,20 +31,24 @@ class ValidObra(BaseModel):
     ano: Annotated[PositiveInt, Field()]
     data_inicio: Annotated[date, Field()]
     data_fim: Annotated[date, Field()]
+    cidade: Annotated[str, Field(max_length=MAX_CIDADE_LENGTH)]
+    uf: Annotated[str, Field(min_length=UF_LENGTH, max_length=UF_LENGTH)]
+    logradouro: Annotated[str, Field(max_length=MAX_LOGRADOURO_LENGTH)]
+    bairro: Annotated[str, Field(max_length=MAX_BAIRRO_LENGTH)]
+    cliente: Annotated[str, Field(max_length=MAX_CLIENTE_NAME_LENGTH)]
     tipo_logo: Annotated[
         Optional[str], Field(max_length=MAX_TIPO_LOGO_LENGTH, default=None)
     ]
-    logradouro: Annotated[str, Field(max_length=MAX_LOGRADOURO_LENGTH)]
+    complemento: Annotated[
+        Optional[str], Field(max_length=MAX_COMPLEMENTO_LOGO_LENGTH, default=None)
+    ]
     lote: Annotated[Optional[str], Field(max_length=MAX_LOTE_LENGTH, default=None)]
     quadra: Annotated[Optional[str], Field(max_length=MAX_QUADRA_LENGTH, default=None)]
-    bairro: Annotated[str, Field(max_length=MAX_BAIRRO_LENGTH)]
-    cidade: Annotated[str, Field(max_length=MAX_CIDADE_LENGTH)]
-    uf: Annotated[str, Field(min_length=UF_LENGTH, max_length=UF_LENGTH)]
     cep: Annotated[
         Optional[str], Field(min_length=CEP_LENGTH, max_length=CEP_LENGTH, default=None)
     ]
-    complemento: Annotated[
-        Optional[str], Field(max_length=MAX_COMPLEMENTO_LOGO_LENGTH, default=None)
+    proprietario: Annotated[
+        Optional[str], Field(max_length=MAX_CLIENTE_NAME_LENGTH, default=None)
     ]
 
     @model_validator(mode="after")
@@ -96,10 +101,12 @@ class ValidObra(BaseModel):
             lote=obra.lote,
             quadra=obra.quadra,
             bairro=obra.bairro,
+            cliente=obra.cliente,
             cidade=obra.cidade,
             uf=obra.uf,
             cep=obra.cep,
             complemento=obra.complemento,
+            proprietario=obra.proprietario,
         )
 
         return valid_obra
