@@ -65,6 +65,7 @@ def test_update_with_invalid_cod_obra(setup_update):
     with pytest.raises(ValueError):
         controller.update(mock_obra.id, mock_edit)
 
+
 def test_update_with_num_obra_as_zero(setup_update):
     _, controller, mock_obra = setup_update
 
@@ -72,6 +73,7 @@ def test_update_with_num_obra_as_zero(setup_update):
 
     with pytest.raises(ValueError):
         controller.update(mock_obra.id, mock_edit)
+
 
 def test_update_with_num_obra_as_negative(setup_update):
     _, controller, mock_obra = setup_update
@@ -81,23 +83,20 @@ def test_update_with_num_obra_as_negative(setup_update):
     with pytest.raises(ValueError):
         controller.update(mock_obra.id, mock_edit)
 
+
 def test_update_with_invalid_dates(setup_update):
     _, controller, mock_obra = setup_update
 
-    mock_edit = {
-        "data_inicio": "2024-01-10",
-        "data_fim": "2023-01-12"
-    }
+    mock_edit = {"data_inicio": "2024-01-10", "data_fim": "2023-01-12"}
 
     with pytest.raises(ValueError):
         controller.update(mock_obra.id, mock_edit)
 
+
 def test_update_with_invalid_tipo_logo(setup_update):
     _, controller, mock_obra = setup_update
 
-    mock_edit = {
-        "tipo_logo": "INVALID"
-    }
+    mock_edit = {"tipo_logo": "INVALID"}
 
     with pytest.raises(ValueError):
         controller.update(mock_obra.id, mock_edit)

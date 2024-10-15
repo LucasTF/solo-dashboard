@@ -12,9 +12,6 @@ class ObraController(ObraControllerInterface):
 
     def create(self, obra_info: Dict) -> None:
         valid_obra = self.__validate_obra(obra_info)
-        self.__validate_cliente(obra_info.get("cliente"))
-        if obra_info.get("proprietario"):
-            self.__validate_cliente(obra_info.get("proprietario"))
 
         self.__repository.insert_obra(
             cod_obra=valid_obra.cod_obra,
@@ -58,27 +55,10 @@ class ObraController(ObraControllerInterface):
 
     def update(self, obra_id: int, obra_info: Dict) -> None:
         obra = self.find_by_id(obra_id)
+        print(obra)
 
         self.__validate_edit_info(obra, obra_info)
-        self.__repository.update_obra(
-            id=obra_id,
-            cod_obra=obra_info.get("cod_obra"),
-            num_obra=obra_info.get("num_obra"),
-            ano=obra_info.get("ano"),
-            data_inicio=obra_info.get("data_inicio"),
-            data_fim=obra_info.get("data_fim"),
-            tipo_logo=obra_info.get("tipo_logo"),
-            logradouro=obra_info.get("logradouro"),
-            lote=obra_info.get("lote"),
-            quadra=obra_info.get("quadra"),
-            bairro=obra_info.get("bairro"),
-            cidade=obra_info.get("cidade"),
-            uf=obra_info.get("uf"),
-            cep=obra_info.get("cep"),
-            complemento=obra_info.get("complemento"),
-            cliente=obra_info.get("cliente"),
-            proprietario=obra_info.get("proprietario"),
-        )
+        self.__repository.update_obra(id=obra_id, **obra_info)
 
     def search(self, search_string: str) -> List[ObraResponse]:
         obras = self.__repository.search_obras(search_string)

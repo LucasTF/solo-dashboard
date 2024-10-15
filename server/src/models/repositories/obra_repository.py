@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 
 from sqlalchemy import desc, func, insert, or_, select
@@ -94,9 +95,9 @@ class ObraRepository(ObraRepositoryInterface):
     def update_obra(
         self,
         id: int,
-        ano: str = None,
-        data_inicio: str = None,
-        data_fim: str = None,
+        ano: int = None,
+        data_inicio: date = None,
+        data_fim: date = None,
         tipo_logo: str = None,
         logradouro: str = None,
         lote: str = None,
@@ -149,7 +150,8 @@ class ObraRepository(ObraRepositoryInterface):
                 conn.session.commit()
             except UnavailableResourceError as exc:
                 raise exc
-            except Exception:
+            except Exception as exc2:
+                print(exc2)
                 conn.session.rollback()
                 raise InternalProcessingError
 

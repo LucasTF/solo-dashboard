@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import date
 from typing import Dict, List
 
 from src.types.obra_response import ObraResponse
@@ -25,9 +26,9 @@ class ObraRepositoryInterface(ABC):
     def update_obra(
         self,
         id: int,
-        ano: str = None,
-        data_inicio: str = None,
-        data_fim: str = None,
+        ano: int = None,
+        data_inicio: date = None,
+        data_fim: date = None,
         tipo_logo: str = None,
         logradouro: str = None,
         lote: str = None,
@@ -47,9 +48,9 @@ class ObraRepositoryInterface(ABC):
         self,
         cod_obra: str,
         num_obra: str,
-        ano: str,
-        data_inicio: str,
-        data_fim: str,
+        ano: int,
+        data_inicio: date,
+        data_fim: date,
         uf: str,
         cidade: str,
         bairro: str,
