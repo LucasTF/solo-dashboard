@@ -95,6 +95,8 @@ class ObraRepository(ObraRepositoryInterface):
     def update_obra(
         self,
         id: int,
+        cod_obra: str = None,
+        num_obra: int = None,
         ano: int = None,
         data_inicio: date = None,
         data_fim: date = None,
@@ -118,6 +120,10 @@ class ObraRepository(ObraRepositoryInterface):
                 if not obra:
                     raise UnavailableResourceError("Obra")
 
+                if cod_obra is not None:
+                    obra.cod_obra = cod_obra
+                if num_obra is not None:
+                    obra.num_obra = num_obra
                 if ano is not None:
                     obra.ano = ano
                 if data_inicio is not None:
@@ -150,8 +156,7 @@ class ObraRepository(ObraRepositoryInterface):
                 conn.session.commit()
             except UnavailableResourceError as exc:
                 raise exc
-            except Exception as exc2:
-                print(exc2)
+            except Exception:
                 conn.session.rollback()
                 raise InternalProcessingError
 

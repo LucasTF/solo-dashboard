@@ -26,6 +26,8 @@ class ObraRepositoryInterface(ABC):
     def update_obra(
         self,
         id: int,
+        cod_obra: str = None,
+        num_obra: int = None,
         ano: int = None,
         data_inicio: date = None,
         data_fim: date = None,
