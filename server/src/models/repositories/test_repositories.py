@@ -35,8 +35,6 @@ class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
 
         obra = obras[0]
 
-        print(obra)
-
     def test_base_query(self):
         with self.db_connector as conn:
             Proprietario = aliased(Cliente)

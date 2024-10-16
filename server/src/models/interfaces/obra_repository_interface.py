@@ -3,6 +3,7 @@ from datetime import date
 from typing import Dict, List
 
 from src.types.obra_response import ObraResponse
+from src.types.obra_types import ObraEditType, ObraInsertType
 
 
 class ObraRepositoryInterface(ABC):
@@ -23,46 +24,12 @@ class ObraRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def update_obra(
-        self,
-        id: int,
-        cod_obra: str = None,
-        num_obra: int = None,
-        ano: int = None,
-        data_inicio: date = None,
-        data_fim: date = None,
-        tipo_logo: str = None,
-        logradouro: str = None,
-        lote: str = None,
-        quadra: str = None,
-        bairro: str = None,
-        cidade: str = None,
-        uf: str = None,
-        cep: str = None,
-        complemento: str = None,
-        cliente: str = None,
-        proprietario: str = None,
-    ) -> None:
+    def update_obra(self, id: int, update_info: ObraEditType) -> None:
         pass
 
     @abstractmethod
     def insert_obra(
         self,
-        cod_obra: str,
-        num_obra: str,
-        ano: int,
-        data_inicio: date,
-        data_fim: date,
-        uf: str,
-        cidade: str,
-        bairro: str,
-        logradouro: str,
-        cliente: str,
-        tipo_logo: str = None,
-        lote: str = None,
-        quadra: str = None,
-        cep: str = None,
-        complemento: str = None,
-        proprietario: str = None,
+        obra_info: ObraInsertType,
     ) -> None:
         pass

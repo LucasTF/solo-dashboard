@@ -11,6 +11,7 @@ from src.models.entities.cliente import Cliente
 from src.models.entities.obra import Obra
 from src.models.interfaces.obra_repository_interface import ObraRepositoryInterface
 from src.types.obra_response import ObraResponse
+from src.types.obra_types import ObraEditType, ObraInsertType
 
 
 class ObraRepository(ObraRepositoryInterface):
@@ -92,26 +93,7 @@ class ObraRepository(ObraRepositoryInterface):
 
         return obras
 
-    def update_obra(
-        self,
-        id: int,
-        cod_obra: str = None,
-        num_obra: int = None,
-        ano: int = None,
-        data_inicio: date = None,
-        data_fim: date = None,
-        tipo_logo: str = None,
-        logradouro: str = None,
-        lote: str = None,
-        quadra: str = None,
-        bairro: str = None,
-        cidade: str = None,
-        uf: str = None,
-        cep: str = None,
-        complemento: str = None,
-        cliente: str = None,
-        proprietario: str = None,
-    ) -> None:
+    def update_obra(self, id: int, update_info: ObraEditType) -> None:
         query = select(Obra).where(Obra.id == id)
         with self.__db_connector as conn:
             try:
@@ -120,38 +102,42 @@ class ObraRepository(ObraRepositoryInterface):
                 if not obra:
                     raise UnavailableResourceError("Obra")
 
-                if cod_obra is not None:
-                    obra.cod_obra = cod_obra
-                if num_obra is not None:
-                    obra.num_obra = num_obra
-                if ano is not None:
-                    obra.ano = ano
-                if data_inicio is not None:
-                    obra.data_inicio = data_inicio
-                if data_fim is not None:
-                    obra.data_fim = data_fim
-                if tipo_logo is not None:
-                    obra.tipo_logo = tipo_logo
-                if logradouro is not None:
-                    obra.logradouro = logradouro
-                if lote is not None:
-                    obra.lote = lote
-                if quadra is not None:
-                    obra.quadra = quadra
-                if bairro is not None:
-                    obra.bairro = bairro
-                if cidade is not None:
-                    obra.cidade = cidade
-                if uf is not None:
-                    obra.uf = uf
-                if cep is not None:
-                    obra.cep = cep
-                if complemento is not None:
-                    obra.complemento = complemento
-                if cliente is not None:
-                    obra.cliente_id = self.__process_cliente_id(conn, cliente)
-                if proprietario is not None:
-                    obra.proprietario_id = self.__process_cliente_id(conn, proprietario)
+                if update_info.get("cod_obra") is not None:
+                    obra.cod_obra = update_info.get("cod_obra")
+                if update_info.get("num_obra") is not None:
+                    obra.num_obra = update_info.get("num_obra")
+                if update_info.get("ano") is not None:
+                    obra.ano = update_info.get("ano")
+                if update_info.get("data_inicio") is not None:
+                    obra.data_inicio = update_info.get("data_inicio")
+                if update_info.get("data_fim") is not None:
+                    obra.data_fim = update_info.get("data_fim")
+                if update_info.get("tipo_logo") is not None:
+                    obra.tipo_logo = update_info.get("tipo_logo")
+                if update_info.get("logradouro") is not None:
+                    obra.logradouro = update_info.get("logradouro")
+                if update_info.get("lote") is not None:
+                    obra.lote = update_info.get("lote")
+                if update_info.get("quadra") is not None:
+                    obra.quadra = update_info.get("quadra")
+                if update_info.get("bairro") is not None:
+                    obra.bairro = update_info.get("bairro")
+                if update_info.get("cidade") is not None:
+                    obra.cidade = update_info.get("cidade")
+                if update_info.get("uf") is not None:
+                    obra.uf = update_info.get("uf")
+                if update_info.get("cep") is not None:
+                    obra.cep = update_info.get("cep")
+                if update_info.get("complemento") is not None:
+                    obra.complemento = update_info.get("complemento")
+                if update_info.get("cliente") is not None:
+                    obra.cliente_id = self.__process_cliente_id(
+                        conn, update_info["cliente"]
+                    )
+                if update_info.get("proprietario") is not None:
+                    obra.proprietario_id = self.__process_cliente_id(
+                        conn, update_info["proprietario"]
+                    )
 
                 conn.session.commit()
             except UnavailableResourceError as exc:
@@ -160,48 +146,32 @@ class ObraRepository(ObraRepositoryInterface):
                 conn.session.rollback()
                 raise InternalProcessingError
 
-    def insert_obra(
-        self,
-        cod_obra: str,
-        num_obra: str,
-        ano: str,
-        data_inicio: str,
-        data_fim: str,
-        uf: str,
-        cidade: str,
-        bairro: str,
-        logradouro: str,
-        cliente: str,
-        tipo_logo: str = None,
-        lote: str = None,
-        quadra: str = None,
-        cep: str = None,
-        complemento: str = None,
-        proprietario: str = None,
-    ) -> None:
+    def insert_obra(self, obra_info: ObraInsertType) -> None:
         with self.__db_connector as conn:
             try:
-                cliente_id = self.__process_cliente_id(conn, cliente)
+                cliente_id = self.__process_cliente_id(conn, obra_info.get("cliente"))
                 proprietario_id = None
 
-                if proprietario:
-                    proprietario_id = self.__process_cliente_id(conn, proprietario)
+                if obra_info.get("proprietario") is not None:
+                    proprietario_id = self.__process_cliente_id(
+                        conn, obra_info["proprietario"]
+                    )
 
                 insert_obra_query = insert(Obra).values(
-                    cod_obra=cod_obra,
-                    num_obra=num_obra,
-                    ano=ano,
-                    data_inicio=data_inicio,
-                    data_fim=data_fim,
-                    uf=uf,
-                    cidade=cidade,
-                    bairro=bairro,
-                    logradouro=logradouro,
-                    tipo_logo=tipo_logo,
-                    lote=lote,
-                    quadra=quadra,
-                    cep=cep,
-                    complemento=complemento,
+                    cod_obra=obra_info.get("cod_obra"),
+                    num_obra=obra_info.get("num_obra"),
+                    ano=obra_info.get("ano"),
+                    data_inicio=obra_info.get("data_inicio"),
+                    data_fim=obra_info.get("data_fim"),
+                    uf=obra_info.get("uf"),
+                    cidade=obra_info.get("cidade"),
+                    bairro=obra_info.get("bairro"),
+                    logradouro=obra_info.get("logradouro"),
+                    tipo_logo=obra_info.get("tipo_logo"),
+                    lote=obra_info.get("lote"),
+                    quadra=obra_info.get("quadra"),
+                    cep=obra_info.get("cep"),
+                    complemento=obra_info.get("complemento"),
                     cliente_id=cliente_id,
                     proprietario_id=proprietario_id,
                 )
