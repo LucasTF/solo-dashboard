@@ -48,7 +48,7 @@ def create_obra():
     return jsonify(http_response.body), http_response.status_code
 
 
-@obra_route.route("/obras/<string:identifier>", methods=["GET"])
+@obra_route.route("/obras/<path:identifier>", methods=["GET"])
 def find_obra(identifier: str):
     check_authentication()
 
