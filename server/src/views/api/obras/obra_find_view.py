@@ -1,3 +1,4 @@
+from urllib.parse import unquote
 from src.controllers.interfaces.obra_controller_interface import ObraControllerInterface
 from src.types.obra_response import ObraResponse
 from src.views.api.interfaces.view_interface import ViewInterface
@@ -17,8 +18,9 @@ class ObraFindView(ViewInterface):
         try:
             id = int(identifier)
             obra = self.__controller.find_by_id(id)
-        except ValueError:
-            obra = self.__controller.find_by_cod(identifier)
+        except Exception:
+            parsed_identifier = unquote(identifier)
+            obra = self.__controller.find_by_cod(parsed_identifier)
 
         body_response = obra.to_dict()
         return HttpResponse(status_code=200, body=body_response)

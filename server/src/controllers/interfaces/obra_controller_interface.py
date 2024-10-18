@@ -2,11 +2,12 @@ from abc import ABC, abstractmethod
 from typing import Dict, List
 
 from src.types.obra_response import ObraResponse
+from src.types.obra_types import ObraInsertType
 
 
 class ObraControllerInterface(ABC):
     @abstractmethod
-    def create(self, obra_info: Dict) -> None:
+    def create(self, obra_info: ObraInsertType) -> None:
         pass
 
     @abstractmethod

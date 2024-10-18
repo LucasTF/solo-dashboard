@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-from datetime import date
-from typing import Dict, List
+from typing import List
 
 from src.types.obra_response import ObraResponse
 from src.types.obra_types import ObraEditType, ObraInsertType

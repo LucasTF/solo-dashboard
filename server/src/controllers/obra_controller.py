@@ -3,14 +3,16 @@ from src.controllers.interfaces.obra_controller_interface import ObraControllerI
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.interfaces.obra_repository_interface import ObraRepositoryInterface
 from src.types.obra_response import ObraResponse
+from src.types.obra_types import ObraInsertType
 from src.validators.valid_obra import ValidObra
+from src.validators.valid_sondagens import ValidSondagemPercussao
 
 
 class ObraController(ObraControllerInterface):
     def __init__(self, obra_repository: ObraRepositoryInterface) -> None:
         self.__repository = obra_repository
 
-    def create(self, obra_info: Dict) -> None:
+    def create(self, obra_info: ObraInsertType) -> None:
         self.__validate_obra(obra_info)
 
         self.__repository.insert_obra(obra_info)
@@ -100,7 +102,7 @@ class ObraController(ObraControllerInterface):
         obra_to_validate = ObraResponse(**edit_obra_dict)
         ValidObra.serialize(obra_to_validate)
 
-    def __validate_obra(self, obra_info: Dict) -> ValidObra:
+    def __validate_obra(self, obra_info: ObraInsertType) -> ValidObra:
         valid_obra = ValidObra(
             cod_obra=obra_info.get("cod_obra"),
             num_obra=obra_info.get("num_obra"),
@@ -119,5 +121,8 @@ class ObraController(ObraControllerInterface):
             cliente=obra_info.get("cliente"),
             proprietario=obra_info.get("proprietario"),
         )
+
+        if obra_info.get("sondagem_percussao") is not None:
+            ValidSondagemPercussao.serialize(obra_info["sondagem_percussao"])
 
         return valid_obra

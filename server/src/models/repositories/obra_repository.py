@@ -1,7 +1,6 @@
-from datetime import date
 from typing import List
 
-from sqlalchemy import desc, func, insert, or_, select
+from sqlalchemy import delete, desc, func, insert, or_, select
 from sqlalchemy.orm import aliased
 from sqlalchemy.exc import NoResultFound
 from src.database.connector import DBConnector
@@ -9,9 +8,13 @@ from src.errors.internal_processing_error import InternalProcessingError
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.entities.cliente import Cliente
 from src.models.entities.obra import Obra
+from src.models.entities.sondagem_percussao import SondagemPercussao
+from src.models.entities.sondagem_rotativa import SondagemRotativa
+from src.models.entities.sondagem_trado import SondagemTrado
 from src.models.interfaces.obra_repository_interface import ObraRepositoryInterface
 from src.types.obra_response import ObraResponse
 from src.types.obra_types import ObraEditType, ObraInsertType
+from src.types.sondagem_types import SondagemPercussaoType
 
 
 class ObraRepository(ObraRepositoryInterface):
@@ -26,8 +29,19 @@ class ObraRepository(ObraRepositoryInterface):
         with self.__db_connector as conn:
             results = conn.session.execute(query).all()
             for result in results:
-                row = result.tuple()
-                obras.append(ObraResponse.serialize(row[0], row[1], row[2]))
+                obra, cliente, proprietario, son_percussao, son_trado, son_rotativa = (
+                    result.tuple()
+                )
+                obras.append(
+                    ObraResponse.serialize(
+                        obra,
+                        cliente,
+                        proprietario,
+                        son_percussao,
+                        son_trado,
+                        son_rotativa,
+                    )
+                )
 
         return obras
 
@@ -36,38 +50,64 @@ class ObraRepository(ObraRepositoryInterface):
 
         try:
             with self.__db_connector as conn:
-                result = conn.session.execute(query).one()
-                row = result.tuple()
+                obra, cliente, proprietario, son_percussao, son_trado, son_rotativa = (
+                    conn.session.execute(query).one().tuple()
+                )
 
-                obra = ObraResponse.serialize(row[0], row[1], row[2])
+                response = ObraResponse.serialize(
+                    obra,
+                    cliente,
+                    proprietario,
+                    son_percussao,
+                    son_trado,
+                    son_rotativa,
+                )
         except NoResultFound:
             return None
         except Exception:
             raise InternalProcessingError
 
-        return obra
+        return response
 
     def get_obra_by_cod(self, cod_obra: str) -> ObraResponse | None:
         query = self.__select_obras().where(Obra.cod_obra == cod_obra)
         try:
             with self.__db_connector as conn:
-                result = conn.session.execute(query).one()
-                row = result.tuple()
+                obra, cliente, proprietario, son_percussao, son_trado, son_rotativa = (
+                    conn.session.execute(query).one().tuple()
+                )
 
-                obra = ObraResponse.serialize(row[0], row[1], row[2])
+                response = ObraResponse.serialize(
+                    obra,
+                    cliente,
+                    proprietario,
+                    son_percussao,
+                    son_trado,
+                    son_rotativa,
+                )
         except NoResultFound:
             return None
         except Exception:
             raise InternalProcessingError
 
-        return obra
+        return response
 
     def search_obras(self, search_string: str) -> List[ObraResponse]:
         Proprietario = aliased(Cliente)
         test_query = (
-            select(Obra, Cliente.nome, Proprietario.nome)
+            select(
+                Obra,
+                Cliente.nome,
+                Proprietario.nome,
+                SondagemPercussao,
+                SondagemTrado,
+                SondagemRotativa,
+            )
             .join(Cliente, Obra.cliente_id == Cliente.id)
             .join(Proprietario, Obra.proprietario_id == Proprietario.id, isouter=True)
+            .join(SondagemPercussao, Obra.id == SondagemPercussao.obra_id, isouter=True)
+            .join(SondagemTrado, Obra.id == SondagemTrado.obra_id, isouter=True)
+            .join(SondagemRotativa, Obra.id == SondagemRotativa.obra_id, isouter=True)
             .where(
                 or_(
                     func.CONCAT_WS(
@@ -88,8 +128,19 @@ class ObraRepository(ObraRepositoryInterface):
         with self.__db_connector as conn:
             results = conn.session.execute(test_query).all()
             for result in results:
-                row = result.tuple()
-                obras.append(ObraResponse.serialize(row[0], row[1], row[2]))
+                obra, cliente, proprietario, son_percussao, son_trado, son_rotativa = (
+                    result.tuple()
+                )
+                obras.append(
+                    ObraResponse.serialize(
+                        obra,
+                        cliente,
+                        proprietario,
+                        son_percussao,
+                        son_trado,
+                        son_rotativa,
+                    )
+                )
 
         return obras
 
@@ -176,7 +227,12 @@ class ObraRepository(ObraRepositoryInterface):
                     proprietario_id=proprietario_id,
                 )
 
-                conn.session.execute(insert_obra_query)
+                result = conn.session.execute(insert_obra_query)
+                inserted_id = result.inserted_primary_key[0]
+
+                self.__process_sondagem_percussao(
+                    conn, inserted_id, obra_info.get("sondagem_percussao")
+                )
 
                 conn.session.commit()
             except Exception:
@@ -186,9 +242,27 @@ class ObraRepository(ObraRepositoryInterface):
     def __select_obras(self):
         Proprietario = aliased(Cliente)
         query = (
-            select(Obra, Cliente.nome, Proprietario.nome)
+            select(
+                Obra,
+                Cliente.nome,
+                Proprietario.nome,
+                SondagemPercussao,
+                SondagemTrado,
+                SondagemRotativa,
+            )
             .join(Cliente, Obra.cliente_id == Cliente.id)
             .join(Proprietario, Obra.proprietario_id == Proprietario.id, isouter=True)
+            .join(
+                SondagemPercussao,
+                Obra.id == SondagemPercussao.obra_id,
+                isouter=True,
+            )
+            .join(SondagemTrado, Obra.id == SondagemTrado.id, isouter=True)
+            .join(
+                SondagemRotativa,
+                Obra.id == SondagemRotativa.obra_id,
+                isouter=True,
+            )
             .order_by(Obra.id)
         )
 
@@ -205,3 +279,29 @@ class ObraRepository(ObraRepositoryInterface):
             create_cliente_query = insert(Cliente).values(nome=cliente)
             create_cliente_result = conn.session.execute(create_cliente_query)
             return create_cliente_result.inserted_primary_key[0]
+
+    def __process_sondagem_percussao(
+        self, conn: DBConnector, obra_id: int, sondagem: SondagemPercussaoType | None
+    ):
+        get_sondagem_query = select(SondagemPercussao).where(
+            SondagemPercussao.obra_id == obra_id
+        )
+
+        found_sondagem = conn.session.scalar(get_sondagem_query)
+
+        if found_sondagem:
+            if sondagem is None:
+                delete_sondagem_query = delete(SondagemPercussao).where(
+                    SondagemPercussao.id == found_sondagem.id
+                )
+                conn.session.execute(delete_sondagem_query)
+            else:
+                found_sondagem.sondagens = sondagem.get("sondagens")
+                found_sondagem.metros = sondagem.get("metros")
+            return
+
+        if sondagem:
+            create_sondagem_query = insert(SondagemPercussao).values(
+                obra_id=obra_id, **sondagem
+            )
+            conn.session.execute(create_sondagem_query)
