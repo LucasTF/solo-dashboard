@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import delete, desc, func, insert, or_, select
+from sqlalchemy import desc, func, insert, or_, select
 from sqlalchemy.orm import aliased
 from sqlalchemy.exc import NoResultFound
 from src.database.connector import DBConnector
@@ -12,14 +12,17 @@ from src.models.entities.sondagem_percussao import SondagemPercussao
 from src.models.entities.sondagem_rotativa import SondagemRotativa
 from src.models.entities.sondagem_trado import SondagemTrado
 from src.models.interfaces.obra_repository_interface import ObraRepositoryInterface
+from src.services.repositories.obra.cliente_service import ObraClienteService
+from src.services.repositories.obra.sondagem_service import ObraSondagemService
 from src.types.obra_response import ObraResponse
 from src.types.obra_types import ObraEditType, ObraInsertType
-from src.types.sondagem_types import SondagemPercussaoType
 
 
 class ObraRepository(ObraRepositoryInterface):
     def __init__(self, db_connector: DBConnector) -> None:
         self.__db_connector = db_connector
+        self.__sondagem_service = ObraSondagemService(db_connector)
+        self.__cliente_service = ObraClienteService(db_connector)
 
     def list_obras(self) -> List[ObraResponse]:
         query = self.__select_obras()
@@ -182,12 +185,14 @@ class ObraRepository(ObraRepositoryInterface):
                 if update_info.get("complemento") is not None:
                     obra.complemento = update_info.get("complemento")
                 if update_info.get("cliente") is not None:
-                    obra.cliente_id = self.__process_cliente_id(
-                        conn, update_info["cliente"]
+                    obra.cliente_id = self.__cliente_service.create_associated_cliente(
+                        update_info["cliente"]
                     )
                 if update_info.get("proprietario") is not None:
-                    obra.proprietario_id = self.__process_cliente_id(
-                        conn, update_info["proprietario"]
+                    obra.proprietario_id = (
+                        self.__cliente_service.create_associated_cliente(
+                            update_info["proprietario"]
+                        )
                     )
 
                 conn.session.commit()
@@ -200,12 +205,14 @@ class ObraRepository(ObraRepositoryInterface):
     def insert_obra(self, obra_info: ObraInsertType) -> None:
         with self.__db_connector as conn:
             try:
-                cliente_id = self.__process_cliente_id(conn, obra_info.get("cliente"))
+                cliente_id = self.__cliente_service.create_associated_cliente(
+                    obra_info.get("cliente")
+                )
                 proprietario_id = None
 
                 if obra_info.get("proprietario") is not None:
-                    proprietario_id = self.__process_cliente_id(
-                        conn, obra_info["proprietario"]
+                    proprietario_id = self.__cliente_service.create_associated_cliente(
+                        obra_info["proprietario"]
                     )
 
                 insert_obra_query = insert(Obra).values(
@@ -230,8 +237,8 @@ class ObraRepository(ObraRepositoryInterface):
                 result = conn.session.execute(insert_obra_query)
                 inserted_id = result.inserted_primary_key[0]
 
-                self.__process_sondagem_percussao(
-                    conn, inserted_id, obra_info.get("sondagem_percussao")
+                self.__sondagem_service.manage_sondagem_percussao(
+                    inserted_id, obra_info.get("sondagem_percussao")
                 )
 
                 conn.session.commit()
@@ -267,41 +274,3 @@ class ObraRepository(ObraRepositoryInterface):
         )
 
         return query
-
-    def __process_cliente_id(self, conn: DBConnector, cliente: str) -> int:
-        get_cliente_query = select(Cliente).where(Cliente.nome == cliente)
-
-        found_cliente = conn.session.scalar(get_cliente_query)
-
-        if found_cliente:
-            return found_cliente.id
-        else:
-            create_cliente_query = insert(Cliente).values(nome=cliente)
-            create_cliente_result = conn.session.execute(create_cliente_query)
-            return create_cliente_result.inserted_primary_key[0]
-
-    def __process_sondagem_percussao(
-        self, conn: DBConnector, obra_id: int, sondagem: SondagemPercussaoType | None
-    ):
-        get_sondagem_query = select(SondagemPercussao).where(
-            SondagemPercussao.obra_id == obra_id
-        )
-
-        found_sondagem = conn.session.scalar(get_sondagem_query)
-
-        if found_sondagem:
-            if sondagem is None:
-                delete_sondagem_query = delete(SondagemPercussao).where(
-                    SondagemPercussao.id == found_sondagem.id
-                )
-                conn.session.execute(delete_sondagem_query)
-            else:
-                found_sondagem.sondagens = sondagem.get("sondagens")
-                found_sondagem.metros = sondagem.get("metros")
-            return
-
-        if sondagem:
-            create_sondagem_query = insert(SondagemPercussao).values(
-                obra_id=obra_id, **sondagem
-            )
-            conn.session.execute(create_sondagem_query)
