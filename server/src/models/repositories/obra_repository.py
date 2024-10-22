@@ -195,6 +195,16 @@ class ObraRepository(ObraRepositoryInterface):
                         )
                     )
 
+                self.__sondagem_service.manage_sondagem_percussao(
+                    id, update_info.get("sondagem_percussao")
+                )
+                self.__sondagem_service.manage_sondagem_trado(
+                    id, update_info.get("sondagem_trado")
+                )
+                self.__sondagem_service.manage_sondagem_rotativa(
+                    id, update_info.get("sondagem_rotativa")
+                )
+
                 conn.session.commit()
             except UnavailableResourceError as exc:
                 raise exc

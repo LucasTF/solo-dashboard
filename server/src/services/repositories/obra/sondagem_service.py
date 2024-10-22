@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, delete
 from src.database.connector import DBConnector
 from src.models.entities.sondagem_percussao import SondagemPercussao
 from src.models.entities.sondagem_rotativa import SondagemRotativa
@@ -51,9 +51,7 @@ class ObraSondagemService:
 
         if found_sondagem:
             if sondagem_info is None:
-                delete_sondagem_query = delete(SondagemTrado).where(
-                    SondagemTrado.id == found_sondagem.id
-                )
+                delete_sondagem_query = delete(SondagemTrado).where(SondagemTrado.id == found_sondagem.id)
                 self.__conn.session.execute(delete_sondagem_query)
             else:
                 found_sondagem.sondagens = sondagem_info.get("sondagens")
