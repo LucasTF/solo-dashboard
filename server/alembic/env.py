@@ -10,6 +10,7 @@ from src.models.entities.obra import Obra  # noqa: F401
 from src.models.entities.sondagem_percussao import SondagemPercussao  # noqa: F401
 from src.models.entities.sondagem_rotativa import SondagemRotativa  # noqa: F401
 from src.models.entities.sondagem_trado import SondagemTrado  # noqa: F401
+from src.models.entities.arquivo import Arquivo  # noqa: F401
 from src.models.entities.base import Base
 
 # this is the Alembic Config object, which provides
