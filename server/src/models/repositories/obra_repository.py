@@ -240,6 +240,12 @@ class ObraRepository(ObraRepositoryInterface):
                 self.__sondagem_service.manage_sondagem_percussao(
                     inserted_id, obra_info.get("sondagem_percussao")
                 )
+                self.__sondagem_service.manage_sondagem_trado(
+                    inserted_id, obra_info.get("sondagem_trado")
+                )
+                self.__sondagem_service.manage_sondagem_rotativa(
+                    inserted_id, obra_info.get("sondagem_rotativa")
+                )
 
                 conn.session.commit()
             except Exception:
