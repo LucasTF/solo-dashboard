@@ -7,7 +7,7 @@ from src.types.obra_types import ObraInsertType
 
 class ObraControllerInterface(ABC):
     @abstractmethod
-    def create(self, obra_info: ObraInsertType) -> None:
+    def create(self, obra_info: ObraInsertType) -> int:
         pass
 
     @abstractmethod

@@ -12,10 +12,10 @@ class ObraController(ObraControllerInterface):
     def __init__(self, obra_repository: ObraRepositoryInterface) -> None:
         self.__repository = obra_repository
 
-    def create(self, obra_info: ObraInsertType) -> None:
+    def create(self, obra_info: ObraInsertType) -> int:
         self.__validate_obra(obra_info)
 
-        self.__repository.insert_obra(obra_info)
+        return self.__repository.insert_obra(obra_info)
 
     def find_by_id(self, obra_id: int) -> ObraResponse:
         obra = self.__repository.get_obra_by_id(obra_id)

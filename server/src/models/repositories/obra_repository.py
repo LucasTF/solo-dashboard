@@ -212,7 +212,7 @@ class ObraRepository(ObraRepositoryInterface):
                 conn.session.rollback()
                 raise InternalProcessingError
 
-    def insert_obra(self, obra_info: ObraInsertType) -> None:
+    def insert_obra(self, obra_info: ObraInsertType) -> int:
         with self.__db_connector as conn:
             try:
                 cliente_id = self.__cliente_service.create_associated_cliente(
@@ -258,6 +258,8 @@ class ObraRepository(ObraRepositoryInterface):
                 )
 
                 conn.session.commit()
+
+                return inserted_id
             except Exception:
                 conn.session.rollback()
                 raise InternalProcessingError

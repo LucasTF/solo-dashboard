@@ -30,5 +30,5 @@ class ObraRepositoryInterface(ABC):
     def insert_obra(
         self,
         obra_info: ObraInsertType,
-    ) -> None:
+    ) -> int:
         pass
