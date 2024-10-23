@@ -33,7 +33,7 @@ class ObraRepository(ObraRepositoryInterface):
             results = conn.session.execute(query).all()
             for result in results:
                 obra, cliente, proprietario, son_percussao, son_trado, son_rotativa = (
-                    result.tuple()
+                    result._tuple()
                 )
                 obras.append(
                     ObraResponse.serialize(
@@ -54,7 +54,7 @@ class ObraRepository(ObraRepositoryInterface):
         try:
             with self.__db_connector as conn:
                 obra, cliente, proprietario, son_percussao, son_trado, son_rotativa = (
-                    conn.session.execute(query).one().tuple()
+                    conn.session.execute(query).one()._tuple()
                 )
 
                 response = ObraResponse.serialize(
@@ -77,7 +77,7 @@ class ObraRepository(ObraRepositoryInterface):
         try:
             with self.__db_connector as conn:
                 obra, cliente, proprietario, son_percussao, son_trado, son_rotativa = (
-                    conn.session.execute(query).one().tuple()
+                    conn.session.execute(query).one()._tuple()
                 )
 
                 response = ObraResponse.serialize(
@@ -132,7 +132,7 @@ class ObraRepository(ObraRepositoryInterface):
             results = conn.session.execute(test_query).all()
             for result in results:
                 obra, cliente, proprietario, son_percussao, son_trado, son_rotativa = (
-                    result.tuple()
+                    result._tuple()
                 )
                 obras.append(
                     ObraResponse.serialize(
