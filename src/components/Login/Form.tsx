@@ -52,8 +52,32 @@ const LoginForm = () => {
 
   const loginHandler = (credentials: LoginCredentials) => {
     startTransition(async () => {
-      // TODO: Reimplementation with Flask routing
-      toast("Login realizado.");
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URI + "/login", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
+
+      if (!response.ok) {
+        toast("Não foi possível realizar o login.", { type: "error" });
+        return;
+      }
+
+      const data = await response.json();
+
+      createSession({
+        name: data.name,
+        email: data.email,
+        isAdmin: data.is_admin,
+      });
+
+      toast("Login realizado com sucesso.");
     });
   };
 
