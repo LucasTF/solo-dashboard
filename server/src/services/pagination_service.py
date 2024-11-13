@@ -30,7 +30,10 @@ class PaginationService(Generic[T]):
         return self.__data[window_start:window_end]
 
     def create_paginated_response(self, paginated_data: List[T]) -> Dict:
-        total_pages = math.ceil(self.__total_items / len(paginated_data))
+        total_pages = 1
+
+        if len(paginated_data) > 0:
+            total_pages = math.ceil(self.__total_items / len(paginated_data))
 
         paginated_response = {
             "total_entries": self.__total_items,
