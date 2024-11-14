@@ -12,6 +12,8 @@ from src.errors.unauthorized_error import UnauthorizedError
 
 # Routes
 from src.core.routes.api.api_routes import api_route
+from src.core.routes.dashboard.dashboard_routes import dashboard_route
+from src.core.routes.static import static_content
 
 db_connector.connect_to_db()
 
@@ -30,3 +32,9 @@ app.register_error_handler(Exception, GenericApiError.handle)
 
 # API Routes
 app.register_blueprint(api_route)
+
+# Dashboard Routes
+app.register_blueprint(dashboard_route)
+
+## Static content
+app.register_blueprint(static_content)

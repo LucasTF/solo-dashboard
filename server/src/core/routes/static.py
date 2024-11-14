@@ -10,10 +10,12 @@ static_content = Blueprint("static_content", __name__)
 def favicon():
     return send_file(dir + "/favicon.ico")
 
+
 # Static (CSS/JS)
 @static_content.route("/_next/<path:subpath>")
 def get_static(subpath):
     return send_file(f"{dir}/_next/{subpath}")
+
 
 # Images
 @static_content.route("/img/<path:subpath>")
@@ -22,3 +24,9 @@ def get_image(subpath):
         return send_file(f"{dir}/img/{subpath}")
 
     abort(404)
+
+
+# Routes TXT
+@static_content.route("/dashboard.txt")
+def dashboard_txt():
+    return send_file(dir + "/dashboard.txt")
