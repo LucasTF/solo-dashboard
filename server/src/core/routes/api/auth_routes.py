@@ -30,3 +30,12 @@ def login():
     resp = create_jwt_cookie(resp, body.get("authorization"))
 
     return resp
+
+
+@auth_route.route("/logout", methods=["GET"])
+def logout():
+    resp = make_response(jsonify({"message": "Logout realizado com sucesso."}), 200)
+
+    resp.set_cookie(key="auth_token", expires=0)
+
+    return resp
