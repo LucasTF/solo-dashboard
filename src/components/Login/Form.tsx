@@ -14,13 +14,13 @@ import {
 
 import { LoginSchema } from "@/schemas";
 import { useSessionStore } from "@/lib/stores/session";
-import { useRouter } from "next/navigation";
 import Button from "../ui/Button";
 import { Field } from "../ui/Fields";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../ui/Spinner";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 type LoginCredentials = z.infer<typeof LoginSchema>;
 
@@ -65,7 +65,7 @@ const LoginForm = () => {
       });
 
       if (!response.ok) {
-        toast("Não foi possível realizar o login.", { type: "error" });
+        toast("Email/Senha incorretos.", { type: "error" });
         return;
       }
 
@@ -77,7 +77,9 @@ const LoginForm = () => {
         isAdmin: data.is_admin,
       });
 
-      toast("Login realizado com sucesso.");
+      toast("Login realizado com sucesso.", { type: "success" });
+
+      router.push("/dashboard");
     });
   };
 
