@@ -17,10 +17,11 @@ import {
 import { useSessionStore } from "@/lib/stores/session";
 import ThemeSwitcher from "@/components/ui/Navigation/ThemeSwitcher";
 import NavLink from "@/components/ui/Navigation/NavLink";
-import { Bars3Icon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Backdrop from "../ui/Backdrop";
 import Spinner from "../ui/Spinner";
 import { useScrollDirection } from "@/lib/hooks/scrollDirection";
+import { toast } from "react-toastify";
 
 const drawerNav = tv({
   base: "max-md:py-4 md:mt-4 md:flex-grow space-y-4 ease-out duration-300 max-md:fixed max-md:bg-slate-300 max-md:dark:bg-slate-800 max-md:w-full max-md:z-30",
@@ -77,7 +78,15 @@ const Navigation = () => {
 
   const logoutHandler = () => {
     startTransition(async () => {
-      // TODO: Use Flask API to Logout
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URI + "/logout");
+
+      if (response.ok) {
+        const data = await response.json();
+        toast(data.message, { type: "success" });
+
+        dropSession();
+        router.push("/dashboard/login");
+      }
     });
   };
 
