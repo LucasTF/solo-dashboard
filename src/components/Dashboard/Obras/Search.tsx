@@ -8,6 +8,7 @@ import { SearchSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useEntryStore } from "@/lib/stores/entry";
+import { useTableStore } from "@/lib/stores/table";
 
 type SearchBaseProps = {
   tableStructure: TableStructure;
@@ -21,6 +22,7 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
   const router = useRouter();
 
   const { clearEntry } = useEntryStore();
+  const { setTableData } = useTableStore();
 
   const { register, handleSubmit } = useForm<SearchForm>({
     resolver: zodResolver(
@@ -33,12 +35,28 @@ export const ObrasSearch = ({ tableStructure }: SearchBaseProps) => {
     },
   });
 
-  const searchHandler = (searchString: string) => {
+  const searchHandler = async (searchString: string) => {
     clearEntry();
+
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_API_URI +
+        `${tableStructure.endpoint}?search=${searchString}`
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      setTableData({
+        data: data.data,
+        pages: data.total_pages,
+        totalEntries: data.total_entries,
+      });
+    }
+
     const newUrl =
       tableStructure.table +
       "?" +
       new URLSearchParams(`search=${searchString}`);
+
     router.push(newUrl);
   };
 
