@@ -6,7 +6,7 @@ import { Table } from "@/components/Table";
 import { Tables } from "@/lib/structures";
 
 type EntryRowProps = {
-  rowInfo?: { id: number; table: Tables; tableIndex: number };
+  rowInfo?: { id: number; table: Tables; tableIndex: number; data: any };
   children?: Readonly<React.ReactNode>;
 };
 
@@ -27,7 +27,7 @@ export const EntryRow = ({ children, rowInfo }: EntryRowProps) => {
       if (entry?.id === rowInfo.id) {
         clearEntry();
       } else {
-        setEntry(rowInfo.table, rowInfo.id, rowInfo.tableIndex);
+        setEntry(rowInfo.table, rowInfo.id, rowInfo.tableIndex, rowInfo.data);
       }
     }
   };

@@ -2,11 +2,12 @@ import { Tables } from "@/lib/structures";
 
 export type Column = {
   name: string;
-  value: string;
+  values: string[];
 };
 
 export type TableStructure = {
   table: Tables;
+  endpoint: string;
   overrideSearchOrder?: number[];
   columns: Column[];
 };

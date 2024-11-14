@@ -8,28 +8,31 @@ export enum Tables {
 
 export const obrasStructure: TableStructure = {
   table: Tables.Obras,
+  endpoint: "/obras",
   columns: [
-    { name: "SP", value: "cod_obra" },
-    { name: "Ano", value: "ano" },
-    { name: "Endereço", value: "endereco" },
-    { name: "UF", value: "uf" },
-    { name: "Cidade", value: "cidade" },
-    { name: "Bairro", value: "bairro" },
-    { name: "Cliente", value: "cliente" },
-    { name: "Proprietário", value: "proprietario" },
+    { name: "SP", values: ["cod_obra"] },
+    { name: "Ano", values: ["ano"] },
+    { name: "Endereço", values: ["tipo_logo", "logradouro", "complemento"] },
+    { name: "UF", values: ["uf"] },
+    { name: "Cidade", values: ["cidade"] },
+    { name: "Bairro", values: ["bairro"] },
+    { name: "Cliente", values: ["cliente"] },
+    { name: "Proprietário", values: ["proprietario"] },
   ],
 };
 
 export const usersStructure: TableStructure = {
   table: Tables.Users,
+  endpoint: "/usuarios",
   columns: [
-    { name: "Nome", value: "name" },
-    { name: "Email", value: "email" },
-    { name: "Administrador", value: "isAdmin" },
+    { name: "Nome", values: ["name"] },
+    { name: "Email", values: ["email"] },
+    { name: "Administrador", values: ["is_admin"] },
   ],
 };
 
 export const clientesStructure: TableStructure = {
   table: Tables.Clientes,
+  endpoint: "/clientes",
   columns: [],
 };
