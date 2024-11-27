@@ -7,6 +7,7 @@ from src.errors.unauthenticated_error import UnauthenticatedError
 
 dashboard_auth_route = Blueprint("dashboard_auth_routes", __name__)
 
+
 # Login
 @dashboard_auth_route.route("/login", methods=["GET"])
 def login():

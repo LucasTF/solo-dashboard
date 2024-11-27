@@ -19,15 +19,19 @@ dashboard_route = Blueprint(
 
 # Errors
 
-dashboard_route.register_error_handler(UnauthenticatedError, lambda _: redirect("/dashboard/login"))
+dashboard_route.register_error_handler(
+    UnauthenticatedError, lambda _: redirect("/dashboard/login")
+)
 
 dashboard_route.register_blueprint(dashboard_auth_route)
+
 
 @dashboard_route.route("/", methods=["GET"])
 def index():
     check_authentication()
 
     return render_template("dashboard.html")
+
 
 # Obras
 @dashboard_route.route("/obras", methods=["GET"])
