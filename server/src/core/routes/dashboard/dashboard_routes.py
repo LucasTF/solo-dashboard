@@ -23,9 +23,15 @@ dashboard_route = Blueprint(
 dashboard_route.register_error_handler(
     UnauthenticatedError, lambda _: redirect("/dashboard/login")
 )
-dashboard_route.register_error_handler(DecodeError, lambda _: redirect("/dashboard/login"))
-dashboard_route.register_error_handler(ExpiredSignatureError, lambda _: redirect("/dashboard/login"))
-dashboard_route.register_error_handler(UnauthorizedError, lambda _: redirect("/dashboard"))
+dashboard_route.register_error_handler(
+    DecodeError, lambda _: redirect("/dashboard/login")
+)
+dashboard_route.register_error_handler(
+    ExpiredSignatureError, lambda _: redirect("/dashboard/login")
+)
+dashboard_route.register_error_handler(
+    UnauthorizedError, lambda _: redirect("/dashboard")
+)
 
 dashboard_route.register_blueprint(dashboard_auth_route)
 
