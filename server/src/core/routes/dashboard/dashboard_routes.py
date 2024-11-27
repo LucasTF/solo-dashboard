@@ -1,9 +1,10 @@
-import os
 from flask import Blueprint, redirect, render_template, send_file
+from jwt import DecodeError, ExpiredSignatureError
 
 from src.config.dashboard import dashboard_template
 from src.core.middlewares.auth_middleware import check_authentication
 from src.errors.unauthenticated_error import UnauthenticatedError
+from src.errors.unauthorized_error import UnauthorizedError
 
 # Routes
 
@@ -22,6 +23,9 @@ dashboard_route = Blueprint(
 dashboard_route.register_error_handler(
     UnauthenticatedError, lambda _: redirect("/dashboard/login")
 )
+dashboard_route.register_error_handler(DecodeError, lambda _: redirect("/dashboard/login"))
+dashboard_route.register_error_handler(ExpiredSignatureError, lambda _: redirect("/dashboard/login"))
+dashboard_route.register_error_handler(UnauthorizedError, lambda _: redirect("/dashboard"))
 
 dashboard_route.register_blueprint(dashboard_auth_route)
 
