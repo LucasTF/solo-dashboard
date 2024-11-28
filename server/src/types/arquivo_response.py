@@ -5,7 +5,6 @@ from typing import Dict
 
 @dataclass
 class ArquivoResponse:
-
     id: int
     obra_id: int
     criado_em: datetime
@@ -18,5 +17,5 @@ class ArquivoResponse:
             "obra_id": self.obra_id,
             "criado_em": self.criado_em.isoformat(),
             "tipo": self.tipo,
-            "link": self.link
+            "link": self.link,
         }

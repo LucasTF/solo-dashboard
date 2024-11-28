@@ -2,7 +2,12 @@ from datetime import datetime
 from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.config.constants import MAX_FILE_FORMAT_LENGTH, MAX_FILE_NAME_LENGTH, MAX_FILE_PATH_LENGTH, MAX_FILE_TYPE_LENGTH
+from src.config.constants import (
+    MAX_FILE_FORMAT_LENGTH,
+    MAX_FILE_NAME_LENGTH,
+    MAX_FILE_PATH_LENGTH,
+    MAX_FILE_TYPE_LENGTH,
+)
 from src.models.entities.base import Base
 
 
