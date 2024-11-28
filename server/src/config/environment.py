@@ -8,3 +8,5 @@ jwt_env = {
     "JWT_ALGORITHM": os.getenv("JWT_ALGORITHM"),
     "JWT_HOURS": os.getenv("JWT_HOURS"),
 }
+
+files_env = {"UPLOADED_FILES_PATH": os.getenv("UPLOADED_FILES_PATH")}
