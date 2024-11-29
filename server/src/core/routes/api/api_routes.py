@@ -18,6 +18,7 @@ from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.core.routes.api.usuario_routes import usuario_route
 from src.core.routes.api.cliente_routes import cliente_route
 from src.core.routes.api.obra_routes import obra_route
+from src.core.routes.api.arquivo_routes import arquivo_route
 from src.core.routes.api.auth_routes import auth_route
 
 
@@ -48,4 +49,5 @@ api_route.register_error_handler(Exception, GenericApiError.handle)
 api_route.register_blueprint(usuario_route)
 api_route.register_blueprint(cliente_route)
 api_route.register_blueprint(obra_route)
+api_route.register_blueprint(arquivo_route)
 api_route.register_blueprint(auth_route)

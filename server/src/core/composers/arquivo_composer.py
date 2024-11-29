@@ -4,6 +4,7 @@ from src.controllers.arquivo_controller import ArquivoController
 from src.database.connector import db_connector
 from src.errors.invalid_operation_error import InvalidOperationError
 from src.models.repositories.arquivo_repository import ArquivoRepository
+from src.models.repositories.obra_repository import ObraRepository
 from src.views.api.arquivos.arquivo_create_view import ArquivoCreateView
 from src.views.api.interfaces.view_interface import ViewInterface
 
@@ -15,9 +16,11 @@ class ArquivoAction(Enum):
     LIST_LATEST = 4
     DELETE = 5
 
+
 def compose_arquivo(action: ArquivoAction) -> ViewInterface:
-    repository = ArquivoRepository(db_connector)
-    controller = ArquivoController(repository)
+    arquivo_repository = ArquivoRepository(db_connector)
+    obra_repository = ObraRepository(db_connector)
+    controller = ArquivoController(arquivo_repository, obra_repository)
 
     match action:
         case ArquivoAction.CREATE:
