@@ -44,30 +44,28 @@ const Upload = ({ obra, closeModal }: UploadProps) => {
     startTransition(async () => {
       const formData = new FormData();
       fileList.forEach((entry) => {
-        formData.append(`file`, entry.file, entry.file.name);
+        formData.append("files[]", entry.file, entry.file.name);
         formData.append(`file-category`, entry.category);
       });
 
       const res = await fetch(
-        `/api/upload/${obra.id}?noWrite=${
-          process.env.NODE_ENV === "development"
-        }`,
+        process.env.NEXT_PUBLIC_API_URI + `/arquivos/${obra.id}`,
         {
           method: "POST",
           body: formData,
         }
       );
 
-      const resJson: DataResponse<any[]> = await res.json(); // TODO: Replace 'any' with File Type
-
-      if (resJson.success) {
-        console.log(resJson.data);
+      if (res.ok) {
         refreshEntry();
         setFileList([]);
-        toast(resJson.message, { type: "success" });
+        toast("Arquivo salvo com sucesso.", { type: "success" });
       } else {
-        toast(resJson.error, { type: "error" });
+        toast("Erro! Arquivo não salvo.", { type: "error" });
       }
+
+      // const resJson: DataResponse<any[]> = await res.json(); // TODO: Replace 'any' with File Type
+
       closeModal();
     });
   };
