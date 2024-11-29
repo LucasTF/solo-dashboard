@@ -11,11 +11,17 @@ class ArquivoRepositoryInterface(ABC):
         pass
 
     @abstractmethod
+    def find_arquivo_by_id(self, arquivo_id: int) -> Arquivo:
+        pass
+
+    @abstractmethod
+    def find_arquivos_by_obra_id(self, obra_id: int) -> List[Arquivo]:
+        pass
+
+    @abstractmethod
     def register_arquivo(
-        self,
-        obra_id: int,
-        arquivo_info: ArquivoInsertType
-    ) -> Arquivo:
+        self, obra_id: int, arquivo_info: ArquivoInsertType
+    ) -> int:
         pass
 
     @abstractmethod
