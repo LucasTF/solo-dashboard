@@ -10,6 +10,7 @@ def setup():
 
     yield service
 
+
 def test_construct_path(setup):
     filename = "SP002-24-Model.pdf"
     ano = 2024

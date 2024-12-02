@@ -10,17 +10,26 @@ from src.errors.invalid_request_body_error import InvalidRequestBodyError
 
 
 class FileService:
-
     __ALLOWED_EXTENSIONS = {"pdf"}
 
-    def has_valid_extension(self, filename: str, allowed_extensions : Set[str] = None) -> bool:
+    def has_valid_extension(
+        self, filename: str, allowed_extensions: Set[str] = None
+    ) -> bool:
         extensions = allowed_extensions or self.__ALLOWED_EXTENSIONS
-        return '.' in filename and filename.rsplit('.', 1)[1].lower() in extensions
+        return "." in filename and filename.rsplit(".", 1)[1].lower() in extensions
 
     def has_valid_name_size(self, filename: str) -> bool:
         return len(filename) <= MAX_FILE_NAME_LENGTH
-    
-    def contruct_path(self, filename: str, ano_obra: int, cod_obra: str, file_type: FileType, include_base_path: bool = False, include_file: bool = False) -> str:
+
+    def contruct_path(
+        self,
+        filename: str,
+        ano_obra: int,
+        cod_obra: str,
+        file_type: FileType,
+        include_base_path: bool = False,
+        include_file: bool = False,
+    ) -> str:
         base_path = files_env.get("UPLOADED_FILES_PATH")
         cod_obra_path = cod_obra.replace("/", "-")
         file_type_path = file_type.value
@@ -35,10 +44,12 @@ class FileService:
             file_path = os.path.join(file_path, safe_filename)
 
         return str(file_path)
-    
+
     def validate_files(self, arquivos: List[FileStorage]) -> None:
         for arquivo in arquivos:
             filename = secure_filename(arquivo.filename)
-            
-            if not self.has_valid_extension(filename) or not self.has_valid_name_size(filename):
+
+            if not self.has_valid_extension(filename) or not self.has_valid_name_size(
+                filename
+            ):
                 raise InvalidRequestBodyError

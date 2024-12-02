@@ -19,9 +19,7 @@ class ArquivoRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def register_arquivo(
-        self, obra_id: int, arquivo_info: ArquivoInsertType
-    ) -> int:
+    def register_arquivo(self, obra_id: int, arquivo_info: ArquivoInsertType) -> int:
         pass
 
     @abstractmethod
