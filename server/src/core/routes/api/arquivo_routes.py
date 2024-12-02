@@ -1,7 +1,10 @@
-from flask import Blueprint, request
+from flask import Blueprint, jsonify, request
 
 from src.core.composers.arquivo_composer import ArquivoAction, compose_arquivo
-from src.core.middlewares.auth_middleware import check_authorization
+from src.core.middlewares.auth_middleware import (
+    check_authentication,
+    check_authorization,
+)
 from src.errors.invalid_operation_error import InvalidOperationError
 from src.views.api.types.http_request import HttpRequest
 
@@ -28,3 +31,14 @@ def upload(obra_id: int):
     http_response = view.handle(http_request)
 
     return "", http_response.status_code
+
+
+@arquivo_route.route("/arquivos/<int:obra_id>", methods=["GET"])
+def get_arquivos_by_obra_id(obra_id: int):
+    check_authentication()
+
+    http_request = HttpRequest(params={"id": obra_id})
+    view = compose_arquivo(ArquivoAction.FIND_BY_OBRA_ID)
+    http_response = view.handle(http_request)
+
+    return jsonify(http_response.body), http_response.status_code

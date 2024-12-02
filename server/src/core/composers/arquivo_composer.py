@@ -6,6 +6,7 @@ from src.errors.invalid_operation_error import InvalidOperationError
 from src.models.repositories.arquivo_repository import ArquivoRepository
 from src.models.repositories.obra_repository import ObraRepository
 from src.views.api.arquivos.arquivo_create_view import ArquivoCreateView
+from src.views.api.arquivos.arquivo_find_by_obra_id import ArquivoFindByObraId
 from src.views.api.interfaces.view_interface import ViewInterface
 
 
@@ -28,7 +29,7 @@ def compose_arquivo(action: ArquivoAction) -> ViewInterface:
         case ArquivoAction.FIND_BY_ID:
             return NotImplementedError()
         case ArquivoAction.FIND_BY_OBRA_ID:
-            return NotImplementedError()
+            return ArquivoFindByObraId(controller)
         case ArquivoAction.LIST_LATEST:
             return NotImplementedError()
         case ArquivoAction.DELETE:
