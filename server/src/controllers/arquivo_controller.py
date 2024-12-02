@@ -1,15 +1,12 @@
 import os
 from typing import List
-from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 
-from src.config.environment import files_env
 from src.controllers.interfaces.arquivo_controller_interface import (
     ArquivoControllerInterface,
 )
 from src.enums.file_types import FileType
 from src.errors.internal_processing_error import InternalProcessingError
-from src.errors.invalid_request_body_error import InvalidRequestBodyError
 from src.errors.unavailable_resource_error import UnavailableResourceError
 from src.models.interfaces.arquivo_repository_interface import (
     ArquivoRepositoryInterface,
@@ -21,10 +18,11 @@ from src.types.arquivo_response import ArquivoResponse
 
 
 class ArquivoController(ArquivoControllerInterface):
-
-    __ALLOWED_EXTENSIONS = {"pdf"}
-
-    def __init__(self, arquivo_repository: ArquivoRepositoryInterface, obra_repository: ObraRepositoryInterface):
+    def __init__(
+        self,
+        arquivo_repository: ArquivoRepositoryInterface,
+        obra_repository: ObraRepositoryInterface,
+    ):
         self.__arquivo_repository = arquivo_repository
         self.__obra_repository = obra_repository
         self.__file_service = FileService()
@@ -38,8 +36,8 @@ class ArquivoController(ArquivoControllerInterface):
         # Validate if all files have an allowed extension, name and size
         self.__file_service.validate_files(arquivos)
 
-        saved_files : List[str] = []
-        registered_files : List[int] = []
+        saved_files: List[str] = []
+        registered_files: List[int] = []
 
         try:
             for arquivo in arquivos:
@@ -47,10 +45,24 @@ class ArquivoController(ArquivoControllerInterface):
                 filename = secure_filename(arquivo.filename)
 
                 # Construct path for the new file
-                path = self.__file_service.contruct_path(arquivo.filename, obra.ano, obra.cod_obra, FileType.Planta, True, True)
+                path = self.__file_service.contruct_path(
+                    arquivo.filename,
+                    obra.ano,
+                    obra.cod_obra,
+                    FileType.Planta,
+                    True,
+                    True,
+                )
 
                 # Validate paths existence
-                save_path = self.__file_service.contruct_path(arquivo.filename, obra.ano, obra.cod_obra, FileType.Planta, True, False)
+                save_path = self.__file_service.contruct_path(
+                    arquivo.filename,
+                    obra.ano,
+                    obra.cod_obra,
+                    FileType.Planta,
+                    True,
+                    False,
+                )
                 if not os.path.exists(save_path):
                     os.makedirs(save_path)
 
@@ -59,12 +71,17 @@ class ArquivoController(ArquivoControllerInterface):
                 saved_files.append(path)
 
                 # Register file to DB
-                inserted_id = self.__arquivo_repository.register_arquivo(obra_id, {
-                    "nome": filename,
-                    "formato": filename.split(".").pop().upper(),
-                    "caminho": self.__file_service.contruct_path(arquivo.filename, obra.ano, obra.cod_obra, FileType.Planta),
-                    "tipo": FileType.Planta.name
-                })
+                inserted_id = self.__arquivo_repository.register_arquivo(
+                    obra_id,
+                    {
+                        "nome": filename,
+                        "formato": filename.split(".").pop().upper(),
+                        "caminho": self.__file_service.contruct_path(
+                            arquivo.filename, obra.ano, obra.cod_obra, FileType.Planta
+                        ),
+                        "tipo": FileType.Planta.name,
+                    },
+                )
                 registered_files.append(inserted_id)
         except Exception as exc:
             print(exc)
@@ -77,7 +94,7 @@ class ArquivoController(ArquivoControllerInterface):
                 os.remove(saved_file_path)
 
             raise InternalProcessingError
-        
+
         return registered_files
 
     def find_by_id(self, arquivo_id):
@@ -85,22 +102,52 @@ class ArquivoController(ArquivoControllerInterface):
 
         arquivo_response = ArquivoResponse(
             id=arquivo.id,
+            nome=arquivo.nome,
             obra_id=arquivo.obra_id,
             criado_em=arquivo.criado_em,
             tipo=arquivo.tipo,
-            link="/".join([arquivo.caminho, arquivo.nome])
+            link="/".join([arquivo.caminho, arquivo.nome]),
         )
 
         return arquivo_response
 
     def find_by_obra_id(self, obra_id):
-        raise NotImplementedError
+        arquivos = self.__arquivo_repository.find_arquivos_by_obra_id(obra_id)
+
+        arquivos_response: List[ArquivoResponse] = []
+
+        for arquivo in arquivos:
+            arquivos_response.append(
+                ArquivoResponse(
+                    id=arquivo.id,
+                    nome=arquivo.nome,
+                    obra_id=arquivo.obra_id,
+                    criado_em=arquivo.criado_em,
+                    tipo=arquivo.tipo,
+                    link="/".join([arquivo.caminho, arquivo.nome]),
+                )
+            )
+
+        return arquivos_response
 
     def list_latest(self, num_of_arquivos=5):
-        raise NotImplementedError
+        arquivos = self.__arquivo_repository.list_latest_arquivos(num_of_arquivos)
+
+        arquivos_response: List[ArquivoResponse] = []
+
+        for arquivo in arquivos:
+            arquivos_response.append(
+                ArquivoResponse(
+                    id=arquivo.id,
+                    nome=arquivo.nome,
+                    obra_id=arquivo.obra_id,
+                    criado_em=arquivo.criado_em,
+                    tipo=arquivo.tipo,
+                    link="/".join([arquivo.caminho, arquivo.nome]),
+                )
+            )
+
+        return arquivos_response
 
     def delete(self, arquivo_id):
-        raise NotImplementedError
-    
-    
-            
+        self.__arquivo_repository.delete_arquivo(arquivo_id)

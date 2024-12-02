@@ -6,6 +6,7 @@ from typing import Dict
 @dataclass
 class ArquivoResponse:
     id: int
+    nome: str
     obra_id: int
     criado_em: datetime
     tipo: str
@@ -14,6 +15,7 @@ class ArquivoResponse:
     def to_dict(self) -> Dict:
         return {
             "id": self.id,
+            "nome": self.nome,
             "obra_id": self.obra_id,
             "criado_em": self.criado_em.isoformat(),
             "tipo": self.tipo,
