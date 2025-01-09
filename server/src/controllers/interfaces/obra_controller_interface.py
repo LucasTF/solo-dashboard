@@ -23,6 +23,10 @@ class ObraControllerInterface(ABC):
         pass
 
     @abstractmethod
+    def list_total(self) -> int:
+        pass
+
+    @abstractmethod
     def update(self, obra_id: int, obra_info: Dict) -> None:
         pass
 

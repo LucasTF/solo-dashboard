@@ -23,5 +23,9 @@ class ArquivoControllerInterface(ABC):
         pass
 
     @abstractmethod
+    def list_total(self) -> int:
+        pass
+
+    @abstractmethod
     def delete(self, arquivo_id: int) -> None:
         pass

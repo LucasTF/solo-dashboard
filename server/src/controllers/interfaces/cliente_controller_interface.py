@@ -18,5 +18,9 @@ class ClienteControllerInterface(ABC):
         pass
 
     @abstractmethod
+    def list_total(self) -> int:
+        pass
+
+    @abstractmethod
     def search(self, search_string: str) -> List[Cliente]:
         pass

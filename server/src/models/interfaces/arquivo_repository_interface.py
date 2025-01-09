@@ -25,3 +25,7 @@ class ArquivoRepositoryInterface(ABC):
     @abstractmethod
     def delete_arquivo(self, arquivo_id: int) -> None:
         pass
+
+    @abstractmethod
+    def count_arquivos(self) -> int:
+        pass

@@ -292,3 +292,12 @@ class ObraRepository(ObraRepositoryInterface):
         )
 
         return query
+
+    def count_obras(self):
+        count = 0
+
+        with self.__db_connector as conn:
+            count = conn.session.query(Obra).count()
+
+        return count
+

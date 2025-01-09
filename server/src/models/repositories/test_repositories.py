@@ -6,6 +6,7 @@ from sqlalchemy.orm import aliased
 from src.database.connector import db_connector
 from src.models.entities.cliente import Cliente
 from src.models.entities.obra import Obra
+from src.models.repositories.arquivo_repository import ArquivoRepository
 from src.models.repositories.obra_repository import ObraRepository
 from src.models.repositories.usuario_repository import UsuarioRepository
 
@@ -20,6 +21,7 @@ class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
         self.db_connector.connect_to_db()
         self.__usuario_repo = UsuarioRepository(self.db_connector)
         self.__obra_repo = ObraRepository(self.db_connector)
+        self.__arquivo_repo = ArquivoRepository(self.db_connector)
 
     # Obras
 
@@ -32,8 +34,6 @@ class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
         obras = self.__obra_repo.list_obras()
 
         self.assertGreater(len(obras), 0)
-
-        obra = obras[0]
 
     def test_base_query(self):
         with self.db_connector as conn:
@@ -112,3 +112,8 @@ class IntegrationUsuarioRepositoryTestCase(unittest.TestCase):
         usuario = self.__usuario_repo.get_usuario_by_id(1)
 
         self.assertEqual(usuario.password, new_password)
+
+    def test_arquivo_count(self):
+        count = self.__arquivo_repo.count_arquivos()
+
+        self.assertEqual(count, 1)

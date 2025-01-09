@@ -79,3 +79,11 @@ class ClienteRepository(ClienteRepositoryInterface):
             except Exception:
                 conn.session.rollback()
                 raise InternalProcessingError
+            
+    def count_clientes(self):
+        count = 0
+
+        with self.__db_connector as conn:
+            count = conn.session.query(Cliente).count()
+
+        return count

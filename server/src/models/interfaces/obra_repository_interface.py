@@ -32,3 +32,7 @@ class ObraRepositoryInterface(ABC):
         obra_info: ObraInsertType,
     ) -> int:
         pass
+
+    @abstractmethod
+    def count_obras(self) -> int:
+        pass

@@ -40,3 +40,7 @@ class UsuarioRepositoryInterface(ABC):
         self, name: str, email: str, password: bytes, is_admin: bool = False
     ) -> None:
         pass
+
+    @abstractmethod
+    def count_usuarios(self) -> int:
+        pass

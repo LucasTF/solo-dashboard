@@ -79,3 +79,12 @@ class ArquivoRepository(ArquivoRepositoryInterface):
                 results.append(arquivo)
 
         return results
+
+    def count_arquivos(self):
+        count = 0
+
+        with self.__db_connector as conn:
+            count = conn.session.query(Arquivo).count()
+
+        return count
+

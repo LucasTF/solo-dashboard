@@ -151,3 +151,7 @@ class ArquivoController(ArquivoControllerInterface):
 
     def delete(self, arquivo_id):
         self.__arquivo_repository.delete_arquivo(arquivo_id)
+
+    def list_total(self):
+        return self.__arquivo_repository.count_arquivos()
+
